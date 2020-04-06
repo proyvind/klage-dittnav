@@ -1,0 +1,28 @@
+{
+    "name": "klage-dittnav-server",
+    "version": "1.0.0",
+    "private": true,
+    "author": "NAV",
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon server.js"
+    },
+    "dependencies": {
+        "@sanity/client": "^1.149.2",
+        "console-stamp": "^0.2.9",
+        "dotenv": "^8.0.0",
+        "express": "^4.17.1",
+        "jsdom": "^15.1.1",
+        "mustache-express": "^1.2.8",
+        "node-cache": "^5.1.0"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ],
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
+}
