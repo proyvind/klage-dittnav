@@ -1,0 +1,28 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: coronapenger-dialog-frontend
+  namespace: default
+  labels:
+    team: klage
+spec:
+  port: 8080
+  image: {{ image }}
+  ingresses:
+  {{#each ingresses as |url|}}
+     - {{url}}
+  {{/each}}
+  replicas:
+    min: 1
+    max: 2
+  liveness:
+    path: /dagpenger/forskudd/internal/isAlive
+    initialDelay: 10
+  readiness:
+    path: /dagpenger/forskudd/internal/isReady
+    initialDelay: 10
+  env:
+    {{#each env}}
+       - name: {{@key}}
+    value: "{{this}}"
+    {{/each}}

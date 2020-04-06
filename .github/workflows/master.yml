@@ -1,0 +1,55 @@
+name: Build and deploy
+
+on: [push]
+env:
+  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+      - name: Lag tag for image
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
+      - name: Lag full image referanse
+        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
+      - name: Build docker image
+        run: docker build -t $IMAGE .
+      - name: Login to Github Package Registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+      - name: Push Docker image
+        run: docker push $IMAGE
+  deploypreprod:
+    name: Deploy to Preprod
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        name: Checkout code
+      - name: Lag tag for image
+        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
+      - name: Lag full image referanse
+        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
+
+      - uses: nais/deploy/actions/deploy@master
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_KEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais.yaml
+          VARS: nais/dev.json
