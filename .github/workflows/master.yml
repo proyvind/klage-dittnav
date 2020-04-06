@@ -49,7 +49,7 @@ jobs:
 
       - uses: nais/deploy/actions/deploy@master
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_KEY }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/dev.json
