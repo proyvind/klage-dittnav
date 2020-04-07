@@ -41,8 +41,12 @@ server.use((req, res, next) => {
 server.use(`${basePath}`, express.static(buildPath, { index: false }));
 
 // Nais functions
-server.get(`${basePath}/internal/isAlive|isReady`, (req, res) =>
+server.get(`${basePath}/internal/isReady`, (req, res) =>
   res.sendStatus(200)
+);
+
+server.get(`${basePath}/internal/isAlive`, (req, res) =>
+    res.sendStatus(200)
 );
 
 server.get(`${basePath}/config`, (req, res) =>
