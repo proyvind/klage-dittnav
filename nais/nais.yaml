@@ -2,7 +2,7 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   name: klage-dittnav
-  namespace: klage
+  namespace: default
   labels:
     team: klage
 spec:
