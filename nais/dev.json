@@ -1,11 +1,11 @@
 {
   "ingresses": [
-    "https://klage.dev-nav.no",
-    "https://klage.dev-gcp.nais.io"
+    "https://www-q1.nav.no/klage",
+    "https://klage-dittnav.nais.oera-q.local"
   ],
   "env": {
-    "REACT_APP_URL": "https://klage.dev-nav.no",
-    "REACT_API_URL": "https://klage-api.dev-nav.no",
-    "REACT_APP_LOGINSERVICE_URL": "https://gcp?loginservice-q.nav.no/login"
+    "REACT_APP_URL": "https://www-q1.nav.no/klage",
+    "REACT_API_URL": "https://www-q1.nav.no/klage-api",
+    "REACT_APP_LOGINSERVICE_URL": "https://loginservice-q.nav.no/login"
   }
 }
