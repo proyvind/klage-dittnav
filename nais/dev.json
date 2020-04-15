@@ -1,6 +1,6 @@
 {
   "ingresses": [
-    "https://www-q1.nav.no/klage",
+    "https://www-q1.nav.no/klage-dittnav",
     "https://klage-dittnav.nais.oera-q.local"
   ],
   "env": {
