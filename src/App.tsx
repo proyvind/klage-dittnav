@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import FrontPage from './pages/frontpage/frontpage';
+import KlageFrontPage from './pages/klage-frontpage/klage-frontpage';
 
 function App() {
     return (
         <div>
             <div className="App">
-                <FrontPage />
+                <KlageFrontPage />
             </div>
         </div>
     );
