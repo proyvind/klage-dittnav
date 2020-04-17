@@ -1,8 +1,12 @@
 name: Build and deploy
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+
 env:
-  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav
+  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,6 +54,6 @@ jobs:
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: dev-sbs
+          CLUSTER: dev-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/dev.json
