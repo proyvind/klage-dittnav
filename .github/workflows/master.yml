@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav:${{ github.sha }}
+  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav
 jobs:
   build:
     runs-on: ubuntu-latest
