@@ -13,22 +13,26 @@
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
     "@types/styled-components": "^5.1.0",
+    "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "nav-frontend-core": "^4.0.12",
     "nav-frontend-js-utils": "^1.0.8",
+    "nav-frontend-knapper": "^2.0.1",
+    "nav-frontend-knapper-style": "^0.3.35",
     "nav-frontend-lenker": "^1.0.35",
     "nav-frontend-lenker-style": "^0.2.26",
     "nav-frontend-paneler-style": "^0.3.18",
-    "nav-frontend-skjema": "^2.0.14",
-    "nav-frontend-skjema-style": "^2.0.4",
+    "nav-frontend-skjema": "^2.0.16",
+    "nav-frontend-skjema-style": "^2.0.5",
     "nav-frontend-typografi": "^2.0.18",
     "nav-frontend-typografi-style": "^1.0.19",
     "nav-frontend-veileder": "^2.0.16",
     "nav-frontend-veileder-style": "^2.0.13",
     "nav-frontend-veilederpanel": "^0.1.22",
     "nav-frontend-veilederpanel-style": "0.0.25",
+    "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -44,7 +48,13 @@
     "start": "npm-run-all -p start:*",
     "build": "npm-run-all -p build:*",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write src/**/*.{tsx,ts,js,less,css}"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "husky": "^4.2.5",
     "less-plugin-npm-import": "^2.1.0",
     "less-watch-compiler": "^1.14.6",
     "npm-run-all": "^4.1.5"

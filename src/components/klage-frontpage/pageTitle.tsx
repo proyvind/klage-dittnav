@@ -15,7 +15,7 @@ const DESCRIPTION =
 const PageTitle = () => (
     <TitleContainer>
         <Sidetittel>{TITLE}</Sidetittel>
-            <Ingress>{DESCRIPTION}</Ingress>
+        <Ingress>{DESCRIPTION}</Ingress>
     </TitleContainer>
 );
 export default PageTitle;

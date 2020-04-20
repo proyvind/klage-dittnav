@@ -228,6 +228,10 @@ body {
   border-color: #78706A;
 }
 .checkboks {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
   position: absolute;
   opacity: 0;
 }
@@ -253,6 +257,12 @@ body {
   border-color: #0067C5;
   border-width: 2px;
   background-color: #0067C5;
+}
+.radioknapp {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
 }
 .radioknapp + .skjemaelement__label:before {
   border-radius: 50%;
@@ -301,6 +311,9 @@ body {
   font-weight: bold;
 }
 .textareamirror {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
   appearance: none;
   padding: 0.5rem;
   background-color: #FFF;
@@ -431,6 +444,9 @@ body {
   width: 100%;
 }
 .skjemaelement__input {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
   appearance: none;
   padding: 0.5rem;
   background-color: #FFF;
@@ -553,8 +569,16 @@ body {
   display: block;
   padding: 1rem 1rem 1rem 3rem;
   position: relative;
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
 }
 .inputPanel__field {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
   position: absolute;
   width: 0;
   height: 0;
@@ -664,6 +688,10 @@ body {
   outline: none;
 }
 .bekreftCheckboksPanel .bekreftCheckboksPanel__innhold {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
   margin-bottom: 1rem;
 }
 .bekreftCheckboksPanel .skjemaelement {
@@ -698,6 +726,10 @@ body {
   display: block;
   padding: 1rem 1rem 1rem 1rem;
   border-radius: 4px;
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
   border-radius: 0px;
   border: 4px solid #BA3A26;
 }
@@ -741,6 +773,10 @@ body {
   margin-bottom: 1rem;
 }
 .skjemagruppe__description {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  font-weight: 400;
   margin-bottom: 1rem;
 }
 .skjemagruppe legend,
@@ -1010,4 +1046,370 @@ body {
 }
 .nav-veilederpanel--feilmelding {
   border: 2px solid #e3b0a8;
+}
+.knappmini-mixin {
+  text-transform: none;
+  padding: calc(.25rem - 1px) 1.5rem calc(.25rem - 1px) 1.5rem;
+  min-height: 2rem;
+}
+.knappdisabled-mixin:disabled,
+.knappdisabled-mixin--disabled {
+  background-color: #B7B1A9;
+  border-color: #B7B1A9;
+  color: #FFF;
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+.knappdisabled-mixin:disabled:after,
+.knappdisabled-mixin--disabled:after {
+  display: none;
+}
+.knappdisabled-mixin:disabled:hover,
+.knappdisabled-mixin--disabled:hover,
+.knappdisabled-mixin:disabled:focus,
+.knappdisabled-mixin--disabled:focus {
+  box-shadow: none;
+  background-color: #B7B1A9;
+  border-color: #B7B1A9;
+  color: #FFF;
+}
+.knapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 1em;
+  white-space: nowrap;
+  border-radius: 0.125em;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 0.0625em;
+  line-height: 1.375rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: transparent;
+  padding: calc(.475rem - 1px) 2.5rem calc(.525rem - 1px) 2.5rem;
+  min-height: 2.5rem;
+  vertical-align: middle;
+  border: 2px solid #0067C5;
+  color: #0067C5;
+}
+.knapp:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #254b6d;
+}
+.knapp:hover {
+  background-color: #0067C5;
+  color: #FFF;
+}
+.knapp:active {
+  background-color: #005B82;
+  border-color: #005B82;
+  color: #FFF;
+}
+.knapp:disabled,
+.knapp--disabled {
+  background-color: #B7B1A9;
+  border-color: #B7B1A9;
+  color: #FFF;
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+.knapp:disabled:after,
+.knapp--disabled:after {
+  display: none;
+}
+.knapp:disabled:hover,
+.knapp--disabled:hover,
+.knapp:disabled:focus,
+.knapp--disabled:focus {
+  box-shadow: none;
+  background-color: #B7B1A9;
+  border-color: #B7B1A9;
+  color: #FFF;
+}
+.knapp .knapp__spinner {
+  border: 2px solid #0067C5;
+  border-left-color: #99c2e8;
+  border-bottom-color: #99c2e8;
+}
+.knapp:hover .knapp__spinner {
+  border-top-color: #FFF;
+  border-right-color: #FFF;
+}
+.knapp.knapp--hoved:focus .knapp__spinner {
+  border-top-color: #0067C5;
+  border-right-color: #0067C5;
+}
+.knapp.knapp--hoved .knapp__spinner,
+.knapp.knapp--hoved:hover .knapp__spinner {
+  border-top-color: #FFF;
+  border-right-color: #FFF;
+}
+.knapp.knapp--fare:focus .knapp__spinner {
+  border-top-color: #BA3A26;
+  border-right-color: #BA3A26;
+}
+.knapp.knapp--fare .knapp__spinner,
+.knapp.knapp--fare:hover .knapp__spinner {
+  border: 2px solid #FFF;
+  border-left-color: #e3b0a8;
+  border-bottom-color: #e3b0a8;
+}
+.knapp.knapp--flat:hover .knapp__spinner {
+  border-top-color: #0067C5;
+  border-right-color: #0067C5;
+}
+.knapp:disabled .knapp__spinner,
+.knapp--disabled .knapp__spinner {
+  border: 2px solid #FFF;
+  border-top-color: #E9E7E7;
+  border-right-color: #E9E7E7;
+}
+.knapp svg {
+  width: 1rem;
+  height: 1rem;
+  fill: #0067C5;
+}
+.knapp .nav-frontend-chevron + span:not(.sr-only),
+.knapp span:not(.sr-only) + .nav-frontend-chevron {
+  margin-left: 0.33333rem;
+}
+.knapp svg + span:not(.sr-only),
+.knapp span:not(.sr-only) + svg {
+  margin-left: 0.5rem;
+}
+.knapp > span {
+  display: inline-block;
+}
+.knapp:hover svg {
+  fill: white;
+}
+.knapp.knapp--flat:hover svg {
+  fill: #0067C5;
+}
+.knapp.knapp--fare:focus svg {
+  fill: #BA3A26;
+}
+.knapp:disabled:not(:focus) svg,
+.knapp.knapp--disabled:not(:focus) svg,
+.knapp.knapp--hoved:not(:focus) svg,
+.knapp.knapp--fare:not(:focus) svg {
+  fill: white;
+}
+.knapp:disabled:active svg,
+.knapp.knapp--disabled:active svg,
+.knapp.knapp--hoved:active svg,
+.knapp.knapp--fare:active svg,
+.knapp:disabled:hover svg,
+.knapp.knapp--disabled:hover svg,
+.knapp.knapp--hoved:hover svg,
+.knapp.knapp--fare:hover svg {
+  fill: white;
+}
+.knapp--hoved {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 0 #C6C2BF;
+  color: #FFF;
+  border-color: #0067C5;
+  background-color: #0067C5;
+  position: relative;
+}
+.knapp--hoved:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: -3px;
+  height: 1px;
+  border-radius: 0.125rem;
+  background: rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+.knapp--hoved:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: -4px;
+  height: 2px;
+}
+.knapp--hoved:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 0 #d2cfcc;
+}
+.knapp--hoved:hover:before {
+  bottom: -5px;
+  height: 3px;
+}
+.knapp--hoved:active,
+.knapp--hoved--active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.knapp--hoved:active:after,
+.knapp--hoved--active:after,
+.knapp--hoved:active:before,
+.knapp--hoved--active:before {
+  display: none;
+}
+.knapp--hoved:active,
+.knapp--hoved:active:hover,
+.knapp--hoved:active:focus {
+  box-shadow: none;
+  border-color: #005B82;
+  background-color: #005B82;
+}
+.knapp--hoved:focus {
+  background-color: white;
+  color: #0067C5;
+}
+.knapp--hoved:hover {
+  color: #FFF;
+  border-color: #0074df;
+  background-color: #0074df;
+}
+.knapp--hoved:disabled {
+  top: 0;
+  background-color: #B7B1A9;
+  box-shadow: none;
+}
+.knapp--hoved:disabled:hover {
+  border-color: #B7B1A9;
+  transform: none;
+}
+.knapp--fare {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 0 #C6C2BF;
+  color: #FFF;
+  border-color: #BA3A26;
+  background-color: #BA3A26;
+  position: relative;
+}
+.knapp--fare:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: -3px;
+  height: 1px;
+  border-radius: 0.125rem;
+  background: rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+.knapp--fare:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: -4px;
+  height: 2px;
+}
+.knapp--fare:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 0 #d2cfcc;
+}
+.knapp--fare:hover:before {
+  bottom: -5px;
+  height: 3px;
+}
+.knapp--fare:active,
+.knapp--fare--active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.knapp--fare:active:after,
+.knapp--fare--active:after,
+.knapp--fare:active:before,
+.knapp--fare--active:before {
+  display: none;
+}
+.knapp--fare:active,
+.knapp--fare:active:hover,
+.knapp--fare:active:focus {
+  box-shadow: none;
+  border-color: #a53322;
+  background-color: #a53322;
+}
+.knapp--fare:focus {
+  background-color: white;
+  color: #BA3A26;
+}
+.knapp--fare:hover {
+  color: #FFF;
+  border-color: #cf412a;
+  background-color: #cf412a;
+}
+.knapp--fare:disabled {
+  top: 0;
+  background-color: #B7B1A9;
+  box-shadow: none;
+}
+.knapp--fare:disabled:hover {
+  border-color: #B7B1A9;
+  transform: none;
+}
+.knapp--flat {
+  color: #0067C5;
+  border: 2px solid transparent;
+}
+.knapp--flat:hover:not(:disabled),
+.knapp--flat:focus:not(:disabled) {
+  background-color: transparent;
+  border: 2px solid #0067C5;
+  color: #0067C5;
+}
+.knapp--flat:active {
+  background-color: #005B82;
+  border: 2px solid transparent;
+  color: #FFF;
+}
+.knapp--mini {
+  text-transform: none;
+  padding: calc(.25rem - 1px) 1.5rem calc(.25rem - 1px) 1.5rem;
+  min-height: 2rem;
+}
+.knapp--kompakt {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.knapp--kompakt.knapp--mini {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.knapp__spinner {
+  width: 0.8em;
+  height: 0.8em;
+  display: inline-block;
+  border-radius: 100%;
+  animation: knapp__spinner 1s infinite linear;
+  position: relative;
+  margin-left: 0.5em;
+  top: 0.1em;
+}
+@keyframes knapp__spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
 }
