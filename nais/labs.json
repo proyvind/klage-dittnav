@@ -1,0 +1,11 @@
+{
+  "ingresses": [
+    "https://klage-dittnav.navlabs.io",
+  ],
+  "env": {
+    "REACT_APP_URL": "https://klage-dittnav.navlabs.io",
+    "REACT_API_URL": "",
+    "REACT_APP_LOGINSERVICE_URL": "",
+    "MOCK_ENABLED": true
+  }
+}

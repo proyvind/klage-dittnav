@@ -8,6 +8,7 @@
   "env": {
     "REACT_APP_URL": "https://klage-dittnav.dev-gcp.nais.io",
     "REACT_API_URL": "https://klage-dittnav-api.dev-gcp.nais.io",
-    "REACT_APP_LOGINSERVICE_URL": "https://loginservice-q.nav.no/login"
+    "REACT_APP_LOGINSERVICE_URL": "https://loginservice.dev-nav.no/login",
+    "MOCK_ENABLED": false
   }
 }
