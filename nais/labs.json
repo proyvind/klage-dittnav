@@ -1,6 +1,6 @@
 {
   "ingresses": [
-    "https://klage-dittnav.navlabs.io",
+    "https://klage-dittnav.navlabs.io"
   ],
   "env": {
     "REACT_APP_URL": "https://klage-dittnav.navlabs.io",
