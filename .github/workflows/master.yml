@@ -56,7 +56,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: labs-gcp
           RESOURCE: nais/nais.yaml
-          VARS: nais/dev.json
+          VARS: nais/labs.json
   deploypreprod:
     name: Deploy to dev-gcp
     needs: build
