@@ -1,3 +1,5 @@
+import { logApiError, logEvent } from '../utils/logger';
+
 const getOptions = {
     method: 'GET'
 };
@@ -12,15 +14,18 @@ const postOptions = {
 };
 
 export async function get(resource: string) {
+    logEvent({ resource });
     let response = await fetch(resource, getOptions);
     try {
         let data = await response.json();
         return data;
     } catch (error) {
-        return error;
+        logApiError(resource, error);
+        throw error;
     }
 }
 export async function post(resource: string, item: any) {
+    logEvent({ resource });
     postOptions.body = JSON.stringify(item);
 
     let response = await fetch(resource, postOptions);
@@ -28,6 +33,7 @@ export async function post(resource: string, item: any) {
         let data = await response;
         return data;
     } catch (error) {
-        return error;
+        logApiError(resource, error);
+        throw error;
     }
 }
