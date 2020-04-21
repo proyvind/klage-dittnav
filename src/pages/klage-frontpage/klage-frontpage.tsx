@@ -3,7 +3,6 @@ import PageTitle from '../../components/klage-frontpage/pageTitle';
 import WelcomeKlage from '../../components/klage-frontpage/welcomeKlage';
 import KlageForm from '../../components/klage-form';
 import styled from 'styled-components/macro';
-import { getKlager } from '../../services/klageService';
 
 const KlageContentContainer = styled.div`
     max-width: 300px;
@@ -12,7 +11,6 @@ const KlageContentContainer = styled.div`
 `;
 
 const KlageFrontPage = () => {
-    const KLAGER = getKlager();
     return (
         <>
             <PageTitle />
