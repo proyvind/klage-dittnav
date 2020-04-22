@@ -1,3 +1,7 @@
 node_modules
 .idea
 build
+
+src/*.css
+mock-api/get/*.js
+mock-api/*.js
