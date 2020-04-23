@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { SkjemaGruppe, Input, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { postKlage } from '../services/klageService';
+import { setupMock } from '../mock-api/setup-mock';
+
+setupMock();
 
 const KlageForm = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tmpInput, setTmpInput] = useState<{ firstName: string; lastName: string; klageText: string }>({
         firstName: '',
         lastName: '',
@@ -15,10 +19,16 @@ const KlageForm = () => {
     };
 
     const handleFormSubmit = (event: any) => {
+        setIsLoading(true);
         event.preventDefault();
-        postKlage(tmpInput);
+        postKlage(tmpInput).then(() => {
+            setIsLoading(false);
+        });
     };
 
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
     return (
         <form onSubmit={handleFormSubmit} autoComplete="off">
             <SkjemaGruppe>
