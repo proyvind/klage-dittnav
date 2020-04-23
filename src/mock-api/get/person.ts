@@ -1,4 +1,4 @@
-import {Person} from "../../model";
+import {Person} from "../../types/person";
 
 export const okPerson: Person = {
     firsName: "Ola",
