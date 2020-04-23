@@ -3,5 +3,3 @@ node_modules
 build
 
 src/*.css
-mock-api/get/*.js
-mock-api/*.js
