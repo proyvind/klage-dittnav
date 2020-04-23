@@ -3,13 +3,65 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {applyMiddleware, createStore} from "redux";
+import reducer from "./store/reducer";
+import thunkMiddleware from "redux-thunk";
+import {Provider} from "react-redux";
+import {footer, header, scripts, styles} from "./mock-api/get/decorator";
+import {setupMock} from "./mock-api/setup-mock";
 
-ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
-    document.getElementById('root')
-);
+const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+const mockEnabled = process.env.NODE_ENV === "development" || process.env.MOCK_ENABLED === "true";
+
+const init = async () => {
+    if (process.env.NODE_ENV === "development") {
+        // Mock decorator
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{NAV_HEADING}}}",
+            header
+        );
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{NAV_FOOTER}}}",
+            footer
+        );
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{NAV_STYLES}}}",
+            styles
+        );
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{NAV_SCRIPTS}}}",
+            scripts
+        );
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{NAV_SKIPLINKS}}}",
+            ""
+        );
+        document.body.innerHTML = document.body.innerHTML.replace(
+            "{{{MEGAMENU_RESOURCES}}}",
+            ""
+        );
+
+        // Execute client.js
+        let script = document.createElement("script");
+        script.src = "https://www.nav.no/dekoratoren/client.js";
+        document.body.appendChild(script);
+    }
+
+    // If not i develop mode, but still want to run mock
+    if (mockEnabled) {
+        setupMock();
+    }
+
+    ReactDOM.render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+};
+init();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

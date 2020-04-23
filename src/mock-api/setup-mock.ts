@@ -1,9 +1,10 @@
 import FetchMock, { Middleware } from 'yet-another-fetch-mock';
-import { getKlagerUrl, getAddKlageUrl } from '../clients/apiUrls';
+import {getKlagerUrl, getAddKlageUrl, getUserDataUrl} from '../clients/apiUrls';
 import { KLAGER } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
 import navfaker from 'nav-faker';
+import {okPerson} from "./get/person";
 
 const STATUS_OK = () => 200;
 // const STATUS_BAD_REQUEST = () => 400;
@@ -26,6 +27,13 @@ function setupGetKlager(mock: FetchMock) {
         getKlagerUrl(),
         withDelayedResponse(randomDelay(), STATUS_OK, () => KLAGER)
     ); // Returns the object as the json-response
+}
+
+function setupGetPerson(mock: FetchMock) {
+    mock.get(
+        getUserDataUrl(),
+        withDelayedResponse(randomDelay(), STATUS_OK, () => okPerson)
+    );
 }
 
 function addKlageToLocalStorage(request: any): any {
@@ -53,6 +61,7 @@ export function setupMock() {
             middleware: loggingMiddleware // default: (req, resp) => resp
         });
 
+        setupGetPerson(mock);
         setupGetKlager(mock);
         setupPostKlage(mock);
     }

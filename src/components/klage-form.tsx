@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { SkjemaGruppe, Input, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { postKlage } from '../services/klageService';
-import { setupMock } from '../mock-api/setup-mock';
-
-setupMock();
 
 const KlageForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);

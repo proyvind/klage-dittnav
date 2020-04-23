@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { getLoginserviceRedirectUrl, getUser } from '../clients/apiUrls';
+import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
 
 export type ActionTypes =
     | {
@@ -12,7 +12,7 @@ export type ActionTypes =
 
 export function checkAuth() {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return fetch(getUser(), {
+        return fetch(getUserDataUrl(), {
             method: 'GET',
             credentials: 'include'
         })

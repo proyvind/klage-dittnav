@@ -3,7 +3,7 @@ const loginUrl = process.env.REACT_APP_LOGINSERVICE_URL;
 
 const baseUrl = `http://localhost:${port}`;
 
-export const getUser = (): string => `${baseUrl}/bruker`;
+export const getUserDataUrl = (): string => `${baseUrl}/bruker`;
 
 export const getKlagerUrl = (): string => `${baseUrl}/klager`;
 
