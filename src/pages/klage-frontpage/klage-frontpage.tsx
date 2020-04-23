@@ -8,9 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Store} from "../../store/reducer";
 
 const KlageContentContainer = styled.div`
-    max-width: 300px;
+    max-width: 600px;
     margin: 30px auto;
-    text-align: center;
 `;
 
 const KlageFrontPage = () => {
