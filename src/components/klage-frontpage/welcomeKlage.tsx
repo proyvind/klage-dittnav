@@ -5,6 +5,9 @@ import styled from 'styled-components/macro';
 
 const WelcomeMessageContainer = styled.div`
     margin: 50px 0;
+    .nav-veilederpanel {
+        box-sizing: border-box;
+    }
 `;
 
 const WELCOME_MESSAGE = 'Her kan du klage på vedtak';

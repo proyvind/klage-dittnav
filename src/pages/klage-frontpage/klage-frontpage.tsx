@@ -5,9 +5,8 @@ import KlageForm from '../../components/klage-form';
 import styled from 'styled-components/macro';
 
 const KlageContentContainer = styled.div`
-    max-width: 300px;
+    max-width: 600px;
     margin: 30px auto;
-    text-align: center;
 `;
 
 const KlageFrontPage = () => {
