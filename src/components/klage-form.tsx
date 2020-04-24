@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { SkjemaGruppe, Input, Textarea, Select, FnrInput } from 'nav-frontend-skjema';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { postKlage } from '../services/klageService';
-import { setupMock } from '../mock-api/setup-mock';
 import { Klage } from '../types/klage';
-
-setupMock();
+import {useSelector} from "react-redux";
+import {Store} from "../store/reducer";
 
 const getRandomSimpleId = (): number => {
     return Math.floor(Math.random() * 10000);
 };
 
 const KlageForm = () => {
+    const { userFirstName, userLastName } = useSelector((state: Store) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tmpInput, setTmpInput] = useState<Klage>({
         id: getRandomSimpleId(),
-        userFirstName: '',
-        userLastName: '',
+        userFirstName: userFirstName,
+        userLastName: userLastName,
         userAddress: '',
         userFodselsnummer: '',
         userPhone: '',
