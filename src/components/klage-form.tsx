@@ -3,8 +3,8 @@ import { SkjemaGruppe, Input, Textarea, Select, FnrInput } from 'nav-frontend-sk
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { postKlage } from '../services/klageService';
 import { Klage } from '../types/klage';
-import {useSelector} from "react-redux";
-import {Store} from "../store/reducer";
+import { useSelector } from 'react-redux';
+import { Store } from '../store/reducer';
 
 const getRandomSimpleId = (): number => {
     return Math.floor(Math.random() * 10000);
