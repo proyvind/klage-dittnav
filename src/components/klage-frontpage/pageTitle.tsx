@@ -8,7 +8,7 @@ const TitleContainer = styled.div`
     margin: 20px auto;
 `;
 
-const TITLE = 'Klage';
+const TITLE = 'Klage på vedtak';
 const DESCRIPTION =
     'Du finner søknader og skjemaer, mulighet for ettersendelse av dokumentasjon og klageskjema når du velger emne nedenfor.';
 

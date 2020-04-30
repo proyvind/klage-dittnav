@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PageTitle from '../../components/klage-frontpage/pageTitle';
 import WelcomeKlage from '../../components/klage-frontpage/welcomeKlage';
 import KlageForm from '../../components/klage-form';
 import styled from 'styled-components/macro';
-import {checkAuth} from "../../store/actions";
-import {useDispatch, useSelector} from "react-redux";
-import {Store} from "../../store/reducer";
+import { checkAuth } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Store } from '../../store/reducer';
 
 const KlageContentContainer = styled.div`
     max-width: 600px;

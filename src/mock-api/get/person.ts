@@ -1,9 +1,9 @@
-import {Person} from "../../types/person";
+import { Person } from '../../types/person';
 
 export const okPerson: Person = {
-    firsName: "Ola",
-    lastName: "Nordmann",
+    firsName: 'Ola',
+    lastName: 'Nordmann',
     adress: {
-        adress: "Storgata 1"
+        adress: 'Storgata 1'
     }
 };

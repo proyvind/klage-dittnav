@@ -3,13 +3,7 @@ import './App.css';
 import KlageFrontPage from './pages/klage-frontpage/klage-frontpage';
 
 function App() {
-    return (
-        <div>
-            <div className="App">
-                <KlageFrontPage />
-            </div>
-        </div>
-    );
+    return <KlageFrontPage />;
 }
 
 export default App;
