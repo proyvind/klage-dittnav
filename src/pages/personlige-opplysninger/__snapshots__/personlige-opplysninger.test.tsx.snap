@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Welcome klage Renders correctly when there is no data 1`] = `
+<div
+  className="sc-AxjAm fFuFOW"
+>
+  <div>
+    <p
+      className="typo-element"
+    >
+      Fornavn
+    </p>
+    <p
+      className="typo-normal"
+    >
+      info
+    </p>
+  </div>
+  <div>
+    <p
+      className="typo-element"
+    >
+      Etternavn
+    </p>
+    <p
+      className="typo-normal"
+    >
+      info
+    </p>
+  </div>
+  <div>
+    <p
+      className="typo-element"
+    >
+      Fødselsnummer
+    </p>
+    <p
+      className="typo-normal"
+    >
+      info
+    </p>
+  </div>
+  <div>
+    <p
+      className="typo-element"
+    >
+      Telefonnummer
+    </p>
+    <p
+      className="typo-normal"
+    >
+      info
+    </p>
+  </div>
+  <div>
+    <p
+      className="typo-element"
+    >
+      Adresse
+    </p>
+    <p
+      className="typo-normal"
+    >
+      info
+    </p>
+  </div>
+</div>
+`;

@@ -1,21 +1,18 @@
 import React from 'react';
-import { Sidetittel, Ingress } from 'nav-frontend-typografi';
+import { Sidetittel } from 'nav-frontend-typografi';
 import styled from 'styled-components/macro';
+import { ContentContainer } from '../../styled-components/main-styled-components';
 
 const TitleContainer = styled.div`
-    text-align: center;
-    max-width: 40%;
-    margin: 20px auto;
+    background-color: #99c2e8;
+    padding: 10px 0;
 `;
 
-const TITLE = 'Klage';
-const DESCRIPTION =
-    'Du finner søknader og skjemaer, mulighet for ettersendelse av dokumentasjon og klageskjema når du velger emne nedenfor.';
-
-const PageTitle = () => (
+const PageTitle = (props: { title: string }) => (
     <TitleContainer>
-        <Sidetittel>{TITLE}</Sidetittel>
-        <Ingress>{DESCRIPTION}</Ingress>
+        <ContentContainer>
+            <Sidetittel>{props.title}</Sidetittel>
+        </ContentContainer>
     </TitleContainer>
 );
 export default PageTitle;

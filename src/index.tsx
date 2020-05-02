@@ -3,47 +3,28 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {applyMiddleware, createStore} from "redux";
-import reducer from "./store/reducer";
-import thunkMiddleware from "redux-thunk";
-import {Provider} from "react-redux";
-import {footer, header, scripts, styles} from "./mock-api/get/decorator";
-import {setupMock} from "./mock-api/setup-mock";
+import { Provider } from 'react-redux';
+import { footer, header, scripts, styles } from './mock-api/get/decorator';
+import { setupMock } from './mock-api/setup-mock';
+import configureStore from './store/configureStore';
 
-const store = createStore(reducer, applyMiddleware(thunkMiddleware));
-const mockEnabled = process.env.NODE_ENV === "development" || process.env.MOCK_ENABLED === "true";
+const store = configureStore();
+
+const mockEnabled = process.env.NODE_ENV === 'development' || process.env.MOCK_ENABLED === 'true';
 
 const init = async () => {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
         // Mock decorator
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{NAV_HEADING}}}",
-            header
-        );
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{NAV_FOOTER}}}",
-            footer
-        );
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{NAV_STYLES}}}",
-            styles
-        );
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{NAV_SCRIPTS}}}",
-            scripts
-        );
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{NAV_SKIPLINKS}}}",
-            ""
-        );
-        document.body.innerHTML = document.body.innerHTML.replace(
-            "{{{MEGAMENU_RESOURCES}}}",
-            ""
-        );
+        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_HEADING}}}', header);
+        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_FOOTER}}}', footer);
+        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_STYLES}}}', styles);
+        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_SCRIPTS}}}', scripts);
+        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_SKIPLINKS}}}', '');
+        document.body.innerHTML = document.body.innerHTML.replace('{{{MEGAMENU_RESOURCES}}}', '');
 
         // Execute client.js
-        let script = document.createElement("script");
-        script.src = "https://www.nav.no/dekoratoren/client.js";
+        let script = document.createElement('script');
+        script.src = 'https://www.nav.no/dekoratoren/client.js';
         document.body.appendChild(script);
     }
 
@@ -55,7 +36,7 @@ const init = async () => {
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App/>
+                <App />
             </Provider>
         </React.StrictMode>,
         document.getElementById('root')

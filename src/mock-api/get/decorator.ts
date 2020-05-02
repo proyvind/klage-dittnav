@@ -1,7 +1,8 @@
 export const header = '<section id="decorator-header" class="navno-dekorator" role="main"></section>';
 export const footer = '<section id="decorator-footer" class="navno-dekorator" role="main"></section>';
 export const scripts = '<div id="decorator-env" data-src="https://www.nav.no/dekoratoren/env"></div>';
-export const styles = '<link rel="icon" type="image/x-icon" href="https://www.nav.no/dekoratoren/media/favicon.ico" />' +
+export const styles =
+    '<link rel="icon" type="image/x-icon" href="https://www.nav.no/dekoratoren/media/favicon.ico" />' +
     '<link rel="icon" type="image/png" sizes="16x16" href="https://www.nav.no/dekoratoren/media/favicon-16x16.png">' +
     '<link rel="icon" type="image/png" sizes="32x32" href="https://www.nav.no/dekoratoren/media/favicon-32x32.png">' +
     '<link rel="apple-touch-icon" sizes="180x180" href="https://www.nav.no/dekoratoren/media/apple-touch-icon.png">' +

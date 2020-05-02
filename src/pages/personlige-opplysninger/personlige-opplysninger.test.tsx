@@ -1,9 +1,8 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import App from './App';
-import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
+import configureStore from '../../store/configureStore';
+import PersonligeOpplysningerPage from './personlige-opplysninger-page';
 
 describe('Welcome klage', () => {
     const store = configureStore();
@@ -12,7 +11,7 @@ describe('Welcome klage', () => {
         const tree = renderer
             .create(
                 <Provider store={store}>
-                    <App />
+                    <PersonligeOpplysningerPage />
                 </Provider>
             )
             .toJSON();
