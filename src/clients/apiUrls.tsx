@@ -16,3 +16,5 @@ export const getKlagerByFnrUrl = (fnr: string): string => `${baseUrl}/klager/fnr
 export const getAddKlageUrl = (): string => `${baseUrl}/klager`;
 
 export const getLoginserviceRedirectUrl = (): string => `${loginUrl}?redirect=${baseUrl}`;
+
+export const getVedtakUrl = (): string => `${baseUrl}/vedtak`;
