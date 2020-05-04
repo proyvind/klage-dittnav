@@ -1,11 +1,11 @@
 import { ActionTypes } from './actions';
-import {Person} from "../types/person";
+import { Person } from '../types/person';
 
 export interface Store {
     loading: boolean;
 
     // Auth response
-    person: Person
+    person: Person;
 }
 
 export const initialState: Store = {
