@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
+import { Person } from "../../types/person";
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    { displayName: 'Fornavn' },
-    { displayName: 'Etternavn' },
-    { displayName: 'Fødselsnummer' },
-    { displayName: 'Telefonnummer' },
-    { displayName: 'Adresse' }
+    { displayName: 'Fornavn', content: (person: Person) => <Normaltekst>{person.firsName}</Normaltekst>},
+    { displayName: 'Etternavn', content: (person: Person) => <Normaltekst>{person.lastName}</Normaltekst> },
+    { displayName: 'Fødselsnummer', content: (person: Person) => <Normaltekst>{person.id}</Normaltekst> },
+    { displayName: 'Telefonnummer', content: (person: Person) => <Normaltekst>{person.phoneNumber}</Normaltekst> },
+    { displayName: 'Adresse', content: (person: Person) => <Normaltekst>TODO</Normaltekst> }
 ];
+
 const FlexRowContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
@@ -19,17 +21,21 @@ const FlexRowContainer = styled.div`
     }
 `;
 
-const InformationPointBox = (header: string, info: string) => (
+interface Props {
+    person: Person
+}
+
+const InformationPointBox = (header: string, info: ReactNode) => (
     <div>
         <Element>{header}</Element>
-        <Normaltekst>{info}</Normaltekst>
+        {info}
     </div>
 );
 
-const PersonligeOpplysninger = () => (
+const PersonligeOpplysninger = (props: Props) => (
     <FlexRowContainer>
         {PERSONLIGE_OPPLYSNINGER_POINTS.map(point => {
-            return InformationPointBox(point.displayName, 'info');
+            return InformationPointBox(point.displayName, point.content(props.person));
         })}
     </FlexRowContainer>
 );
