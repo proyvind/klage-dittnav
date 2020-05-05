@@ -1,20 +1,27 @@
 import { ActionTypes } from './actions';
+import { Person } from '../types/person';
 
 export interface Store {
     loading: boolean;
 
     // Auth response
-    userFirstName: string;
-    userLastName: string;
-    userAdress: string;
+    person: Person;
 }
 
 export const initialState: Store = {
     loading: true,
 
-    userFirstName: '',
-    userLastName: '',
-    userAdress: ''
+    person: {
+        firsName: '',
+        lastName: '',
+        id: '',
+        phoneNumber: '',
+        adress: {
+            street: '',
+            postalCode: '',
+            city: ''
+        }
+    }
 };
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
@@ -24,9 +31,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 loading: false,
-                userFirstName: action.payload.userFirstName,
-                userLastName: action.payload.userLastName,
-                userAdress: action.payload.userAdress
+                person: action.payload
             };
         case 'CHECK_AUTH_ERROR':
             return {

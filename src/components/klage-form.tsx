@@ -11,12 +11,12 @@ const getRandomSimpleId = (): number => {
 };
 
 const KlageForm = () => {
-    const { userFirstName, userLastName } = useSelector((state: Store) => state);
+    const { person } = useSelector((state: Store) => state);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tmpInput, setTmpInput] = useState<Klage>({
         id: getRandomSimpleId(),
-        userFirstName: userFirstName,
-        userLastName: userLastName,
+        userFirstName: person.firsName,
+        userLastName: person.lastName,
         userAddress: '',
         userFodselsnummer: '',
         userPhone: '',
