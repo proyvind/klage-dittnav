@@ -1,4 +1,4 @@
-import {Vedtak} from "../../types/vedtak";
+import { Vedtak } from '../../types/vedtak';
 
 export const okVedtak: Vedtak[] = [
     {
