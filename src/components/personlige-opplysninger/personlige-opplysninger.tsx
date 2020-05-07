@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import React from 'react';
+import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import { Person } from '../../types/person';
+import InformationPointBox from '../general/information-point-box';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
     { displayName: 'Fornavn', content: (person: Person) => <Normaltekst>{person.firsName}</Normaltekst> },
@@ -24,13 +25,6 @@ const FlexRowContainer = styled.div`
 interface Props {
     person: Person;
 }
-
-const InformationPointBox = (props: { header: string; info: ReactNode }) => (
-    <div>
-        <Element>{props.header}</Element>
-        {props.info}
-    </div>
-);
 
 const PersonligeOpplysninger = (props: Props) => (
     <FlexRowContainer>
