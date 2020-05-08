@@ -5,6 +5,10 @@ export const ContentContainer = styled.div`
     margin: 0 auto;
 `;
 
+export const CenteredContentContainer = styled(ContentContainer)`
+    text-align: center;
+`;
+
 export const MarginContentContainer = styled(ContentContainer)`
     margin: 30px auto;
 `;

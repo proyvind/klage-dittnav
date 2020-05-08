@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PersonligeOpplysninger from '../../components/personlige-opplysninger/personlige-opplysninger';
-import {useDispatch, useSelector} from "react-redux";
-import {Store} from "../../store/reducer";
-import {checkAuth} from "../../store/actions";
-import NavFrontendSpinner from "nav-frontend-spinner";
+import { useDispatch, useSelector } from 'react-redux';
+import { Store } from '../../store/reducer';
+import { checkAuth } from '../../store/actions';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const PersonligeOpplysningerPage = () => {
     const dispatch = useDispatch();
