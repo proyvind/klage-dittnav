@@ -3,4 +3,5 @@ export interface Vedtak {
     vedtaksdato: Date;
     tema: string;
     enhet: string;
+    NAV_referanse: string;
 }
