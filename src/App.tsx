@@ -50,7 +50,7 @@ const App = () => {
                 <MarginContentContainer>
                     <Switch>
                         {routesConfig.map(route => {
-                            return <Route exact={true} key={route.path} {...route} />;
+                            return <Route key={route.path} {...route} />;
                         })}
                         <Route component={NotFoundPage} />
                     </Switch>
