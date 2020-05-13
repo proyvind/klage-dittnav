@@ -24,7 +24,6 @@ class VedtaketPage extends React.Component<
 
     async getData() {
         const FOUND_VEDTAK = await getVedtak();
-        // const FOUND_VEDTAK: Vedtak[] = [];
         this.setState({
             vedtak: FOUND_VEDTAK,
             isLoading: false
