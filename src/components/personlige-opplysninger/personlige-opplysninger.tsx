@@ -1,15 +1,15 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
-import { Person, Adress } from '../../types/person';
+import { Bruker, Adresse } from '../../types/bruker';
 import InformationPointBox from '../general/information-point-box';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    { displayName: 'Fornavn', content: (person: Person) => <Normaltekst>{person.firsName}</Normaltekst> },
-    { displayName: 'Etternavn', content: (person: Person) => <Normaltekst>{person.lastName}</Normaltekst> },
-    { displayName: 'Fødselsnummer', content: (person: Person) => <Normaltekst>{person.id}</Normaltekst> },
-    { displayName: 'Telefonnummer', content: (person: Person) => <Normaltekst>{person.phoneNumber}</Normaltekst> },
-    { displayName: 'Adresse', content: (person: Person) => <AdressPointBox adress={person.adress} /> }
+    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn}</Normaltekst> },
+    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn}</Normaltekst> },
+    { displayName: 'Fødselsnummer', content: (person: Bruker) => <Normaltekst>{person.id}</Normaltekst> },
+    { displayName: 'Telefonnummer', content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer}</Normaltekst> },
+    { displayName: 'Adresse', content: (person: Bruker) => <AdressPointBox adress={person.adresse} /> }
 ];
 
 const FlexRowContainer = styled.div`
@@ -22,15 +22,15 @@ const FlexRowContainer = styled.div`
     }
 `;
 
-const AdressPointBox = ({ adress }: { adress: Adress }) => (
+const AdressPointBox = ({ adress }: { adress: Adresse }) => (
     <div>
-        <Normaltekst>{adress.street}</Normaltekst>
-        <Normaltekst>{adress.postalCode + ' ' + adress.city}</Normaltekst>
+        <Normaltekst>{adress.adressenavn} {adress.husnummer}{adress.husbokstav}</Normaltekst>
+        <Normaltekst>{adress.postnummer} {adress.poststed}</Normaltekst>
     </div>
 );
 
 interface Props {
-    person: Person;
+    person: Bruker;
 }
 
 const PersonligeOpplysninger = (props: Props) => (

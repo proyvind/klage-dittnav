@@ -4,7 +4,7 @@ import { KLAGER } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
 import navfaker from 'nav-faker';
-import { okPerson } from './get/person';
+import { okPerson } from './get/bruker';
 import { okVedtak } from './get/vedtak';
 
 const STATUS_OK = () => 200;
