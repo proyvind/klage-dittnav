@@ -15,8 +15,8 @@ const KlageForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tmpInput, setTmpInput] = useState<Klage>({
         id: getRandomSimpleId(),
-        userFirstName: person.firsName,
-        userLastName: person.lastName,
+        userFirstName: person.navn.fornavn || '',
+        userLastName: person.navn.etternavn || '',
         userAddress: '',
         userFodselsnummer: '',
         userPhone: '',

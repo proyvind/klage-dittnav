@@ -1,25 +1,26 @@
 import { ActionTypes } from './actions';
-import { Person } from '../types/person';
+import { Bruker } from '../types/bruker';
 
 export interface Store {
     loading: boolean;
 
     // Auth response
-    person: Person;
+    person: Bruker;
 }
 
 export const initialState: Store = {
     loading: true,
 
     person: {
-        firsName: '',
-        lastName: '',
         id: '',
-        phoneNumber: '',
-        adress: {
-            street: '',
-            postalCode: '',
-            city: ''
+        navn: {
+            fornavn: '',
+            etternavn: ''
+        },
+        adresse: {
+            adressenavn: '',
+            postnummer: '',
+            poststed: ''
         }
     }
 };
