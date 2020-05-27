@@ -24,16 +24,10 @@ men det er ønskelig at det sendes med følgende felter:
 * Enhet
 
 ```
-<form action="url">
-    <input type="hidden" id="vedtaksdato" value="2020-01-31">
-    <input type="hidden" id="referanse" value="ref...">
-    <input type="hidden" id="tema" value="FP, SP, osv...">
-    <input type="hidden" id="enhet" value="2990 eller tilsvarende enhetId">
-    ...
-</form>
+<URL>?vedtaksdato=2020-01-31&referanse=saksreferanse&tema=FP&enhet=2990
 ```
 
 ## URL
-* labs: https://klage-dittnav.labs.nais.io/
-* preprod: https://klage-dittnav.dev-nav.no/
+* labs: https://klage-dittnav.labs.nais.io
+* preprod: https://klage-dittnav.dev-nav.no
 * prod: N/A
