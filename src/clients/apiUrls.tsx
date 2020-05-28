@@ -7,6 +7,8 @@ export const getUserDataUrl = (): string => `${baseUrl}/bruker`;
 
 export const getKlagerUrl = (): string => `${baseUrl}/klager`;
 
+export const getTemaerUrl = (): string => `${baseUrl}/temaer`;
+
 export const getKlageByIdUrl = (id: number): string => `${baseUrl}/klager/${id}`;
 
 export const getKlagerByKlageIdUrl = (id: number): string => `${baseUrl}/klager/klageid/${id}`;

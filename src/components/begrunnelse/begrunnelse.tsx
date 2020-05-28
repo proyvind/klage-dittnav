@@ -6,7 +6,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 
 const veilederText = `All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din. Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.`;
 
-const Begrunnelse = () => {
+const Begrunnelse = (props: any) => {
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
 
     const uploadAttachment = (event: any) => {
@@ -14,16 +14,16 @@ const Begrunnelse = () => {
         // TODO
     };
 
-    const submitVedtak = (event: any) => {
+    const submitBegrunnelse = (event: any, activeBegrunnelse: string) => {
         event.preventDefault();
+        props.submitBegrunnelse(activeBegrunnelse);
         // TODO
     };
 
     return (
-        <form>
+        <form onSubmit={(event: any) => submitBegrunnelse(event, activeBegrunnelse)}>
             <Textarea
                 name="begrunnelse"
-                defaultValue={activeBegrunnelse}
                 value={activeBegrunnelse}
                 description="Klage på [kategori] - beskriv hvorfor du klager:"
                 onChange={e => setActiveBegrunnelse(e.target.value)}
@@ -42,7 +42,7 @@ const Begrunnelse = () => {
 
             <MarginContentContainer>
                 <CenteredContentContainer>
-                    <Hovedknapp onClick={submitVedtak}>Gå videre</Hovedknapp>
+                    <Hovedknapp>Gå videre</Hovedknapp>
                 </CenteredContentContainer>
             </MarginContentContainer>
         </form>

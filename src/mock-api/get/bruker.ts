@@ -2,6 +2,7 @@ import { Bruker } from '../../types/bruker';
 
 export const okPerson: Bruker = {
     id: '123456789',
+    foedselsnummer: '32432',
     navn: {
         fornavn: 'Ola',
         etternavn: 'Nordmann'

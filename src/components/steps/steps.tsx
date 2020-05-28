@@ -1,27 +1,21 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import Stegindikator from 'nav-frontend-stegindikator';
-import { routesConfig, RouteType } from '../../utils/routes.config';
+import { RouteType } from '../../utils/routes.config';
 
-const Steps = () => {
-    const history = useHistory();
-    const location = useLocation();
-    const activeRoute = routesConfig.find(route => route.path === location.pathname) as RouteType;
+const Steps = (props: any) => {
+    const activeRoutes: RouteType[] = props.activeRoutes;
 
-    return activeRoute ? (
+    return (
         <Stegindikator
             key={Math.random()}
-            steg={routesConfig.map((route, i) => ({
+            steg={activeRoutes.map((route, i) => ({
                 index: i,
                 label: route.label,
-                aktiv: activeRoute.step === i
+                aktiv: props.activeStep === i
             }))}
             visLabel
-            onChange={index => {
-                history.push(routesConfig[index].path);
-            }}
         />
-    ) : null;
+    );
 };
 
 export default Steps;

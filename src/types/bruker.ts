@@ -1,5 +1,6 @@
 export interface Bruker {
     id?: string;
+    foedselsnummer: string;
     navn: Navn;
     adresse: Adresse;
     kontaktinformasjon?: Kontaktinformasjon;
@@ -22,4 +23,23 @@ export interface Adresse {
 export interface Kontaktinformasjon {
     telefonnummer?: string;
     epost?: string;
+}
+
+export function displayAddress(adresse: Adresse): string {
+    let display = '';
+    if (adresse) {
+        display += adresse.adressenavn ?? '';
+        display += ' ' + adresse.husnummer ?? '';
+        display += adresse.husbokstav ?? '';
+    }
+    return display;
+}
+export function displayPoststed(adresse: Adresse): string {
+    let display = '';
+    if (adresse) {
+        display += adresse.postnummer ?? '';
+        display += adresse.postnummer && adresse.poststed ? ' ' : '';
+        display += adresse.poststed ?? '';
+    }
+    return display;
 }

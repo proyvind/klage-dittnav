@@ -8,26 +8,23 @@ import { formatDate } from '../../utils/date-util';
 import Lenke from 'nav-frontend-lenker';
 
 const VedtakFormAutomatic = (props: any) => {
-    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(props.FOUND_VEDTAK[0] || null);
-    const [activeIssue, setActiveIssue] = useState<number>(1);
+    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(props.foundVedtak[0] || null);
 
-    const submitVedtak = (event: any) => {
-        console.log(activeIssue);
+    const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
-        // TODO
+        props.submitVedtak(activeVedtak);
     };
 
     return (
-        <form onSubmit={submitVedtak}>
-            <Select label="Vedtak:" onChange={e => setActiveVedtak(props.FOUND_VEDTAK[e.target.value])}>
-                {props.FOUND_VEDTAK.map((vedtak: any, index: number) => (
+        <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
+            <Select label="Vedtak:" onChange={e => setActiveVedtak(props.foundVedtak[e.target.value])}>
+                {props.foundVedtak.map((vedtak: any, index: number) => (
                     <option value={index} key={index}>
-                        {vedtak.title}
+                        {vedtak.tittel}
                     </option>
                 ))}
             </Select>
 
-            {/* TODO: Separate page? */}
             <MarginContentContainer>
                 <Lenke href="#" onClick={() => props.showManualForm()}>
                     Finner du ikke vedtaket du vil klage på? Send klage her
@@ -51,14 +48,6 @@ const VedtakFormAutomatic = (props: any) => {
                     info={formatDate(activeVedtak?.vedtaksdato) || 'Velg vedtak over'}
                 />
             </MarginContentContainer>
-
-            <Select label="Hva gjelder klagen?" onChange={e => setActiveIssue(+e.target.value)}>
-                {[1, 2, 3, 4, 5].map((n: number) => (
-                    <option value={n} key={n}>
-                        Alternativ {n}
-                    </option>
-                ))}
-            </Select>
 
             <MarginContentContainer>
                 <CenteredContentContainer>

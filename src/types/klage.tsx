@@ -1,10 +1,8 @@
+import { Bruker } from './bruker';
+
 export interface Klage {
     id: number;
-    userFirstName: string;
-    userLastName: string;
-    userAddress: string;
-    userFodselsnummer: string;
-    userPhone: string;
+    person: Bruker;
     NAVEnhetNavn: string;
     vedteksdato: string;
     NAVReference: string;

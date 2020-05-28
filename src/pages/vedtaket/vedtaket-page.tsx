@@ -1,42 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import VedtakFormAutomatic from '../../components/vedtaket/vedtak-form-automatic';
-import { getVedtak } from '../../services/klageService';
 import VedtakFormManual from '../../components/vedtaket/vedtak-form-manual';
 import { Vedtak } from '../../types/vedtak';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 
-class VedtaketPage extends React.Component<
-    {},
-    { vedtak: Vedtak[]; isLoading: boolean; optToFillOutManually: boolean }
-> {
-    constructor(props: any) {
-        super(props);
-        this.state = { vedtak: [], isLoading: true, optToFillOutManually: false };
+const VedtaketPage = (props: any) => {
+    const [optToFillOutManually, setOptToFillOutManually] = useState<boolean>(false);
+    const showManualForm = () => {
+        setOptToFillOutManually(true);
+    };
+
+    if (props.foundVedtak.length === 0 || optToFillOutManually) {
+        return <VedtakFormManual submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)} />;
     }
 
-    componentDidMount() {
-        this.getData();
-    }
-
-    showManualForm() {
-        this.setState({ optToFillOutManually: true });
-    }
-
-    async getData() {
-        const FOUND_VEDTAK = await getVedtak();
-        this.setState({
-            vedtak: FOUND_VEDTAK,
-            isLoading: false
-        });
-    }
-
-    render() {
-        if (this.state.isLoading) return <NavFrontendSpinner type={'XL'} />;
-        if (this.state.vedtak.length === 0 || this.state.optToFillOutManually) {
-            return <VedtakFormManual />;
-        }
-        return <VedtakFormAutomatic FOUND_VEDTAK={this.state.vedtak} showManualForm={() => this.showManualForm()} />;
-    }
-}
+    return (
+        <VedtakFormAutomatic
+            foundVedtak={props.foundVedtak}
+            showManualForm={() => showManualForm()}
+            submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)}
+        />
+    );
+};
 
 export default VedtaketPage;

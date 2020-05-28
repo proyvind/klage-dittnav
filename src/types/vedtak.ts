@@ -1,5 +1,5 @@
 export interface Vedtak {
-    title: string;
+    tittel: string;
     vedtaksdato: Date;
     tema: string;
     enhet: string;
