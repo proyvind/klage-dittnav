@@ -2,6 +2,7 @@ import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import LandingPage from '../pages/landing-page/landing-page';
 import ChosenVedtakSummaryPage from '../pages/chosen-vedtak-summary/chosen-vedtak-summary-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
+import DummyRedirectPage from "../pages/dummy-redirect/dummy-redirect-page";
 
 export type RouteType = {
     step?: number;
@@ -71,6 +72,12 @@ export const routesPages: RouteType[] = [
     {
         path: `/`,
         component: LandingPage,
+        label: '',
+        exact: true
+    },
+    {
+        path: `/redirect`,
+        component: DummyRedirectPage,
         label: '',
         exact: true
     }
