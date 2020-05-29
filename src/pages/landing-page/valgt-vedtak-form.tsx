@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Bruker } from '../../types/bruker';
-import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import VedtakSummaryPage from '../vedtak-summary/vedtak-summary-page';
 import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
@@ -8,14 +6,12 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { RouteType, routesStepsValgtVedtak } from '../../utils/routes.config';
 import Steps from '../../components/steps/steps';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
+import { constructKlage } from '../../types/klage';
+import { postKlage } from '../../services/klageService';
 
-interface Props {
-    person: Bruker;
-    vedtak: Vedtak;
-}
-const ValgtVedtakForm = (props: Props) => {
+const ValgtVedtakForm = (props: any) => {
     const [activeStep, setActiveStep] = useState<number>(0);
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>();
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
 
     let activeRoutes: RouteType[] = routesStepsValgtVedtak;
     let activeRoute: RouteType = activeRoutes[activeStep];
@@ -24,30 +20,26 @@ const ValgtVedtakForm = (props: Props) => {
         setActiveStep(activeStep + 1);
     };
 
-    const setBegrunnelse = (begrunnelse: string) => {
+    const setBegrunnelse = async (begrunnelse: string) => {
         console.log('submitted begrunnelse!', begrunnelse);
         setActiveBegrunnelse(begrunnelse);
+        await submitDraft();
         setActiveStep(activeStep + 1);
     };
 
-    // submitDraftForm = () => {
-    //     val foedselsnummer: String,
-    //     val fritekst: String,
-    //     val status: KlageStatus = KlageStatus.DRAFT,
-    //     val modifiedByUser: Instant? = Instant.now(),
-    //     val tema: Tema,
-    //     val enhetId: String? = null,
-    //     val vedtaksdato: LocalDate,
-    //     val referanse: String? = null,
-    //     val vedlegg: List<Vedlegg>? = listOf()
-    // }
+    const submitDraft = () => {
+        // Submit form as DRAFT
+        let klage = constructKlage(props.person, props.vedtak, activeBegrunnelse, true);
+        postKlage(klage).then(e => {
+            console.log('e: ', e);
+        });
+    };
 
     const submitForm = () => {
-        // TODO
-        console.log('submit');
-        console.log('Can post person details: ', props.person);
-        console.log('Can post vedtak: ', props.vedtak);
-        console.log('Can post begrunnelse: ', activeBegrunnelse);
+        let klage = constructKlage(props.person, props.vedtak, activeBegrunnelse, false);
+        postKlage(klage).then(e => {
+            console.log('e: ', e);
+        });
     };
 
     return (

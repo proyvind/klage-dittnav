@@ -1,7 +1,8 @@
-const port = process.env.REACT_APP_API_PORT || 3001;
+// const port = process.env.REACT_APP_API_PORT || 3001;
 const loginUrl = process.env.REACT_APP_LOGINSERVICE_URL;
 
-const baseUrl = `http://localhost:${port}`;
+// const baseUrlTest = `http://localhost:${port}`;
+const baseUrl = `https://klage-dittnav-api.dev-gcp.nais.io`;
 
 export const getUserDataUrl = (): string => `${baseUrl}/bruker`;
 

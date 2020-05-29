@@ -8,6 +8,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import IkkeValgtVedtakForm from './ikke-valgt-vedtak-form';
 import ValgtVedtakForm from './valgt-vedtak-form';
 import { getVedtak } from '../../services/klageService';
+import { Klage } from '../../types/klage';
 
 const instanceOfVedtak = (element: any): boolean => {
     return (
@@ -74,11 +75,29 @@ const LandingPage = (props: any) => {
         setActiveStep(activeStep + 1);
     };
 
+    const submitKlageDraft = (klage: Klage) => {
+        // TODO
+        console.log('FINALLY HERE!!!', klage);
+    };
+
     if (!loading) {
         return (
             <div>
-                {!chosenVedtak && <IkkeValgtVedtakForm person={person} foundVedtak={foundVedtak} next={() => next()} />}
-                {chosenVedtak && <ValgtVedtakForm person={person} vedtak={chosenVedtak} />}
+                {!chosenVedtak && (
+                    <IkkeValgtVedtakForm
+                        person={person}
+                        foundVedtak={foundVedtak}
+                        next={() => next()}
+                        submitKlageDraft={(klage: Klage) => submitKlageDraft(klage)}
+                    />
+                )}
+                {chosenVedtak && (
+                    <ValgtVedtakForm
+                        person={person}
+                        vedtak={chosenVedtak}
+                        submitKlageDraft={(klage: Klage) => submitKlageDraft(klage)}
+                    />
+                )}
             </div>
         );
     } else {
