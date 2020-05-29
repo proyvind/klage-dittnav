@@ -3,10 +3,14 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import styled from 'styled-components';
 import InformationPointBox from '../general/information-point-box';
 import { Vedtak } from '../../types/vedtak';
+import { formatDate } from '../../utils/date-util';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
-    { displayName: 'Tittel', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.tittel}</Normaltekst> },
-    { displayName: 'Vedtaksdato', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.vedtaksdato}</Normaltekst> },
+    { displayName: 'Tittel', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.tittel || ''}</Normaltekst> },
+    {
+        displayName: 'Vedtaksdato',
+        content: (vedtak: Vedtak) => <Normaltekst>{formatDate(vedtak.vedtaksdato)}</Normaltekst>
+    },
     { displayName: 'Tema', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.tema}</Normaltekst> },
     { displayName: 'Enhet', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.enhet}</Normaltekst> },
     { displayName: 'NAV-referanse', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.NAV_referanse}</Normaltekst> }
@@ -26,7 +30,8 @@ interface Props {
     vedtak: Vedtak;
 }
 
-const ChosenVedtakSummary = (props: Props) => {
+const VedtakSummary = (props: Props) => {
+    console.log('pto: ', props.vedtak);
     return (
         <FlexRowContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
@@ -42,4 +47,4 @@ const ChosenVedtakSummary = (props: Props) => {
     );
 };
 
-export default ChosenVedtakSummary;
+export default VedtakSummary;

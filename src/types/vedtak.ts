@@ -1,7 +1,7 @@
-export interface Vedtak {
-    tittel: string;
-    vedtaksdato: Date;
-    tema: string;
-    enhet: string;
-    NAV_referanse: string;
+export class Vedtak {
+    tittel?: string;
+    vedtaksdato: Date = new Date();
+    tema: string = '';
+    enhet: string = '';
+    NAV_referanse: string = '';
 }

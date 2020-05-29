@@ -1,6 +1,6 @@
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import LandingPage from '../pages/landing-page/landing-page';
-import ChosenVedtakSummaryPage from '../pages/chosen-vedtak-summary/chosen-vedtak-summary-page';
+import VedtakSummaryPage from '../pages/vedtak-summary/vedtak-summary-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 
 export type RouteType = {
@@ -16,7 +16,7 @@ export const routesStepsValgtVedtak: RouteType[] = [
     {
         step: 0,
         path: `/vedtak-oppsummert`,
-        component: ChosenVedtakSummaryPage,
+        component: VedtakSummaryPage,
         label: 'Oppsummering vedtak',
         exact: true
     },

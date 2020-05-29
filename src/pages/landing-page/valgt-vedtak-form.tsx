@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Bruker } from '../../types/bruker';
 import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
-import ChosenVedtakSummaryPage from '../chosen-vedtak-summary/chosen-vedtak-summary-page';
+import VedtakSummaryPage from '../vedtak-summary/vedtak-summary-page';
 import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { RouteType, routesStepsValgtVedtak } from '../../utils/routes.config';
@@ -30,6 +30,18 @@ const ValgtVedtakForm = (props: Props) => {
         setActiveStep(activeStep + 1);
     };
 
+    // submitDraftForm = () => {
+    //     val foedselsnummer: String,
+    //     val fritekst: String,
+    //     val status: KlageStatus = KlageStatus.DRAFT,
+    //     val modifiedByUser: Instant? = Instant.now(),
+    //     val tema: Tema,
+    //     val enhetId: String? = null,
+    //     val vedtaksdato: LocalDate,
+    //     val referanse: String? = null,
+    //     val vedlegg: List<Vedlegg>? = listOf()
+    // }
+
     const submitForm = () => {
         // TODO
         console.log('submit');
@@ -45,10 +57,12 @@ const ValgtVedtakForm = (props: Props) => {
             </MarginContentContainer>
             <MarginContentContainer>
                 <CenteredContentContainer>
-                    <Systemtittel>{activeRoute.label}</Systemtittel>
+                    <MarginContentContainer>
+                        <Systemtittel>{activeRoute.label}</Systemtittel>
+                    </MarginContentContainer>
                 </CenteredContentContainer>
                 {activeStep === 0 && (
-                    <ChosenVedtakSummaryPage person={props.person} vedtak={props.vedtak} next={() => next()} />
+                    <VedtakSummaryPage person={props.person} vedtak={props.vedtak} next={() => next()} />
                 )}
                 {activeStep === 1 && (
                     <BegrunnelsePage
