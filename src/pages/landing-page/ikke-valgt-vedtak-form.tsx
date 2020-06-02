@@ -8,11 +8,13 @@ import { MarginContentContainer, CenteredContentContainer } from '../../styled-c
 import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
+import { constructKlage } from '../../types/klage';
+import { postKlage } from '../../services/klageService';
 
 const IkkeValgtVedtakForm = (props: any) => {
     const [activeStep, setActiveStep] = useState<number>(props.activeStep || 0);
-    const [activeVedtak, setActiveVedtak] = useState<Vedtak | null>();
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>();
+    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
 
     let activeRoutes: RouteType[] = routesStepsIkkeValgtVedtak;
     let activeRoute: RouteType = activeRoutes[activeStep];
@@ -22,23 +24,29 @@ const IkkeValgtVedtakForm = (props: any) => {
     };
 
     const setVedtak = (activeVedtak: Vedtak) => {
-        console.log('submitted activeVedtak!', activeVedtak);
         setActiveVedtak(activeVedtak);
         setActiveStep(activeStep + 1);
     };
 
-    const setBegrunnelse = (begrunnelse: string) => {
-        console.log('submitted begrunnelse!', begrunnelse);
+    const setBegrunnelse = async (begrunnelse: string) => {
         setActiveBegrunnelse(begrunnelse);
+        await submitDraft();
         setActiveStep(activeStep + 1);
     };
 
+    const submitDraft = () => {
+        // Submit form as DRAFT
+        let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, true);
+        postKlage(klage).then(e => {
+            console.log('e: ', e);
+        });
+    };
+
     const submitForm = () => {
-        // TODO
-        console.log('submit');
-        console.log('Can post person details: ', props.person);
-        console.log('Can post vedtak: ', activeVedtak);
-        console.log('Can post begrunnelse: ', activeBegrunnelse);
+        let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, false);
+        postKlage(klage).then(e => {
+            console.log('e: ', e);
+        });
     };
 
     return (
@@ -48,7 +56,9 @@ const IkkeValgtVedtakForm = (props: any) => {
             </MarginContentContainer>
             <MarginContentContainer>
                 <CenteredContentContainer>
-                    <Systemtittel>{activeRoute.label}</Systemtittel>
+                    <MarginContentContainer>
+                        <Systemtittel>{activeRoute.label}</Systemtittel>
+                    </MarginContentContainer>
                 </CenteredContentContainer>
                 {activeStep === 0 && <PersonligeOpplysningerPage next={() => next()} />}
                 {activeStep === 1 && (

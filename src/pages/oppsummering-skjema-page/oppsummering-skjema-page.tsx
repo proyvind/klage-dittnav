@@ -1,6 +1,6 @@
 import React from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
-import ChosenVedtakSummary from '../../components/summary/chosen-vedtak-summary';
+import VedtakSummary from '../../components/summary/vedtak-summary';
 import {
     ContentContainer,
     CenteredContentContainer,
@@ -21,7 +21,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                 <Systemtittel>Opplysninger fra vedtaket du klager på</Systemtittel>
             </MarginContentContainer>
 
-            <ChosenVedtakSummary vedtak={props.vedtak} />
+            <VedtakSummary vedtak={props.vedtak} />
             <MarginContentContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
             </MarginContentContainer>

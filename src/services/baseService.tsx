@@ -30,8 +30,8 @@ export async function post(resource: string, item: any) {
 
     let response = await fetch(resource, postOptions);
     try {
-        let data = await response;
-        return data;
+        let res = await response;
+        return res;
     } catch (error) {
         logApiError(resource, error);
         throw error;

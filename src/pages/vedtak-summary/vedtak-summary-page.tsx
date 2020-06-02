@@ -1,11 +1,11 @@
 import React from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
-import ChosenVedtakSummary from '../../components/summary/chosen-vedtak-summary';
+import VedtakSummary from '../../components/summary/vedtak-summary';
 import { ContentContainer, MarginContentContainer } from '../../styled-components/main-styled-components';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
-const ChosenVedtakSummaryPage = (props: any) => {
+const VedtakSummaryPage = (props: any) => {
     return (
         <ContentContainer>
             <MarginContentContainer>
@@ -15,11 +15,11 @@ const ChosenVedtakSummaryPage = (props: any) => {
             <MarginContentContainer>
                 <Systemtittel>Vedtak</Systemtittel>
             </MarginContentContainer>
-            <ChosenVedtakSummary vedtak={props.vedtak} />
+            <VedtakSummary vedtak={props.vedtak} />
 
             <Hovedknapp onClick={() => props.next()}>Bekreft</Hovedknapp>
         </ContentContainer>
     );
 };
 
-export default ChosenVedtakSummaryPage;
+export default VedtakSummaryPage;
