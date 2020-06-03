@@ -2,7 +2,7 @@ import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import LandingPage from '../pages/landing-page/landing-page';
 import VedtakSummaryPage from '../pages/vedtak-summary/vedtak-summary-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
-import DummyRedirectPage from "../pages/dummy-redirect/dummy-redirect-page";
+import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 
 export type RouteType = {
     step?: number;
