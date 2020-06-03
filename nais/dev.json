@@ -1,9 +1,6 @@
 {
   "ingresses": [
-    "https://klage-dittnav.dev-gcp.nais.io",
-    "https://klage-dittnav.dev-adeo.no",
-    "https://klage-dittnav.dev-nav.no",
-    "https://klage-dittnav.dev-gcp.navlabs.no"
+    "https://klage-dittnav.dev-gcp.nais.io"
   ],
   "env": {
     "REACT_APP_URL": "https://klage-dittnav.dev-gcp.nais.io",
