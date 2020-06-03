@@ -2,7 +2,7 @@
 import Environment from '../utils/environment';
 
 const loginUrl = Environment.REACT_APP_LOGINSERVICE_URL;
-const baseApiUrl = Environment.REACT_APP_URL;
+const baseApiUrl = Environment.REACT_APP_API_URL;
 const baseAppUrl = Environment.REACT_APP_URL;
 
 export const getUserDataUrl = (): string => `${baseApiUrl}/bruker`;
