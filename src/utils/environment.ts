@@ -9,7 +9,7 @@ export default class Environment {
     static REACT_APP_API_URL: string;
     static REACT_APP_LOGINSERVICE_URL: string;
 
-    static settEnv = (result: InboundEnvironment) => {
+    static setEnv = (result: InboundEnvironment) => {
         Environment.REACT_APP_URL = result.appUrl;
         Environment.REACT_APP_LOGINSERVICE_URL = result.loginserviceUrl;
         Environment.REACT_APP_API_URL = result.apiUrl;

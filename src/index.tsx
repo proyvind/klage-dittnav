@@ -36,7 +36,7 @@ const init = async () => {
 
     await fetchEnv()
         .then((env) => {
-            Environment.settEnv(env);
+            Environment.setEnv(env);
         })
         .catch((e) => {
             console.error(e);
