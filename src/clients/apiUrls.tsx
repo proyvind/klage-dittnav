@@ -1,5 +1,5 @@
 // const port = process.env.REACT_APP_API_PORT || 3001;
-import Environment from "../utils/environment";
+import Environment from '../utils/environment';
 
 const loginUrl = Environment.REACT_APP_LOGINSERVICE_URL;
 const baseApiUrl = Environment.REACT_APP_URL;

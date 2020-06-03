@@ -18,6 +18,6 @@ export default class Environment {
 
 export const fetchEnv = () =>
     fetch(`/config`, {
-        method: "GET",
-        credentials: "include",
-    }).then((result) => result.json());
+        method: 'GET',
+        credentials: 'include'
+    }).then(result => result.json());
