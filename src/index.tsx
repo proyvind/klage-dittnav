@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { footer, header, scripts, styles } from './mock-api/get/decorator';
 import { setupMock } from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
+import Environment, {fetchEnv} from "./utils/environment";
 
 const store = configureStore();
 
@@ -32,6 +33,14 @@ const init = async () => {
     if (mockEnabled) {
         setupMock();
     }
+
+    await fetchEnv()
+        .then((env) => {
+            Environment.setEnv(env);
+        })
+        .catch((e) => {
+            console.error(e);
+        });
 
     ReactDOM.render(
         <React.StrictMode>

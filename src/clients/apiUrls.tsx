@@ -1,23 +1,24 @@
 // const port = process.env.REACT_APP_API_PORT || 3001;
-const loginUrl = process.env.REACT_APP_LOGINSERVICE_URL;
+import Environment from '../utils/environment';
 
-// const baseUrlTest = `http://localhost:${port}`;
-const baseUrl = `https://klage-dittnav-api.dev-gcp.nais.io`;
+const loginUrl = Environment.REACT_APP_LOGINSERVICE_URL;
+const baseApiUrl = Environment.REACT_APP_URL;
+const baseAppUrl = Environment.REACT_APP_URL;
 
-export const getUserDataUrl = (): string => `${baseUrl}/bruker`;
+export const getUserDataUrl = (): string => `${baseApiUrl}/bruker`;
 
-export const getKlagerUrl = (): string => `${baseUrl}/klager`;
+export const getKlagerUrl = (): string => `${baseApiUrl}/klager`;
 
-export const getTemaerUrl = (): string => `${baseUrl}/temaer`;
+export const getTemaerUrl = (): string => `${baseApiUrl}/temaer`;
 
-export const getKlageByIdUrl = (id: number): string => `${baseUrl}/klager/${id}`;
+export const getKlageByIdUrl = (id: number): string => `${baseApiUrl}/klager/${id}`;
 
-export const getKlagerByKlageIdUrl = (id: number): string => `${baseUrl}/klager/klageid/${id}`;
+export const getKlagerByKlageIdUrl = (id: number): string => `${baseApiUrl}/klager/klageid/${id}`;
 
-export const getKlagerByFnrUrl = (fnr: string): string => `${baseUrl}/klager/fnr/${fnr}`;
+export const getKlagerByFnrUrl = (fnr: string): string => `${baseApiUrl}/klager/fnr/${fnr}`;
 
-export const getAddKlageUrl = (): string => `${baseUrl}/klager`;
+export const getAddKlageUrl = (): string => `${baseApiUrl}/klager`;
 
-export const getLoginserviceRedirectUrl = (): string => `${loginUrl}?redirect=${baseUrl}`;
+export const getLoginserviceRedirectUrl = (): string => `${loginUrl}?redirect=${baseAppUrl}`;
 
-export const getVedtakUrl = (): string => `${baseUrl}/vedtak`;
+export const getVedtakUrl = (): string => `${baseApiUrl}/vedtak`;
