@@ -1,24 +1,20 @@
 // const port = process.env.REACT_APP_API_PORT || 3001;
 import Environment from '../utils/environment';
 
-const loginUrl = Environment.REACT_APP_LOGINSERVICE_URL;
-const baseApiUrl = Environment.REACT_APP_API_URL;
-const baseAppUrl = Environment.REACT_APP_URL;
+export const getUserDataUrl = (): string => `${Environment.REACT_APP_API_URL}/bruker`;
 
-export const getUserDataUrl = (): string => `${baseApiUrl}/bruker`;
+export const getKlagerUrl = (): string => `${Environment.REACT_APP_API_URL}/klager`;
 
-export const getKlagerUrl = (): string => `${baseApiUrl}/klager`;
+export const getTemaerUrl = (): string => `${Environment.REACT_APP_API_URL}/temaer`;
 
-export const getTemaerUrl = (): string => `${baseApiUrl}/temaer`;
+export const getKlageByIdUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/${id}`;
 
-export const getKlageByIdUrl = (id: number): string => `${baseApiUrl}/klager/${id}`;
+export const getKlagerByKlageIdUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/klageid/${id}`;
 
-export const getKlagerByKlageIdUrl = (id: number): string => `${baseApiUrl}/klager/klageid/${id}`;
+export const getKlagerByFnrUrl = (fnr: string): string => `${Environment.REACT_APP_API_URL}/klager/fnr/${fnr}`;
 
-export const getKlagerByFnrUrl = (fnr: string): string => `${baseApiUrl}/klager/fnr/${fnr}`;
+export const getAddKlageUrl = (): string => `${Environment.REACT_APP_API_URL}/klager`;
 
-export const getAddKlageUrl = (): string => `${baseApiUrl}/klager`;
+export const getLoginserviceRedirectUrl = (): string => `${Environment.REACT_APP_LOGINSERVICE_URL}?redirect=${Environment.REACT_APP_URL}`;
 
-export const getLoginserviceRedirectUrl = (): string => `${loginUrl}?redirect=${baseAppUrl}`;
-
-export const getVedtakUrl = (): string => `${baseApiUrl}/vedtak`;
+export const getVedtakUrl = (): string => `${Environment.REACT_APP_API_URL}/vedtak`;
