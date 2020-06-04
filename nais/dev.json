@@ -5,7 +5,7 @@
   ],
   "env": {
     "REACT_APP_URL": "https://klage-dittnav.dev-nav.no",
-    "REACT_API_URL": "https://klage-dittnav-api.dev-gcp.nais.io",
+    "REACT_API_URL": "https://klage-dittnav-api.dev-nav.no",
     "REACT_APP_LOGINSERVICE_URL": "https://loginservice.dev-nav.no/login",
     "MOCK_ENABLED": false
   }
