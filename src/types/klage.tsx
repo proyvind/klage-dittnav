@@ -22,7 +22,7 @@ export interface Klage {
 
 export const constructKlage = (person: Bruker, vedtak: Vedtak, begrunnelse: string, draft: boolean): Klage => {
     const klage: Klage = {
-        foedselsnummer: person.foedselsnummer,
+        foedselsnummer: person.folkeregisteridentifikator?.identifikasjonsnummer || 'ukjent',
         fritekst: begrunnelse,
         status: draft ? KlageStatus.DRAFT : KlageStatus.DONE,
         tema: vedtak.tema,

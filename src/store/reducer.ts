@@ -12,8 +12,6 @@ export const initialState: Store = {
     loading: true,
 
     person: {
-        id: '',
-        foedselsnummer: '',
         navn: {
             fornavn: '',
             etternavn: ''
@@ -22,6 +20,10 @@ export const initialState: Store = {
             adressenavn: '',
             postnummer: '',
             poststed: ''
+        },
+        folkeregisteridentifikator: {
+            type: '',
+            identifikasjonsnummer: ''
         }
     }
 };
