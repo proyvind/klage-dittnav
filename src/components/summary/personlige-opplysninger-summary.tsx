@@ -7,7 +7,7 @@ import InformationPointBox from '../general/information-point-box';
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
     { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn}</Normaltekst> },
     { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn}</Normaltekst> },
-    { displayName: 'Fødselsnummer', content: (person: Bruker) => <Normaltekst>{person.id}</Normaltekst> },
+    { displayName: 'Fødselsnummer', content: (person: Bruker) => <Normaltekst>{person.folkeregisteridentifikator?.identifikasjonsnummer}</Normaltekst> },
     {
         displayName: 'Telefonnummer',
         content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer}</Normaltekst>

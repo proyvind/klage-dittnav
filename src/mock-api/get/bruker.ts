@@ -1,8 +1,6 @@
 import { Bruker } from '../../types/bruker';
 
 export const okPerson: Bruker = {
-    id: '123456789',
-    foedselsnummer: '32432',
     navn: {
         fornavn: 'Ola',
         etternavn: 'Nordmann'
@@ -16,5 +14,9 @@ export const okPerson: Bruker = {
     kontaktinformasjon: {
         epost: 'ola@norge.no',
         telefonnummer: '+4710101010'
+    },
+    folkeregisteridentifikator: {
+        type: 'FNR',
+        identifikasjonsnummer: '12345678910'
     }
 };
