@@ -1,9 +1,13 @@
 export interface Bruker {
-    id?: string;
-    foedselsnummer: string;
     navn: Navn;
     adresse: Adresse;
     kontaktinformasjon?: Kontaktinformasjon;
+    folkeregisteridentifikator?: Identifikator;
+}
+
+export interface Identifikator {
+    type: string;
+    identifikasjonsnummer: string;
 }
 
 export interface Navn {
