@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import { footer, header, scripts, styles } from './mock-api/get/decorator';
-import { setupMock, setupMockPerson } from './mock-api/setup-mock';
+import {Provider} from 'react-redux';
+import {footer, header, scripts, styles} from './mock-api/get/decorator';
+import {setupMock, setupMockPerson} from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
-import Environment, {fetchEnv} from "./utils/environment";
+import Environment, {fetchEnv, isLocalhost} from "./utils/environment";
 
 const store = configureStore();
 
@@ -35,22 +35,31 @@ const init = async () => {
         }
     }
 
+    if (isLocalhost && process.env.NODE_ENV === 'development') {
+        console.log(process.env)
+        Environment.setEnv({
+            'appUrl': process.env.REACT_APP_URL!,
+            'loginserviceUrl': process.env.REACT_APP_LOGINSERVICE_URL!,
+            'apiUrl': 'http://localhost:7070'
+        })
+    } else {
+        await fetchEnv()
+            .then((env) => {
+                Environment.setEnv(env);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    }
+
     if (mockPersonEnabled) {
         setupMockPerson();
     }
 
-    await fetchEnv()
-        .then((env) => {
-            Environment.setEnv(env);
-        })
-        .catch((e) => {
-            console.error(e);
-        });
-
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App />
+                <App/>
             </Provider>
         </React.StrictMode>,
         document.getElementById('root')
