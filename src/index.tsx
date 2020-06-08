@@ -12,7 +12,7 @@ import Environment, {fetchEnv, isLocalhost} from "./utils/environment";
 const store = configureStore();
 
 const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
-const mockPersonEnabled = true;
+const mockPersonEnabled = process.env.REACT_APP_MOCK_USER === 'true';
 
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
@@ -40,7 +40,7 @@ const init = async () => {
         Environment.setEnv({
             'appUrl': process.env.REACT_APP_URL!,
             'loginserviceUrl': process.env.REACT_APP_LOGINSERVICE_URL!,
-            'apiUrl': 'http://localhost:7070'
+            'apiUrl': process.env.REACT_APP_API_URL!
         })
     } else {
         await fetchEnv()
