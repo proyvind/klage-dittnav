@@ -5,13 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { footer, header, scripts, styles } from './mock-api/get/decorator';
-import { setupMock } from './mock-api/setup-mock';
+import { setupMock, setupMockPerson } from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
 import Environment, {fetchEnv} from "./utils/environment";
 
 const store = configureStore();
 
-const mockEnabled = process.env.NODE_ENV === 'development' || process.env.MOCK_ENABLED === 'true';
+const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
+const mockPersonEnabled = true;
 
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
@@ -27,11 +28,15 @@ const init = async () => {
         let script = document.createElement('script');
         script.src = 'https://www.nav.no/dekoratoren/client.js';
         document.body.appendChild(script);
+    } else {
+        // If not i develop mode, but still want to run mock
+        if (mockEnabled) {
+            setupMock();
+        }
     }
 
-    // If not i develop mode, but still want to run mock
-    if (mockEnabled) {
-        setupMock();
+    if (mockPersonEnabled) {
+        setupMockPerson();
     }
 
     await fetchEnv()

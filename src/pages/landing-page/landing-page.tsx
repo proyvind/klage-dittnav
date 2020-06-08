@@ -7,7 +7,7 @@ import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import IkkeValgtVedtakForm from './ikke-valgt-vedtak-form';
 import ValgtVedtakForm from './valgt-vedtak-form';
-import { getVedtak } from '../../services/klageService';
+import { getVedtak, postKlage } from '../../services/klageService';
 import { Klage } from '../../types/klage';
 
 const instanceOfVedtak = (element: any): boolean => {
@@ -75,9 +75,9 @@ const LandingPage = (props: any) => {
         setActiveStep(activeStep + 1);
     };
 
-    const submitKlageDraft = (klage: Klage) => {
-        // TODO
-        console.log('FINALLY HERE!!!', klage);
+    const submitKlage = (klage: Klage) => {
+        // Submit form as DRAFT
+        return postKlage(klage);
     };
 
     if (!loading) {
@@ -88,14 +88,14 @@ const LandingPage = (props: any) => {
                         person={person}
                         foundVedtak={foundVedtak}
                         next={() => next()}
-                        submitKlageDraft={(klage: Klage) => submitKlageDraft(klage)}
+                        submitKlage={(klage: Klage) => submitKlage(klage)}
                     />
                 )}
                 {chosenVedtak && (
                     <ValgtVedtakForm
                         person={person}
                         vedtak={chosenVedtak}
-                        submitKlageDraft={(klage: Klage) => submitKlageDraft(klage)}
+                        submitKlage={(klage: Klage) => submitKlage(klage)}
                     />
                 )}
             </div>

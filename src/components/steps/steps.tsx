@@ -11,8 +11,10 @@ const Steps = (props: any) => {
             steg={activeRoutes.map((route, i) => ({
                 index: i,
                 label: route.label,
-                aktiv: props.activeStep === i
+                aktiv: props.activeStep === i,
+                disabled: route.label === 'Oppsummering'
             }))}
+            onChange={step => props.chooseStep(step)}
             visLabel
         />
     );

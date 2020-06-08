@@ -8,6 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import VedleggSummary from '../../components/summary/vedlegg-summary';
 
 const OppsummeringSkjemaPage = (props: any) => {
     return (
@@ -15,22 +16,22 @@ const OppsummeringSkjemaPage = (props: any) => {
             <MarginContentContainer>
                 <Systemtittel>Personlige opplysninger</Systemtittel>
             </MarginContentContainer>
-
             <PersonligeOpplysningerSummary person={props.person} />
+
             <MarginContentContainer>
                 <Systemtittel>Opplysninger fra vedtaket du klager på</Systemtittel>
             </MarginContentContainer>
-
             <VedtakSummary vedtak={props.vedtak} />
+
             <MarginContentContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
             </MarginContentContainer>
-
             <Normaltekst>{props.begrunnelse}</Normaltekst>
+
             <MarginContentContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
-                {/* TODO */}
             </MarginContentContainer>
+            <VedleggSummary vedlegg={props.vedlegg} />
 
             <MarginContentContainer>
                 <CenteredContentContainer>

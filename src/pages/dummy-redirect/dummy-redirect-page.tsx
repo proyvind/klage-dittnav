@@ -1,5 +1,5 @@
 import React from 'react';
-import {Element} from "nav-frontend-typografi";
+import { Element } from 'nav-frontend-typografi';
 
 const DummyRedirectPage = () => (
     <>

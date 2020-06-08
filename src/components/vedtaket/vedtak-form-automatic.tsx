@@ -8,7 +8,9 @@ import { formatDate } from '../../utils/date-util';
 import Lenke from 'nav-frontend-lenker';
 
 const VedtakFormAutomatic = (props: any) => {
-    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(props.foundVedtak[0] || null);
+    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(
+        props.activeVedtak?.tittel ? props.activeVedtak : props.foundVedtak ? props.foundVedtak[0] : new Vedtak()
+    );
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
@@ -17,7 +19,11 @@ const VedtakFormAutomatic = (props: any) => {
 
     return (
         <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
-            <Select label="Vedtak:" onChange={e => setActiveVedtak(props.foundVedtak[e.target.value])}>
+            <Select
+                label="Vedtak:"
+                value={props.foundVedtak?.indexOf(activeVedtak)}
+                onChange={e => setActiveVedtak(props.foundVedtak[e.target.value])}
+            >
                 {props.foundVedtak.map((vedtak: any, index: number) => (
                     <option value={index} key={index}>
                         {vedtak.tittel}

@@ -31,7 +31,6 @@ interface Props {
 }
 
 const VedtakSummary = (props: Props) => {
-    console.log('pto: ', props.vedtak);
     return (
         <FlexRowContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {

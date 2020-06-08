@@ -7,7 +7,6 @@ import { RouteType, routesStepsValgtVedtak } from '../../utils/routes.config';
 import Steps from '../../components/steps/steps';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 import { constructKlage } from '../../types/klage';
-import { postKlage } from '../../services/klageService';
 
 const ValgtVedtakForm = (props: any) => {
     const [activeStep, setActiveStep] = useState<number>(0);
@@ -20,26 +19,23 @@ const ValgtVedtakForm = (props: any) => {
         setActiveStep(activeStep + 1);
     };
 
-    const setBegrunnelse = async (begrunnelse: string) => {
-        console.log('submitted begrunnelse!', begrunnelse);
+    const submitBegrunnelse = async (begrunnelse: string) => {
         setActiveBegrunnelse(begrunnelse);
-        await submitDraft();
-        setActiveStep(activeStep + 1);
+        submitDraft().then((res: any) => {
+            setActiveStep(activeStep + 1);
+            return res;
+        });
     };
 
     const submitDraft = () => {
         // Submit form as DRAFT
         let klage = constructKlage(props.person, props.vedtak, activeBegrunnelse, true);
-        postKlage(klage).then(e => {
-            console.log('e: ', e);
-        });
+        return props.submitKlage(klage);
     };
 
     const submitForm = () => {
         let klage = constructKlage(props.person, props.vedtak, activeBegrunnelse, false);
-        postKlage(klage).then(e => {
-            console.log('e: ', e);
-        });
+        props.submitKlage(klage);
     };
 
     return (
@@ -58,7 +54,7 @@ const ValgtVedtakForm = (props: any) => {
                 )}
                 {activeStep === 1 && (
                     <BegrunnelsePage
-                        submitBegrunnelse={(activeBegrunnelse: string) => setBegrunnelse(activeBegrunnelse)}
+                        submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
                     />
                 )}
                 {activeStep === 2 && (

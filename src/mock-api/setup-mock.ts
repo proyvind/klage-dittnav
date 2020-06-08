@@ -9,9 +9,6 @@ import { okVedtak } from './get/vedtak';
 import { TEMAER } from './get/temaer';
 
 const STATUS_OK = () => 200;
-// const STATUS_BAD_REQUEST = () => 400;
-
-const MOCK_DATA = process.env.MOCK_DATA || true;
 
 const loggingMiddleware: Middleware = (request, response) => {
     return response;
@@ -70,17 +67,25 @@ function setupPostKlage(mock: FetchMock) {
     ); // Returns the object as the json-response
 }
 
-export function setupMock() {
-    if (MOCK_DATA) {
-        const mock = FetchMock.configure({
-            enableFallback: true, // default: true
-            middleware: loggingMiddleware // default: (req, resp) => resp
-        });
+function setup() {
+    const mock = FetchMock.configure({
+        enableFallback: true, // default: true
+        middleware: loggingMiddleware // default: (req, resp) => resp
+    });
+    return mock;
+}
 
-        setupGetPerson(mock);
-        setupGetKlager(mock);
-        setupGetVedtak(mock);
-        setupPostKlage(mock);
-        setupGetTemaer(mock);
-    }
+export function setupMockPerson() {
+    const mock = setup();
+    setupGetPerson(mock);
+    setupGetVedtak(mock);
+}
+
+export function setupMock() {
+    const mock = setup();
+    setupGetPerson(mock);
+    setupGetKlager(mock);
+    setupGetVedtak(mock);
+    setupPostKlage(mock);
+    setupGetTemaer(mock);
 }

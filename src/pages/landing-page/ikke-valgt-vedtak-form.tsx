@@ -9,12 +9,13 @@ import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 import { constructKlage } from '../../types/klage';
-import { postKlage } from '../../services/klageService';
+import { addVedleggToKlage } from '../../services/fileService';
 
 const IkkeValgtVedtakForm = (props: any) => {
     const [activeStep, setActiveStep] = useState<number>(props.activeStep || 0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
+    const [activeVedlegg, setActiveVedlegg] = useState<File[]>([]);
 
     let activeRoutes: RouteType[] = routesStepsIkkeValgtVedtak;
     let activeRoute: RouteType = activeRoutes[activeStep];
@@ -23,36 +24,46 @@ const IkkeValgtVedtakForm = (props: any) => {
         setActiveStep(activeStep + 1);
     };
 
-    const setVedtak = (activeVedtak: Vedtak) => {
-        setActiveVedtak(activeVedtak);
-        setActiveStep(activeStep + 1);
+    const chooseStep = (step: number) => {
+        setActiveStep(step);
     };
 
-    const setBegrunnelse = async (begrunnelse: string) => {
-        setActiveBegrunnelse(begrunnelse);
-        await submitDraft();
+    const setVedtak = (activeVedtak: Vedtak) => {
+        setActiveVedtak(activeVedtak);
         setActiveStep(activeStep + 1);
     };
 
     const submitDraft = () => {
         // Submit form as DRAFT
         let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, true);
-        postKlage(klage).then(e => {
-            console.log('e: ', e);
+        return props.submitKlage(klage);
+    };
+
+    const submitBegrunnelse = async (begrunnelse: string) => {
+        setActiveBegrunnelse(begrunnelse);
+        submitDraft().then((res: any) => {
+            return res;
         });
+        setActiveStep(activeStep + 1);
+    };
+
+    const submitVedlegg = (id: number, vedlegg: File[]) => {
+        setActiveVedlegg(vedlegg);
+        addVedleggToKlage(id, activeVedlegg).then((res: any) => {
+            setActiveStep(activeStep + 1);
+        });
+        setActiveStep(activeStep + 1);
     };
 
     const submitForm = () => {
         let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, false);
-        postKlage(klage).then(e => {
-            console.log('e: ', e);
-        });
+        props.submitKlage(klage);
     };
 
     return (
         <>
             <MarginContentContainer>
-                <Steps activeRoutes={activeRoutes} activeStep={activeStep} />
+                <Steps activeRoutes={activeRoutes} activeStep={activeStep} chooseStep={chooseStep} />
             </MarginContentContainer>
             <MarginContentContainer>
                 <CenteredContentContainer>
@@ -64,18 +75,22 @@ const IkkeValgtVedtakForm = (props: any) => {
                 {activeStep === 1 && (
                     <VedtaketPage
                         foundVedtak={props.foundVedtak}
+                        activeVedtak={activeVedtak}
                         submitVedtak={(activeVedtak: Vedtak) => setVedtak(activeVedtak)}
                     />
                 )}
                 {activeStep === 2 && (
                     <BegrunnelsePage
-                        submitBegrunnelse={(activeBegrunnelse: string) => setBegrunnelse(activeBegrunnelse)}
+                        activeBegrunnelse={activeBegrunnelse}
+                        submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
+                        submitVedlegg={(id: number, vedlegg: File[]) => submitVedlegg(id, vedlegg)}
                     />
                 )}
                 {activeStep === 3 && (
                     <OppsummeringSkjemaPage
                         person={props.person}
                         vedtak={activeVedtak}
+                        vedlegg={activeVedlegg}
                         begrunnelse={activeBegrunnelse}
                         submitForm={() => submitForm()}
                     />
