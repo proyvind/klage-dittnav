@@ -25,8 +25,12 @@ const VedtakFormManual = (props: any) => {
 
     useEffect(() => {
         const getData = async () => {
-            let TEMAER = await getTemaer();
-
+            let TEMAER = [];
+            try {
+                TEMAER = await getTemaer();
+            } catch (e) {
+                console.log('error: ', e);
+            }
             setTemaer(TEMAER);
             if (Object.keys(TEMAER)[0]) {
                 updateVedtak('tema', Object.keys(TEMAER)[0]);
