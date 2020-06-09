@@ -14,6 +14,8 @@ const store = configureStore();
 const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 const mockPersonEnabled = process.env.REACT_APP_MOCK_USER === 'true';
 
+console.log(mockEnabled, mockPersonEnabled);
+
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
         // Mock decorator
