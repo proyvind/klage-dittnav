@@ -3,16 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {Provider} from 'react-redux';
-import {footer, header, scripts, styles} from './mock-api/get/decorator';
-import {setupMock, setupMockPerson} from './mock-api/setup-mock';
+import { Provider } from 'react-redux';
+import { footer, header, scripts, styles } from './mock-api/get/decorator';
+import { setupMock } from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
-import Environment, {fetchEnv, isLocalhost} from "./utils/environment";
+import Environment, { fetchEnv, isLocalhost } from './utils/environment';
 
 const store = configureStore();
 
 const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
-const mockPersonEnabled = process.env.REACT_APP_MOCK_USER === 'true';
 
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
@@ -28,38 +27,32 @@ const init = async () => {
         let script = document.createElement('script');
         script.src = 'https://www.nav.no/dekoratoren/client.js';
         document.body.appendChild(script);
-    } else {
-        // If not i develop mode, but still want to run mock
-        if (mockEnabled) {
-            setupMock();
-        }
+    }
+    // If not i develop mode, but still want to run mock
+    if (mockEnabled) {
+        setupMock();
     }
 
     if (isLocalhost && process.env.NODE_ENV === 'development') {
-        console.log(process.env)
         Environment.setEnv({
-            'appUrl': process.env.REACT_APP_URL!,
-            'loginserviceUrl': process.env.REACT_APP_LOGINSERVICE_URL!,
-            'apiUrl': process.env.REACT_APP_API_URL!
-        })
+            appUrl: process.env.REACT_APP_URL!,
+            loginserviceUrl: process.env.REACT_APP_LOGINSERVICE_URL!,
+            apiUrl: process.env.REACT_APP_API_URL!
+        });
     } else {
         await fetchEnv()
-            .then((env) => {
+            .then(env => {
                 Environment.setEnv(env);
             })
-            .catch((e) => {
+            .catch(e => {
                 console.error(e);
             });
-    }
-
-    if (mockPersonEnabled) {
-        setupMockPerson();
     }
 
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <App/>
+                <App />
             </Provider>
         </React.StrictMode>,
         document.getElementById('root')
