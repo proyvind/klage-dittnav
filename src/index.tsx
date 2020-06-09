@@ -13,8 +13,6 @@ const store = configureStore();
 
 const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 
-console.log(mockEnabled, mockPersonEnabled);
-
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
         // Mock decorator
@@ -41,6 +39,7 @@ const init = async () => {
             loginserviceUrl: process.env.REACT_APP_LOGINSERVICE_URL!,
             apiUrl: process.env.REACT_APP_API_URL!
         });
+        console.log("Local env")
     } else {
         await fetchEnv()
             .then(env => {
