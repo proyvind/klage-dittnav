@@ -9,13 +9,13 @@ const VedtaketPage = (props: any) => {
         setOptToFillOutManually(true);
     };
 
-    if (props.foundVedtak?.length === 0 || optToFillOutManually) {
+    if (props.availableVedtak?.length === 0 || optToFillOutManually) {
         return <VedtakFormManual submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)} />;
     }
 
     return (
         <VedtakFormAutomatic
-            foundVedtak={props.foundVedtak}
+            availableVedtak={props.availableVedtak}
             showManualForm={() => showManualForm()}
             activeVedtak={props.activeVedtak}
             submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)}

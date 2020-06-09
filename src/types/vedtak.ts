@@ -1,5 +1,5 @@
 export class Vedtak {
-    tittel?: string;
+    tittel?: string = '';
     vedtaksdato: Date = new Date();
     tema: string = '';
     enhet: string = '';

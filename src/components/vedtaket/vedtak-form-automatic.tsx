@@ -6,10 +6,15 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
 import { formatDate } from '../../utils/date-util';
 import Lenke from 'nav-frontend-lenker';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const VedtakFormAutomatic = (props: any) => {
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(
-        props.activeVedtak?.tittel ? props.activeVedtak : props.foundVedtak ? props.foundVedtak[0] : new Vedtak()
+        props.activeVedtak?.tittel
+            ? props.activeVedtak
+            : props.availableVedtak
+            ? props.availableVedtak[0]
+            : new Vedtak()
     );
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
@@ -19,17 +24,21 @@ const VedtakFormAutomatic = (props: any) => {
 
     return (
         <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
-            <Select
-                label="Vedtak:"
-                value={props.foundVedtak?.indexOf(activeVedtak)}
-                onChange={e => setActiveVedtak(props.foundVedtak[e.target.value])}
-            >
-                {props.foundVedtak.map((vedtak: any, index: number) => (
-                    <option value={index} key={index}>
-                        {vedtak.tittel}
-                    </option>
-                ))}
-            </Select>
+            {props.availableVedtak ? (
+                <Select
+                    label="Vedtak:"
+                    value={props.availableVedtak?.indexOf(activeVedtak)}
+                    onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
+                >
+                    {props.availableVedtak.map((vedtak: any, index: number) => (
+                        <option value={index} key={index}>
+                            {vedtak.tittel}
+                        </option>
+                    ))}
+                </Select>
+            ) : (
+                <Normaltekst>Ingen vedtak funnet</Normaltekst>
+            )}
 
             <MarginContentContainer>
                 <Lenke href="#" onClick={() => props.showManualForm()}>
