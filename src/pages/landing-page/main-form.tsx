@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
-import PersonligeOpplysningerPage from '../personlige-opplysninger/personlige-opplysninger-page';
 import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import VedtaketPage from '../vedtaket/vedtaket-page';
-import { RouteType, routesStepsIkkeValgtVedtak } from '../../utils/routes.config';
+import { routesStepsIkkeValgtVedtak, routesStepsValgtVedtak, FormStep } from '../../utils/routes.config';
 import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
 import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
-import { constructKlage } from '../../types/klage';
+import { constructKlage, Klage } from '../../types/klage';
 import { addVedleggToKlage } from '../../services/fileService';
+import { Bruker } from '../../types/bruker';
 
-const IkkeValgtVedtakForm = (props: any) => {
-    const [activeStep, setActiveStep] = useState<number>(props.activeStep || 0);
+interface Props {
+    person: Bruker;
+    availableVedtak: Vedtak[];
+    next(): any;
+    chosenVedtak?: Vedtak;
+    submitKlage(klage: Klage): any;
+}
+
+const MainForm = (props: Props) => {
+    const [activeStep, setActiveStep] = useState<number>(0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
     const [activeVedlegg, setActiveVedlegg] = useState<File[]>([]);
 
-    let activeRoutes: RouteType[] = routesStepsIkkeValgtVedtak;
-    let activeRoute: RouteType = activeRoutes[activeStep];
-
-    const next = () => {
-        setActiveStep(activeStep + 1);
-    };
+    let activeRoutes: FormStep[] = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
+    let activeRoute: FormStep = activeRoutes[activeStep];
 
     const chooseStep = (step: number) => {
         setActiveStep(step);
@@ -71,25 +75,25 @@ const IkkeValgtVedtakForm = (props: any) => {
                         <Systemtittel>{activeRoute.label}</Systemtittel>
                     </MarginContentContainer>
                 </CenteredContentContainer>
-                {activeStep === 0 && <PersonligeOpplysningerPage next={() => next()} />}
-                {activeStep === 1 && (
+                {activeRoute.label === 'Vedtaket' && (
                     <VedtaketPage
-                        foundVedtak={props.foundVedtak}
+                        availableVedtak={props.availableVedtak}
                         activeVedtak={activeVedtak}
                         submitVedtak={(activeVedtak: Vedtak) => setVedtak(activeVedtak)}
                     />
                 )}
-                {activeStep === 2 && (
+                {activeRoute.label === 'Begrunnelse' && (
                     <BegrunnelsePage
                         activeBegrunnelse={activeBegrunnelse}
+                        activeVedlegg={activeVedlegg}
                         submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
                         submitVedlegg={(id: number, vedlegg: File[]) => submitVedlegg(id, vedlegg)}
                     />
                 )}
-                {activeStep === 3 && (
+                {activeRoute.label === 'Oppsummering' && (
                     <OppsummeringSkjemaPage
                         person={props.person}
-                        vedtak={activeVedtak}
+                        vedtak={props.chosenVedtak ?? activeVedtak}
                         vedlegg={activeVedlegg}
                         begrunnelse={activeBegrunnelse}
                         submitForm={() => submitForm()}
@@ -100,4 +104,4 @@ const IkkeValgtVedtakForm = (props: any) => {
     );
 };
 
-export default IkkeValgtVedtakForm;
+export default MainForm;

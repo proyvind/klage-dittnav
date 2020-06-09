@@ -1,6 +1,5 @@
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import LandingPage from '../pages/landing-page/landing-page';
-import VedtakSummaryPage from '../pages/vedtak-summary/vedtak-summary-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 
@@ -13,23 +12,25 @@ export type RouteType = {
     exact: boolean;
 };
 
-export const routesStepsValgtVedtak: RouteType[] = [
+export type FormStep = {
+    step?: number;
+    path: string;
+    component?: any;
+    label: string;
+    redirect?: string;
+    exact: boolean;
+};
+
+export const routesStepsValgtVedtak: FormStep[] = [
     {
         step: 0,
-        path: `/vedtak-oppsummert`,
-        component: VedtakSummaryPage,
-        label: 'Oppsummering vedtak',
-        exact: true
-    },
-    {
-        step: 1,
         path: `/begrunnelse`,
         component: BegrunnelsePage,
         label: 'Begrunnelse',
         exact: true
     },
     {
-        step: 2,
+        step: 1,
         path: `/oppsummering`,
         component: OppsummeringSkjemaPage,
         label: 'Oppsummering',
@@ -37,30 +38,23 @@ export const routesStepsValgtVedtak: RouteType[] = [
     }
 ];
 
-export const routesStepsIkkeValgtVedtak: RouteType[] = [
+export const routesStepsIkkeValgtVedtak: FormStep[] = [
     {
         step: 0,
-        path: `/opplysninger`,
-        component: LandingPage,
-        label: 'Opplysninger',
-        exact: true
-    },
-    {
-        step: 1,
         path: `/vedtaket`,
         component: LandingPage,
         label: 'Vedtaket',
         exact: true
     },
     {
-        step: 2,
+        step: 1,
         path: `/begrunnelse`,
         component: LandingPage,
         label: 'Begrunnelse',
         exact: true
     },
     {
-        step: 3,
+        step: 2,
         path: `/oppsummering`,
         component: OppsummeringSkjemaPage,
         label: 'Oppsummering',

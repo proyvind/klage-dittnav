@@ -9,8 +9,18 @@ import {
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
+import { Bruker } from '../../types/bruker';
+import { Vedtak } from '../../types/vedtak';
 
-const OppsummeringSkjemaPage = (props: any) => {
+interface Props {
+    person: Bruker;
+    vedtak: Vedtak;
+    begrunnelse: string;
+    vedlegg: File[];
+    submitForm(): any;
+}
+
+const OppsummeringSkjemaPage = (props: Props) => {
     return (
         <ContentContainer>
             <MarginContentContainer>

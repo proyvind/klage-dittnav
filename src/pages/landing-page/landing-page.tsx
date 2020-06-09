@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import IkkeValgtVedtakForm from './ikke-valgt-vedtak-form';
-import ValgtVedtakForm from './valgt-vedtak-form';
 import { getVedtak, postKlage } from '../../services/klageService';
 import { Klage } from '../../types/klage';
+import MainForm from './main-form';
 
 const instanceOfVedtak = (element: any): boolean => {
     return (
@@ -23,7 +22,7 @@ const instanceOfVedtak = (element: any): boolean => {
 const elementAsVedtak = (element: any): Vedtak => {
     let chosenVedtak: Vedtak = {
         tittel: element?.tittel,
-        vedtaksdato: element?.vedtaksdato,
+        vedtaksdato: new Date(element?.vedtaksdato) ?? new Date(),
         tema: element?.tema,
         enhet: element?.enhet,
         NAV_referanse: element?.NAV_referanse
@@ -35,7 +34,7 @@ const LandingPage = (props: any) => {
     const dispatch = useDispatch();
     const { loading, person } = useSelector((state: Store) => state);
 
-    const [foundVedtak, setFoundVedtak] = useState<Vedtak[]>();
+    const [availableVedtak, setAvailableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
     const [activeStep, setActiveStep] = useState<number>(props.activeStep || 0);
 
@@ -44,15 +43,11 @@ const LandingPage = (props: any) => {
     }, [dispatch]);
 
     useEffect(() => {
-        const setVedtak = () => {
+        if (props.location.search !== '') {
             let query = queryString.parse(props.location.search);
             if (instanceOfVedtak(query)) {
                 setChosenVedtak(getChosenVedtak(query));
             }
-        };
-
-        if (props.location.search !== '') {
-            setVedtak();
         } else {
             getData();
         }
@@ -64,7 +59,7 @@ const LandingPage = (props: any) => {
 
     const getData = async () => {
         const FOUND_VEDTAK = await getVedtak();
-        setFoundVedtak(FOUND_VEDTAK);
+        setAvailableVedtak(FOUND_VEDTAK);
     };
 
     const getChosenVedtak = (query: any): Vedtak => {
@@ -77,27 +72,20 @@ const LandingPage = (props: any) => {
 
     const submitKlage = (klage: Klage) => {
         // Submit form as DRAFT
+        console.log('Skal sende inn ', klage);
         return postKlage(klage);
     };
 
     if (!loading) {
         return (
             <div>
-                {!chosenVedtak && (
-                    <IkkeValgtVedtakForm
-                        person={person}
-                        foundVedtak={foundVedtak}
-                        next={() => next()}
-                        submitKlage={(klage: Klage) => submitKlage(klage)}
-                    />
-                )}
-                {chosenVedtak && (
-                    <ValgtVedtakForm
-                        person={person}
-                        vedtak={chosenVedtak}
-                        submitKlage={(klage: Klage) => submitKlage(klage)}
-                    />
-                )}
+                <MainForm
+                    person={person}
+                    availableVedtak={availableVedtak}
+                    next={() => next()}
+                    chosenVedtak={chosenVedtak}
+                    submitKlage={(klage: Klage) => submitKlage(klage)}
+                />
             </div>
         );
     } else {
