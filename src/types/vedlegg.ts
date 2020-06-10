@@ -12,12 +12,13 @@ export interface VedleggResponse {
 }
 
 export enum VEDLEGG_STATUS {
-    OK, ERROR
+    OK,
+    ERROR
 }
 
 export interface VedleggProps {
-    status: VEDLEGG_STATUS,
-    message?: string,
-    id?: number,
-    file: File
+    status: VEDLEGG_STATUS;
+    message?: string;
+    id?: number;
+    file: File;
 }

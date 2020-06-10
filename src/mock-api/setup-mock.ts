@@ -14,7 +14,7 @@ import navfaker from 'nav-faker';
 import { okPerson } from './get/bruker';
 import { okVedtak } from './get/vedtak';
 import { TEMAER } from './get/temaer';
-import {okVedlegg} from "./get/vedlegg";
+import { okVedlegg } from './get/vedlegg';
 
 const STATUS_OK = () => 200;
 
