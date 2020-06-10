@@ -1,7 +1,7 @@
 import React from 'react';
 import Veileder from 'nav-frontend-veileder';
 
-type Props = { tekst: string; posisjon: 'flytende' | 'topp' | 'høyre' | 'bunn' | 'venstre' };
+type Props = { tekst: React.ReactNode | HTMLElement; posisjon: 'flytende' | 'topp' | 'høyre' | 'bunn' | 'venstre' };
 
 const VeilederInfo = (props: Props) => {
     return (

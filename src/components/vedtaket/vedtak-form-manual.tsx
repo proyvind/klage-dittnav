@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Select, Input } from 'nav-frontend-skjema';
 import { Vedtak } from '../../types/vedtak';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { getTemaer } from '../../services/klageService';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -69,26 +69,24 @@ const VedtakFormManual = (props: any) => {
                     ))}
                 </Select>
 
-                <MarginContentContainer>
+                <MarginContainer>
                     <DayPickerInput
                         value={activeVedtak.vedtaksdato}
                         onDayChange={date => updateVedtak('vedtaksdato', date)}
                     />
-                </MarginContentContainer>
+                </MarginContainer>
 
-                <MarginContentContainer>
+                <MarginContainer>
                     <Input
                         name="NAV_referanse"
                         label="NAVs referanse:"
                         onChange={e => updateVedtak(e.target.name, e.target.value)}
                     />
-                </MarginContentContainer>
+                </MarginContainer>
 
-                <MarginContentContainer>
-                    <CenteredContentContainer>
-                        <Hovedknapp>Gå videre</Hovedknapp>
-                    </CenteredContentContainer>
-                </MarginContentContainer>
+                <MarginContainer>
+                    <Hovedknapp>Gå videre</Hovedknapp>
+                </MarginContainer>
             </form>
         );
     } else {

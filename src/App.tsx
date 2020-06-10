@@ -6,7 +6,7 @@ import PageTitle from './components/klage-frontpage/pageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { Store } from './store/reducer';
 import { checkAuth } from './store/actions';
-import { MarginContentContainer } from './styled-components/main-styled-components';
+import { MarginContainer } from './styled-components/main-styled-components';
 import NotFoundPage from './pages/not-found/not-found-page';
 
 const Layout = (props: any) => {
@@ -35,14 +35,14 @@ const App = () => {
     return (
         <Router>
             <Layout>
-                <MarginContentContainer>
+                <MarginContainer>
                     <Switch>
                         {routesConfig.map(route => {
                             return <Route key={route.path} {...route} />;
                         })}
                         <Route component={NotFoundPage} />
                     </Switch>
-                </MarginContentContainer>
+                </MarginContainer>
             </Layout>
         </Router>
     );

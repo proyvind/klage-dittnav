@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { checkAuth } from '../../store/actions';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 const PersonligeOpplysningerPage = (props: any) => {
@@ -22,11 +22,9 @@ const PersonligeOpplysningerPage = (props: any) => {
     return (
         <>
             <PersonligeOpplysningerSummary person={person} />
-            <MarginContentContainer>
-                <CenteredContentContainer>
-                    <Hovedknapp onClick={() => props.next()}>Gå videre</Hovedknapp>
-                </CenteredContentContainer>
-            </MarginContentContainer>
+            <MarginContainer>
+                <Hovedknapp onClick={() => props.next()}>Gå videre</Hovedknapp>
+            </MarginContainer>
         </>
     );
 };

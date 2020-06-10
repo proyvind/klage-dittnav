@@ -3,7 +3,7 @@ import { Select } from 'nav-frontend-skjema';
 import InformationPointBox from '../general/information-point-box';
 import { Vedtak } from '../../types/vedtak';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer } from '../../styled-components/main-styled-components';
 import { formatDate } from '../../utils/date-util';
 import Lenke from 'nav-frontend-lenker';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -26,7 +26,7 @@ const VedtakFormAutomatic = (props: any) => {
         <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
             {props.availableVedtak ? (
                 <Select
-                    label="Vedtak:"
+                    label="Velg sak:"
                     value={props.availableVedtak?.indexOf(activeVedtak)}
                     onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
                 >
@@ -40,35 +40,33 @@ const VedtakFormAutomatic = (props: any) => {
                 <Normaltekst>Ingen vedtak funnet</Normaltekst>
             )}
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <Lenke href="#" onClick={() => props.showManualForm()}>
                     Finner du ikke vedtaket du vil klage på? Send klage her
                 </Lenke>
-            </MarginContentContainer>
+            </MarginContainer>
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <InformationPointBox
                     header="NAV-enheten som har behandlet saken"
                     info={activeVedtak?.enhet || 'Velg vedtak over'}
                 />
-            </MarginContentContainer>
+            </MarginContainer>
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <InformationPointBox header="NAV-referanse" info={activeVedtak?.NAV_referanse || 'Velg vedtak over'} />
-            </MarginContentContainer>
+            </MarginContainer>
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <InformationPointBox
                     header="Vedteksdato"
                     info={formatDate(activeVedtak?.vedtaksdato) || 'Velg vedtak over'}
                 />
-            </MarginContentContainer>
+            </MarginContainer>
 
-            <MarginContentContainer>
-                <CenteredContentContainer>
-                    <Hovedknapp>Gå videre</Hovedknapp>
-                </CenteredContentContainer>
-            </MarginContentContainer>
+            <MarginContainer>
+                <Hovedknapp>Gå videre</Hovedknapp>
+            </MarginContainer>
         </form>
     );
 };

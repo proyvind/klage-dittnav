@@ -43,7 +43,7 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
         step: 0,
         path: `/vedtaket`,
         component: LandingPage,
-        label: 'Vedtaket',
+        label: 'Vedtak',
         exact: true
     },
     {

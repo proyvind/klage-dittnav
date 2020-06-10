@@ -1,11 +1,7 @@
 import React from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
-import {
-    ContentContainer,
-    CenteredContentContainer,
-    MarginContentContainer
-} from '../../styled-components/main-styled-components';
+import { ContentContainer, MarginContainer } from '../../styled-components/main-styled-components';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
@@ -23,31 +19,29 @@ interface Props {
 const OppsummeringSkjemaPage = (props: Props) => {
     return (
         <ContentContainer>
-            <MarginContentContainer>
+            <MarginContainer>
                 <Systemtittel>Personlige opplysninger</Systemtittel>
-            </MarginContentContainer>
+            </MarginContainer>
             <PersonligeOpplysningerSummary person={props.person} />
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <Systemtittel>Opplysninger fra vedtaket du klager på</Systemtittel>
-            </MarginContentContainer>
+            </MarginContainer>
             <VedtakSummary vedtak={props.vedtak} />
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
-            </MarginContentContainer>
+            </MarginContainer>
             <Normaltekst>{props.begrunnelse}</Normaltekst>
 
-            <MarginContentContainer>
+            <MarginContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
-            </MarginContentContainer>
+            </MarginContainer>
             <VedleggSummary vedlegg={props.vedlegg} />
 
-            <MarginContentContainer>
-                <CenteredContentContainer>
-                    <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
-                </CenteredContentContainer>
-            </MarginContentContainer>
+            <MarginContainer>
+                <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
+            </MarginContainer>
         </ContentContainer>
     );
 };

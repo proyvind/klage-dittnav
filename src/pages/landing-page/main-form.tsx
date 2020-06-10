@@ -3,7 +3,7 @@ import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import VedtaketPage from '../vedtaket/vedtaket-page';
 import { routesStepsIkkeValgtVedtak, routesStepsValgtVedtak, FormStep } from '../../utils/routes.config';
-import { MarginContentContainer, CenteredContentContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer, ContentContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
@@ -65,17 +65,17 @@ const MainForm = (props: Props) => {
     };
 
     return (
-        <>
-            <MarginContentContainer>
+        <ContentContainer>
+            <MarginContainer>
                 <Steps activeRoutes={activeRoutes} activeStep={activeStep} chooseStep={chooseStep} />
-            </MarginContentContainer>
-            <MarginContentContainer>
-                <CenteredContentContainer>
-                    <MarginContentContainer>
+            </MarginContainer>
+            <MarginContainer>
+                <CenteredContainer>
+                    <MarginContainer>
                         <Systemtittel>{activeRoute.label}</Systemtittel>
-                    </MarginContentContainer>
-                </CenteredContentContainer>
-                {activeRoute.label === 'Vedtaket' && (
+                    </MarginContainer>
+                </CenteredContainer>
+                {activeRoute.label === 'Vedtak' && (
                     <VedtaketPage
                         availableVedtak={props.availableVedtak}
                         activeVedtak={activeVedtak}
@@ -99,8 +99,8 @@ const MainForm = (props: Props) => {
                         submitForm={() => submitForm()}
                     />
                 )}
-            </MarginContentContainer>
-        </>
+            </MarginContainer>
+        </ContentContainer>
     );
 };
 

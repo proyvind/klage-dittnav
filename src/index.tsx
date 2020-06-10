@@ -39,7 +39,7 @@ const init = async () => {
             loginserviceUrl: process.env.REACT_APP_LOGINSERVICE_URL!,
             apiUrl: process.env.REACT_APP_API_URL!
         });
-        console.log("Local env")
+        console.log('Local env');
     } else {
         await fetchEnv()
             .then(env => {
