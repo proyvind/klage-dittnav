@@ -30,7 +30,7 @@ const VedleggVisning = (props: Props) => {
         <>
             <Normaltekst>{props.vedlegg.file.name}</Normaltekst>
             <Normaltekst>{props.vedlegg.message}</Normaltekst>
-            <a href={''} onClick={() => deleteVedlegg(props.vedlegg.id)} />
+            <a href={''} onClick={() => deleteVedlegg(props.vedlegg.id)}>Delete</a>
         </>
     );
 }
