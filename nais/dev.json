@@ -7,7 +7,6 @@
     "REACT_APP_URL": "https://klage-dittnav.dev-nav.no",
     "REACT_API_URL": "https://klage-dittnav-api.dev-nav.no",
     "REACT_APP_LOGINSERVICE_URL": "https://loginservice.dev-nav.no/login",
-    "MOCK_ENABLED": false,
-    "REACT_APP_MOCK_USER": false
+    "REACT_APP_MOCK_DATA": false
   }
 }

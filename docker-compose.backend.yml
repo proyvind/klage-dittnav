@@ -10,8 +10,8 @@ services:
       INLINE_RUNTIME_CHUNK: "false"
       REACT_APP_URL: http://localhost:8080
       REACT_APP_LOGINSERVICE_URL: https://loginservice.dev-nav.no/login
-      REACT_APP_API_URL: http://localhost:7070
+#      REACT_API_URL: https://klage-dittnav-api.dev-nav.no
+      REACT_API_URL: http://localhost:7070
       REACT_APP_API_PORT: 7070
       REACT_APP_DECORATOR_URL: https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true&skiplinks=true&megamenu-resources=true
       REACT_APP_MOCK_DATA: "false"
-      REACT_APP_MOCK_USER: "false"
