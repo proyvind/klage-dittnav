@@ -21,3 +21,6 @@ export const getLoginserviceRedirectUrl = (): string =>
 export const getVedtakUrl = (): string => `${Environment.REACT_APP_API_URL}/vedtak`;
 
 export const getAddVedleggUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/${id}/vedlegg`;
+
+export const getDeleteVedleggUrl = (klageId: number, vedleggId: number): string =>
+    `${Environment.REACT_APP_API_URL}/klager/${klageId}/vedlegg/${vedleggId}`;

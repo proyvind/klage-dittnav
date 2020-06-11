@@ -1,5 +1,12 @@
 import FetchMock, { Middleware } from 'yet-another-fetch-mock';
-import { getKlagerUrl, getAddKlageUrl, getUserDataUrl, getVedtakUrl, getTemaerUrl } from '../clients/apiUrls';
+import {
+    getKlagerUrl,
+    getAddKlageUrl,
+    getUserDataUrl,
+    getVedtakUrl,
+    getTemaerUrl,
+    getAddVedleggUrl
+} from '../clients/apiUrls';
 import { KLAGER } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
@@ -7,6 +14,7 @@ import navfaker from 'nav-faker';
 import { okPerson } from './get/bruker';
 import { okVedtak } from './get/vedtak';
 import { TEMAER } from './get/temaer';
+import { okVedlegg } from './get/vedlegg';
 
 const STATUS_OK = () => 200;
 
@@ -67,6 +75,13 @@ function setupPostKlage(mock: FetchMock) {
     ); // Returns the object as the json-response
 }
 
+function setupPostVedlegg(mock: FetchMock) {
+    mock.post(
+        getAddVedleggUrl(1),
+        withDelayedResponse(randomDelay(), STATUS_OK, () => okVedlegg)
+    );
+}
+
 function setup() {
     const mock = FetchMock.configure({
         enableFallback: true, // default: true
@@ -88,4 +103,5 @@ export function setupMock() {
     setupGetVedtak(mock);
     setupPostKlage(mock);
     setupGetTemaer(mock);
+    setupPostVedlegg(mock);
 }

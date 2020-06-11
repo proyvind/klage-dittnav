@@ -6,7 +6,6 @@ const BegrunnelsePage = (props: any) => (
         activeBegrunnelse={props.activeBegrunnelse}
         activeVedlegg={props.activeVedlegg}
         submitBegrunnelse={(activeBegrunnelse: string) => props.submitBegrunnelse(activeBegrunnelse)}
-        submitVedlegg={(id: number, vedlegg: File[]) => props.submitVedlegg(id, vedlegg)}
     />
 );
 

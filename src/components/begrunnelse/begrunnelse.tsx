@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useReducer} from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import VeilederInfo from '../general/veileder-info';
 import { MarginContainer, ContainedContent } from '../../styled-components/main-styled-components';
@@ -7,6 +7,12 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import godt_bilde_guide from '../../assets/images/godt_bilde_guide.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { getAddVedleggUrl } from "../../clients/apiUrls";
+import {VEDLEGG_STATUS, VedleggProps} from "../../types/vedlegg";
+import VedleggVisning from "./vedlegg";
+
+const ACTION_ADD = 'add';
+const ACTION_REMOVE = 'remove';
 
 const veilederText = (
     <>
@@ -26,7 +32,17 @@ const ekspanderbartPanelTittel = (
 
 const Begrunnelse = (props: any) => {
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
-    const [activeVedlegg, setActiveVedlegg] = useState<File[]>(props.activeVedlegg ?? []);
+    const [activeVedlegg, dispatch] = useReducer((activeVedlegg: VedleggProps[], {type, value}: any) => {
+        switch (type) {
+            case ACTION_ADD:
+                return [...activeVedlegg, value];
+            case ACTION_REMOVE:
+                const vIndex = activeVedlegg.indexOf(value);
+                return activeVedlegg.filter((_: any, index: number) => index !== vIndex);
+            default:
+                return activeVedlegg;
+        }
+    }, []);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -42,25 +58,40 @@ const Begrunnelse = (props: any) => {
 
     const uploadAttachment = (event: any) => {
         event.preventDefault();
-        setActiveVedlegg(event.target.files);
+        for(let key of Object.keys(event.target.files)) {
+            if (key !== 'length') {
+                const formData = new FormData();
+                const vedlegg = event.target.files[key];
+                formData.append('tittel', vedlegg.name);
+                formData.append('content', vedlegg);
+
+                fetch(getAddVedleggUrl(1), {
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    console.log(response);
+                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.OK, file: vedlegg}})
+                }).catch(err => {
+                    console.log(err);
+                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg}})
+                })
+            }
+        }
     };
+
+    const removeAttachment = (vedlegg: VedleggProps) => {
+        dispatch({type: ACTION_REMOVE, value: vedlegg});
+    }
 
     const submitBegrunnelse = () => {
         return props.submitBegrunnelse(activeBegrunnelse);
     };
 
-    const submitVedlegg = (id: number) => {
-        props.submitVedlegg(id, activeVedlegg);
-        // addVedleggToKlage(id, activeVedlegg);
-    };
-
     const submitVedleggOgBegrunnelse = (event: any) => {
         event.preventDefault();
-        submitVedlegg(1);
+        // submitVedlegg(1); TODO: Remove call and rename method, upload is done
         submitBegrunnelse().then((res: any) => {
-            // TODO
             console.log('do something with ', res);
-            // submitVedlegg(activeVedlegg);
         });
     };
 
@@ -86,11 +117,7 @@ const Begrunnelse = (props: any) => {
                 </Ekspanderbartpanel>
             </MarginContainer>
 
-            <div>
-                {Array.from(activeVedlegg).map((vedlegg: File, index: number) => (
-                    <div key={index}>{vedlegg.name}</div>
-                ))}
-            </div>
+            <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
 
             <MarginContainer>
                 <Knapp onClick={e => handleClick(e)}>Last opp nytt vedlegg</Knapp>
