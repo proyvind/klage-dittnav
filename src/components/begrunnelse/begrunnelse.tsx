@@ -11,6 +11,9 @@ import { getAddVedleggUrl } from "../../clients/apiUrls";
 import {VEDLEGG_STATUS, VedleggProps} from "../../types/vedlegg";
 import VedleggVisning from "./vedlegg";
 
+const ACTION_ADD = 'add';
+const ACTION_REMOVE = 'remove';
+
 const veilederText = (
     <>
         <Normaltekst>All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din.</Normaltekst>
@@ -31,10 +34,11 @@ const Begrunnelse = (props: any) => {
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
     const [activeVedlegg, dispatch] = useReducer((activeVedlegg: VedleggProps[], {type, value}: any) => {
         switch (type) {
-            case "add":
+            case ACTION_ADD:
                 return [...activeVedlegg, value];
-            case "remove":
-                return activeVedlegg.filter((_: any, index: number) => index !== value);
+            case ACTION_REMOVE:
+                const vIndex = activeVedlegg.indexOf(value);
+                return activeVedlegg.filter((_: any, index: number) => index !== vIndex);
             default:
                 return activeVedlegg;
         }
@@ -66,17 +70,17 @@ const Begrunnelse = (props: any) => {
                     body: formData
                 }).then(response => {
                     console.log(response);
-                    dispatch({type: 'add', value: {status: VEDLEGG_STATUS.OK, file: vedlegg}})
+                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.OK, file: vedlegg}})
                 }).catch(err => {
                     console.log(err);
-                    dispatch({type: 'add', value: {status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg}})
+                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg}})
                 })
             }
         }
     };
 
     const removeAttachment = (vedlegg: VedleggProps) => {
-        dispatch({type: 'remove', value: vedlegg});
+        dispatch({type: ACTION_REMOVE, value: vedlegg});
     }
 
     const submitBegrunnelse = () => {
@@ -87,9 +91,7 @@ const Begrunnelse = (props: any) => {
         event.preventDefault();
         // submitVedlegg(1); TODO: Remove call and rename method, upload is done
         submitBegrunnelse().then((res: any) => {
-            // TODO
             console.log('do something with ', res);
-            // submitVedlegg(activeVedlegg);
         });
     };
 
@@ -115,11 +117,7 @@ const Begrunnelse = (props: any) => {
                 </Ekspanderbartpanel>
             </MarginContainer>
 
-            <div>
-                {Array.from(activeVedlegg).map((vedlegg: VedleggProps, index: number) => (
-                    <VedleggVisning key={index} vedlegg={vedlegg} deleteAction={() => removeAttachment(vedlegg)} />
-                ))}
-            </div>
+            <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
 
             <MarginContainer>
                 <Knapp onClick={e => handleClick(e)}>Last opp nytt vedlegg</Knapp>
