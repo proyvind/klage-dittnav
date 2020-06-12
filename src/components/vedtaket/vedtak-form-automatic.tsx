@@ -22,20 +22,31 @@ const VedtakFormAutomatic = (props: any) => {
         props.submitVedtak(activeVedtak);
     };
 
+    const existsOnlyOneVedtak = () => {
+        return props.availableVedtak.length === 1;
+    };
+
     return (
         <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
             {props.availableVedtak ? (
-                <Select
-                    label="Velg sak:"
-                    value={props.availableVedtak?.indexOf(activeVedtak)}
-                    onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
-                >
-                    {props.availableVedtak.map((vedtak: any, index: number) => (
-                        <option value={index} key={index}>
-                            {vedtak.tittel}
-                        </option>
-                    ))}
-                </Select>
+                existsOnlyOneVedtak() ? (
+                    <InformationPointBox
+                        header="Følgende sak er registert på deg:"
+                        info={props.availableVedtak[0].tittel}
+                    />
+                ) : (
+                    <Select
+                        label="Velg sak:"
+                        value={props.availableVedtak?.indexOf(activeVedtak)}
+                        onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
+                    >
+                        {props.availableVedtak.map((vedtak: any, index: number) => (
+                            <option value={index} key={index}>
+                                {vedtak.tittel}
+                            </option>
+                        ))}
+                    </Select>
+                )
             ) : (
                 <Normaltekst>Ingen vedtak funnet</Normaltekst>
             )}
