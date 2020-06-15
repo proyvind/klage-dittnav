@@ -1,9 +1,9 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
-import styled from 'styled-components';
 import InformationPointBox from '../general/information-point-box';
 import { Vedtak } from '../../types/vedtak';
 import { formatDate } from '../../utils/date-util';
+import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
     { displayName: 'Tittel', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.tittel || ''}</Normaltekst> },
@@ -16,23 +16,13 @@ const VEDTAK_OPPLYSNINGER_POINTS = [
     { displayName: 'NAV-referanse', content: (vedtak: Vedtak) => <Normaltekst>{vedtak.NAV_referanse}</Normaltekst> }
 ];
 
-const FlexRowContainer = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    > div {
-        flex-basis: 40%;
-        margin-bottom: 20px;
-    }
-`;
-
 interface Props {
     vedtak: Vedtak;
 }
 
 const VedtakSummary = (props: Props) => {
     return (
-        <FlexRowContainer>
+        <PointsFlexListContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
                 return (
                     <InformationPointBox
@@ -42,7 +32,7 @@ const VedtakSummary = (props: Props) => {
                     />
                 );
             })}
-        </FlexRowContainer>
+        </PointsFlexListContainer>
     );
 };
 
