@@ -1,21 +1,21 @@
-import {Dispatch} from 'react';
-import {getLoginserviceRedirectUrl, getUserDataUrl} from '../clients/apiUrls';
-import {Klage} from "../types/klage";
-import {postKlage, putKlage} from "../services/klageService";
-import {response} from "express";
+import { Dispatch } from 'react';
+import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
+import { Klage } from '../types/klage';
+import { postKlage, putKlage } from '../services/klageService';
+import { response } from 'express';
 
 export type ActionTypes =
     | {
-    type: 'CHECK_AUTH_ERROR';
-}
+          type: 'CHECK_AUTH_ERROR';
+      }
     | {
-    type: 'CHECK_AUTH_SUCCESS';
-    payload: any;
-}
+          type: 'CHECK_AUTH_SUCCESS';
+          payload: any;
+      }
     | {
-    type: 'KLAGE_POST_SUCCESS';
-    payload: Klage;
-};
+          type: 'KLAGE_POST_SUCCESS';
+          payload: Klage;
+      };
 
 export function checkAuth() {
     return function (dispatch: Dispatch<ActionTypes>) {
@@ -27,11 +27,11 @@ export function checkAuth() {
             .then(sjekkHttpFeil)
             .then(response => response.json())
             .then(json => {
-                dispatch({type: 'CHECK_AUTH_SUCCESS', payload: json});
+                dispatch({ type: 'CHECK_AUTH_SUCCESS', payload: json });
             })
             .catch(error => {
                 if (error !== 401 && error !== 403) {
-                    dispatch({type: 'CHECK_AUTH_ERROR'});
+                    dispatch({ type: 'CHECK_AUTH_ERROR' });
                     console.error(error);
                 }
             });
@@ -43,24 +43,24 @@ export function postNewKlage(klage: Klage) {
         return postKlage(klage)
             .then(response => {
                 console.log(response);
-                dispatch({type: "KLAGE_POST_SUCCESS", payload: response})
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
             })
             .catch(err => {
                 console.log(err);
             });
-    }
+    };
 }
 
 export function updateKlage(klage: Klage) {
     return function (dispatch: Dispatch<ActionTypes>) {
         putKlage(klage)
             .then(response => {
-                dispatch({type: "KLAGE_POST_SUCCESS", payload: response})
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
             })
             .catch(err => {
                 console.log(err);
             });
-    }
+    };
 }
 
 const sjekkAuth = (response: Response): any => {

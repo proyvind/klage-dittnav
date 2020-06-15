@@ -1,6 +1,6 @@
 import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
-import {Klage} from "../types/klage";
+import { Klage } from '../types/klage';
 
 export interface Store {
     loading: boolean;
@@ -55,7 +55,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 activeKlage: action.payload
-            }
+            };
     }
     return state;
 };
