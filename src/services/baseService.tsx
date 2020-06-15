@@ -1,33 +1,31 @@
-import { logApiError, logEvent } from '../utils/logger';
+import {logApiError, logEvent} from '../utils/logger';
+import axios from 'axios';
 
 const getOptions = {
-    method: 'GET'
+    withCredentials: true
 };
 
 const postOptions = {
-    method: 'POST',
+    withCredentials: true,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
-    },
-    body: ''
+    }
 };
 
 const vedleggPostOptions = {
-    method: 'POST',
+    withCredentials: true,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/formdata'
-    },
-    body: ''
+    }
 };
 
 export async function get(resource: string) {
-    logEvent({ resource });
-    let response = await fetch(resource, getOptions);
+    logEvent({resource});
+    let response = await axios.get(resource, getOptions)
     try {
-        let data = await response.json();
-        return data;
+        return await response.data;
     } catch (error) {
         logApiError(resource, error);
         throw error;
@@ -35,10 +33,8 @@ export async function get(resource: string) {
 }
 
 export async function post(resource: string, item: any) {
-    logEvent({ resource });
-    postOptions.body = JSON.stringify(item);
-
-    let response = await fetch(resource, postOptions);
+    logEvent({resource});
+    let response = await axios.post(resource, JSON.stringify(item), postOptions);
     try {
         let res = await response;
         return res;
@@ -49,11 +45,8 @@ export async function post(resource: string, item: any) {
 }
 
 export async function postVedlegg(resource: string, vedlegg: any) {
-    logEvent({ resource });
-    vedleggPostOptions.body = vedlegg;
-
-    let response = await fetch(resource, vedleggPostOptions);
-
+    logEvent({resource});
+    let response = await axios.post(resource, vedlegg, vedleggPostOptions);
     try {
         let res = await response;
         return res;
