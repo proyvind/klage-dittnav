@@ -3,8 +3,7 @@ import { Select } from 'nav-frontend-skjema';
 import InformationPointBox from '../general/information-point-box';
 import { Vedtak } from '../../types/vedtak';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { MarginContainer } from '../../styled-components/main-styled-components';
-import { formatDate } from '../../utils/date-util';
+import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { Normaltekst } from 'nav-frontend-typografi';
 
@@ -58,25 +57,9 @@ const VedtakFormAutomatic = (props: any) => {
             </MarginContainer>
 
             <MarginContainer>
-                <InformationPointBox
-                    header="NAV-enheten som har behandlet saken"
-                    info={activeVedtak?.enhet || 'Velg vedtak over'}
-                />
-            </MarginContainer>
-
-            <MarginContainer>
-                <InformationPointBox header="NAV-referanse" info={activeVedtak?.NAV_referanse || 'Velg vedtak over'} />
-            </MarginContainer>
-
-            <MarginContainer>
-                <InformationPointBox
-                    header="Vedteksdato"
-                    info={formatDate(activeVedtak?.vedtaksdato) || 'Velg vedtak over'}
-                />
-            </MarginContainer>
-
-            <MarginContainer>
-                <Hovedknapp>Gå videre</Hovedknapp>
+                <CenteredContainer>
+                    <Hovedknapp>Gå videre</Hovedknapp>
+                </CenteredContainer>
             </MarginContainer>
         </form>
     );

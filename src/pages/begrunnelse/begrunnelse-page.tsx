@@ -6,6 +6,7 @@ const BegrunnelsePage = (props: any) => (
         activeBegrunnelse={props.activeBegrunnelse}
         activeVedlegg={props.activeVedlegg}
         submitBegrunnelse={(activeBegrunnelse: string) => props.submitBegrunnelse(activeBegrunnelse)}
+        previous={() => props.previous()}
     />
 );
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useReducer, useEffect } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import VeilederInfo from '../general/veileder-info';
-import { MarginContainer, ContainedContent } from '../../styled-components/main-styled-components';
+import { MarginContainer, ContainedContent, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import godt_bilde_guide from '../../assets/images/godt_bilde_guide.svg';
@@ -143,7 +143,14 @@ const Begrunnelse = (props: any) => {
             </MarginContainer>
 
             <MarginContainer>
-                <Hovedknapp>Gå videre</Hovedknapp>
+                <CenteredContainer>
+                    <Hovedknapp>Gå videre</Hovedknapp>
+                </CenteredContainer>
+            </MarginContainer>
+            <MarginContainer>
+                <CenteredContainer>
+                    <Knapp onClick={() => props.previous()}>Tilbake</Knapp>
+                </CenteredContainer>
             </MarginContainer>
         </form>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
 import { ReactNode } from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 
 const InformationPointBox = (props: { header: string; info: ReactNode }) => {
     return (
         <div>
             <Element>{props.header}</Element>
-            <Normaltekst>{props.info}</Normaltekst>
+            {props.info}
         </div>
     );
 };
