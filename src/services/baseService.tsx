@@ -1,5 +1,6 @@
 import {logApiError, logEvent} from '../utils/logger';
 import axios from 'axios';
+import {Klage} from "../types/klage";
 
 const getOptions = {
     withCredentials: true
@@ -32,19 +33,31 @@ export async function get(resource: string) {
     }
 }
 
-export async function post(resource: string, item: any) {
+export async function postKlage(resource: string, item: Klage): Promise<Klage> {
     logEvent({resource});
     let response = await axios.post(resource, JSON.stringify(item), postOptions);
     try {
         let res = await response;
-        return res;
+        return res.data;
     } catch (error) {
         logApiError(resource, error);
         throw error;
     }
 }
 
-export async function postVedlegg(resource: string, vedlegg: any) {
+export async function putKlage(resource: string, item: Klage): Promise<Klage> {
+    logEvent({resource});
+    let response = await axios.put(resource, JSON.stringify(item), postOptions);
+    try {
+        let res = await response;
+        return res.data;
+    } catch (error) {
+        logApiError(resource, error);
+        throw error;
+    }
+}
+
+export async function postVedlegg(resource: string, vedlegg: FormData) {
     logEvent({resource});
     let response = await axios.post(resource, vedlegg, vedleggPostOptions);
     try {

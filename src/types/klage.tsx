@@ -10,9 +10,7 @@ export enum KlageStatus {
 
 export interface Klage {
     id?: number;
-    foedselsnummer: string;
     fritekst: string;
-    status: KlageStatus;
     tema: string;
     enhetId?: string;
     vedtaksdato: Date;
@@ -20,11 +18,9 @@ export interface Klage {
     vedlegg?: Vedlegg[];
 }
 
-export const constructKlage = (person: Bruker, vedtak: Vedtak, begrunnelse: string, draft: boolean): Klage => {
+export const constructKlage = (vedtak: Vedtak, begrunnelse?: string): Klage => {
     const klage: Klage = {
-        foedselsnummer: person.folkeregisteridentifikator?.identifikasjonsnummer || 'ukjent',
-        fritekst: begrunnelse,
-        status: draft ? KlageStatus.DRAFT : KlageStatus.DONE,
+        fritekst: begrunnelse ?? '',
         tema: vedtak.tema,
         enhetId: vedtak.enhet,
         vedtaksdato: vedtak.vedtaksdato,
