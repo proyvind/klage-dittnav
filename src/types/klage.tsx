@@ -1,5 +1,4 @@
 import { Vedlegg } from './vedlegg';
-import { Bruker } from './bruker';
 import { Vedtak } from './vedtak';
 
 export enum KlageStatus {
