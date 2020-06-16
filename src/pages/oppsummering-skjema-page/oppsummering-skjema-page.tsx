@@ -1,7 +1,7 @@
 import React from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
-import { ContentContainer, MarginContainer } from '../../styled-components/main-styled-components';
+import { ContentContainer, MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
@@ -32,7 +32,7 @@ const OppsummeringSkjemaPage = (props: Props) => {
             <MarginContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
             </MarginContainer>
-            <Normaltekst>{props.begrunnelse}</Normaltekst>
+            <Normaltekst>{props.begrunnelse ?? ''}</Normaltekst>
 
             <MarginContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
@@ -40,7 +40,9 @@ const OppsummeringSkjemaPage = (props: Props) => {
             <VedleggSummary vedlegg={props.vedlegg} />
 
             <MarginContainer>
-                <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
+                <CenteredContainer>
+                    <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
+                </CenteredContainer>
             </MarginContainer>
         </ContentContainer>
     );

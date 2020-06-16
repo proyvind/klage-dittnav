@@ -49,3 +49,20 @@ export const ContainedContent = styled.div`
         max-width: 100%;
     }
 `;
+
+export const FlexContainer = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+`;
+
+export const FlexCenteredContainer = styled(FlexContainer)`
+    justify-content: center;
+`;
+
+export const PointsFlexListContainer = styled(FlexContainer)`
+    justify-content: space-between;
+    > div {
+        flex-basis: 40%;
+        margin-bottom: 20px;
+    }
+`;

@@ -1,34 +1,24 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
-import styled from 'styled-components';
 import { Bruker, Adresse, displayAddress, displayPoststed } from '../../types/bruker';
 import InformationPointBox from '../general/information-point-box';
+import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn}</Normaltekst> },
-    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn}</Normaltekst> },
+    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn ?? ''}</Normaltekst> },
+    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn ?? ''}</Normaltekst> },
     {
         displayName: 'Fødselsnummer',
         content: (person: Bruker) => (
-            <Normaltekst>{person.folkeregisteridentifikator?.identifikasjonsnummer}</Normaltekst>
+            <Normaltekst>{person.folkeregisteridentifikator?.identifikasjonsnummer ?? ''}</Normaltekst>
         )
     },
     {
         displayName: 'Telefonnummer',
-        content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer}</Normaltekst>
+        content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
     },
-    { displayName: 'Adresse', content: (person: Bruker) => <AdressPointBox adress={person.adresse} /> }
+    { displayName: 'Adresse', content: (person: Bruker) => <AdressPointBox adress={person.adresse ?? ''} /> }
 ];
-
-const FlexRowContainer = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    > div {
-        flex-basis: 40%;
-        margin-bottom: 20px;
-    }
-`;
 
 const AdressPointBox = ({ adress }: { adress: Adresse }) => (
     <div>
@@ -44,7 +34,7 @@ interface Props {
 const PersonligeOpplysningerSummary = (props: Props) => {
     return (
         <>
-            <FlexRowContainer>
+            <PointsFlexListContainer>
                 {PERSONLIGE_OPPLYSNINGER_POINTS.map(point => {
                     return (
                         <InformationPointBox
@@ -54,7 +44,7 @@ const PersonligeOpplysningerSummary = (props: Props) => {
                         />
                     );
                 })}
-            </FlexRowContainer>
+            </PointsFlexListContainer>
         </>
     );
 };

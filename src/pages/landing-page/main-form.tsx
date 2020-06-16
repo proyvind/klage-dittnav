@@ -13,7 +13,6 @@ import { Bruker } from '../../types/bruker';
 interface Props {
     person: Bruker;
     availableVedtak: Vedtak[];
-    next(): any;
     chosenVedtak?: Vedtak;
     submitKlage(klage: Klage): any;
 }
@@ -22,7 +21,9 @@ const MainForm = (props: Props) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
+    // eslint-disable-next-line
     const [activeVedlegg, setActiveVedlegg] = useState<File[]>([]);
+    const [optToFillOutManually, setOptToFillOutManually] = useState<boolean>(false);
 
     let activeRoutes: FormStep[] = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
     let activeRoute: FormStep = activeRoutes[activeStep];
@@ -31,9 +32,13 @@ const MainForm = (props: Props) => {
         setActiveStep(step);
     };
 
+    const next = () => {
+        setActiveStep(activeStep + 1);
+    };
+
     const setVedtak = (activeVedtak: Vedtak) => {
         setActiveVedtak(activeVedtak);
-        setActiveStep(activeStep + 1);
+        next();
     };
 
     const submitDraft = () => {
@@ -47,7 +52,7 @@ const MainForm = (props: Props) => {
         submitDraft().then((res: any) => {
             return res;
         });
-        setActiveStep(activeStep + 1);
+        next();
     };
 
     const submitForm = () => {
@@ -71,13 +76,17 @@ const MainForm = (props: Props) => {
                         availableVedtak={props.availableVedtak}
                         activeVedtak={activeVedtak}
                         submitVedtak={(activeVedtak: Vedtak) => setVedtak(activeVedtak)}
+                        optToFillOutManually={optToFillOutManually}
+                        setOptToFillOutManually={(b: boolean) => setOptToFillOutManually(b)}
                     />
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
                     <BegrunnelsePage
                         activeBegrunnelse={activeBegrunnelse}
                         activeVedlegg={activeVedlegg}
+                        activeVedtak={props.chosenVedtak}
                         submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
+                        next={() => next()}
                     />
                 )}
                 {activeRoute.label === 'Oppsummering' && (

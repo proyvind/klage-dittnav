@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Select, Input } from 'nav-frontend-skjema';
 import { Vedtak } from '../../types/vedtak';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { MarginContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { getTemaer } from '../../services/klageService';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -10,12 +10,15 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 const VedtakFormManual = (props: any) => {
     const mock_enheter = ['A', 'B', 'C'];
 
-    const [activeVedtak, setActiveVedtak] = useState<Vedtak>({
-        tema: '',
-        vedtaksdato: new Date(),
-        enhet: mock_enheter[0],
-        NAV_referanse: ''
-    });
+    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(
+        props.activeVedtak ?? {
+            tema: '',
+            vedtaksdato: new Date(),
+            enhet: mock_enheter[0],
+            NAV_referanse: ''
+        }
+    );
+
     const [temaer, setTemaer] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -24,22 +27,16 @@ const VedtakFormManual = (props: any) => {
     };
 
     useEffect(() => {
-        const getData = async () => {
-            let TEMAER = [];
-            try {
-                TEMAER = await getTemaer();
-            } catch (e) {
-                console.log('error: ', e);
-            }
-            setTemaer(TEMAER);
-            if (Object.keys(TEMAER)[0]) {
-                updateVedtak('tema', Object.keys(TEMAER)[0]);
-            }
-            setIsLoading(false);
-        };
-        getData();
-        // eslint-disable-next-line
-    }, []);
+        getTemaer()
+            .then(temaer => {
+                setTemaer(temaer);
+                if (Object.keys(temaer)[0]) {
+                    setActiveVedtak({ ...activeVedtak, tema: Object.keys(temaer)[0] });
+                }
+            })
+            .catch(err => {});
+        setIsLoading(false);
+    }, [activeVedtak]);
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
@@ -51,6 +48,7 @@ const VedtakFormManual = (props: any) => {
             <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
                 <Select
                     name="enhet"
+                    value={activeVedtak.enhet}
                     label="NAV-enheten som har behandlet saken din:"
                     onChange={e => updateVedtak(e.target.name, e.target.value)}
                 >
@@ -61,10 +59,15 @@ const VedtakFormManual = (props: any) => {
                     ))}
                 </Select>
 
-                <Select name="tema" label="Tema:" onChange={e => updateVedtak(e.target.name, e.target.value)}>
-                    {Object.keys(temaer).map((tema_key: any, index: number) => (
-                        <option value={tema_key} key={index}>
-                            {temaer[tema_key]}
+                <Select
+                    name="tema"
+                    value={activeVedtak.tema}
+                    label="Tema:"
+                    onChange={e => updateVedtak(e.target.name, e.target.value)}
+                >
+                    {Object.keys(temaer).map((key: string) => (
+                        <option value={key} key={key}>
+                            {key} - {temaer[key]}
                         </option>
                     ))}
                 </Select>
@@ -79,13 +82,16 @@ const VedtakFormManual = (props: any) => {
                 <MarginContainer>
                     <Input
                         name="NAV_referanse"
+                        value={activeVedtak.NAV_referanse}
                         label="NAVs referanse:"
                         onChange={e => updateVedtak(e.target.name, e.target.value)}
                     />
                 </MarginContainer>
 
                 <MarginContainer>
-                    <Hovedknapp>Gå videre</Hovedknapp>
+                    <CenteredContainer>
+                        <Hovedknapp>Gå videre</Hovedknapp>
+                    </CenteredContainer>
                 </MarginContainer>
             </form>
         );

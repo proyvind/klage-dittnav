@@ -3,8 +3,7 @@ import { Select } from 'nav-frontend-skjema';
 import InformationPointBox from '../general/information-point-box';
 import { Vedtak } from '../../types/vedtak';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { MarginContainer } from '../../styled-components/main-styled-components';
-import { formatDate } from '../../utils/date-util';
+import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { Normaltekst } from 'nav-frontend-typografi';
 
@@ -22,20 +21,31 @@ const VedtakFormAutomatic = (props: any) => {
         props.submitVedtak(activeVedtak);
     };
 
+    const existsOnlyOneVedtak = () => {
+        return props.availableVedtak.length === 1;
+    };
+
     return (
         <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
             {props.availableVedtak ? (
-                <Select
-                    label="Velg sak:"
-                    value={props.availableVedtak?.indexOf(activeVedtak)}
-                    onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
-                >
-                    {props.availableVedtak.map((vedtak: any, index: number) => (
-                        <option value={index} key={index}>
-                            {vedtak.tittel}
-                        </option>
-                    ))}
-                </Select>
+                existsOnlyOneVedtak() ? (
+                    <InformationPointBox
+                        header="Følgende sak er registert på deg:"
+                        info={props.availableVedtak[0].tittel}
+                    />
+                ) : (
+                    <Select
+                        label="Velg sak:"
+                        value={props.availableVedtak?.indexOf(activeVedtak)}
+                        onChange={e => setActiveVedtak(props.availableVedtak[e.target.value])}
+                    >
+                        {props.availableVedtak.map((vedtak: any, index: number) => (
+                            <option value={index} key={index}>
+                                {vedtak.tittel}
+                            </option>
+                        ))}
+                    </Select>
+                )
             ) : (
                 <Normaltekst>Ingen vedtak funnet</Normaltekst>
             )}
@@ -47,25 +57,9 @@ const VedtakFormAutomatic = (props: any) => {
             </MarginContainer>
 
             <MarginContainer>
-                <InformationPointBox
-                    header="NAV-enheten som har behandlet saken"
-                    info={activeVedtak?.enhet || 'Velg vedtak over'}
-                />
-            </MarginContainer>
-
-            <MarginContainer>
-                <InformationPointBox header="NAV-referanse" info={activeVedtak?.NAV_referanse || 'Velg vedtak over'} />
-            </MarginContainer>
-
-            <MarginContainer>
-                <InformationPointBox
-                    header="Vedteksdato"
-                    info={formatDate(activeVedtak?.vedtaksdato) || 'Velg vedtak over'}
-                />
-            </MarginContainer>
-
-            <MarginContainer>
-                <Hovedknapp>Gå videre</Hovedknapp>
+                <CenteredContainer>
+                    <Hovedknapp>Gå videre</Hovedknapp>
+                </CenteredContainer>
             </MarginContainer>
         </form>
     );

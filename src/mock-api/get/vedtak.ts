@@ -16,3 +16,24 @@ export const okVedtak: Vedtak[] = [
         NAV_referanse: 'Byggmester Bob'
     }
 ];
+
+export const instanceOfVedtak = (element: any): boolean => {
+    return (
+        'tittel' in element &&
+        'vedtaksdato' in element &&
+        'tema' in element &&
+        'enhet' in element &&
+        'NAV_referanse' in element
+    );
+};
+
+export const elementAsVedtak = (element: any): Vedtak => {
+    let chosenVedtak: Vedtak = {
+        tittel: element?.tittel,
+        vedtaksdato: new Date(element?.vedtaksdato) ?? new Date(),
+        tema: element?.tema,
+        enhet: element?.enhet,
+        NAV_referanse: element?.NAV_referanse
+    };
+    return chosenVedtak;
+};
