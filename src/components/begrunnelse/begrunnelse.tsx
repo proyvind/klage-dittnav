@@ -1,15 +1,18 @@
-import React, {useState, useRef, useReducer} from 'react';
+import React, { useState, useRef, useReducer, useEffect } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import VeilederInfo from '../general/veileder-info';
 import { MarginContainer, ContainedContent } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-// import { addVedleggToKlage } from '../../services/fileService';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import godt_bilde_guide from '../../assets/images/godt_bilde_guide.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { getAddVedleggUrl } from "../../clients/apiUrls";
-import {VEDLEGG_STATUS, VedleggProps} from "../../types/vedlegg";
-import VedleggVisning from "./vedlegg";
+import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
+import VedleggVisning from './vedlegg';
+import { postNewKlage, updateKlage } from '../../store/actions';
+import { constructKlage } from '../../types/klage';
+import { useSelector } from 'react-redux';
+import { Store } from '../../store/reducer';
+import { addVedleggToKlage } from '../../services/fileService';
 
 const ACTION_ADD = 'add';
 const ACTION_REMOVE = 'remove';
@@ -31,8 +34,9 @@ const ekspanderbartPanelTittel = (
 );
 
 const Begrunnelse = (props: any) => {
+    const { activeKlage } = useSelector((state: Store) => state);
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
-    const [activeVedlegg, dispatch] = useReducer((activeVedlegg: VedleggProps[], {type, value}: any) => {
+    const [activeVedlegg, dispatch] = useReducer((activeVedlegg: VedleggProps[], { type, value }: any) => {
         switch (type) {
             case ACTION_ADD:
                 return [...activeVedlegg, value];
@@ -43,6 +47,14 @@ const Begrunnelse = (props: any) => {
                 return activeVedlegg;
         }
     }, []);
+
+    const activeVedtak = props.activeVedtak;
+
+    useEffect(() => {
+        const klage = constructKlage(activeVedtak);
+        console.log('Setting ', klage);
+        postNewKlage(klage);
+    }, [activeVedtak]);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -58,45 +70,43 @@ const Begrunnelse = (props: any) => {
 
     const uploadAttachment = (event: any) => {
         event.preventDefault();
-        for(let key of Object.keys(event.target.files)) {
+        for (let key of Object.keys(event.target.files)) {
             if (key !== 'length') {
                 const formData = new FormData();
                 const vedlegg = event.target.files[key];
                 formData.append('tittel', vedlegg.name);
                 formData.append('content', vedlegg);
 
-                fetch(getAddVedleggUrl(1), {
-                    method: 'POST',
-                    body: formData
-                }).then(response => {
-                    console.log(response);
-                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.OK, file: vedlegg}})
-                }).catch(err => {
-                    console.log(err);
-                    dispatch({type: ACTION_ADD, value: {status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg}})
-                })
+                addVedleggToKlage(activeKlage.id!!, formData)
+                    .then(response => {
+                        console.log(response);
+                        dispatch({ type: ACTION_ADD, value: { status: VEDLEGG_STATUS.OK, file: vedlegg } });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        dispatch({
+                            type: ACTION_ADD,
+                            value: { status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg }
+                        });
+                    });
             }
         }
     };
 
     const removeAttachment = (vedlegg: VedleggProps) => {
-        dispatch({type: ACTION_REMOVE, value: vedlegg});
-    }
-
-    const submitBegrunnelse = () => {
-        return props.submitBegrunnelse(activeBegrunnelse);
+        dispatch({ type: ACTION_REMOVE, value: vedlegg });
     };
 
-    const submitVedleggOgBegrunnelse = (event: any) => {
+    const submitBegrunnelse = (event: any) => {
         event.preventDefault();
-        // submitVedlegg(1); TODO: Remove call and rename method, upload is done
-        submitBegrunnelse().then((res: any) => {
-            console.log('do something with ', res);
+        updateKlage({
+            ...activeKlage,
+            fritekst: activeBegrunnelse
         });
     };
 
     return (
-        <form onSubmit={(event: any) => submitVedleggOgBegrunnelse(event)}>
+        <form onSubmit={(event: any) => submitBegrunnelse(event)}>
             <Textarea
                 name="begrunnelse"
                 value={activeBegrunnelse}

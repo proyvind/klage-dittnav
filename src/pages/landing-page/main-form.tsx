@@ -8,7 +8,6 @@ import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 import { constructKlage, Klage } from '../../types/klage';
-import { addVedleggToKlage } from '../../services/fileService';
 import { Bruker } from '../../types/bruker';
 
 interface Props {
@@ -39,7 +38,7 @@ const MainForm = (props: Props) => {
 
     const submitDraft = () => {
         // Submit form as DRAFT
-        let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, true);
+        let klage = constructKlage(activeVedtak, activeBegrunnelse);
         return props.submitKlage(klage);
     };
 
@@ -51,16 +50,8 @@ const MainForm = (props: Props) => {
         setActiveStep(activeStep + 1);
     };
 
-    const submitVedlegg = (id: number, vedlegg: File[]) => {
-        setActiveVedlegg(vedlegg);
-        addVedleggToKlage(id, activeVedlegg).then((res: any) => {
-            setActiveStep(activeStep + 1);
-        });
-        setActiveStep(activeStep + 1);
-    };
-
     const submitForm = () => {
-        let klage = constructKlage(props.person, activeVedtak, activeBegrunnelse, false);
+        let klage = constructKlage(activeVedtak, activeBegrunnelse);
         props.submitKlage(klage);
     };
 
@@ -87,7 +78,6 @@ const MainForm = (props: Props) => {
                         activeBegrunnelse={activeBegrunnelse}
                         activeVedlegg={activeVedlegg}
                         submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
-                        submitVedlegg={(id: number, vedlegg: File[]) => submitVedlegg(id, vedlegg)}
                     />
                 )}
                 {activeRoute.label === 'Oppsummering' && (

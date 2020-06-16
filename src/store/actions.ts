@@ -1,5 +1,8 @@
 import { Dispatch } from 'react';
 import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
+import { Klage } from '../types/klage';
+import { postKlage, putKlage } from '../services/klageService';
+import { response } from 'express';
 
 export type ActionTypes =
     | {
@@ -8,6 +11,10 @@ export type ActionTypes =
     | {
           type: 'CHECK_AUTH_SUCCESS';
           payload: any;
+      }
+    | {
+          type: 'KLAGE_POST_SUCCESS';
+          payload: Klage;
       };
 
 export function checkAuth() {
@@ -27,6 +34,31 @@ export function checkAuth() {
                     dispatch({ type: 'CHECK_AUTH_ERROR' });
                     console.error(error);
                 }
+            });
+    };
+}
+
+export function postNewKlage(klage: Klage) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return postKlage(klage)
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
+export function updateKlage(klage: Klage) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        putKlage(klage)
+            .then(response => {
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
+            })
+            .catch(err => {
+                console.log(err);
             });
     };
 }

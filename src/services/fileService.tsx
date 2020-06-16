@@ -1,6 +1,6 @@
 import * as baseService from './baseService';
 import { getAddVedleggUrl } from '../clients/apiUrls';
 
-export const addVedleggToKlage = (id: number, vedlegg: File[]) => {
+export const addVedleggToKlage = (id: number, vedlegg: FormData) => {
     return baseService.postVedlegg(getAddVedleggUrl(id), vedlegg);
 };

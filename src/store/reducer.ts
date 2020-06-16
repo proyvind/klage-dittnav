@@ -1,11 +1,14 @@
 import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
+import { Klage } from '../types/klage';
 
 export interface Store {
     loading: boolean;
 
     // Auth response
     person: Bruker;
+
+    activeKlage: Klage;
 }
 
 export const initialState: Store = {
@@ -25,6 +28,12 @@ export const initialState: Store = {
             type: '',
             identifikasjonsnummer: ''
         }
+    },
+
+    activeKlage: {
+        fritekst: '',
+        tema: '',
+        vedtaksdato: new Date()
     }
 };
 
@@ -41,6 +50,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 loading: false
+            };
+        case 'KLAGE_POST_SUCCESS':
+            return {
+                ...state,
+                activeKlage: action.payload
             };
     }
     return state;
