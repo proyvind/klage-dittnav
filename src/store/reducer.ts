@@ -1,6 +1,7 @@
 import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
 import { Klage } from '../types/klage';
+import { VedleggProps } from '../types/vedlegg';
 
 export interface Store {
     loading: boolean;
@@ -9,6 +10,8 @@ export interface Store {
     person: Bruker;
 
     activeKlage: Klage;
+
+    activeVedlegg: VedleggProps[];
 }
 
 export const initialState: Store = {
@@ -34,13 +37,14 @@ export const initialState: Store = {
         fritekst: '',
         tema: '',
         vedtaksdato: new Date()
-    }
+    },
+
+    activeVedlegg: []
 };
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
     switch (action.type) {
         case 'CHECK_AUTH_SUCCESS':
-            console.log(action.payload);
             return {
                 ...state,
                 loading: false,
@@ -55,6 +59,15 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 activeKlage: action.payload
+            };
+        case 'VEDLEGG_ADD':
+            return { ...state, activeVedlegg: [...state.activeVedlegg, action.value] };
+
+        case 'VEDLEGG_REMOVE':
+            const vIndex = state.activeVedlegg.indexOf(action.value);
+            return {
+                ...state,
+                activeVedlegg: state.activeVedlegg.filter((_: any, index: number) => index !== vIndex)
             };
     }
     return state;

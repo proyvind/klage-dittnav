@@ -14,6 +14,14 @@ export type ActionTypes =
     | {
           type: 'KLAGE_POST_SUCCESS';
           payload: Klage;
+      }
+    | {
+          type: 'VEDLEGG_ADD';
+          value: any;
+      }
+    | {
+          type: 'VEDLEGG_REMOVE';
+          value: any;
       };
 
 export function checkAuth() {

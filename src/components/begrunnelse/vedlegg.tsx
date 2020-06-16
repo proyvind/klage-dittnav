@@ -36,7 +36,7 @@ const VedleggVisning = (props: Props) => {
     };
 
     return (
-        <table className="tabell tabell--stripet">
+        <table className="tabell">
             <thead>
                 <tr>
                     <th>Fil</th>
