@@ -2,7 +2,6 @@ import { Dispatch } from 'react';
 import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
 import { Klage } from '../types/klage';
 import { postKlage, putKlage } from '../services/klageService';
-import { response } from 'express';
 
 export type ActionTypes =
     | {

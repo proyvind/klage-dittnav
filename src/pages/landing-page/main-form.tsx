@@ -13,7 +13,6 @@ import { Bruker } from '../../types/bruker';
 interface Props {
     person: Bruker;
     availableVedtak: Vedtak[];
-    next(): any;
     chosenVedtak?: Vedtak;
     submitKlage(klage: Klage): any;
 }
@@ -22,6 +21,7 @@ const MainForm = (props: Props) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
+    // eslint-disable-next-line
     const [activeVedlegg, setActiveVedlegg] = useState<File[]>([]);
 
     let activeRoutes: FormStep[] = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
@@ -29,6 +29,10 @@ const MainForm = (props: Props) => {
 
     const chooseStep = (step: number) => {
         setActiveStep(step);
+    };
+
+    const next = () => {
+        setActiveStep(activeStep + 1);
     };
 
     const setVedtak = (activeVedtak: Vedtak) => {
@@ -77,7 +81,9 @@ const MainForm = (props: Props) => {
                     <BegrunnelsePage
                         activeBegrunnelse={activeBegrunnelse}
                         activeVedlegg={activeVedlegg}
+                        activeVedtak={props.chosenVedtak}
                         submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
+                        next={() => next()}
                     />
                 )}
                 {activeRoute.label === 'Oppsummering' && (

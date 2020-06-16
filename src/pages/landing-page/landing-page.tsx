@@ -8,27 +8,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getVedtak, postKlage } from '../../services/klageService';
 import { Klage } from '../../types/klage';
 import MainForm from './main-form';
-
-const instanceOfVedtak = (element: any): boolean => {
-    return (
-        'tittel' in element &&
-        'vedtaksdato' in element &&
-        'tema' in element &&
-        'enhet' in element &&
-        'NAV_referanse' in element
-    );
-};
-
-const elementAsVedtak = (element: any): Vedtak => {
-    let chosenVedtak: Vedtak = {
-        tittel: element?.tittel,
-        vedtaksdato: new Date(element?.vedtaksdato) ?? new Date(),
-        tema: element?.tema,
-        enhet: element?.enhet,
-        NAV_referanse: element?.NAV_referanse
-    };
-    return chosenVedtak;
-};
+import { instanceOfVedtak, elementAsVedtak } from '../../mock-api/get/vedtak';
 
 const LandingPage = (props: any) => {
     const dispatch = useDispatch();
@@ -36,7 +16,6 @@ const LandingPage = (props: any) => {
 
     const [availableVedtak, setAvailableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
-    const [activeStep, setActiveStep] = useState<number>(props.activeStep || 0);
 
     useEffect(() => {
         dispatch(checkAuth());
@@ -66,10 +45,6 @@ const LandingPage = (props: any) => {
         return elementAsVedtak(query);
     };
 
-    const next = () => {
-        setActiveStep(activeStep + 1);
-    };
-
     const submitKlage = (klage: Klage) => {
         // Submit form as DRAFT
         console.log('Skal sende inn ', klage);
@@ -82,7 +57,6 @@ const LandingPage = (props: any) => {
                 <MainForm
                     person={person}
                     availableVedtak={availableVedtak}
-                    next={() => next()}
                     chosenVedtak={chosenVedtak}
                     submitKlage={(klage: Klage) => submitKlage(klage)}
                 />

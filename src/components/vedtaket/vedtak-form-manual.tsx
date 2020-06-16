@@ -24,22 +24,16 @@ const VedtakFormManual = (props: any) => {
     };
 
     useEffect(() => {
-        const getData = async () => {
-            let TEMAER = [];
-            try {
-                TEMAER = await getTemaer();
-            } catch (e) {
-                console.log('error: ', e);
-            }
-            setTemaer(TEMAER);
-            if (Object.keys(TEMAER)[0]) {
-                updateVedtak('tema', Object.keys(TEMAER)[0]);
-            }
-            setIsLoading(false);
-        };
-        getData();
-        // eslint-disable-next-line
-    }, []);
+        getTemaer()
+            .then(temaer => {
+                setTemaer(temaer);
+                if (Object.keys(temaer)[0]) {
+                    setActiveVedtak({ ...activeVedtak, tema: Object.keys(temaer)[0] });
+                }
+            })
+            .catch(err => {});
+        setIsLoading(false);
+    }, [activeVedtak]);
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();

@@ -5,19 +5,19 @@ import { Bruker, Adresse, displayAddress, displayPoststed } from '../../types/br
 import InformationPointBox from '../general/information-point-box';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn}</Normaltekst> },
-    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn}</Normaltekst> },
+    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn ?? ''}</Normaltekst> },
+    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn ?? ''}</Normaltekst> },
     {
         displayName: 'Fødselsnummer',
         content: (person: Bruker) => (
-            <Normaltekst>{person.folkeregisteridentifikator?.identifikasjonsnummer}</Normaltekst>
+            <Normaltekst>{person.folkeregisteridentifikator?.identifikasjonsnummer ?? ''}</Normaltekst>
         )
     },
     {
         displayName: 'Telefonnummer',
-        content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer}</Normaltekst>
+        content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
     },
-    { displayName: 'Adresse', content: (person: Bruker) => <AdressPointBox adress={person.adresse} /> }
+    { displayName: 'Adresse', content: (person: Bruker) => <AdressPointBox adress={person.adresse ?? ''} /> }
 ];
 
 const FlexRowContainer = styled.div`

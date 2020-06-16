@@ -9,7 +9,6 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
-import { constructKlage } from '../../types/klage';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage } from '../../services/fileService';
@@ -48,13 +47,15 @@ const Begrunnelse = (props: any) => {
         }
     }, []);
 
-    const activeVedtak = props.activeVedtak;
-
     useEffect(() => {
-        const klage = constructKlage(activeVedtak);
-        console.log('Setting ', klage);
-        postNewKlage(klage);
-    }, [activeVedtak]);
+        postNewKlage(activeKlage);
+        if (props.activeVedtak) {
+            updateKlage({
+                ...activeKlage,
+                ...props.activeVedtak
+            });
+        }
+    }, [activeKlage, props.activeVedtak]);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -103,6 +104,7 @@ const Begrunnelse = (props: any) => {
             ...activeKlage,
             fritekst: activeBegrunnelse
         });
+        props.next();
     };
 
     return (
