@@ -5,7 +5,7 @@ const DummyRedirectPage = () => (
     <>
         <Element>Eksempel på redirect</Element>
         <a
-            href="/?tittel=MittVedtak&vedtaksdato=1992-02-21&tema=tema&enhet=MinEnhet&NAV_referanse=ReferansenMin"
+            href="/?tittel=MittVedtak&vedtaksdato=1992-02-21&tema=FOR&enhet=MinEnhet&NAV_referanse=ReferansenMin"
             className="knapp"
         >
             Forhåndsutfylt klageskjema
