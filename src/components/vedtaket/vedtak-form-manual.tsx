@@ -36,7 +36,7 @@ const VedtakFormManual = (props: any) => {
             })
             .catch(err => {});
         setIsLoading(false);
-    }, []);
+    }, [temaer, activeVedtak, isLoading]);
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
