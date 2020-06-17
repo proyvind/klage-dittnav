@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import {
     MarginContainer,
@@ -13,12 +13,9 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage } from '../../services/fileService';
-
-const ACTION_ADD = 'add';
-const ACTION_REMOVE = 'remove';
 
 const ekspanderbartPanelTittel = (
     <Normaltekst>
@@ -27,19 +24,9 @@ const ekspanderbartPanelTittel = (
 );
 
 const Begrunnelse = (props: any) => {
-    const { activeKlage } = useSelector((state: Store) => state);
+    const dispatch = useDispatch();
+    const { activeKlage, activeVedlegg } = useSelector((state: Store) => state);
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
-    const [activeVedlegg, dispatch] = useReducer((activeVedlegg: VedleggProps[], { type, value }: any) => {
-        switch (type) {
-            case ACTION_ADD:
-                return [...activeVedlegg, value];
-            case ACTION_REMOVE:
-                const vIndex = activeVedlegg.indexOf(value);
-                return activeVedlegg.filter((_: any, index: number) => index !== vIndex);
-            default:
-                return activeVedlegg;
-        }
-    }, []);
 
     useEffect(() => {
         postNewKlage(activeKlage);
@@ -78,12 +65,15 @@ const Begrunnelse = (props: any) => {
                 addVedleggToKlage(activeKlage.id!!, formData)
                     .then(response => {
                         console.log(response);
-                        dispatch({ type: ACTION_ADD, value: { status: VEDLEGG_STATUS.OK, file: vedlegg } });
+                        dispatch({
+                            type: 'VEDLEGG_ADD',
+                            value: { status: VEDLEGG_STATUS.OK, file: vedlegg }
+                        });
                     })
                     .catch(err => {
                         console.log(err);
                         dispatch({
-                            type: ACTION_ADD,
+                            type: 'VEDLEGG_ADD',
                             value: { status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg }
                         });
                     });
@@ -92,7 +82,7 @@ const Begrunnelse = (props: any) => {
     };
 
     const removeAttachment = (vedlegg: VedleggProps) => {
-        dispatch({ type: ACTION_REMOVE, value: vedlegg });
+        dispatch({ type: 'VEDLEGG_REMOVE', value: vedlegg });
     };
 
     const submitBegrunnelse = (event: any) => {
@@ -118,6 +108,9 @@ const Begrunnelse = (props: any) => {
             />
             <MarginContainer>
                 <Undertittel>Vedlegg</Undertittel>
+                <MarginContainer>
+                    <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
+                </MarginContainer>
                 <MarginContainer>
                     <Knapp onClick={e => handleClick(e)}>Last opp nytt vedlegg</Knapp>
                     <input
@@ -147,7 +140,6 @@ const Begrunnelse = (props: any) => {
                     </ContainedContent>
                 </Ekspanderbartpanel>
             </MarginContainer>
-            <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
 
             <MarginContainer>
                 <CenteredContainer>
