@@ -7,7 +7,7 @@ import {
     getTemaerUrl,
     getAddVedleggUrl
 } from '../clients/apiUrls';
-import {KLAGER, okKlage} from './get/klager';
+import { KLAGER, okKlage } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
 import navfaker from 'nav-faker';
