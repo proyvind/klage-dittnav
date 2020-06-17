@@ -42,6 +42,11 @@ const Begrunnelse = (props: any) => {
     }, []);
 
     useEffect(() => {
+        if (!activeKlage || !activeKlage.id) {
+            postNewKlage({
+                tema: props.activeVedtak.
+            });
+        }
         postNewKlage(activeKlage);
         if (props.activeVedtak) {
             updateKlage({
