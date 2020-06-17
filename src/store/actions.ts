@@ -49,7 +49,7 @@ export function postNewKlage(klage: Klage) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return postKlage(klage)
             .then(response => {
-                console.log(response);
+                console.log('Response from server', response);
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
             })
             .catch(err => {

@@ -7,7 +7,7 @@ import {
     getTemaerUrl,
     getAddVedleggUrl
 } from '../clients/apiUrls';
-import { KLAGER } from './get/klager';
+import { KLAGER, okKlage } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
 import navfaker from 'nav-faker';
@@ -71,7 +71,7 @@ function addKlageToLocalStorage(request: any): any {
 function setupPostKlage(mock: FetchMock) {
     mock.post(
         getAddKlageUrl(),
-        withDelayedResponse(randomDelay(), STATUS_OK, request => addKlageToLocalStorage(request))
+        withDelayedResponse(randomDelay(), STATUS_OK, () => okKlage)
     ); // Returns the object as the json-response
 }
 

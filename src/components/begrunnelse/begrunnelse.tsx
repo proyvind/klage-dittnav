@@ -16,6 +16,7 @@ import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage } from '../../services/fileService';
+import {constructKlage} from "../../types/klage";
 
 const ekspanderbartPanelTittel = (
     <Normaltekst>
@@ -29,12 +30,8 @@ const Begrunnelse = (props: any) => {
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
 
     useEffect(() => {
-        postNewKlage(activeKlage);
-        if (props.activeVedtak) {
-            updateKlage({
-                ...activeKlage,
-                ...props.activeVedtak
-            });
+        if (!activeKlage || !activeKlage.id) {
+            dispatch(postNewKlage(constructKlage(props.activeVedtak)));
         }
     }, [activeKlage, props.activeVedtak]);
 

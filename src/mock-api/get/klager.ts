@@ -1,3 +1,5 @@
+import {Klage} from "../../types/klage";
+
 export const KLAGER = [
     {
         userFirstName: 'Marianne',
@@ -17,3 +19,10 @@ export const KLAGER = [
         NAVSignature: ''
     }
 ];
+
+export const okKlage: Klage = {
+    id: 1,
+    tema: 'FOR',
+    fritekst: '',
+    vedtaksdato: new Date()
+}
