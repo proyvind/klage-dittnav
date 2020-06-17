@@ -30,13 +30,10 @@ const VedtakFormManual = (props: any) => {
         getTemaer()
             .then(temaer => {
                 setTemaer(temaer);
-                if (Object.keys(temaer)[0]) {
-                    setActiveVedtak({ ...activeVedtak, tema: Object.keys(temaer)[0] });
-                }
             })
             .catch(err => {});
         setIsLoading(false);
-    }, [temaer, activeVedtak, isLoading]);
+    }, [isLoading]);
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
