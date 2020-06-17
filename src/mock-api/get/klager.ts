@@ -1,4 +1,4 @@
-import {Klage} from "../../types/klage";
+import { Klage } from '../../types/klage';
 
 export const KLAGER = [
     {
@@ -25,4 +25,4 @@ export const okKlage: Klage = {
     tema: 'FOR',
     fritekst: '',
     vedtaksdato: new Date()
-}
+};

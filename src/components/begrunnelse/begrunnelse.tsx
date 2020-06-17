@@ -16,7 +16,7 @@ import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage } from '../../services/fileService';
-import {constructKlage} from "../../types/klage";
+import { constructKlage } from '../../types/klage';
 
 const ekspanderbartPanelTittel = (
     <Normaltekst>
@@ -33,7 +33,7 @@ const Begrunnelse = (props: any) => {
         if (!activeKlage || !activeKlage.id) {
             dispatch(postNewKlage(constructKlage(props.activeVedtak)));
         }
-    }, [activeKlage, props.activeVedtak]);
+    }, [activeKlage, props.activeVedtak, dispatch]);
 
     const INPUTDESCRIPTION =
         'Gjør rede for hvilken endring du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved erklæringer eller bevis som du mener kan være til støtte for klagen.';
