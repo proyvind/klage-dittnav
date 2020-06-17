@@ -7,6 +7,8 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
 import { Bruker } from '../../types/bruker';
 import { Vedtak } from '../../types/vedtak';
+import { useSelector } from 'react-redux';
+import { Store } from '../../store/reducer';
 
 interface Props {
     person: Bruker;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 const OppsummeringSkjemaPage = (props: Props) => {
+    const { activeVedlegg } = useSelector((state: Store) => state);
+
     return (
         <ContentContainer>
             <MarginContainer>
@@ -37,7 +41,7 @@ const OppsummeringSkjemaPage = (props: Props) => {
             <MarginContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
             </MarginContainer>
-            <VedleggSummary vedlegg={props.vedlegg} />
+            <VedleggSummary vedlegg={activeVedlegg} />
 
             <MarginContainer>
                 <CenteredContainer>

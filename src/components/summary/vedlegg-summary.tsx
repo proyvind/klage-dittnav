@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { VedleggProps } from '../../types/vedlegg';
 
 interface Props {
-    vedlegg: File[];
+    vedlegg: VedleggProps[];
 }
 
 const Vedleggtekst = styled.p`
@@ -14,8 +15,8 @@ const Vedleggtekst = styled.p`
 const VedleggSummary = (props: Props) => {
     return (
         <div>
-            {Array.from(props.vedlegg).map((vedlegg: File, index: number) => {
-                return <Vedleggtekst key={index}>{vedlegg.name}</Vedleggtekst>;
+            {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => {
+                return <Vedleggtekst key={index}>{vedlegg.file.name}</Vedleggtekst>;
             })}
         </div>
     );
