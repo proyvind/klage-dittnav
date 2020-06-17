@@ -33,6 +33,17 @@ export async function get(resource: string) {
     }
 }
 
+export async function post(resource: string) {
+    logEvent({ resource });
+    let response = await axios.post(resource, postOptions);
+    try {
+        return await response;
+    } catch (error) {
+        logApiError(resource, error);
+        throw error;
+    }
+}
+
 export async function postKlage(resource: string, item: Klage): Promise<Klage> {
     logEvent({ resource });
     let response = await axios.post(resource, JSON.stringify(item), postOptions);

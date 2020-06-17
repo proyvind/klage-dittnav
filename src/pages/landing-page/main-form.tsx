@@ -7,22 +7,15 @@ import { MarginContainer, ContentContainer, CenteredContainer } from '../../styl
 import Steps from '../../components/steps/steps';
 import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
-import { constructKlage, Klage } from '../../types/klage';
-import { Bruker } from '../../types/bruker';
 
 interface Props {
-    person: Bruker;
     availableVedtak: Vedtak[];
     chosenVedtak?: Vedtak;
-    submitKlage(klage: Klage): any;
 }
 
 const MainForm = (props: Props) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
-    // eslint-disable-next-line
-    const [activeVedlegg, setActiveVedlegg] = useState<File[]>([]);
     const [optToFillOutManually, setOptToFillOutManually] = useState<boolean>(false);
 
     let activeRoutes: FormStep[] = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
@@ -39,25 +32,6 @@ const MainForm = (props: Props) => {
     const setVedtak = (activeVedtak: Vedtak) => {
         setActiveVedtak(activeVedtak);
         next();
-    };
-
-    const submitDraft = () => {
-        // Submit form as DRAFT
-        let klage = constructKlage(activeVedtak, activeBegrunnelse);
-        return props.submitKlage(klage);
-    };
-
-    const submitBegrunnelse = async (begrunnelse: string) => {
-        setActiveBegrunnelse(begrunnelse);
-        submitDraft().then((res: any) => {
-            return res;
-        });
-        next();
-    };
-
-    const submitForm = () => {
-        let klage = constructKlage(activeVedtak, activeBegrunnelse);
-        props.submitKlage(klage);
     };
 
     return (
@@ -82,21 +56,12 @@ const MainForm = (props: Props) => {
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
                     <BegrunnelsePage
-                        activeBegrunnelse={activeBegrunnelse}
-                        activeVedlegg={activeVedlegg}
                         activeVedtak={props.chosenVedtak}
-                        submitBegrunnelse={(activeBegrunnelse: string) => submitBegrunnelse(activeBegrunnelse)}
                         next={() => next()}
                     />
                 )}
                 {activeRoute.label === 'Oppsummering' && (
-                    <OppsummeringSkjemaPage
-                        person={props.person}
-                        vedtak={props.chosenVedtak ?? activeVedtak}
-                        vedlegg={activeVedlegg}
-                        begrunnelse={activeBegrunnelse}
-                        submitForm={() => submitForm()}
-                    />
+                    <OppsummeringSkjemaPage />
                 )}
             </MarginContainer>
         </ContentContainer>

@@ -15,7 +15,7 @@ const VedtakSummaryPage = (props: any) => {
             <MarginContainer>
                 <Systemtittel>Vedtak</Systemtittel>
             </MarginContainer>
-            <VedtakSummary vedtak={props.vedtak} />
+            <VedtakSummary klage={props.vedtak} />
 
             <CenteredContainer>
                 <Hovedknapp onClick={() => props.next()}>Bekreft</Hovedknapp>
