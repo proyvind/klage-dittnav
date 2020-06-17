@@ -23,7 +23,7 @@ export const putKlage = (klage: Klage) => {
 
 export const finalizeKlage = (klageId: number) => {
     return baseService.post(getFinalizeKlageUrl(klageId));
-}
+};
 
 export const getVedtak = () => {
     return baseService.get(getVedtakUrl());
