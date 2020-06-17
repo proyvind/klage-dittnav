@@ -27,22 +27,19 @@ const OppsummeringSkjemaPage = (props: Props) => {
                 <Systemtittel>Personlige opplysninger</Systemtittel>
             </MarginContainer>
             <PersonligeOpplysningerSummary person={props.person} />
-
             <MarginContainer>
                 <Systemtittel>Opplysninger fra vedtaket du klager på</Systemtittel>
             </MarginContainer>
             <VedtakSummary vedtak={props.vedtak} />
-
             <MarginContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
             </MarginContainer>
+            {/* TODO: Should come from activeKlage */}
             <Normaltekst>{props.begrunnelse ?? ''}</Normaltekst>
-
             <MarginContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
             </MarginContainer>
             <VedleggSummary vedlegg={activeVedlegg} />
-
             <MarginContainer>
                 <CenteredContainer>
                     <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
