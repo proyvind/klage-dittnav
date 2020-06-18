@@ -7,10 +7,12 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
-import {finalizeKlage} from "../../services/klageService";
+import { finalizeKlage } from '../../services/klageService';
+import { useHistory } from 'react-router-dom';
 
 const OppsummeringSkjemaPage = () => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
+    const history = useHistory();
 
     const submitForm = (event: any) => {
         event.preventDefault();
@@ -21,13 +23,14 @@ const OppsummeringSkjemaPage = () => {
         finalizeKlage(activeKlage.id)
             .then(response => {
                 console.log(response);
+                history.push(`/kvittering`);
                 // TODO: Set success message
             })
             .catch(error => {
                 console.log(error);
                 // TODO: Set error message
             });
-    }
+    };
 
     return (
         <ContentContainer>

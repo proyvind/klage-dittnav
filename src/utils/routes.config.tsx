@@ -2,6 +2,7 @@ import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import LandingPage from '../pages/landing-page/landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
+import KvitteringPage from '../pages/kvittering/kvittering-page';
 
 export type RouteType = {
     step?: number;
@@ -72,6 +73,12 @@ export const routesPages: RouteType[] = [
     {
         path: `/redirect`,
         component: DummyRedirectPage,
+        label: '',
+        exact: true
+    },
+    {
+        path: `/kvittering`,
+        component: KvitteringPage,
         label: '',
         exact: true
     }
