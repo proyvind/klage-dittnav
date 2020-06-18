@@ -27,7 +27,7 @@ const ekspanderbartPanelTittel = (
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
     const { activeKlage, activeVedlegg } = useSelector((state: Store) => state);
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(props.activeBegrunnelse ?? '');
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
 
     useEffect(() => {
         if (!activeKlage || !activeKlage.id) {
@@ -84,7 +84,6 @@ const Begrunnelse = (props: any) => {
 
     const submitBegrunnelse = (event: any) => {
         event.preventDefault();
-        props.submitBegrunnelse(activeBegrunnelse);
         updateKlage({
             ...activeKlage,
             fritekst: activeBegrunnelse
@@ -93,7 +92,7 @@ const Begrunnelse = (props: any) => {
     };
 
     return (
-        <form onSubmit={(event: any) => submitBegrunnelse(event)}>
+        <>
             <Undertittel>Begrunn din klage</Undertittel>
             <Textarea
                 name="begrunnelse"
@@ -145,11 +144,14 @@ const Begrunnelse = (props: any) => {
                         <Knapp className="row-element" onClick={() => props.previous()}>
                             Tilbake
                         </Knapp>
-                        <Hovedknapp className="row-element">Gå videre</Hovedknapp>
+                        <Hovedknapp
+                            className="row-element"
+                            onClick={(event: any) => submitBegrunnelse(event)}
+                        >Gå videre</Hovedknapp>
                     </FlexCenteredContainer>
                 </CenteredContainer>
             </MarginContainer>
-        </form>
+        </>
     );
 };
 

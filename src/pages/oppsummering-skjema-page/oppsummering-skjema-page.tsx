@@ -5,44 +5,51 @@ import { ContentContainer, MarginContainer, CenteredContainer } from '../../styl
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
-import { Bruker } from '../../types/bruker';
-import { Vedtak } from '../../types/vedtak';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
+import {finalizeKlage} from "../../services/klageService";
 
-interface Props {
-    person: Bruker;
-    vedtak: Vedtak;
-    begrunnelse: string;
-    vedlegg: File[];
-    submitForm(): any;
-}
+const OppsummeringSkjemaPage = () => {
+    const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
 
-const OppsummeringSkjemaPage = (props: Props) => {
-    const { activeVedlegg } = useSelector((state: Store) => state);
+    const submitForm = (event: any) => {
+        event.preventDefault();
+        if (!activeKlage.id) {
+            // TODO: Sett error message
+            return;
+        }
+        finalizeKlage(activeKlage.id)
+            .then(response => {
+                console.log(response);
+                // TODO: Set success message
+            })
+            .catch(error => {
+                console.log(error);
+                // TODO: Set error message
+            });
+    }
 
     return (
         <ContentContainer>
             <MarginContainer>
                 <Systemtittel>Personlige opplysninger</Systemtittel>
             </MarginContainer>
-            <PersonligeOpplysningerSummary person={props.person} />
+            <PersonligeOpplysningerSummary person={person} />
             <MarginContainer>
                 <Systemtittel>Opplysninger fra vedtaket du klager på</Systemtittel>
             </MarginContainer>
-            <VedtakSummary vedtak={props.vedtak} />
+            <VedtakSummary klage={activeKlage} />
             <MarginContainer>
                 <Systemtittel>Begrunnelse i din klage</Systemtittel>
             </MarginContainer>
-            {/* TODO: Should come from activeKlage */}
-            <Normaltekst>{props.begrunnelse ?? ''}</Normaltekst>
+            <Normaltekst>{activeKlage.fritekst ?? ''}</Normaltekst>
             <MarginContainer>
                 <Systemtittel>Vedlagte dokumenter</Systemtittel>
             </MarginContainer>
             <VedleggSummary vedlegg={activeVedlegg} />
             <MarginContainer>
                 <CenteredContainer>
-                    <Hovedknapp onClick={() => props.submitForm()}>Send inn</Hovedknapp>
+                    <Hovedknapp onClick={(event: any) => submitForm(event)}>Send inn</Hovedknapp>
                 </CenteredContainer>
             </MarginContainer>
         </ContentContainer>

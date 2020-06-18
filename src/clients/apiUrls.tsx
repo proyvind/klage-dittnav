@@ -24,3 +24,6 @@ export const getAddVedleggUrl = (id: number): string => `${Environment.REACT_APP
 
 export const getDeleteVedleggUrl = (klageId: number, vedleggId: number): string =>
     `${Environment.REACT_APP_API_URL}/klager/${klageId}/vedlegg/${vedleggId}`;
+
+export const getFinalizeKlageUrl = (klageId: number): string =>
+    `${Environment.REACT_APP_API_URL}/klager/${klageId}/finalize`;

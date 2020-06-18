@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getVedtak, postKlage } from '../../services/klageService';
-import { Klage } from '../../types/klage';
+import { getVedtak } from '../../services/klageService';
 import MainForm from './main-form';
 import { instanceOfVedtak, elementAsVedtak } from '../../mock-api/get/vedtak';
 
 const LandingPage = (props: any) => {
     const dispatch = useDispatch();
-    const { loading, person } = useSelector((state: Store) => state);
+    const { loading } = useSelector((state: Store) => state);
 
     const [availableVedtak, setAvailableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
@@ -45,20 +44,12 @@ const LandingPage = (props: any) => {
         return elementAsVedtak(query);
     };
 
-    const submitKlage = (klage: Klage) => {
-        // Submit form as DRAFT
-        console.log('Skal sende inn ', klage);
-        return postKlage(klage);
-    };
-
     if (!loading) {
         return (
             <div>
                 <MainForm
-                    person={person}
                     availableVedtak={availableVedtak}
                     chosenVedtak={chosenVedtak}
-                    submitKlage={(klage: Klage) => submitKlage(klage)}
                 />
             </div>
         );
