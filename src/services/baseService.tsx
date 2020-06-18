@@ -17,8 +17,7 @@ const postOptions = {
 const vedleggPostOptions = {
     withCredentials: true,
     headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/formdata'
+        Accept: 'application/json'
     }
 };
 

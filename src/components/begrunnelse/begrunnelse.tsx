@@ -56,8 +56,7 @@ const Begrunnelse = (props: any) => {
             if (key !== 'length') {
                 const formData = new FormData();
                 const vedlegg = event.target.files[key];
-                formData.append('tittel', vedlegg.name);
-                formData.append('content', vedlegg);
+                formData.append('vedlegg', vedlegg);
 
                 addVedleggToKlage(activeKlage.id!!, formData)
                     .then(response => {
