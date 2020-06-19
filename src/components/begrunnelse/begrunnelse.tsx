@@ -83,10 +83,12 @@ const Begrunnelse = (props: any) => {
 
     const submitBegrunnelse = (event: any) => {
         event.preventDefault();
-        updateKlage({
-            ...activeKlage,
-            fritekst: activeBegrunnelse
-        });
+        dispatch(
+            updateKlage({
+                ...activeKlage,
+                fritekst: activeBegrunnelse
+            })
+        );
         props.next();
     };
 
@@ -143,10 +145,9 @@ const Begrunnelse = (props: any) => {
                         <Knapp className="row-element" onClick={() => props.previous()}>
                             Tilbake
                         </Knapp>
-                        <Hovedknapp
-                            className="row-element"
-                            onClick={(event: any) => submitBegrunnelse(event)}
-                        >Gå videre</Hovedknapp>
+                        <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelse(event)}>
+                            Gå videre
+                        </Hovedknapp>
                     </FlexCenteredContainer>
                 </CenteredContainer>
             </MarginContainer>
