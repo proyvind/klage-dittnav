@@ -22,7 +22,7 @@ export const constructKlage = (vedtak: Vedtak, begrunnelse?: string): Klage => {
         fritekst: begrunnelse ?? '',
         tema: vedtak.tema,
         enhetId: vedtak.enhet,
-        vedtaksdato: vedtak.vedtaksdato,
+        vedtaksdato: new Date(vedtak.vedtaksdato),
         referanse: vedtak.NAV_referanse
     };
     return klage;

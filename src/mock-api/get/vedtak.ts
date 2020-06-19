@@ -3,14 +3,14 @@ import { Vedtak } from '../../types/vedtak';
 export const okVedtak: Vedtak[] = [
     {
         tittel: 'Vedtak om avslag på sykepenger',
-        vedtaksdato: new Date(),
+        vedtaksdato: new Date().toISOString().substring(0, 10),
         tema: 'SP',
         enhet: 'NAV Hallingdal',
         NAV_referanse: 'Herr Kylling'
     },
     {
         tittel: 'Enda et vedtak om avslag på sykepenger',
-        vedtaksdato: new Date(2019, 1),
+        vedtaksdato: new Date(2019, 1).toISOString().substring(0, 10),
         tema: 'SP',
         enhet: 'NAV Ringerike',
         NAV_referanse: 'Byggmester Bob'
@@ -30,7 +30,7 @@ export const instanceOfVedtak = (element: any): boolean => {
 export const elementAsVedtak = (element: any): Vedtak => {
     let chosenVedtak: Vedtak = {
         tittel: element?.tittel,
-        vedtaksdato: new Date(element?.vedtaksdato) ?? new Date(),
+        vedtaksdato: new Date(element?.vedtaksdato).toISOString().substring(0, 10) ?? new Date().toISOString(),
         tema: element?.tema,
         enhet: element?.enhet,
         NAV_referanse: element?.NAV_referanse

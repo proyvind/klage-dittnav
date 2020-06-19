@@ -3,7 +3,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from '../general/information-point-box';
 import { formatDate } from '../../utils/date-util';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
-import {Klage} from "../../types/klage";
+import { Klage } from '../../types/klage';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
     { displayName: 'Tema', content: (klage: Klage) => <Normaltekst>{klage.tema || ''}</Normaltekst> },

@@ -27,11 +27,13 @@ const ekspanderbartPanelTittel = (
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
     const { activeKlage, activeVedlegg } = useSelector((state: Store) => state);
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>('');
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlage.fritekst ?? '');
 
     useEffect(() => {
         if (!activeKlage || !activeKlage.id) {
-            dispatch(postNewKlage(constructKlage(props.activeVedtak)));
+            if (props.activeVedtak) {
+                dispatch(postNewKlage(constructKlage(props.activeVedtak)));
+            }
         }
     }, [activeKlage, props.activeVedtak, dispatch]);
 
@@ -140,13 +142,14 @@ const Begrunnelse = (props: any) => {
             <MarginContainer>
                 <CenteredContainer>
                     <FlexCenteredContainer>
-                        <Knapp className="row-element" onClick={() => props.previous()}>
-                            Tilbake
-                        </Knapp>
-                        <Hovedknapp
-                            className="row-element"
-                            onClick={(event: any) => submitBegrunnelse(event)}
-                        >Gå videre</Hovedknapp>
+                        {!props.activeVedtak && (
+                            <Knapp className="row-element" onClick={() => props.previous()}>
+                                Tilbake
+                            </Knapp>
+                        )}
+                        <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelse(event)}>
+                            Gå videre
+                        </Hovedknapp>
                     </FlexCenteredContainer>
                 </CenteredContainer>
             </MarginContainer>

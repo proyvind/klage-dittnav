@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Input } from 'nav-frontend-skjema';
 import { Vedtak } from '../../types/vedtak';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { getTemaer } from '../../services/klageService';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import { Datovelger } from 'nav-datovelger';
+import { constructKlage } from '../../types/klage';
+import { postNewKlage } from '../../store/actions';
+import { useDispatch } from 'react-redux';
 
 const VedtakFormManual = (props: any) => {
     const mock_enheter = ['A', 'B', 'C'];
+    const dispatch = useDispatch();
 
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(
         props.activeVedtak ?? {
             tema: '',
-            vedtaksdato: new Date(),
+            vedtaksdato: new Date().toISOString().substring(0, 10),
             enhet: mock_enheter[0],
             NAV_referanse: ''
         }
@@ -37,7 +41,8 @@ const VedtakFormManual = (props: any) => {
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
-        props.submitVedtak(activeVedtak);
+        dispatch(postNewKlage(constructKlage(activeVedtak)));
+        props.next();
     };
 
     if (!isLoading) {
@@ -70,9 +75,13 @@ const VedtakFormManual = (props: any) => {
                 </Select>
 
                 <MarginContainer>
-                    <DayPickerInput
-                        value={activeVedtak.vedtaksdato}
-                        onDayChange={date => updateVedtak('vedtaksdato', date)}
+                    <Datovelger
+                        onChange={(date: any) => updateVedtak('vedtaksdato', date)}
+                        valgtDato={activeVedtak.vedtaksdato}
+                        visÅrVelger={true}
+                        avgrensninger={{
+                            maksDato: new Date().toISOString().substring(0, 10)
+                        }}
                     />
                 </MarginContainer>
 

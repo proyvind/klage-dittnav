@@ -13,6 +13,7 @@ const VedtaketPage = (props: any) => {
             <VedtakFormManual
                 activeVedtak={props.activeVedtak}
                 submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)}
+                next={() => props.next()}
             />
         );
     } else {
