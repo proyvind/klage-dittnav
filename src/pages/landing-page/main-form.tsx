@@ -55,14 +55,9 @@ const MainForm = (props: Props) => {
                     />
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
-                    <BegrunnelsePage
-                        activeVedtak={props.chosenVedtak}
-                        next={() => next()}
-                    />
+                    <BegrunnelsePage activeVedtak={props.chosenVedtak} next={() => next()} />
                 )}
-                {activeRoute.label === 'Oppsummering' && (
-                    <OppsummeringSkjemaPage />
-                )}
+                {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage />}
             </MarginContainer>
         </ContentContainer>
     );

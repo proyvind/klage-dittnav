@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {VedleggProps} from "../../types/vedlegg";
+import { VedleggProps } from '../../types/vedlegg';
 
 interface Props {
     vedlegg: VedleggProps[];
