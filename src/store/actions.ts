@@ -60,7 +60,7 @@ export function postNewKlage(klage: Klage) {
 
 export function updateKlage(klage: Klage) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        putKlage(klage)
+        return putKlage(klage)
             .then(response => {
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
             })

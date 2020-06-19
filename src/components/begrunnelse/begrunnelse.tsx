@@ -85,10 +85,12 @@ const Begrunnelse = (props: any) => {
 
     const submitBegrunnelse = (event: any) => {
         event.preventDefault();
-        updateKlage({
-            ...activeKlage,
-            fritekst: activeBegrunnelse
-        });
+        dispatch(
+            updateKlage({
+                ...activeKlage,
+                fritekst: activeBegrunnelse
+            })
+        );
         props.next();
     };
 
