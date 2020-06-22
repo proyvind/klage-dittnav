@@ -34,7 +34,7 @@ export async function get(resource: string) {
 
 export async function post(resource: string) {
     logEvent({ resource });
-    let response = await axios.post(resource, postOptions);
+    let response = await axios.post(resource, null, postOptions);
     try {
         return await response;
     } catch (error) {
