@@ -1,16 +1,21 @@
 import React from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
-import { ContentContainer, MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
+import {
+    ContentContainer,
+    MarginContainer,
+    CenteredContainer,
+    FlexCenteredContainer
+} from '../../styled-components/main-styled-components';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { finalizeKlage } from '../../services/klageService';
 import { useHistory } from 'react-router-dom';
 
-const OppsummeringSkjemaPage = () => {
+const OppsummeringSkjemaPage = (props: any) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
     const history = useHistory();
 
@@ -52,7 +57,14 @@ const OppsummeringSkjemaPage = () => {
             <VedleggSummary vedlegg={activeVedlegg} />
             <MarginContainer>
                 <CenteredContainer>
-                    <Hovedknapp onClick={(event: any) => submitForm(event)}>Send inn</Hovedknapp>
+                    <FlexCenteredContainer>
+                        <Knapp className="row-element" onClick={() => props.previous()}>
+                            Tilbake
+                        </Knapp>
+                        <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)}>
+                            Send inn
+                        </Hovedknapp>
+                    </FlexCenteredContainer>
                 </CenteredContainer>
             </MarginContainer>
         </ContentContainer>

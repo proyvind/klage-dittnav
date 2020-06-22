@@ -1,6 +1,6 @@
 export class Vedtak {
     tittel?: string = '';
-    vedtaksdato: Date = new Date();
+    vedtaksdato: string = new Date().toISOString().substring(0, 10);
     tema: string = '';
     enhet: string = '';
     NAV_referanse: string = '';

@@ -21,12 +21,20 @@ const MainForm = (props: Props) => {
     let activeRoutes: FormStep[] = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
     let activeRoute: FormStep = activeRoutes[activeStep];
 
+    window.onbeforeunload = function () {
+        return 'Your work will be lost.';
+    };
+
     const chooseStep = (step: number) => {
         setActiveStep(step);
     };
 
     const next = () => {
         setActiveStep(activeStep + 1);
+    };
+
+    const previous = () => {
+        setActiveStep(activeStep - 1);
     };
 
     const setVedtak = (activeVedtak: Vedtak) => {
@@ -52,12 +60,13 @@ const MainForm = (props: Props) => {
                         submitVedtak={(activeVedtak: Vedtak) => setVedtak(activeVedtak)}
                         optToFillOutManually={optToFillOutManually}
                         setOptToFillOutManually={(b: boolean) => setOptToFillOutManually(b)}
+                        next={() => next()}
                     />
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
                     <BegrunnelsePage activeVedtak={props.chosenVedtak} next={() => next()} />
                 )}
-                {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage />}
+                {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage previous={() => previous()} />}
             </MarginContainer>
         </ContentContainer>
     );
