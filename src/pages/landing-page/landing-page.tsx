@@ -47,10 +47,7 @@ const LandingPage = (props: any) => {
     if (!loading) {
         return (
             <div>
-                <MainForm
-                    availableVedtak={availableVedtak}
-                    chosenVedtak={chosenVedtak}
-                />
+                <MainForm availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
             </div>
         );
     } else {
