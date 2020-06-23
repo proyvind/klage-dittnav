@@ -16,7 +16,7 @@ const VedleggSummary = (props: Props) => {
     return (
         <div>
             {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => {
-                return <Vedleggtekst key={index}>{vedlegg.file.name}</Vedleggtekst>;
+                return <Vedleggtekst key={index}>{vedlegg.vedlegg.tittel}</Vedleggtekst>;
             })}
         </div>
     );

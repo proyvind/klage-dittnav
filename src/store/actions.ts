@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
 import { Klage } from '../types/klage';
 import { postKlage, putKlage } from '../services/klageService';
+import { VedleggProps } from '../types/vedlegg';
 
 export type ActionTypes =
     | {
@@ -17,7 +18,7 @@ export type ActionTypes =
       }
     | {
           type: 'VEDLEGG_ADD';
-          value: any;
+          value: VedleggProps;
       }
     | {
           type: 'VEDLEGG_REMOVE';

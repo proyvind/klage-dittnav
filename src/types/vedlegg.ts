@@ -3,7 +3,7 @@ export interface Vedlegg {
     ref: string;
     klageId: number;
     type: string;
-    id?: number;
+    id: number;
 }
 
 export interface VedleggResponse {
@@ -20,5 +20,5 @@ export interface VedleggProps {
     status: VEDLEGG_STATUS;
     message?: string;
     id?: number;
-    file: File;
+    vedlegg: Vedlegg;
 }

@@ -1,7 +1,12 @@
 import * as baseService from './baseService';
-import { getAddVedleggUrl } from '../clients/apiUrls';
+import { getAddVedleggUrl, getDeleteVedleggUrl } from '../clients/apiUrls';
+import { Vedlegg } from '../types/vedlegg';
 
 export const addVedleggToKlage = (id: number, vedlegg: FormData) => {
     console.log('Form data:', vedlegg);
     return baseService.postVedlegg(getAddVedleggUrl(id), vedlegg);
+};
+
+export const deleteVedlegg = (vedlegg: Vedlegg) => {
+    return baseService.deleteVedlegg(getDeleteVedleggUrl(vedlegg.klageId, vedlegg.id));
 };

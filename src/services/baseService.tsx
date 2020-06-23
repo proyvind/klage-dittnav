@@ -78,3 +78,15 @@ export async function postVedlegg(resource: string, vedlegg: FormData) {
         throw error;
     }
 }
+
+export async function deleteVedlegg(resource: string) {
+    logEvent({ resource });
+    let response = await axios.delete(resource, getOptions);
+    try {
+        let res = await response;
+        return res;
+    } catch (error) {
+        logApiError(resource, error);
+        throw error;
+    }
+}

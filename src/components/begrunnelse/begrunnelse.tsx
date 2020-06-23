@@ -15,7 +15,7 @@ import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
-import { addVedleggToKlage } from '../../services/fileService';
+import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
 import { constructKlage } from '../../types/klage';
 
 const ekspanderbartPanelTittel = (
@@ -65,14 +65,14 @@ const Begrunnelse = (props: any) => {
                         console.log(response);
                         dispatch({
                             type: 'VEDLEGG_ADD',
-                            value: { status: VEDLEGG_STATUS.OK, file: vedlegg }
+                            value: { status: VEDLEGG_STATUS.OK, vedlegg: response.data }
                         });
                     })
                     .catch(err => {
                         console.log(err);
                         dispatch({
                             type: 'VEDLEGG_ADD',
-                            value: { status: VEDLEGG_STATUS.ERROR, message: 'error', file: vedlegg }
+                            value: { status: VEDLEGG_STATUS.ERROR, message: 'error' }
                         });
                     });
             }
@@ -80,7 +80,18 @@ const Begrunnelse = (props: any) => {
     };
 
     const removeAttachment = (vedlegg: VedleggProps) => {
-        dispatch({ type: 'VEDLEGG_REMOVE', value: vedlegg });
+        console.log(vedlegg);
+        deleteVedlegg(vedlegg.vedlegg)
+            .then(response => {
+                console.log(response);
+                dispatch({
+                    type: 'VEDLEGG_REMOVE',
+                    value: vedlegg
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 
     const submitBegrunnelse = (event: any) => {

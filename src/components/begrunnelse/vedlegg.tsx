@@ -1,6 +1,5 @@
 import React from 'react';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
-import { getDeleteVedleggUrl } from '../../clients/apiUrls';
 import Check from '../../assets/images/Check';
 import Cross from '../../assets/images/Cross';
 import Bin from '../../assets/images/Bin';
@@ -18,21 +17,7 @@ const VedleggVisning = (props: Props) => {
 
     const deleteVedlegg = (event: any, vedlegg: VedleggProps) => {
         event.preventDefault();
-        if (!vedlegg.id) {
-            props.deleteAction(vedlegg);
-            return;
-        }
-        // TODO: Change when klageid is known
-        fetch(getDeleteVedleggUrl(1, vedlegg.id), {
-            method: 'DELETE'
-        })
-            .then(result => {
-                console.log(result);
-                props.deleteAction(vedlegg);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        props.deleteAction(vedlegg);
     };
 
     return (
@@ -48,7 +33,7 @@ const VedleggVisning = (props: Props) => {
             <tbody>
                 {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
                     <tr key={index}>
-                        <td>{vedlegg.file.name}</td>
+                        <td>{vedlegg.vedlegg.tittel}</td>
                         <td>{vedlegg.status === VEDLEGG_STATUS.OK ? <Check /> : <Cross />}</td>
                         <td>{vedlegg.message}</td>
                         <td>
