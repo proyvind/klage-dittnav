@@ -13,7 +13,7 @@ interface Props {
     chosenVedtak?: Vedtak;
 }
 
-const MainForm = (props: Props) => {
+const MainFormPage = (props: Props) => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>(new Vedtak());
     const [optToFillOutManually, setOptToFillOutManually] = useState<boolean>(false);
@@ -72,4 +72,4 @@ const MainForm = (props: Props) => {
     );
 };
 
-export default MainForm;
+export default MainFormPage;

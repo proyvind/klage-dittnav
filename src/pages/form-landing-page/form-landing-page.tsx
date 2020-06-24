@@ -6,10 +6,10 @@ import { checkAuth } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { getVedtak } from '../../services/klageService';
-import MainForm from './main-form';
+import MainFormPage from './main-form-page';
 import { instanceOfVedtak, elementAsVedtak } from '../../mock-api/get/vedtak';
 
-const LandingPage = (props: any) => {
+const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
     const { loading } = useSelector((state: Store) => state);
 
@@ -47,7 +47,7 @@ const LandingPage = (props: any) => {
     if (!loading) {
         return (
             <div>
-                <MainForm availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
+                <MainFormPage availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
             </div>
         );
     } else {
@@ -55,4 +55,4 @@ const LandingPage = (props: any) => {
     }
 };
 
-export default LandingPage;
+export default FormLandingPage;
