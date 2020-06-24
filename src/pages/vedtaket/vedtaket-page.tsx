@@ -14,6 +14,7 @@ const VedtaketPage = (props: any) => {
                 activeVedtak={props.activeVedtak}
                 submitVedtak={(activeVedtak: Vedtak) => props.submitVedtak(activeVedtak)}
                 next={() => props.next()}
+                ytelse={props.ytelse}
             />
         );
     } else {

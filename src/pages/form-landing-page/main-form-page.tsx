@@ -11,6 +11,7 @@ import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skj
 interface Props {
     availableVedtak: Vedtak[];
     chosenVedtak?: Vedtak;
+    ytelse: string;
 }
 
 const MainFormPage = (props: Props) => {
@@ -55,6 +56,7 @@ const MainFormPage = (props: Props) => {
                 </CenteredContainer>
                 {activeRoute.label === 'Vedtak' && (
                     <VedtaketPage
+                        ytelse={props.ytelse}
                         availableVedtak={props.availableVedtak}
                         activeVedtak={activeVedtak}
                         submitVedtak={(activeVedtak: Vedtak) => setVedtak(activeVedtak)}

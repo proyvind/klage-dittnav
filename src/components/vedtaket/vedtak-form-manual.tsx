@@ -1,43 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Select, Input } from 'nav-frontend-skjema';
+import React, { useState } from 'react';
 import { Vedtak } from '../../types/vedtak';
 import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { getTemaer } from '../../services/klageService';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Datovelger } from 'nav-datovelger';
 import { constructKlage } from '../../types/klage';
 import { postNewKlage } from '../../store/actions';
 import { useDispatch } from 'react-redux';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 const VedtakFormManual = (props: any) => {
-    const mock_enheter = ['A', 'B', 'C'];
+    const MOCK_ENHET = { FOP: 'NAV Familie og pensjon' };
     const dispatch = useDispatch();
 
-    const [activeVedtak, setActiveVedtak] = useState<Vedtak>(
-        props.activeVedtak ?? {
-            tema: '',
-            vedtaksdato: new Date().toISOString().substring(0, 10),
-            enhet: mock_enheter[0],
-            NAV_referanse: ''
-        }
-    );
+    const erFamilieOgPensjonEnhet = (): boolean => {
+        // TODO: Litt midlertidlig losning
+        return ['foreldrepenger', 'engangsstonad', 'svangerskapspenger'].indexOf(props.ytelse) > -1;
+    };
 
-    const [temaer, setTemaer] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [activeVedtak, setActiveVedtak] = useState<Vedtak>({
+        tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
+        vedtaksdato: new Date().toISOString().substring(0, 10),
+        enhet: erFamilieOgPensjonEnhet() ? 'FOP' : '',
+        NAV_referanse: ''
+    });
 
     const updateVedtak = (name: string, value: any) => {
         setActiveVedtak({ ...activeVedtak, [name]: value });
     };
-
-    useEffect(() => {
-        getTemaer()
-            .then(temaer => {
-                setTemaer(temaer);
-            })
-            .catch(err => {});
-        setIsLoading(false);
-    }, [isLoading]);
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
@@ -45,65 +34,32 @@ const VedtakFormManual = (props: any) => {
         props.next();
     };
 
-    if (!isLoading) {
-        return (
-            <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
-                <Select
-                    name="enhet"
-                    value={activeVedtak.enhet}
-                    label="NAV-enheten som har behandlet saken din:"
-                    onChange={e => updateVedtak(e.target.name, e.target.value)}
-                >
-                    {mock_enheter.map((n: string) => (
-                        <option value={n} key={n}>
-                            Alternativ {n}
-                        </option>
-                    ))}
-                </Select>
+    return (
+        <form onSubmit={(event: any) => submitVedtak(event, activeVedtak)}>
+            <MarginContainer>
+                <Element>NAV-enheten som har behandlet saken</Element>
+                <Normaltekst>{MOCK_ENHET[activeVedtak.enhet] ?? '-'}</Normaltekst>
+            </MarginContainer>
 
-                <Select
-                    name="tema"
-                    value={activeVedtak.tema}
-                    label="Tema:"
-                    onChange={e => updateVedtak(e.target.name, e.target.value)}
-                >
-                    {Object.keys(temaer).map((key: string) => (
-                        <option value={key} key={key}>
-                            {key} - {temaer[key]}
-                        </option>
-                    ))}
-                </Select>
+            <MarginContainer>
+                <Element>Vedtaksdato</Element>
+                <Datovelger
+                    onChange={(date: any) => updateVedtak('vedtaksdato', date)}
+                    valgtDato={activeVedtak.vedtaksdato}
+                    visÅrVelger={true}
+                    avgrensninger={{
+                        maksDato: new Date().toISOString().substring(0, 10)
+                    }}
+                />
+            </MarginContainer>
 
-                <MarginContainer>
-                    <Datovelger
-                        onChange={(date: any) => updateVedtak('vedtaksdato', date)}
-                        valgtDato={activeVedtak.vedtaksdato}
-                        visÅrVelger={true}
-                        avgrensninger={{
-                            maksDato: new Date().toISOString().substring(0, 10)
-                        }}
-                    />
-                </MarginContainer>
-
-                <MarginContainer>
-                    <Input
-                        name="NAV_referanse"
-                        value={activeVedtak.NAV_referanse}
-                        label="NAVs referanse:"
-                        onChange={e => updateVedtak(e.target.name, e.target.value)}
-                    />
-                </MarginContainer>
-
-                <MarginContainer>
-                    <CenteredContainer>
-                        <Hovedknapp>Gå videre</Hovedknapp>
-                    </CenteredContainer>
-                </MarginContainer>
-            </form>
-        );
-    } else {
-        return <NavFrontendSpinner />;
-    }
+            <MarginContainer>
+                <CenteredContainer>
+                    <Hovedknapp>Gå videre</Hovedknapp>
+                </CenteredContainer>
+            </MarginContainer>
+        </form>
+    );
 };
 
 export default VedtakFormManual;
