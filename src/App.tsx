@@ -6,8 +6,9 @@ import PageTitle from './components/klage-frontpage/pageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { Store } from './store/reducer';
 import { checkAuth } from './store/actions';
-import { ContentContainer, PaddingContainer } from './styled-components/main-styled-components';
+import { ContentContainer, PaddingContainer, MarginContainer } from './styled-components/main-styled-components';
 import NotFoundPage from './pages/not-found/not-found-page';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const Layout = (props: any) => {
     const TITLE = 'Klage på vedtak';
@@ -32,7 +33,13 @@ const App = () => {
 
     if (loading) {
         // Just an example :)
-        return <h1>Loading</h1>;
+        return (
+            <ContentContainer>
+                <MarginContainer>
+                    <NavFrontendSpinner type={'XL'} />
+                </MarginContainer>
+            </ContentContainer>
+        );
     }
 
     return (

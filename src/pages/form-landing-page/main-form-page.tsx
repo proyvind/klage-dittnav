@@ -66,7 +66,11 @@ const MainFormPage = (props: Props) => {
                     />
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
-                    <BegrunnelsePage activeVedtak={props.chosenVedtak} next={() => next()} />
+                    <BegrunnelsePage
+                        activeVedtak={props.chosenVedtak}
+                        next={() => next()}
+                        previous={() => previous()}
+                    />
                 )}
                 {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage previous={() => previous()} />}
             </MarginContainer>
