@@ -1,8 +1,11 @@
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
-import LandingPage from '../pages/landing-page/landing-page';
+import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
+import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
+import { Redirect } from 'react-router-dom';
+import React from 'react';
 
 export type RouteType = {
     step?: number;
@@ -43,14 +46,14 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
     {
         step: 0,
         path: `/vedtaket`,
-        component: LandingPage,
+        component: FormLandingPage,
         label: 'Vedtak',
         exact: true
     },
     {
         step: 1,
         path: `/begrunnelse`,
-        component: LandingPage,
+        component: FormLandingPage,
         label: 'Begrunnelse',
         exact: true
     },
@@ -66,13 +69,25 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
 export const routesPages: RouteType[] = [
     {
         path: `/`,
-        component: LandingPage,
+        component: () => <Redirect to="/foreldrepenger" />,
         label: '',
         exact: true
     },
     {
         path: `/redirect`,
         component: DummyRedirectPage,
+        label: '',
+        exact: true
+    },
+    {
+        path: `/:ytelse`,
+        component: SkjemaInngang,
+        label: '',
+        exact: true
+    },
+    {
+        path: `/:ytelse/klage`,
+        component: FormLandingPage,
         label: '',
         exact: true
     },

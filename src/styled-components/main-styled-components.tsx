@@ -43,6 +43,10 @@ export const MarginContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 30px;
 `;
+export const PaddingContainer = styled.div`
+    padding-top: 30px;
+    padding-bottom: 30px;
+`;
 
 export const ContainedContent = styled.div`
     * {
