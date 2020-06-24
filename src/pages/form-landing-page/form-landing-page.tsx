@@ -44,15 +44,15 @@ const FormLandingPage = (props: any) => {
         return elementAsVedtak(query);
     };
 
-    if (!loading) {
-        return (
-            <div>
-                <MainFormPage availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
-            </div>
-        );
-    } else {
-        return <NavFrontendSpinner />;
-    }
+    const getChosenYtelse = () => {
+        return props.match.params.ytelse;
+    };
+
+    return (
+        <div>
+            <MainFormPage ytelse={getChosenYtelse()} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
+        </div>
+    );
 };
 
 export default FormLandingPage;

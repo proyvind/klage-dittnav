@@ -15,6 +15,7 @@ const Steps = (props: any) => {
                 disabled: route.label === 'Oppsummering'
             }))}
             visLabel
+            autoResponsiv
         />
     );
 };

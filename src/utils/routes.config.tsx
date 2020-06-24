@@ -69,7 +69,7 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
 export const routesPages: RouteType[] = [
     {
         path: `/`,
-        component: () => <Redirect to="/foreldrepenger" />,
+        component: () => <Redirect to="/foreldrepenger" />, // chosen randomly
         label: '',
         exact: true
     },
