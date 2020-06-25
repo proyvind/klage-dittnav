@@ -12,7 +12,7 @@ const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
     const { loading } = useSelector((state: Store) => state);
 
-    const [availableVedtak, setAvailableVedtak] = useState<Vedtak[]>([]);
+    const [availableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
 
     useEffect(() => {
