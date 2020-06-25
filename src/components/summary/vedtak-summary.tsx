@@ -6,13 +6,15 @@ import { PointsFlexListContainer } from '../../styled-components/main-styled-com
 import { Klage } from '../../types/klage';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
-    { displayName: 'Tema', content: (klage: Klage) => <Normaltekst>{klage.tema || ''}</Normaltekst> },
+    { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse}</Normaltekst> },
     {
         displayName: 'Vedtaksdato',
         content: (klage: Klage) => <Normaltekst>{formatDate(klage.vedtaksdato)}</Normaltekst>
     },
-    { displayName: 'Enhet', content: (klage: Klage) => <Normaltekst>{klage.enhetId}</Normaltekst> },
-    { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse}</Normaltekst> }
+    {
+        displayName: 'NAV-enheten som har behandlet saken',
+        content: (klage: Klage) => <Normaltekst>{klage.enhetId}</Normaltekst>
+    }
 ];
 
 interface Props {
@@ -21,7 +23,7 @@ interface Props {
 
 const VedtakSummary = (props: Props) => {
     return (
-        <PointsFlexListContainer>
+        <PointsFlexListContainer className="first-element-alone">
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
                 return (
                     <InformationPointBox

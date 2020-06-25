@@ -24,10 +24,10 @@ export const device = {
 export const ContentContainer = styled.div`
     margin: 0 auto;
     @media ${device.mobileS} {
-        max-width: 80%;
+        max-width: 85%;
     }
     @media ${device.tablet} {
-        max-width: 600px;
+        max-width: 800px;
     }
 `;
 
@@ -40,12 +40,22 @@ export const CenteredContainer = styled.div`
 `;
 
 export const MarginContainer = styled.div`
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 `;
+
+export const DoubleMarginContainer = styled.div`
+    margin-top: 40px;
+    margin-bottom: 40px;
+`;
+
 export const PaddingContainer = styled.div`
     padding-top: 30px;
     padding-bottom: 30px;
+`;
+
+export const MasterPaddingContainer = styled(PaddingContainer)`
+    padding-bottom: 60px;
 `;
 
 export const ContainedContent = styled.div`
@@ -67,6 +77,7 @@ export const PointsFlexListContainer = styled(FlexContainer)`
     justify-content: space-between;
     > div {
         flex-basis: 40%;
+        flex-grow: 1;
         margin-bottom: 20px;
     }
 `;
