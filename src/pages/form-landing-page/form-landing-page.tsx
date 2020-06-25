@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getVedtak } from '../../services/klageService';
 import MainFormPage from './main-form-page';
 import { instanceOfVedtak, elementAsVedtak } from '../../mock-api/get/vedtak';
 
@@ -26,19 +25,12 @@ const FormLandingPage = (props: any) => {
             if (instanceOfVedtak(query)) {
                 setChosenVedtak(getChosenVedtak(query));
             }
-        } else {
-            getData();
         }
     }, [props.location.search]);
 
     if (loading) {
         return <NavFrontendSpinner type={'XL'} />;
     }
-
-    const getData = async () => {
-        const FOUND_VEDTAK = await getVedtak();
-        setAvailableVedtak(FOUND_VEDTAK);
-    };
 
     const getChosenVedtak = (query: any): Vedtak => {
         return elementAsVedtak(query);
