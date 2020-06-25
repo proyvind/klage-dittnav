@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { routesConfig } from './utils/routes.config';
 import PageTitle from './components/klage-frontpage/pageTitle';
-import { useDispatch, useSelector } from 'react-redux';
-import { Store } from './store/reducer';
-import { checkAuth } from './store/actions';
-import { ContentContainer, MarginContainer, MasterPaddingContainer } from './styled-components/main-styled-components';
+import { ContentContainer, MasterPaddingContainer } from './styled-components/main-styled-components';
 import NotFoundPage from './pages/not-found/not-found-page';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const Layout = (props: any) => {
     const TITLE = 'Klage på vedtak';
@@ -24,24 +20,6 @@ const Layout = (props: any) => {
 };
 
 const App = () => {
-    const dispatch = useDispatch();
-    const { loading } = useSelector((state: Store) => state);
-
-    useEffect(() => {
-        dispatch(checkAuth());
-    }, [dispatch]);
-
-    if (loading) {
-        // Just an example :)
-        return (
-            <ContentContainer>
-                <MarginContainer>
-                    <NavFrontendSpinner type={'XL'} />
-                </MarginContainer>
-            </ContentContainer>
-        );
-    }
-
     return (
         <Router>
             <Layout>
