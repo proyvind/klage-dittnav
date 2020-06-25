@@ -1,18 +1,10 @@
 import FetchMock, { Middleware } from 'yet-another-fetch-mock';
-import {
-    getKlagerUrl,
-    getAddKlageUrl,
-    getUserDataUrl,
-    getVedtakUrl,
-    getTemaerUrl,
-    getAddVedleggUrl
-} from '../clients/apiUrls';
+import { getKlagerUrl, getAddKlageUrl, getUserDataUrl, getTemaerUrl, getAddVedleggUrl } from '../clients/apiUrls';
 import { KLAGER } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
 import faker from 'faker/locale/nb_NO';
 import navfaker from 'nav-faker';
 import { okPerson } from './get/bruker';
-import { okVedtak } from './get/vedtak';
 import { TEMAER } from './get/temaer';
 import { okVedlegg } from './get/vedlegg';
 
@@ -47,13 +39,6 @@ function setupGetTemaer(mock: FetchMock) {
     mock.get(
         getTemaerUrl(),
         withDelayedResponse(randomDelay(), STATUS_OK, () => TEMAER)
-    );
-}
-
-function setupGetVedtak(mock: FetchMock) {
-    mock.get(
-        getVedtakUrl(),
-        withDelayedResponse(randomDelay(), STATUS_OK, () => okVedtak)
     );
 }
 
@@ -93,14 +78,12 @@ function setup() {
 export function setupMockPerson() {
     const mock = setup();
     setupGetPerson(mock);
-    setupGetVedtak(mock);
 }
 
 export function setupMock() {
     const mock = setup();
     setupGetPerson(mock);
     setupGetKlager(mock);
-    setupGetVedtak(mock);
     setupPostKlage(mock);
     setupGetTemaer(mock);
     setupPostVedlegg(mock);
