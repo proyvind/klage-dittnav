@@ -33,7 +33,7 @@ const VedleggVisning = (props: Props) => {
             <tbody>
                 {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
                     <tr key={index}>
-                        <td>{vedlegg.vedlegg.tittel}</td>
+                        <td>{vedlegg.vedlegg.tittel ?? '-'}</td>
                         <td>{vedlegg.status === VEDLEGG_STATUS.OK ? <Check /> : <Cross />}</td>
                         <td>{vedlegg.message}</td>
                         <td>

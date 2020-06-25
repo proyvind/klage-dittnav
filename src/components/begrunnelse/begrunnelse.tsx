@@ -180,21 +180,8 @@ const Begrunnelse = (props: any) => {
             </MarginContainer>
 
             <MarginContainer>
-                <Ekspanderbartpanel tittel={ekspanderbartPanelTittel}>
-                    <ContainedContent>
-                        <img src={godt_bilde_guide} alt="Slik tar du et godt bilde" />
-                    </ContainedContent>
-                </Ekspanderbartpanel>
-            </MarginContainer>
-
-            <MarginContainer>
                 <CenteredContainer>
                     <FlexCenteredContainer>
-                        {!props.chosenVedtak && (
-                            <Knapp className="row-element" onClick={() => props.previous()}>
-                                Tilbake
-                            </Knapp>
-                        )}
                         <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelseOgDato(event)}>
                             Gå videre
                         </Hovedknapp>
