@@ -115,7 +115,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais.yaml
-          VARS: nais/dev.json
+          VARS: nais/prod.json
       - name: Post failures to Slack
         if: failure()
         run: |
