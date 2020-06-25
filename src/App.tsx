@@ -6,7 +6,7 @@ import PageTitle from './components/klage-frontpage/pageTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { Store } from './store/reducer';
 import { checkAuth } from './store/actions';
-import { ContentContainer, PaddingContainer, MarginContainer } from './styled-components/main-styled-components';
+import { ContentContainer, MarginContainer, MasterPaddingContainer } from './styled-components/main-styled-components';
 import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
@@ -17,7 +17,7 @@ const Layout = (props: any) => {
             <PageTitle title={TITLE} />
 
             <ContentContainer>
-                <PaddingContainer>{props.children}</PaddingContainer>
+                <MasterPaddingContainer>{props.children}</MasterPaddingContainer>
             </ContentContainer>
         </>
     );
