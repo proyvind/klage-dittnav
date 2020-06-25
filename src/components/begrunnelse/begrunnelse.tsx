@@ -9,14 +9,16 @@ import {
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import godt_bilde_guide from '../../assets/images/godt_bilde_guide.svg';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
-import { constructKlage } from '../../types/klage';
+import { Klage, constructKlage } from '../../types/klage';
+import { Datovelger } from 'nav-datovelger';
+import { toISOString } from '../../utils/date-util';
 
 const ekspanderbartPanelTittel = (
     <Normaltekst>
@@ -27,15 +29,35 @@ const ekspanderbartPanelTittel = (
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
     const { activeKlage, activeVedlegg } = useSelector((state: Store) => state);
+
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlage.fritekst ?? '');
+    const [activeDatoISO, setActiveDatoISO] = useState<string>(
+        activeKlage.vedtaksdato ? toISOString(activeKlage.vedtaksdato) : toISOString(new Date())
+    );
 
     useEffect(() => {
+        const erFamilieOgPensjonEnhet = (): boolean => {
+            // TODO: Litt midlertidlig losning
+            return ['foreldrepenger', 'engangsstonad', 'svangerskapspenger'].indexOf(props.ytelse) > -1;
+        };
+
         if (!activeKlage || !activeKlage.id) {
-            if (props.activeVedtak) {
-                dispatch(postNewKlage(constructKlage(props.activeVedtak)));
+            let klage: Klage;
+            if (props.chosenVedtak) {
+                klage = constructKlage(props.chosenVedtak);
+                setActiveDatoISO(props.chosenVedtak.vedtaksdato);
+            } else {
+                klage = {
+                    fritekst: activeBegrunnelse,
+                    tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
+                    enhetId: erFamilieOgPensjonEnhet() ? 'FOP' : '',
+                    vedtaksdato: new Date(activeDatoISO),
+                    referanse: ''
+                };
             }
+            dispatch(postNewKlage(klage));
         }
-    }, [activeKlage, props.activeVedtak, dispatch]);
+    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, props.chosenVedtak, props.ytelse]);
 
     const INPUTDESCRIPTION =
         'Gjør rede for hvilken endring du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved erklæringer eller bevis som du mener kan være til støtte for klagen.';
@@ -94,12 +116,13 @@ const Begrunnelse = (props: any) => {
             });
     };
 
-    const submitBegrunnelse = (event: any) => {
+    const submitBegrunnelseOgDato = (event: any) => {
         event.preventDefault();
         dispatch(
             updateKlage({
                 ...activeKlage,
-                fritekst: activeBegrunnelse
+                fritekst: activeBegrunnelse,
+                vedtaksdato: new Date(activeDatoISO)
             })
         );
         props.next();
@@ -107,6 +130,18 @@ const Begrunnelse = (props: any) => {
 
     return (
         <>
+            <MarginContainer>
+                <Element>Vedtaksdato</Element>
+                <Datovelger
+                    onChange={(dateISO: any) => setActiveDatoISO(dateISO)}
+                    valgtDato={activeDatoISO}
+                    visÅrVelger={true}
+                    avgrensninger={{
+                        maksDato: new Date().toISOString().substring(0, 10)
+                    }}
+                />
+            </MarginContainer>
+
             <Undertittel>Begrunn din klage</Undertittel>
             <Textarea
                 name="begrunnelse"
@@ -155,12 +190,12 @@ const Begrunnelse = (props: any) => {
             <MarginContainer>
                 <CenteredContainer>
                     <FlexCenteredContainer>
-                        {!props.activeVedtak && (
+                        {!props.chosenVedtak && (
                             <Knapp className="row-element" onClick={() => props.previous()}>
                                 Tilbake
                             </Knapp>
                         )}
-                        <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelse(event)}>
+                        <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelseOgDato(event)}>
                             Gå videre
                         </Hovedknapp>
                     </FlexCenteredContainer>

@@ -45,20 +45,13 @@ export const routesStepsValgtVedtak: FormStep[] = [
 export const routesStepsIkkeValgtVedtak: FormStep[] = [
     {
         step: 0,
-        path: `/vedtaket`,
-        component: FormLandingPage,
-        label: 'Vedtak',
-        exact: true
-    },
-    {
-        step: 1,
         path: `/begrunnelse`,
         component: FormLandingPage,
         label: 'Begrunnelse',
         exact: true
     },
     {
-        step: 2,
+        step: 1,
         path: `/oppsummering`,
         component: OppsummeringSkjemaPage,
         label: 'Oppsummering',

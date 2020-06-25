@@ -3,9 +3,8 @@ import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import VedtaketPage from '../vedtaket/vedtaket-page';
 import { routesStepsIkkeValgtVedtak, routesStepsValgtVedtak, FormStep } from '../../utils/routes.config';
-import { MarginContainer, ContentContainer, CenteredContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer, ContentContainer } from '../../styled-components/main-styled-components';
 import Steps from '../../components/steps/steps';
-import { Systemtittel } from 'nav-frontend-typografi';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 
 interface Props {
@@ -49,11 +48,6 @@ const MainFormPage = (props: Props) => {
                 <Steps activeRoutes={activeRoutes} activeStep={activeStep} chooseStep={chooseStep} />
             </MarginContainer>
             <MarginContainer>
-                <CenteredContainer>
-                    <MarginContainer>
-                        <Systemtittel>{activeRoute.label}</Systemtittel>
-                    </MarginContainer>
-                </CenteredContainer>
                 {activeRoute.label === 'Vedtak' && (
                     <VedtaketPage
                         ytelse={props.ytelse}
@@ -67,7 +61,8 @@ const MainFormPage = (props: Props) => {
                 )}
                 {activeRoute.label === 'Begrunnelse' && (
                     <BegrunnelsePage
-                        activeVedtak={props.chosenVedtak}
+                        ytelse={props.ytelse}
+                        chosenVedtak={props.chosenVedtak}
                         next={() => next()}
                         previous={() => previous()}
                     />

@@ -6,3 +6,7 @@ import 'moment/locale/nb';
 export const formatDate = (date: Date) => {
     return moment(date).locale('nb').format('L');
 };
+
+export const toISOString = (date: Date): string => {
+    return date.toISOString().substring(0, 10);
+};

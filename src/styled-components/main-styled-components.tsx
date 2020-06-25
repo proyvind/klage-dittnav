@@ -23,7 +23,7 @@ export const device = {
 
 export const ContentContainer = styled.div`
     margin: 0 auto;
-    @media ${device.mobileS} {
+    @media ${device.mobileL} {
         max-width: 85%;
     }
     @media ${device.tablet} {

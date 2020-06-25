@@ -56,6 +56,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 loading: false
             };
         case 'KLAGE_POST_SUCCESS':
+            action.payload.vedtaksdato = new Date(action.payload.vedtaksdato);
             return {
                 ...state,
                 activeKlage: action.payload

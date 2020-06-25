@@ -14,7 +14,6 @@ const Steps = (props: any) => {
                 aktiv: props.activeStep === i,
                 disabled: route.label === 'Oppsummering'
             }))}
-            visLabel
             autoResponsiv
         />
     );

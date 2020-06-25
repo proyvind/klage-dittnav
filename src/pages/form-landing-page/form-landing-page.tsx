@@ -19,6 +19,10 @@ const FormLandingPage = (props: any) => {
         dispatch(checkAuth());
     }, [dispatch]);
 
+    const getChosenVedtak = (query: any): Vedtak => {
+        return elementAsVedtak(query);
+    };
+
     useEffect(() => {
         if (props.location.search !== '') {
             let query = queryString.parse(props.location.search);
@@ -31,10 +35,6 @@ const FormLandingPage = (props: any) => {
     if (loading) {
         return <NavFrontendSpinner type={'XL'} />;
     }
-
-    const getChosenVedtak = (query: any): Vedtak => {
-        return elementAsVedtak(query);
-    };
 
     const getChosenYtelse = () => {
         return props.match.params.ytelse;
