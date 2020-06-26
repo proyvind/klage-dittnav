@@ -2,13 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import {
     MarginContainer,
-    ContainedContent,
     CenteredContainer,
     FlexCenteredContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import godt_bilde_guide from '../../assets/images/godt_bilde_guide.svg';
 import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
@@ -19,12 +16,6 @@ import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
 import { Klage, constructKlage } from '../../types/klage';
 import { Datovelger } from 'nav-datovelger';
 import { toISOString } from '../../utils/date-util';
-
-const ekspanderbartPanelTittel = (
-    <Normaltekst>
-        Ønsker du å legge ved et bilde? Av en legeerklæring eller lignende? Les denne veiledningen først.
-    </Normaltekst>
-);
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
