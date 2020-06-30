@@ -55,7 +55,7 @@ export const PaddingContainer = styled.div`
 `;
 
 export const MasterPaddingContainer = styled(PaddingContainer)`
-    padding-bottom: 60px;
+    padding-bottom: 64px;
 `;
 
 export const ContainedContent = styled.div`
