@@ -3,7 +3,6 @@ import envelope from '../../assets/images/icons/envelope.svg';
 import { ContentContainer, MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
-import { Knapp } from 'nav-frontend-knapper';
 
 const Kvittering = (props: any) => {
     return (
