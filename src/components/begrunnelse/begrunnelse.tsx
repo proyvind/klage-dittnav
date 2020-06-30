@@ -153,7 +153,7 @@ const Begrunnelse = (props: any) => {
                     <input
                         type="file"
                         multiple
-                        accept="image/png, .pdf"
+                        accept="image/png, image/jpeg, image/jpg, .pdf"
                         id="uploadbutton"
                         ref={fileInput}
                         onChange={e => uploadAttachment(e)}
