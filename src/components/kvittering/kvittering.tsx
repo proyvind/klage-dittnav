@@ -32,9 +32,10 @@ const Kvittering = (props: any) => {
                     </Normaltekst>
                 </MarginContainer>
 
-                <MarginContainer>
+                {/* TODO: What should this button do */}
+                {/* <MarginContainer>
                     <Knapp>Se din foreldrepengesak på DITT NAV</Knapp>
-                </MarginContainer>
+                </MarginContainer> */}
             </CenteredContainer>
         </ContentContainer>
     );

@@ -73,6 +73,12 @@ export const routesPages: RouteType[] = [
         exact: true
     },
     {
+        path: `/kvittering`,
+        component: KvitteringPage,
+        label: '',
+        exact: true
+    },
+    {
         path: `/:ytelse`,
         component: SkjemaInngang,
         label: '',
@@ -81,12 +87,6 @@ export const routesPages: RouteType[] = [
     {
         path: `/:ytelse/klage`,
         component: FormLandingPage,
-        label: '',
-        exact: true
-    },
-    {
-        path: `/kvittering`,
-        component: KvitteringPage,
         label: '',
         exact: true
     }
