@@ -6,7 +6,7 @@ import {
     FlexCenteredContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
@@ -14,7 +14,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
 import { Klage, constructKlage } from '../../types/klage';
-import { Datovelger } from 'nav-datovelger';
 import { toISOString } from '../../utils/date-util';
 
 const Begrunnelse = (props: any) => {
@@ -121,18 +120,6 @@ const Begrunnelse = (props: any) => {
 
     return (
         <>
-            <MarginContainer>
-                <Element>Vedtaksdato</Element>
-                <Datovelger
-                    onChange={(dateISO: any) => setActiveDatoISO(dateISO)}
-                    valgtDato={activeDatoISO}
-                    visÅrVelger={true}
-                    avgrensninger={{
-                        maksDato: new Date().toISOString().substring(0, 10)
-                    }}
-                />
-            </MarginContainer>
-
             <Undertittel>Begrunn din klage</Undertittel>
             <Textarea
                 name="begrunnelse"

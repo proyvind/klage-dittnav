@@ -14,6 +14,7 @@ const Steps = (props: any) => {
                 aktiv: props.activeStep === i
             }))}
             autoResponsiv
+            kompakt
         />
     );
 };

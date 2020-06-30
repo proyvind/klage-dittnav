@@ -56,7 +56,7 @@ const OppsummeringSkjemaPage = (props: any) => {
             <div className="outlined">
                 <Ekspanderbartpanel
                     border={false}
-                    apen={true}
+                    apen={false}
                     className="form-expand"
                     tittel={
                         <Undertittel>
@@ -79,7 +79,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                 <ColoredLine color="#a2a1a1" />
                 <Ekspanderbartpanel
                     border={false}
-                    apen={true}
+                    apen={false}
                     className="form-expand"
                     tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
                 >
