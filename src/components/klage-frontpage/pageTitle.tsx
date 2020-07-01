@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import { ContentContainer } from '../../styled-components/main-styled-components';
 
 const TitleContainer = styled.div`
-    background-color: #99c2e8;
+    background-color: #c1b5d0;
     padding: 10px 0;
 `;
 

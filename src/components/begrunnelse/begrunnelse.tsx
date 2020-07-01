@@ -120,7 +120,7 @@ const Begrunnelse = (props: any) => {
 
     return (
         <>
-            <Undertittel>Begrunn din klage</Undertittel>
+            <Undertittel>Begrunn klagen din</Undertittel>
             <Textarea
                 name="begrunnelse"
                 value={activeBegrunnelse}
