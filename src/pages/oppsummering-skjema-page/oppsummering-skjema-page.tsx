@@ -89,7 +89,7 @@ const OppsummeringSkjemaPage = (props: any) => {
 
                 <div className="simulate-expandable-box">
                     <Undertittel>Begrunnelse i din klage</Undertittel>
-                    <Normaltekst>{activeKlage.fritekst ?? ''}</Normaltekst>
+                    <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
                 </div>
 
                 <div className="simulate-expandable-box">

@@ -15,6 +15,7 @@ import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
 import { Klage, constructKlage } from '../../types/klage';
 import { toISOString } from '../../utils/date-util';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Begrunnelse = (props: any) => {
     const [activeDatoISO, setActiveDatoISO] = useState<string>(
         activeKlage.vedtaksdato ? toISOString(activeKlage.vedtaksdato) : toISOString(new Date())
     );
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
         const erFamilieOgPensjonEnhet = (): boolean => {
@@ -108,6 +110,10 @@ const Begrunnelse = (props: any) => {
 
     const submitBegrunnelseOgDato = (event: any) => {
         event.preventDefault();
+        setSubmitted(true);
+        if (!validBegrunnelse()) {
+            return;
+        }
         dispatch(
             updateKlage({
                 ...activeKlage,
@@ -118,8 +124,18 @@ const Begrunnelse = (props: any) => {
         props.next();
     };
 
+    const validBegrunnelse = (): boolean => {
+        return activeBegrunnelse !== null && activeBegrunnelse !== '';
+    };
+
     return (
         <>
+            {submitted && !validBegrunnelse() && (
+                <MarginContainer>
+                    <AlertStripeFeil>Du må skrive en begrunnelse før du går videre.</AlertStripeFeil>
+                </MarginContainer>
+            )}
+
             <Undertittel>Begrunn klagen din</Undertittel>
             <Textarea
                 name="begrunnelse"
@@ -129,6 +145,7 @@ const Begrunnelse = (props: any) => {
                 onChange={e => setActiveBegrunnelse(e.target.value)}
                 maxLength={0}
                 textareaClass="expanded-height"
+                feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
             />
             <MarginContainer>
                 <Undertittel>Vedlegg</Undertittel>
