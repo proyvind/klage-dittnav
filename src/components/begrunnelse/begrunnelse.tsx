@@ -1,30 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Textarea } from 'nav-frontend-skjema';
+import { Textarea, RadioPanelGruppe } from 'nav-frontend-skjema';
 import {
     MarginContainer,
     CenteredContainer,
-    FlexCenteredContainer
+    FlexCenteredContainer,
+    DoubleMarginContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
-import { Klage, constructKlage } from '../../types/klage';
+import { klageSkjemaBasertPaaVedtak, KlageSkjema } from '../../types/klage';
 import { toISOString } from '../../utils/date-util';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { datoValg } from './datoValg';
+import { Datovelger } from 'nav-datovelger';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
-    const { activeKlage, activeVedlegg } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
 
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlage.fritekst ?? '');
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
     const [activeDatoISO, setActiveDatoISO] = useState<string>(
-        activeKlage.vedtaksdato ? toISOString(activeKlage.vedtaksdato) : toISOString(new Date())
+        activeKlageSkjema.vedtaksdatoobjekt ? toISOString(activeKlageSkjema.vedtaksdatoobjekt) : ''
     );
+    const [datoalternativ, setDatoalternativ] = useState<string>(activeKlageSkjema.datoalternativ ?? '');
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -34,29 +38,32 @@ const Begrunnelse = (props: any) => {
         };
 
         if (!activeKlage || !activeKlage.id) {
-            let klage: Klage;
+            let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
-                klage = constructKlage(props.chosenVedtak);
+                klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
                 setActiveDatoISO(props.chosenVedtak.vedtaksdato);
             } else {
-                klage = {
+                klageskjema = {
                     fritekst: activeBegrunnelse,
                     tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
                     enhetId: erFamilieOgPensjonEnhet() ? 'FOP' : '',
-                    vedtaksdato: new Date(activeDatoISO),
+                    datoalternativ: datoalternativ,
                     referanse: ''
                 };
+                if (activeDatoISO !== '') {
+                    klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);
+                }
             }
-            dispatch(postNewKlage(klage));
+            dispatch(postNewKlage(klageskjema));
         }
-    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, props.chosenVedtak, props.ytelse]);
+    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, props.ytelse]);
 
     const INPUTDESCRIPTION =
         'Gjør rede for hvilken endring du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved erklæringer eller bevis som du mener kan være til støtte for klagen.';
 
     const fileInput = useRef<HTMLInputElement>(null);
 
-    const handleClick = (event: any) => {
+    const handleAttachmentClick = (event: any) => {
         event.preventDefault();
         let node = fileInput.current;
         if (node) {
@@ -64,6 +71,10 @@ const Begrunnelse = (props: any) => {
         } else {
             return;
         }
+    };
+
+    const handleDatoalternativClick = (event: any, value: string) => {
+        setDatoalternativ(value);
     };
 
     const uploadAttachment = (event: any) => {
@@ -116,9 +127,10 @@ const Begrunnelse = (props: any) => {
         }
         dispatch(
             updateKlage({
-                ...activeKlage,
+                ...activeKlageSkjema,
                 fritekst: activeBegrunnelse,
-                vedtaksdato: new Date(activeDatoISO)
+                datoalternativ: datoalternativ,
+                vedtaksdatoobjekt: new Date(activeDatoISO)
             })
         );
         props.next();
@@ -136,24 +148,57 @@ const Begrunnelse = (props: any) => {
                 </MarginContainer>
             )}
 
-            <Undertittel>Begrunn klagen din</Undertittel>
-            <Textarea
-                name="begrunnelse"
-                value={activeBegrunnelse}
-                description={INPUTDESCRIPTION}
-                placeholder="Skriv inn din begrunnelse her."
-                onChange={e => setActiveBegrunnelse(e.target.value)}
-                maxLength={0}
-                textareaClass="expanded-height"
-                feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
-            />
+            {!props.chosenVedtak && (
+                <>
+                    <MarginContainer>
+                        <Undertittel>Hvilket vedtak gjelder klagen?</Undertittel>
+                    </MarginContainer>
+                    <MarginContainer>
+                        <RadioPanelGruppe
+                            name="datoValg"
+                            radios={datoValg}
+                            checked={datoalternativ}
+                            onChange={(event: any, value: string) => handleDatoalternativClick(event, value)}
+                        />
+                    </MarginContainer>
+                </>
+            )}
+
+            {datoalternativ === 'Tidligere vedtak' && (
+                <MarginContainer>
+                    <Element>Vedtaksdato (valgfritt)</Element>
+                    <Datovelger
+                        onChange={(dateISO: any) => setActiveDatoISO(dateISO)}
+                        valgtDato={activeDatoISO}
+                        visÅrVelger={true}
+                        avgrensninger={{
+                            maksDato: new Date().toISOString().substring(0, 10)
+                        }}
+                    />
+                </MarginContainer>
+            )}
+
+            <DoubleMarginContainer>
+                <Undertittel>Begrunn klagen din</Undertittel>
+                <Textarea
+                    name="begrunnelse"
+                    value={activeBegrunnelse}
+                    description={INPUTDESCRIPTION}
+                    placeholder="Skriv inn din begrunnelse her."
+                    onChange={e => setActiveBegrunnelse(e.target.value)}
+                    maxLength={0}
+                    textareaClass="expanded-height"
+                    feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
+                />
+            </DoubleMarginContainer>
+
             <MarginContainer>
                 <Undertittel>Vedlegg</Undertittel>
                 <MarginContainer>
                     <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 </MarginContainer>
                 <MarginContainer>
-                    <Knapp onClick={e => handleClick(e)}>Last opp nytt vedlegg</Knapp>
+                    <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
                     <input
                         type="file"
                         multiple

@@ -3,7 +3,7 @@ import { Vedtak } from '../../types/vedtak';
 import { MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Datovelger } from 'nav-datovelger';
-import { constructKlage } from '../../types/klage';
+import { klageSkjemaBasertPaaVedtak } from '../../types/klage';
 import { postNewKlage } from '../../store/actions';
 import { useDispatch } from 'react-redux';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
@@ -19,7 +19,7 @@ const VedtakFormManual = (props: any) => {
 
     const [activeVedtak, setActiveVedtak] = useState<Vedtak>({
         tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
-        vedtaksdato: new Date().toISOString().substring(0, 10),
+        vedtaksdato: '',
         enhet: erFamilieOgPensjonEnhet() ? 'FOP' : '',
         NAV_referanse: ''
     });
@@ -30,7 +30,7 @@ const VedtakFormManual = (props: any) => {
 
     const submitVedtak = (event: any, activeVedtak: Vedtak) => {
         event.preventDefault();
-        dispatch(postNewKlage(constructKlage(activeVedtak)));
+        dispatch(postNewKlage(klageSkjemaBasertPaaVedtak(activeVedtak)));
         props.next();
     };
 

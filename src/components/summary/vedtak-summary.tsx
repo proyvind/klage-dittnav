@@ -1,7 +1,6 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from '../general/information-point-box';
-import { formatDate } from '../../utils/date-util';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 import { Klage } from '../../types/klage';
 
@@ -9,7 +8,7 @@ const VEDTAK_OPPLYSNINGER_POINTS = [
     { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse}</Normaltekst> },
     {
         displayName: 'Vedtaksdato',
-        content: (klage: Klage) => <Normaltekst>{formatDate(klage.vedtaksdato)}</Normaltekst>
+        content: (klage: Klage) => <Normaltekst>{klage.vedtaksdato}</Normaltekst>
     },
     {
         displayName: 'NAV-enheten som har behandlet saken',

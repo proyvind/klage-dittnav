@@ -1,4 +1,5 @@
 import { Klage } from '../../types/klage';
+import { formatDate } from '../../utils/date-util';
 
 export const KLAGER = [
     {
@@ -24,5 +25,5 @@ export const okKlage: Klage = {
     id: 1,
     tema: 'FOR',
     fritekst: '',
-    vedtaksdato: new Date()
+    vedtaksdato: formatDate(new Date())
 };

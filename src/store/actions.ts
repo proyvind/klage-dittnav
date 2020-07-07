@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
-import { Klage } from '../types/klage';
+import { Klage, klageSkjemaTilKlage, KlageSkjema } from '../types/klage';
 import { postKlage, putKlage } from '../services/klageService';
 import { VedleggProps } from '../types/vedlegg';
 
@@ -15,6 +15,7 @@ export type ActionTypes =
     | {
           type: 'KLAGE_POST_SUCCESS';
           payload: Klage;
+          klageskjema: KlageSkjema;
       }
     | {
           type: 'VEDLEGG_ADD';
@@ -46,12 +47,12 @@ export function checkAuth() {
     };
 }
 
-export function postNewKlage(klage: Klage) {
+export function postNewKlage(klageskjema: KlageSkjema) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return postKlage(klage)
+        return postKlage(klageSkjemaTilKlage(klageskjema))
             .then(response => {
                 console.log('Response from server', response);
-                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
                 console.log(err);
@@ -59,11 +60,11 @@ export function postNewKlage(klage: Klage) {
     };
 }
 
-export function updateKlage(klage: Klage) {
+export function updateKlage(klageskjema: KlageSkjema) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return putKlage(klage)
+        return putKlage(klageSkjemaTilKlage(klageskjema))
             .then(response => {
-                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response });
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
                 console.log(err);

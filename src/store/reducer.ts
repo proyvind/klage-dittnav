@@ -1,6 +1,6 @@
 import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
-import { Klage } from '../types/klage';
+import { KlageSkjema, Klage } from '../types/klage';
 import { VedleggProps } from '../types/vedlegg';
 
 export interface Store {
@@ -10,6 +10,8 @@ export interface Store {
     person: Bruker;
 
     activeKlage: Klage;
+
+    activeKlageSkjema: KlageSkjema;
 
     activeVedlegg: VedleggProps[];
 }
@@ -35,8 +37,13 @@ export const initialState: Store = {
 
     activeKlage: {
         fritekst: '',
+        tema: ''
+    },
+
+    activeKlageSkjema: {
+        fritekst: '',
         tema: '',
-        vedtaksdato: new Date()
+        datoalternativ: ''
     },
 
     activeVedlegg: []
@@ -56,10 +63,10 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 loading: false
             };
         case 'KLAGE_POST_SUCCESS':
-            action.payload.vedtaksdato = new Date(action.payload.vedtaksdato);
             return {
                 ...state,
-                activeKlage: action.payload
+                activeKlage: action.payload,
+                activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload }
             };
         case 'VEDLEGG_ADD':
             return { ...state, activeVedlegg: [...state.activeVedlegg, action.value] };
