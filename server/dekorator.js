@@ -12,8 +12,7 @@ const cache = new NodeCache({
     checkperiod: SECONDS_PER_MINUTE
 });
 
-const baseUrl = process.env.REACT_APP_APPRES_CMS_URL;
-const decoratorUrl = baseUrl + '/common-html/v4/navno?simple=true';
+const decoratorUrl = 'https://appres.nav.no/common-html/v4/navno?simple=true';
 
 const getDecorator = () =>
     new Promise((resolve, reject) => {
