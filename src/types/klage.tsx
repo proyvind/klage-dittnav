@@ -47,7 +47,7 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
         let vedtaksdato = klageskjema.datoalternativ;
 
         let foundDatoAlternativ = datoValg.find(valg => valg.value === klageskjema.datoalternativ);
-        if (foundDatoAlternativ && foundDatoAlternativ.canIncludeDate) {
+        if (foundDatoAlternativ && foundDatoAlternativ.id === 'tidligereVedtak') {
             vedtaksdato += ' - ' + formatDate(klageskjema.vedtaksdatoobjekt);
         }
         return vedtaksdato;

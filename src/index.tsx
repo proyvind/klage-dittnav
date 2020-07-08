@@ -20,8 +20,6 @@ const init = async () => {
         document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_FOOTER}}}', footer);
         document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_STYLES}}}', styles);
         document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_SCRIPTS}}}', scripts);
-        document.body.innerHTML = document.body.innerHTML.replace('{{{NAV_SKIPLINKS}}}', '');
-        document.body.innerHTML = document.body.innerHTML.replace('{{{MEGAMENU_RESOURCES}}}', '');
 
         // Execute client.js
         let script = document.createElement('script');

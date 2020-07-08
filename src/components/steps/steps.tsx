@@ -1,9 +1,9 @@
 import React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
-import { RouteType } from '../../utils/routes.config';
+import { FormStep } from '../../utils/routes.config';
 
 const Steps = (props: any) => {
-    const activeRoutes: RouteType[] = props.activeRoutes;
+    const activeRoutes: FormStep[] = props.activeRoutes;
 
     return (
         <Stegindikator

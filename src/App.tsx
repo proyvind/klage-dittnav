@@ -7,13 +7,13 @@ import Layout from './components/general/layout';
 const App = () => {
     return (
         <Router>
-            <Switch>
-                <Layout>
+            <Layout>
+                <Switch>
                     {routesConfig.map(route => {
                         return <Route key={route.path} {...route} />;
                     })}
-                </Layout>
-            </Switch>
+                </Switch>
+            </Layout>
         </Router>
     );
 };

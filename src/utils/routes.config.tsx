@@ -6,12 +6,12 @@ import KvitteringPage from '../pages/kvittering/kvittering-page';
 import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import { Redirect } from 'react-router-dom';
 import React from 'react';
+import NotFoundPage from '../pages/not-found/not-found-page';
 
 export type RouteType = {
     step?: number;
     path: string;
     component?: any;
-    label: string;
     redirect?: string;
     exact: boolean;
 };
@@ -24,6 +24,8 @@ export type FormStep = {
     redirect?: string;
     exact: boolean;
 };
+
+export const defaultYtelse = 'foreldrepenger';
 
 export const routesStepsValgtVedtak: FormStep[] = [
     {
@@ -62,34 +64,38 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
 export const routesPages: RouteType[] = [
     {
         path: `/`,
-        component: () => <Redirect to="/foreldrepenger" />, // chosen randomly
-        label: '',
+        component: () => <Redirect to={'/' + defaultYtelse} />, // chosen randomly
         exact: true
     },
     {
         path: `/redirect`,
         component: DummyRedirectPage,
-        label: '',
         exact: true
     },
     {
         path: `/kvittering`,
         component: KvitteringPage,
-        label: '',
         exact: true
     },
     {
         path: `/:ytelse`,
         component: SkjemaInngang,
-        label: '',
         exact: true
     },
     {
         path: `/:ytelse/klage`,
         component: FormLandingPage,
-        label: '',
+        exact: true
+    },
+    {
+        path: `*`,
+        component: NotFoundPage,
         exact: true
     }
 ];
+
+export const isValidYtelse = (ytelse: string): boolean => {
+    return ytelse === 'foreldrepenger' || ytelse === 'engangsstonad' || ytelse === 'svangerskapspenger';
+};
 
 export const routesConfig = routesPages;

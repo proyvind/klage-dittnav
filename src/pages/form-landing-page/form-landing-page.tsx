@@ -7,6 +7,8 @@ import { Store } from '../../store/reducer';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import MainFormPage from './main-form-page';
 import { instanceOfVedtak, elementAsVedtak } from '../../mock-api/get/vedtak';
+import NotFoundPage from '../not-found/not-found-page';
+import { isValidYtelse } from '../../utils/routes.config';
 
 const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
@@ -40,11 +42,13 @@ const FormLandingPage = (props: any) => {
         return props.match.params.ytelse;
     };
 
-    return (
-        <div>
+    let ytelse = props.match.params.ytelse;
+    if (isValidYtelse(ytelse)) {
+        return (
             <MainFormPage ytelse={getChosenYtelse()} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
-        </div>
-    );
+        );
+    }
+    return <NotFoundPage />;
 };
 
 export default FormLandingPage;
