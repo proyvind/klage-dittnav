@@ -21,12 +21,22 @@ export const device = {
     desktopL: `(min-width: ${size.desktop})`
 };
 
+export const matchMediaQueries = {
+    mobileS: window.matchMedia(`(max-width: ${size.mobileM})`),
+    mobileM: window.matchMedia(`(max-width: ${size.mobileL})`),
+    mobileL: window.matchMedia(`(max-width: ${size.tablet})`),
+    tablet: window.matchMedia(`(max-width: ${size.laptop})`),
+    laptop: window.matchMedia(`(max-width: ${size.laptopL})`),
+    laptopL: window.matchMedia(`(max-width: ${size.desktop})`),
+    desktop: window.matchMedia(`(max-width: ${size.desktop})`)
+};
+
 export const ContentContainer = styled.div`
     margin: 0 auto;
-    @media ${device.mobileL} {
+    @media ${device.mobileS} {
         max-width: 85%;
     }
-    @media ${device.tablet} {
+    @media ${device.laptop} {
         max-width: 800px;
     }
 `;
@@ -39,9 +49,17 @@ export const CenteredContainer = styled.div`
     text-align: center;
 `;
 
+export const MarginTopContainer = styled.div`
+    margin-top: 20px;
+`;
+
 export const MarginContainer = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
+`;
+
+export const DoubleMarginTopContainer = styled.div`
+    margin-top: 40px;
 `;
 
 export const DoubleMarginContainer = styled.div`
@@ -69,6 +87,15 @@ export const FlexContainer = styled.div`
     flex-flow: row wrap;
 `;
 
+export const FlexWithSpacingContainer = styled(FlexContainer)`
+    > * {
+        margin-right: 10px;
+    }
+    > *:last-child {
+        margin-right: 0;
+    }
+`;
+
 export const FlexCenteredContainer = styled(FlexContainer)`
     justify-content: center;
 `;
@@ -79,5 +106,18 @@ export const PointsFlexListContainer = styled(FlexContainer)`
         flex-basis: 40%;
         flex-grow: 1;
         margin-bottom: 20px;
+    }
+`;
+
+export const ButtonFlexContainer = styled(FlexContainer)`
+    justify-content: flex-start;
+    > a,
+    > button {
+        margin-bottom: 20px;
+        margin-right: 10px;
+    }
+    > a:last-child,
+    > button:last-child {
+        margin-right: 0;
     }
 `;

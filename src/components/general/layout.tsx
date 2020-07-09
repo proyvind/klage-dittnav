@@ -1,5 +1,5 @@
 import React from 'react';
-import PageTitle from '../klage-frontpage/pageTitle';
+import PageTitle from './pageTitle';
 import { ContentContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
 import { isValidYtelse, defaultYtelse } from '../../utils/routes.config';
 

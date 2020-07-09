@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ClipboardIcon() {
+function Clipboard() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="none" viewBox="0 0 100 100">
             <path
@@ -33,4 +33,4 @@ function ClipboardIcon() {
     );
 }
 
-export default ClipboardIcon;
+export default Clipboard;

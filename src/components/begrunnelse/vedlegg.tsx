@@ -37,7 +37,11 @@ const VedleggVisning = (props: Props) => {
                         <td>{vedlegg.status === VEDLEGG_STATUS.OK ? <Check /> : <Cross />}</td>
                         <td>{vedlegg.message}</td>
                         <td>
-                            <Lenke className="no-style" href={'#'} onClick={(e: any) => deleteVedlegg(e, vedlegg)}>
+                            <Lenke
+                                className="no-background-style"
+                                href={'#'}
+                                onClick={(e: any) => deleteVedlegg(e, vedlegg)}
+                            >
                                 <Bin />
                             </Lenke>
                         </td>

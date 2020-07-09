@@ -14,10 +14,10 @@ import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { finalizeKlage } from '../../services/klageService';
 import { useHistory } from 'react-router-dom';
-import ClipboardIcon from '../../assets/images/icons/clipboard';
+import Clipboard from '../../assets/images/icons/Clipboard';
 import Lenke from 'nav-frontend-lenker';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import ExternalLink from '../../assets/images/icons/external_link';
+import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
 
 const OppsummeringSkjemaPage = (props: any) => {
@@ -46,7 +46,7 @@ const OppsummeringSkjemaPage = (props: any) => {
         <>
             <CenteredContainer>
                 <MarginContainer>
-                    <ClipboardIcon />
+                    <Clipboard />
                 </MarginContainer>
                 <MarginContainer>
                     <Systemtittel>Oppsummering</Systemtittel>

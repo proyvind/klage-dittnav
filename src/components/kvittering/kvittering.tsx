@@ -1,5 +1,5 @@
 import React from 'react';
-import envelope from '../../assets/images/icons/envelope.svg';
+import Envelope from '../../assets/images/icons/Envelope';
 import { ContentContainer, MarginContainer, CenteredContainer } from '../../styled-components/main-styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
@@ -9,7 +9,7 @@ const Kvittering = (props: any) => {
         <ContentContainer>
             <CenteredContainer>
                 <MarginContainer>
-                    <img src={envelope} alt="Kvittering" />
+                    <Envelope />
                 </MarginContainer>
 
                 <MarginContainer>
