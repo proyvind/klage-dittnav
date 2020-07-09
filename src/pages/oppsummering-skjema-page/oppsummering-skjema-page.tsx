@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { finalizeKlage } from '../../services/klageService';
 import { useHistory } from 'react-router-dom';
-import Clipboard from '../../assets/images/icons/WIPClipboard';
+import Clipboard from '../../assets/images/icons/Clipboard';
 import Lenke from 'nav-frontend-lenker';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import ExternalLink from '../../assets/images/icons/ExternalLink';
