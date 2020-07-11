@@ -1,0 +1,35 @@
+apiVersion: "nais.io/v1"
+kind: "Alert"
+metadata:
+  name: klage-dittnav
+  namespace: klage
+  labels:
+    team: klage
+spec:
+  receivers:
+    slack:
+      channel: '#{{slackChannel}}'
+  alerts:
+    - alert: application down
+      expr: up{app="klage-dittnav", job="kubernetes-pods"} == 0
+      for: 2m
+      description: "App {{ $labels.app }} is down in namespace {{ $labels.kubernetes_namespace }}"
+      action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
+    - alert: high failure rate in logs
+      expr: (100 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="klage-dittnav",log_level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="klage-dittnav"}[3m]))) > 10
+      for: 3m
+      action: "Check the logs for {{ $labels.log_app }} in namespace {{ $labels.log_namespace }}, to find the reason."
+    - alert: selftest failing
+      expr: selftests_aggregate_result_status{app="klage-dittnav"} > 0
+      for: 1m
+      action: "Check selftest of app {{ $labels.app }} in namespace {{ $labels.kubernetes_namespace }} to see what's wrong."
+    - alert: High amount of HTTP server errors (5xx responses)
+      severity: danger
+      expr: (100 * (sum by (backend) (rate(traefik_backend_requests_total{code=~"^5\\d\\d", backend=~"{{appUrl}}*"}[3m])) / sum by (backend) (rate(traefik_backend_requests_total{backend=~"{{appUrl}}*"}[3m])))) > 1
+      for: 3m
+      action: "Check the logs to see why {{ $labels.backend }} returns error responses."
+    - alert: High amount of HTTP client errors (4xx responses)
+      severity: warning
+      expr: (100 * (sum by (backend) (rate(traefik_backend_requests_total{code=~"^4\\d\\d", backend=~"{{appUrl}}*"}[3m])) / sum by (backend) (rate(traefik_backend_requests_total{backend=~"{{appUrl}}*"}[3m])))) > 10
+      for: 3m
+      action: "Check the logs to see why {{ $labels.backend }} returns error responses."
