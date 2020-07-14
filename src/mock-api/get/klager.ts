@@ -23,6 +23,7 @@ export const KLAGER = [
 
 export const okKlage: Klage = {
     id: 1,
+    ytelse: 'foreldrepenger',
     tema: 'FOR',
     fritekst: '',
     vedtaksdato: formatDate(new Date())

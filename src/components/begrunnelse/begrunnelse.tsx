@@ -45,6 +45,7 @@ const Begrunnelse = (props: any) => {
             } else {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
+                    ytelse: props.ytelse,
                     tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
                     enhetId: erFamilieOgPensjonEnhet() ? 'FOP' : '',
                     datoalternativ: datoalternativ,
