@@ -33,7 +33,7 @@ export function displayAddress(adresse: Adresse): string {
     let display = '';
     if (adresse) {
         display += adresse.adressenavn ?? '';
-        display += ' ' + adresse.husnummer ?? '';
+        display += adresse.husnummer ? ' ' + adresse.husnummer : '';
         display += adresse.husbokstav ?? '';
     }
     return display;
