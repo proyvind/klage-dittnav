@@ -5,14 +5,14 @@ import { PointsFlexListContainer } from '../../styled-components/main-styled-com
 import { Klage } from '../../types/klage';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
-    { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse}</Normaltekst> },
+    { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse ?? ''}</Normaltekst> },
     {
         displayName: 'Vedtaksdato',
-        content: (klage: Klage) => <Normaltekst>{klage.vedtaksdato}</Normaltekst>
+        content: (klage: Klage) => <Normaltekst>{klage.vedtaksdato ?? ''}</Normaltekst>
     },
     {
         displayName: 'NAV-enheten som har behandlet saken',
-        content: (klage: Klage) => <Normaltekst>{klage.enhetId}</Normaltekst>
+        content: (klage: Klage) => <Normaltekst>{klage.enhetId ?? ''}</Normaltekst>
     }
 ];
 
