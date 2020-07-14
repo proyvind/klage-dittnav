@@ -11,6 +11,7 @@ export enum KlageStatus {
 export interface KlageSkjema {
     id?: number;
     fritekst: string;
+    ytelse: string;
     tema: string;
     enhetId?: string;
     datoalternativ: string;
@@ -23,6 +24,7 @@ export interface KlageSkjema {
 export interface Klage {
     id?: number;
     fritekst: string;
+    ytelse: string;
     tema: string;
     enhetId?: string;
     vedtaksdato?: string;
@@ -33,6 +35,7 @@ export interface Klage {
 export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
     const klageskjema: KlageSkjema = {
         fritekst: '',
+        ytelse: vedtak.ytelse,
         tema: vedtak.tema,
         enhetId: vedtak.enhet,
         datoalternativ: '',
@@ -57,6 +60,7 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
     klage = {
         id: klageskjema.id,
         fritekst: klageskjema.fritekst,
+        ytelse: klageskjema.ytelse,
         tema: klageskjema.tema,
         enhetId: klageskjema.enhetId,
         vedtaksdato: getVedtaksDato(),
