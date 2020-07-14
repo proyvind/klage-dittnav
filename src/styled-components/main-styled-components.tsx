@@ -62,6 +62,8 @@ export const MarginContainer = styled.div`
 
 export const Margin40TopContainer = styled(MarginTopContainer)`
     margin-top: 40px;
+    width: 100%;
+    display: inline-block;
 `;
 
 export const Margin40Container = styled.div`
