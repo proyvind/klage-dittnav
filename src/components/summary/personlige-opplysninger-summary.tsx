@@ -6,7 +6,10 @@ import { PointsFlexListContainer } from '../../styled-components/main-styled-com
 import { foedselsnrFormat } from '../../utils/text-formatting';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    { displayName: 'Fornavn', content: (person: Bruker) => <Normaltekst>{person.navn.fornavn ?? ''}</Normaltekst> },
+    {
+        displayName: 'Fornavn',
+        content: (person: Bruker) => <Normaltekst>{combineFirstMiddleName(person)}</Normaltekst>
+    },
     { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn ?? ''}</Normaltekst> },
     {
         displayName: 'Fødselsnummer',
@@ -25,6 +28,12 @@ const PERSONLIGE_OPPLYSNINGER_POINTS = [
         content: (person: Bruker) => (person.adresse ? <AddressPointBox adress={person.adresse} /> : '')
     }
 ];
+
+const combineFirstMiddleName = (person: Bruker): string => {
+    let name = '' + person.navn.fornavn ?? '';
+    name += person.navn.mellomnavn ?? '';
+    return name;
+};
 
 const AddressPointBox = ({ adress }: { adress: Adresse }) => (
     <div>
