@@ -12,11 +12,10 @@ const cache = new NodeCache({
     checkperiod: SECONDS_PER_MINUTE
 });
 
-console.log('process.env.NAIS_CLUSTER_NAME: ', process.env.NAIS_CLUSTER_NAME);
-const baseUrl =
-    process.env.NAIS_CLUSTER_NAME === 'dev-sbs'
-        ? process.env.REACT_APP_APPRES_CMS_BASE_URL_GCP
-        : process.env.REACT_APP_APPRES_CMS_BASE_URL;
+const decorator_base_url = 'https://appres.nav.no';
+const decorator_base_url_gcp = 'https://appres-q1.nav.no';
+
+const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-sbs' ? decorator_base_url_gcp : decorator_base_url;
 const decoratorUrl = baseUrl + '/common-html/v4/navno?simple=true';
 
 const getDecorator = () =>

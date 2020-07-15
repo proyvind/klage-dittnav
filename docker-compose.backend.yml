@@ -13,6 +13,4 @@ services:
             REACT_API_URL: https://klage-dittnav-api.dev-nav.no
             #REACT_API_URL: http://localhost:7070
             REACT_APP_API_PORT: 7070
-            REACT_APP_APPRES_CMS_BASE_URL: https://appres.nav.no
-            REACT_APP_APPRES_CMS_BASE_URL_GCP: https://appres-q1.nav.no
             REACT_APP_MOCK_DATA: 'false'
