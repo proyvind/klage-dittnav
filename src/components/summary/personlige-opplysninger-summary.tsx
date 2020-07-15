@@ -7,7 +7,7 @@ import { foedselsnrFormat } from '../../utils/text-formatting';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
     {
-        displayName: 'Fornavn',
+        displayName: 'For- og mellomnavn',
         content: (person: Bruker) => <Normaltekst>{combineFirstMiddleName(person)}</Normaltekst>
     },
     { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn ?? ''}</Normaltekst> },
@@ -30,8 +30,8 @@ const PERSONLIGE_OPPLYSNINGER_POINTS = [
 ];
 
 const combineFirstMiddleName = (person: Bruker): string => {
-    let name = '' + person.navn.fornavn ?? '';
-    name += person.navn.mellomnavn ?? '';
+    let name = person.navn.fornavn ?? '';
+    name += person.navn.mellomnavn ? ' ' + person.navn.mellomnavn : '';
     return name;
 };
 
