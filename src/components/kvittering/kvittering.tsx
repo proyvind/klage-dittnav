@@ -5,6 +5,8 @@ import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 
 const Kvittering = (props: any) => {
+    window.onbeforeunload = null;
+
     return (
         <ContentContainer>
             <CenteredContainer>
