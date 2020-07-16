@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and deploy to test environments
 
 on:
   push:
@@ -96,31 +96,5 @@ jobs:
           curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
         env:
           MESSAGE: "Deploy av klage-dittnav til dev-gcp feilet"
-          CHANNEL: "#klage-notifications"
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-  deployprod:
-    name: Deploy to prod-gcp
-    needs: deploypreprod
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        name: Checkout code
-      - name: Lag tag for image
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
-      - name: Lag full image referanse
-        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
-
-      - uses: nais/deploy/actions/deploy@master
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: nais/nais.yaml
-          VARS: nais/prod.json
-      - name: Post failures to Slack
-        if: failure()
-        run: |
-          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
-        env:
-          MESSAGE: "Deploy av klage-dittnav til prod-gcp feilet"
           CHANNEL: "#klage-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
