@@ -123,7 +123,7 @@ const Begrunnelse = (props: any) => {
     const submitBegrunnelseOgDato = (event: any) => {
         event.preventDefault();
         setSubmitted(true);
-        if (!validBegrunnelse()) {
+        if (!validForm()) {
             return;
         }
         dispatch(
@@ -137,15 +137,38 @@ const Begrunnelse = (props: any) => {
         props.next();
     };
 
+    const validForm = (): boolean => {
+        return validBegrunnelse() && validDatoalternativ();
+    };
+
     const validBegrunnelse = (): boolean => {
         return activeBegrunnelse !== null && activeBegrunnelse !== '';
     };
 
+    const validDatoalternativ = (): boolean => {
+        return datoalternativ !== '';
+    };
+
+    const getFeilmeldinger = (): string[] => {
+        let feilmeldinger = [];
+        if (!validDatoalternativ()) {
+            feilmeldinger.push('Du må velge hvilket vedtak du ønsker å klage på før du går videre.');
+        }
+        if (!validBegrunnelse()) {
+            feilmeldinger.push('Du må skrive en begrunnelse før du går videre.');
+        }
+        return feilmeldinger;
+    };
+
     return (
         <>
-            {submitted && !validBegrunnelse() && (
+            {submitted && !validForm() && (
                 <MarginContainer>
-                    <AlertStripeFeil>Du må skrive en begrunnelse før du går videre.</AlertStripeFeil>
+                    <AlertStripeFeil>
+                        {getFeilmeldinger().map(feilmelding => {
+                            return <p className="no-margin">{feilmelding}</p>;
+                        })}
+                    </AlertStripeFeil>
                 </MarginContainer>
             )}
 
@@ -160,6 +183,11 @@ const Begrunnelse = (props: any) => {
                             radios={datoValg}
                             checked={datoalternativ}
                             onChange={(event: any, value: string) => handleDatoalternativClick(event, value)}
+                            feil={
+                                submitted &&
+                                !validDatoalternativ() &&
+                                'Du må velge hvilket vedtak du ønsker å klage på.'
+                            }
                         />
                     </MarginContainer>
                 </>
