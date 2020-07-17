@@ -24,6 +24,10 @@ export type ActionTypes =
     | {
           type: 'VEDLEGG_REMOVE';
           value: any;
+      }
+    | {
+          type: 'YTELSE_SET';
+          value: string;
       };
 
 export function checkAuth() {
@@ -70,6 +74,12 @@ export function updateKlage(klageskjema: KlageSkjema) {
                 console.log(err);
             });
     };
+}
+
+export function setValgtYtelse(ytelse: string) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return dispatch({type: "YTELSE_SET", value: ytelse});
+    }
 }
 
 const sjekkAuth = (response: Response): any => {

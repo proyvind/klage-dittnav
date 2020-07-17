@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -17,6 +17,8 @@ import Popover from 'nav-frontend-popover';
 import Lenke from 'nav-frontend-lenker';
 import ModalWrapper from 'nav-frontend-modal';
 import ModalElektroniskId from './modal-elektronisk-id';
+import {useDispatch} from "react-redux";
+import {setValgtYtelse} from "../../store/actions";
 
 export const BoxHeader = styled.div`
     background-color: #c1b5d0;
@@ -46,12 +48,17 @@ interface Props {
 }
 
 const InngangInfoBox = (props: Props) => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const [mediaumMobileMode, setMediumMobileMode] = useState<boolean>(matchMediaQueries.mobileM.matches);
     const [smallMobileMode, setSmallMobileMode] = useState<boolean>(matchMediaQueries.mobileS.matches);
     const [questionActive, setQuestionActive] = useState<boolean>(false);
     const [popoverAnker, setPopoverAnker] = useState<HTMLElement | undefined>(undefined);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        dispatch(setValgtYtelse(props.ytelse));
+    }, [dispatch, props.ytelse]);
 
     matchMediaQueries.mobileM.addListener(width => {
         setMediumMobileMode(width.matches);
@@ -99,7 +106,7 @@ const InngangInfoBox = (props: Props) => {
                             <Hovedknapp
                                 kompakt={mediaumMobileMode}
                                 mini={smallMobileMode}
-                                onClick={() => history.push(`${props.ytelse}/klage`)}
+                                onClick={() => history.push(`klage`)}
                             >
                                 Fortsett til innlogget skjema
                             </Hovedknapp>

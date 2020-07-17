@@ -2,9 +2,12 @@ import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
 import { KlageSkjema, Klage } from '../types/klage';
 import { VedleggProps } from '../types/vedlegg';
+import {defaultYtelse} from "../utils/routes.config";
 
 export interface Store {
     loading: boolean;
+
+    chosenYtelse: string;
 
     // Auth response
     person: Bruker;
@@ -18,6 +21,8 @@ export interface Store {
 
 export const initialState: Store = {
     loading: true,
+
+    chosenYtelse: defaultYtelse,
 
     person: {
         navn: {
@@ -78,6 +83,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 activeVedlegg: state.activeVedlegg.filter((_: any, index: number) => index !== vIndex)
+            };
+        case "YTELSE_SET":
+            return {
+                ...state,
+                chosenYtelse: action.value
             };
     }
     return state;

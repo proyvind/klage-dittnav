@@ -16,7 +16,7 @@ export const getKlagerByFnrUrl = (fnr: string): string => `${Environment.REACT_A
 export const getAddKlageUrl = (): string => `${Environment.REACT_APP_API_URL}/klager`;
 
 export const getLoginserviceRedirectUrl = (): string =>
-    `${Environment.REACT_APP_LOGINSERVICE_URL}?redirect=${Environment.REACT_APP_URL}`;
+    `${Environment.REACT_APP_LOGINSERVICE_URL}?redirect=${Environment.REACT_APP_URL}/klage`;
 
 export const getAddVedleggUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/${id}/vedlegg`;
 

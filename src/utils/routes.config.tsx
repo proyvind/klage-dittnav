@@ -7,6 +7,7 @@ import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import { Redirect } from 'react-router-dom';
 import React from 'react';
 import NotFoundPage from '../pages/not-found/not-found-page';
+import {validYtelser} from "../types/ytelse";
 
 export type RouteType = {
     step?: number;
@@ -78,13 +79,13 @@ export const routesPages: RouteType[] = [
         exact: true
     },
     {
-        path: `/:ytelse`,
-        component: SkjemaInngang,
+        path: `/klage`,
+        component: FormLandingPage,
         exact: true
     },
     {
-        path: `/:ytelse/klage`,
-        component: FormLandingPage,
+        path: `/:ytelse`,
+        component: SkjemaInngang,
         exact: true
     },
     {
@@ -95,7 +96,7 @@ export const routesPages: RouteType[] = [
 ];
 
 export const isValidYtelse = (ytelse: string): boolean => {
-    return ytelse === 'foreldrepenger' || ytelse === 'engangsstonad' || ytelse === 'svangerskapspenger';
+    return validYtelser.includes(ytelse);
 };
 
 export const routesConfig = routesPages;

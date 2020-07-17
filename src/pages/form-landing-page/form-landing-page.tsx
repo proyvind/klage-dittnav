@@ -12,11 +12,10 @@ import { isValidYtelse } from '../../utils/routes.config';
 
 const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
-    const { loading } = useSelector((state: Store) => state);
+    const { loading, chosenYtelse } = useSelector((state: Store) => state);
 
     const [availableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
-    const chosenYtelse = props.match.params.ytelse ?? '';
 
     useEffect(() => {
         dispatch(checkAuth());
