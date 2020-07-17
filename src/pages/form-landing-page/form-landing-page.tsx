@@ -16,37 +16,28 @@ const FormLandingPage = (props: any) => {
 
     const [availableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
+    const chosenYtelse = props.match.params.ytelse ?? '';
 
     useEffect(() => {
         dispatch(checkAuth());
     }, [dispatch]);
 
-    const getChosenVedtak = (query: any): Vedtak => {
-        return elementAsVedtak(query);
-    };
-
     useEffect(() => {
         if (props.location.search !== '') {
             let query = queryString.parse(props.location.search);
+            query.ytelse = chosenYtelse;
             if (instanceOfVedtak(query)) {
-                setChosenVedtak(getChosenVedtak(query));
+                setChosenVedtak(elementAsVedtak(query));
             }
         }
-    }, [props.location.search]);
+    }, [props.location.search, chosenYtelse]);
 
     if (loading) {
         return <NavFrontendSpinner type={'XL'} />;
     }
 
-    const getChosenYtelse = () => {
-        return props.match.params.ytelse;
-    };
-
-    let ytelse = props.match.params.ytelse;
-    if (isValidYtelse(ytelse)) {
-        return (
-            <MainFormPage ytelse={getChosenYtelse()} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
-        );
+    if (isValidYtelse(chosenYtelse)) {
+        return <MainFormPage ytelse={chosenYtelse} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />;
     }
     return <NotFoundPage />;
 };

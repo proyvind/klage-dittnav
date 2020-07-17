@@ -46,14 +46,22 @@ export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
 };
 
 export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
-    const getVedtaksDato = () => {
-        let vedtaksdato = klageskjema.datoalternativ;
-
+    const getVedtaksDato = (): string => {
+        let result = '';
         let foundDatoAlternativ = datoValg.find(valg => valg.value === klageskjema.datoalternativ);
-        if (foundDatoAlternativ && foundDatoAlternativ.id === 'tidligereVedtak') {
-            vedtaksdato += ' - ' + formatDate(klageskjema.vedtaksdatoobjekt);
+
+        let vedtaksdatoobjekt = klageskjema.vedtaksdatoobjekt;
+
+        if (foundDatoAlternativ !== undefined) {
+            result +=
+                foundDatoAlternativ.value +
+                (foundDatoAlternativ.id === 'tidligereVedtak' ? ' - ' + formatDate(vedtaksdatoobjekt) : '');
+        } else if (vedtaksdatoobjekt) {
+            result +=
+                datoValg.find(valg => valg.id === 'tidligereVedtak')?.value + ' - ' + formatDate(vedtaksdatoobjekt);
         }
-        return vedtaksdato;
+
+        return result;
     };
 
     let klage: Klage;
