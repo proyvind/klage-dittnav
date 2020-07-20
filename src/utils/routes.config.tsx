@@ -7,7 +7,7 @@ import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import { Redirect } from 'react-router-dom';
 import React from 'react';
 import NotFoundPage from '../pages/not-found/not-found-page';
-import {validYtelser} from "../types/ytelse";
+import { validYtelser } from '../types/ytelse';
 
 export type RouteType = {
     step?: number;

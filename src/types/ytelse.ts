@@ -1,3 +1,1 @@
-export const validYtelser = [
-    'foreldrepenger', 'engangsstonad', 'svangerskapspenger'
-];
+export const validYtelser = ['foreldrepenger', 'engangsstonad', 'svangerskapspenger'];

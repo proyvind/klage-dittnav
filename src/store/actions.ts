@@ -78,8 +78,8 @@ export function updateKlage(klageskjema: KlageSkjema) {
 
 export function setValgtYtelse(ytelse: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return dispatch({type: "YTELSE_SET", value: ytelse});
-    }
+        return dispatch({ type: 'YTELSE_SET', value: ytelse });
+    };
 }
 
 const sjekkAuth = (response: Response): any => {
