@@ -29,5 +29,5 @@ men det er ønskelig at det sendes med følgende felter:
 
 ## URL
 * labs: https://klage-dittnav.labs.nais.io
-* preprod: https://klage-dittnav.dev-nav.no
+* preprod: https://klage-dittnav.dev.nav.no
 * prod: N/A
