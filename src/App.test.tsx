@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import renderer from 'react-test-renderer';
+import './tests/matchMedia.mock';
 import App from './App';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';

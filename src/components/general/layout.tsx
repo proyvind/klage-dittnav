@@ -1,7 +1,8 @@
 import React from 'react';
 import PageTitle from './pageTitle';
 import { ContentContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
-import { isValidYtelse, defaultYtelse } from '../../utils/routes.config';
+import { isValidYtelse} from '../../utils/routes.config';
+import {defaultYtelse} from "../../types/ytelse";
 
 const Layout = (props: any) => {
     let title = 'Klage';

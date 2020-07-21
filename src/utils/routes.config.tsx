@@ -4,10 +4,8 @@ import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummeri
 import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
-import { Redirect } from 'react-router-dom';
-import React from 'react';
 import NotFoundPage from '../pages/not-found/not-found-page';
-import { validYtelser } from '../types/ytelse';
+import {validYtelser} from '../types/ytelse';
 
 export type RouteType = {
     step?: number;
@@ -25,8 +23,6 @@ export type FormStep = {
     redirect?: string;
     exact: boolean;
 };
-
-export const defaultYtelse = 'foreldrepenger';
 
 export const routesStepsValgtVedtak: FormStep[] = [
     {
@@ -65,7 +61,7 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
 export const routesPages: RouteType[] = [
     {
         path: `/`,
-        component: () => <Redirect to={'/' + defaultYtelse} />, // chosen randomly
+        component: SkjemaInngang,
         exact: true
     },
     {
@@ -81,11 +77,6 @@ export const routesPages: RouteType[] = [
     {
         path: `/klage`,
         component: FormLandingPage,
-        exact: true
-    },
-    {
-        path: `/:ytelse`,
-        component: SkjemaInngang,
         exact: true
     },
     {
