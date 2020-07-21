@@ -2,7 +2,7 @@ import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
 import { KlageSkjema, Klage } from '../types/klage';
 import { VedleggProps } from '../types/vedlegg';
-import { defaultYtelse } from '../utils/routes.config';
+import { defaultYtelse } from '../types/ytelse';
 
 export interface Store {
     loading: boolean;

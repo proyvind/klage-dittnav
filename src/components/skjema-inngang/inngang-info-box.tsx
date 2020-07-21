@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -13,12 +13,11 @@ import { useHistory } from 'react-router-dom';
 import ViewDesklampBook from '../../assets/images/icons/ViewDesklampBook';
 import QuestionActive from '../../assets/images/icons/QuestionActive';
 import QuestionInactive from '../../assets/images/icons/QuestionInactive';
-import Popover from 'nav-frontend-popover';
 import Lenke from 'nav-frontend-lenker';
 import ModalWrapper from 'nav-frontend-modal';
 import ModalElektroniskId from './modal-elektronisk-id';
-import {useDispatch} from "react-redux";
-import {setValgtYtelse} from "../../store/actions";
+import { useDispatch } from 'react-redux';
+import { setValgtYtelse } from '../../store/actions';
 
 export const BoxHeader = styled.div`
     background-color: #c1b5d0;
@@ -53,7 +52,7 @@ const InngangInfoBox = (props: Props) => {
     const [mediaumMobileMode, setMediumMobileMode] = useState<boolean>(matchMediaQueries.mobileM.matches);
     const [smallMobileMode, setSmallMobileMode] = useState<boolean>(matchMediaQueries.mobileS.matches);
     const [questionActive, setQuestionActive] = useState<boolean>(false);
-    const [popoverAnker, setPopoverAnker] = useState<HTMLElement | undefined>(undefined);
+    // const [popoverAnker, setPopoverAnker] = useState<HTMLElement | undefined>(undefined);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
@@ -68,10 +67,13 @@ const InngangInfoBox = (props: Props) => {
         setSmallMobileMode(width.matches);
     });
 
-    const toggleQuestionActive = (anker: HTMLElement) => {
-        setPopoverAnker(questionActive ? undefined : anker);
+    const toggleQuestionActive = () => {
+        // setPopoverAnker(questionActive ? undefined : anker);
         setQuestionActive(!questionActive);
     };
+
+    const ytelse = props.ytelse === 'engangsstonad' ? 'engangsstønad' : props.ytelse;
+    const title = `Klage - ${ytelse}`;
 
     return (
         <div>
@@ -79,7 +81,7 @@ const InngangInfoBox = (props: Props) => {
                 <ViewDesklampBook />
             </BoxHeader>
             <BoxContent>
-                <Systemtittel>Klage - {props.ytelse}</Systemtittel>
+                <Systemtittel>{title}</Systemtittel>
                 <MarginContainer>
                     <div className="infoBox">
                         <Normaltekst>
@@ -137,18 +139,19 @@ const InngangInfoBox = (props: Props) => {
                                     <ModalElektroniskId />
                                 </ModalWrapper>
                             </div>
-                            <span
-                                id="withPopover"
-                                onClick={e => toggleQuestionActive(e.currentTarget)}
-                                style={{ cursor: 'pointer' }}
-                            >
+                            <span id="withPopover" onClick={() => toggleQuestionActive()} style={{ cursor: 'pointer' }}>
                                 {questionActive ? <QuestionActive /> : <QuestionInactive />}
                             </span>
-                            <Popover ankerEl={popoverAnker} onRequestClose={() => {}} autoFokus={false}>
+                            {questionActive && (
+                                <span>
+                                    For å søke på nett må du ha BankID fra banken din eller en annen elektronisk ID.
+                                </span>
+                            )}
+                            {/* <Popover ankerEl={popoverAnker} onRequestClose={() => {}} autoFokus={false}>
                                 <p style={{ padding: '1rem' }}>
                                     For å søke på nett må du ha BankID fra banken din eller en annen elektronisk ID.
                                 </p>
-                            </Popover>
+                            </Popover> */}
                         </FlexWithSpacingContainer>
                     </MarginContainer>
                 </MarginContainer>

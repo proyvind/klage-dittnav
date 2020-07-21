@@ -1,9 +1,23 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import renderer from 'react-test-renderer';
+import './tests/matchMedia.mock';
 import App from './App';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
+
+Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(), // deprecated
+        removeListener: jest.fn(), // deprecated
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn()
+    }))
+});
 
 describe('Welcome klage', () => {
     const store = configureStore();
