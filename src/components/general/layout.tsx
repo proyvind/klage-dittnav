@@ -1,26 +1,13 @@
 import React from 'react';
 import PageTitle from './pageTitle';
 import { ContentContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
-import { isValidYtelse} from '../../utils/routes.config';
-import {defaultYtelse} from "../../types/ytelse";
+import {useSelector} from "react-redux";
+import {Store} from "../../store/reducer";
 
 const Layout = (props: any) => {
-    let title = 'Klage';
-
-    let firsturlchild = window.location.pathname.split('/')[1];
-    if (firsturlchild === '') {
-        firsturlchild = defaultYtelse;
-    }
-    if (isValidYtelse(firsturlchild)) {
-        let ytelse = firsturlchild;
-
-        if (ytelse === 'engangsstonad') {
-            ytelse = 'engangsstønad';
-        }
-        title += ' på vedtak for ' + ytelse;
-    } else {
-        title += ' skjemainngang';
-    }
+    const { chosenYtelse } = useSelector((state: Store) => state);
+    const ytelse = chosenYtelse === 'engangsstonad' ? 'engangsstønad' : chosenYtelse;
+    const title = `Klage på vedtak for ${ytelse}`;
 
     return (
         <>

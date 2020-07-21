@@ -72,13 +72,16 @@ const InngangInfoBox = (props: Props) => {
         setQuestionActive(!questionActive);
     };
 
+    const ytelse = props.ytelse === 'engangsstonad' ? 'engangsstønad' : props.ytelse;
+    const title = `Klage - ${ytelse}`;
+
     return (
         <div>
             <BoxHeader>
                 <ViewDesklampBook />
             </BoxHeader>
             <BoxContent>
-                <Systemtittel>Klage - {props.ytelse}</Systemtittel>
+                <Systemtittel>{title}</Systemtittel>
                 <MarginContainer>
                     <div className="infoBox">
                         <Normaltekst>
