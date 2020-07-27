@@ -1,5 +1,4 @@
 @import 'components/begrunnelse/begrunnelse.less';
-@import 'components/summary/vedtak-summary.less';
 @import 'pages/oppsummering-skjema-page/oppsummering-skjema-page.less';
 @import 'media-queries.less';
 
@@ -16,4 +15,59 @@
 /// PARAGRAPHS ///
 .no-margin {
     margin: 0;
+}
+
+.p_wrap {
+    white-space: pre-line;
+}
+
+/// DIVS ///
+.expanded-height {
+    min-height: 180px;
+}
+
+.override-overlay {
+    display: inline-block;
+    position: initial;
+}
+
+/// FLEX LAYOUT ///
+.row-element {
+    margin: 10px 5px;
+}
+
+.first-element-alone div:nth-child(1) {
+    flex-basis: 100%;
+}
+
+.list-align-right {
+    display: flex;
+    flex-direction: column;
+}
+.list-align-right > * {
+    line-height: 22px;
+}
+
+/// OTHER ///
+
+.outlined {
+    border: 1px solid #a2a1a1;
+}
+@media only screen and (min-width: 320px) {
+    .outlined {
+        padding: 12px;
+        padding-bottom: 100px;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .outlined {
+        padding: 48px;
+        padding-bottom: 150px;
+    }
+}
+.form-expand h2 {
+    color: #000000;
+}
+.simulate-expandable-box {
+    padding: 1rem;
 }
