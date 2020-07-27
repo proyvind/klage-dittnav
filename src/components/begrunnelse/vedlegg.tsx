@@ -13,8 +13,8 @@ const VedleggVisning = (props: Props) => {
         return null;
     }
 
-    const deleteVedlegg = (file: Vedlegg) => {
-        let deletedItem = props.vedlegg.find(v => v.vedlegg.id === file.id);
+    const deleteVedlegg = (ifile: any) => {
+        let deletedItem = props.vedlegg.find(v => v.vedlegg.id === ifile.id);
         if (deletedItem) {
             props.deleteAction(deletedItem);
         } else {
