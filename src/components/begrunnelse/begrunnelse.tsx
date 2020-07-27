@@ -207,7 +207,7 @@ const Begrunnelse = (props: any) => {
                 </MarginContainer>
             )}
 
-            <Margin40Container>
+            <Margin40Container className="override-overlay">
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
@@ -223,9 +223,7 @@ const Begrunnelse = (props: any) => {
 
             <MarginContainer>
                 <Undertittel>Vedlegg</Undertittel>
-                <MarginContainer>
-                    <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
-                </MarginContainer>
+                <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 <MarginContainer>
                     <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
                     <input

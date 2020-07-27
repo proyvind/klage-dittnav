@@ -2,32 +2,12 @@ import React from 'react';
 import { VedleggProps, Vedlegg } from '../../types/vedlegg';
 import File from 'forhandsvisningsfil';
 import styled, { keyframes } from 'styled-components';
+import { FlexWithSpacingContainer } from '../../styled-components/main-styled-components';
 
 interface Props {
     vedlegg: VedleggProps[];
     deleteAction: (vedlegg: VedleggProps) => void;
 }
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-`;
-
-const FileDiv = styled.div`
-    position: relative;
-    &.animate {
-        animation: ${fadeIn} 0.4s;
-    }
-`;
 
 const VedleggVisning = (props: Props) => {
     if (props.vedlegg.length === 0) {
@@ -45,7 +25,7 @@ const VedleggVisning = (props: Props) => {
     };
 
     return (
-        <FileDiv>
+        <FlexWithSpacingContainer>
             {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
                 <File
                     file={vedlegg.vedlegg}
@@ -63,7 +43,7 @@ const VedleggVisning = (props: Props) => {
                     scale={2}
                 />
             ))}
-        </FileDiv>
+        </FlexWithSpacingContainer>
     );
 };
 
