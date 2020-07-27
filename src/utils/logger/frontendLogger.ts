@@ -1,6 +1,6 @@
-import {isDevelopment} from "../environment";
+import { isDevelopment } from '../environment';
 import { v4 as uuidv4 } from 'uuid';
-import {detect} from "detect-browser";
+import { detect } from 'detect-browser';
 
 const logCorrelation = uuidv4();
 
@@ -38,12 +38,7 @@ export function loggInfo(message: string, fields?: ValuePairs) {
         window['frontendlogger'].info(info);
     }
 }
-export function loggWarning(
-    error: Error,
-    message?: string,
-    fields?: ValuePairs,
-    extraTagsLogEvent?: ValuePairs
-) {
+export function loggWarning(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
     const browser = detect();
     const info = {
         message: `${message ? message + ': ' : ''} ${error.name} ${error.message}`,
@@ -86,8 +81,6 @@ function frontendLoggerIsInitialized(): boolean {
 function uselogger(): boolean {
     return !isDevelopment && frontendLoggerIsInitialized();
 }
-
-
 
 function emptyStringToUndefined(valuePairs: ValuePairs) {
     return Object.keys(valuePairs).reduce(

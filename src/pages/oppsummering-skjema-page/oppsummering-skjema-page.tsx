@@ -97,7 +97,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                     <VedleggSummary vedlegg={activeVedlegg} />
                 </div>
             </div>
-            <Margin40Container>
+            <Margin40Container className="override-overlay">
                 <FlexCenteredContainer>
                     <Knapp className="row-element" onClick={() => props.previous()}>
                         Tilbake

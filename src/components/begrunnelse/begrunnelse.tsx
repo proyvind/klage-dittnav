@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
-import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
+import { VEDLEGG_STATUS, VedleggProps, toVedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,6 +19,7 @@ import { toISOString } from '../../utils/date-util';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Begrunnelse = (props: any) => {
         activeKlageSkjema.vedtaksdatoobjekt ? toISOString(activeKlageSkjema.vedtaksdatoobjekt) : ''
     );
     const [datoalternativ, setDatoalternativ] = useState<string>(activeKlageSkjema.datoalternativ ?? '');
+    const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -80,6 +82,7 @@ const Begrunnelse = (props: any) => {
 
     const uploadAttachment = (event: any) => {
         event.preventDefault();
+        setVedleggLoading(true);
         for (let key of Object.keys(event.target.files)) {
             if (key !== 'length') {
                 const formData = new FormData();
@@ -91,8 +94,9 @@ const Begrunnelse = (props: any) => {
                         console.log(response);
                         dispatch({
                             type: 'VEDLEGG_ADD',
-                            value: { status: VEDLEGG_STATUS.OK, vedlegg: response.data }
+                            value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response.data) }
                         });
+                        setVedleggLoading(false);
                     })
                     .catch(err => {
                         console.log(err);
@@ -100,13 +104,14 @@ const Begrunnelse = (props: any) => {
                             type: 'VEDLEGG_ADD',
                             value: { status: VEDLEGG_STATUS.ERROR, message: 'error' }
                         });
+                        setVedleggLoading(false);
                     });
             }
         }
     };
 
     const removeAttachment = (vedlegg: VedleggProps) => {
-        console.log(vedlegg);
+        setVedleggLoading(true);
         deleteVedlegg(vedlegg.vedlegg)
             .then(response => {
                 console.log(response);
@@ -114,9 +119,11 @@ const Begrunnelse = (props: any) => {
                     type: 'VEDLEGG_REMOVE',
                     value: vedlegg
                 });
+                setVedleggLoading(false);
             })
             .catch(err => {
                 console.log(err);
+                setVedleggLoading(false);
             });
     };
 
@@ -207,7 +214,7 @@ const Begrunnelse = (props: any) => {
                 </MarginContainer>
             )}
 
-            <Margin40Container>
+            <Margin40Container className="override-overlay">
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
@@ -223,9 +230,8 @@ const Begrunnelse = (props: any) => {
 
             <MarginContainer>
                 <Undertittel>Vedlegg</Undertittel>
-                <MarginContainer>
-                    <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
-                </MarginContainer>
+                <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
+                {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
                 <MarginContainer>
                     <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
                     <input

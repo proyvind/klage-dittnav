@@ -58,6 +58,7 @@ export const MarginTopContainer = styled.div`
 export const MarginContainer = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 100%;
 `;
 
 export const Margin40TopContainer = styled(MarginTopContainer)`
@@ -66,7 +67,7 @@ export const Margin40TopContainer = styled(MarginTopContainer)`
     display: inline-block;
 `;
 
-export const Margin40Container = styled.div`
+export const Margin40Container = styled(MarginContainer)`
     margin-top: 40px;
     margin-bottom: 40px;
 `;
@@ -75,7 +76,7 @@ export const Margin80TopContainer = styled(MarginTopContainer)`
     margin-top: 80px;
 `;
 
-export const Margin80Container = styled.div`
+export const Margin80Container = styled(MarginContainer)`
     margin-top: 80px;
     margin-bottom: 80px;
 `;

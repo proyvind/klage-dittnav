@@ -1,9 +1,7 @@
 import React from 'react';
-import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
-import Check from '../../assets/images/Check';
-import Cross from '../../assets/images/Cross';
-import Bin from '../../assets/images/Bin';
-import Lenke from 'nav-frontend-lenker';
+import { VedleggProps, Vedlegg } from '../../types/vedlegg';
+import File from 'forhandsvisningsfil';
+import { FlexWithSpacingContainer } from '../../styled-components/main-styled-components';
 
 interface Props {
     vedlegg: VedleggProps[];
@@ -15,40 +13,36 @@ const VedleggVisning = (props: Props) => {
         return null;
     }
 
-    const deleteVedlegg = (event: any, vedlegg: VedleggProps) => {
-        event.preventDefault();
-        props.deleteAction(vedlegg);
+    const deleteVedlegg = (file: Vedlegg) => {
+        let deletedItem = props.vedlegg.find(v => v.vedlegg.id === file.id);
+        if (deletedItem) {
+            props.deleteAction(deletedItem);
+        } else {
+            // TODO: Error handling
+            console.log('Får ikke slettet vedlegg.');
+        }
     };
 
     return (
-        <table className="tabell">
-            <thead>
-                <tr>
-                    <th>Fil</th>
-                    <th>Status</th>
-                    <th>Melding</th>
-                    <th>Slett</th>
-                </tr>
-            </thead>
-            <tbody>
-                {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
-                    <tr key={index}>
-                        <td>{vedlegg.vedlegg?.tittel ?? '-'}</td>
-                        <td>{vedlegg.status === VEDLEGG_STATUS.OK ? <Check /> : <Cross />}</td>
-                        <td>{vedlegg.message}</td>
-                        <td>
-                            <Lenke
-                                className="no-background-style"
-                                href={'#'}
-                                onClick={(e: any) => deleteVedlegg(e, vedlegg)}
-                            >
-                                <Bin />
-                            </Lenke>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <FlexWithSpacingContainer>
+            {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
+                <File
+                    file={vedlegg.vedlegg}
+                    buttonsVisibility="always"
+                    buttonsPosition="inside"
+                    viewOnePage={true}
+                    showAddButton
+                    showDeleteButton
+                    showDownloadButton
+                    onAddFile={file => console.log('onAddFile: ', file)}
+                    onDeleteFile={file => deleteVedlegg(file)}
+                    onDownloadFile={file => console.log('onDownloadFile: ', file)}
+                    onPreviousPage={file => console.log('onPreviousPage: ', file)}
+                    onNextPage={file => console.log('onNextPage: ', file)}
+                    scale={2}
+                />
+            ))}
+        </FlexWithSpacingContainer>
     );
 };
 
