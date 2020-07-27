@@ -1,5 +1,5 @@
 import React from 'react';
-import { VedleggProps, Vedlegg } from '../../types/vedlegg';
+import { VedleggProps } from '../../types/vedlegg';
 import File from 'forhandsvisningsfil';
 import { FlexWithSpacingContainer } from '../../styled-components/main-styled-components';
 
