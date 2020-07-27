@@ -1,9 +1,11 @@
 export interface Vedlegg {
-    tittel: string;
+    name: string;
     ref: string;
     klageId: number;
-    type: string;
-    id: number;
+    mimetype: string;
+    id: string;
+    size: number;
+    content: any;
 }
 
 export interface VedleggResponse {
@@ -22,3 +24,30 @@ export interface VedleggProps {
     id?: number;
     vedlegg: Vedlegg;
 }
+
+const rename = (obj: any, oldName: string, newName: string) => {
+    if (!obj.hasOwnProperty(oldName)) {
+        return false;
+    }
+
+    obj[newName] = obj[oldName];
+    delete obj[oldName];
+    return true;
+};
+
+const toPdfFile = (filename: string) => {
+    return filename.substr(0, filename.lastIndexOf('.')) + '.pdf';
+};
+
+export const toVedleggProps = (data: any) => {
+    rename(data, 'tittel', 'name');
+    rename(data, 'sizeInBytes', 'size');
+    data.name = toPdfFile(data.name);
+    data.id = '' + data.id;
+    data.mimetype = 'application/pdf';
+    data.content = {
+        base64: data.content
+    };
+    delete data.contentType;
+    return data;
+};

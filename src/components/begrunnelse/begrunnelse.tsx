@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
-import { VEDLEGG_STATUS, VedleggProps } from '../../types/vedlegg';
+import { VEDLEGG_STATUS, VedleggProps, toVedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -91,7 +91,7 @@ const Begrunnelse = (props: any) => {
                         console.log(response);
                         dispatch({
                             type: 'VEDLEGG_ADD',
-                            value: { status: VEDLEGG_STATUS.OK, vedlegg: response.data }
+                            value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response.data) }
                         });
                     })
                     .catch(err => {
