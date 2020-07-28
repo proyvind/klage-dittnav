@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
-import { VEDLEGG_STATUS, VedleggProps, toVedleggProps } from '../../types/vedlegg';
+import { VEDLEGG_STATUS, VedleggProps, toVedleggProps, VedleggErrorMessages } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,6 +31,7 @@ const Begrunnelse = (props: any) => {
     );
     const [datoalternativ, setDatoalternativ] = useState<string>(activeKlageSkjema.datoalternativ ?? '');
     const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
+    const [vedleggFeilmelding, setVedleggFeilmelding] = useState<string>('');
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -82,7 +83,10 @@ const Begrunnelse = (props: any) => {
 
     const uploadAttachment = (event: any) => {
         event.preventDefault();
-        setVedleggLoading(true);
+        if (event.target.files.length > 0) {
+            setVedleggLoading(true);
+            setVedleggFeilmelding('');
+        }
         for (let key of Object.keys(event.target.files)) {
             if (key !== 'length') {
                 const formData = new FormData();
@@ -93,17 +97,14 @@ const Begrunnelse = (props: any) => {
                     .then(response => {
                         console.log(response);
                         dispatch({
-                            type: 'VEDLEGG_ADD',
+                            type: 'VEDLEGG_ADD_SUCCESS',
                             value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response.data) }
                         });
                         setVedleggLoading(false);
                     })
                     .catch(err => {
                         console.log(err);
-                        dispatch({
-                            type: 'VEDLEGG_ADD',
-                            value: { status: VEDLEGG_STATUS.ERROR, message: 'error' }
-                        });
+                        setVedleggFeilmelding(err.response.data.message);
                         setVedleggLoading(false);
                     });
             }
@@ -112,6 +113,7 @@ const Begrunnelse = (props: any) => {
 
     const removeAttachment = (vedlegg: VedleggProps) => {
         setVedleggLoading(true);
+        setVedleggFeilmelding('');
         deleteVedlegg(vedlegg.vedlegg)
             .then(response => {
                 console.log(response);
@@ -232,6 +234,17 @@ const Begrunnelse = (props: any) => {
                 <Undertittel>Vedlegg</Undertittel>
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
+
+                {vedleggFeilmelding !== '' && (
+                    <MarginContainer>
+                        <AlertStripeFeil>
+                            <p className="no-margin">
+                                {VedleggErrorMessages[vedleggFeilmelding] ?? vedleggFeilmelding}
+                            </p>
+                        </AlertStripeFeil>
+                    </MarginContainer>
+                )}
+
                 <MarginContainer>
                     <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
                     <input

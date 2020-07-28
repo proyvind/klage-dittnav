@@ -18,7 +18,7 @@ export type ActionTypes =
           klageskjema: KlageSkjema;
       }
     | {
-          type: 'VEDLEGG_ADD';
+          type: 'VEDLEGG_ADD_SUCCESS';
           value: VedleggProps;
       }
     | {

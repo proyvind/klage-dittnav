@@ -25,6 +25,14 @@ export interface VedleggProps {
     vedlegg: Vedlegg;
 }
 
+export const VedleggErrorMessages = {
+    TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',
+    TOTAL_TOO_LARGE: 'Total filstørrelse kan ikke være større enn 32 MB.',
+    ENCRYPTED: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med i din klage.',
+    EMPTY: 'Du kan ikke sende med en tom fil.',
+    VIRUS: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med i din klage.'
+};
+
 const rename = (obj: any, oldName: string, newName: string) => {
     if (!obj.hasOwnProperty(oldName)) {
         return false;
