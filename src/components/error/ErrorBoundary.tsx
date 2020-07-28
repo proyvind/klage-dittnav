@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { loggError } from '../../utils/logger/frontendLogger';
+import { logError } from '../../utils/logger/frontendLogger';
 
 interface Props {
     boundaryName?: string;
@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     componentDidCatch(error: Error, info: React.ErrorInfo) {
         this.setState({ hasError: true });
         const message: string = `ErrorBoundary${this.props.boundaryName ? ' i ' + this.props.boundaryName : ''}`;
-        loggError(error, message, { reactInfo: info });
+        logError(error, message, { reactInfo: info });
     }
 
     render() {

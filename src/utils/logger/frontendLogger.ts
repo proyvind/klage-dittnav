@@ -28,7 +28,7 @@ export function loggEvent(action: string, location: string, extraTags?: ValuePai
     );
 }
 
-export function loggInfo(message: string, fields?: ValuePairs) {
+export function logInfo(message: string, fields?: ValuePairs) {
     const info = {
         message: message,
         ...fields
@@ -38,7 +38,7 @@ export function loggInfo(message: string, fields?: ValuePairs) {
         window['frontendlogger'].info(info);
     }
 }
-export function loggWarning(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
+export function logWarning(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
     const browser = detect();
     const info = {
         message: `${message ? message + ': ' : ''} ${error.name} ${error.message}`,
@@ -54,7 +54,7 @@ export function loggWarning(error: Error, message?: string, fields?: ValuePairs,
     }
 }
 
-export function loggError(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
+export function logError(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
     const browser = detect();
     const info = {
         message: `${message ? message + ': ' : ''} ${error.name} ${error.message}`,

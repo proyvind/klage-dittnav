@@ -2,8 +2,9 @@
   min-height: 180px;
 }
 .row-element {
-  margin-right: 10px;
+  margin: 10px 5px;
 }
-.row-element:last-child {
-  margin-right: 0px;
+.override-overlay {
+  display: inline-block;
+  position: initial;
 }
