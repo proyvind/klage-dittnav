@@ -70,7 +70,7 @@ export async function postVedlegg(resource: string, vedlegg: FormData) {
     try {
         return await response;
     } catch (error) {
-        logError(error, 'Error from post klage call', { resource: resource });
+        logError(error, 'Error from post vedlegg call', { resource: resource });
         throw error;
     }
 }
@@ -80,7 +80,7 @@ export async function deleteVedlegg(resource: string) {
     try {
         return await response;
     } catch (error) {
-        logError(error, 'Error from post klage call', { resource: resource });
+        logError(error, 'Error from delete vedlegg call', { resource: resource });
         throw error;
     }
 }
