@@ -75,7 +75,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 activeKlage: action.payload,
                 activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload }
             };
-        case 'VEDLEGG_ADD':
+        case 'VEDLEGG_ADD_SUCCESS':
             return { ...state, activeVedlegg: [...state.activeVedlegg, action.value] };
 
         case 'VEDLEGG_REMOVE':
