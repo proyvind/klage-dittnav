@@ -30,6 +30,7 @@ export function loggEvent(action: string, location: string, extraTags?: ValuePai
 
 export function logInfo(message: string, fields?: ValuePairs) {
     const info = {
+        uselogger: uselogger(),
         message: message,
         ...fields
     };
