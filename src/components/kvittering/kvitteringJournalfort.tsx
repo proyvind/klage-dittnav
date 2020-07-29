@@ -4,7 +4,7 @@ import { ContentContainer, MarginContainer, CenteredContainer } from '../../styl
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 
-const Kvittering = (props: any) => {
+const KvitteringJournalfort = (props: any) => {
     window.onbeforeunload = null;
 
     return (
@@ -42,4 +42,4 @@ const Kvittering = (props: any) => {
     );
 };
 
-export default Kvittering;
+export default KvitteringJournalfort;
