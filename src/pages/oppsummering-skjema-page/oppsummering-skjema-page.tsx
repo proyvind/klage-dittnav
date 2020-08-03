@@ -94,7 +94,7 @@ const OppsummeringSkjemaPage = (props: any) => {
 
                 <div className="simulate-expandable-box">
                     <Undertittel>Vedlagte dokumenter</Undertittel>
-                    <VedleggSummary vedlegg={activeVedlegg} />
+                    <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
                 </div>
             </div>
             <Margin40Container className="override-overlay">
