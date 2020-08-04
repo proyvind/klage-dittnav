@@ -20,8 +20,9 @@ const VedleggSummary = (props: Props) => {
     return (
         <div>
             {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => {
-                if (props.klage.id && vedlegg.vedlegg.id) {
-                    return (
+                return (
+                    props.klage.id &&
+                    vedlegg.vedlegg.id && (
                         <div>
                             <Lenke
                                 className="no-background-style"
@@ -32,8 +33,8 @@ const VedleggSummary = (props: Props) => {
                                 <Vedleggtekst>{vedlegg.vedlegg?.name}</Vedleggtekst>
                             </Lenke>
                         </div>
-                    );
-                }
+                    )
+                );
             })}
         </div>
     );
