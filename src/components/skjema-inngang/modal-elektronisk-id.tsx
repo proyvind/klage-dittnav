@@ -5,7 +5,7 @@ import {
     FlexWithSpacingContainer,
     ButtonFlexContainer,
     CenteredContainer,
-    Margin40TopContainer
+    Margin48TopContainer
 } from '../../styled-components/main-styled-components';
 import Lenke from 'nav-frontend-lenker';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -30,7 +30,7 @@ const ModalElektroniskId = () => {
                 </Lenke>
                 <ExternalLink />
             </FlexWithSpacingContainer>
-            <Margin40TopContainer>
+            <Margin48TopContainer>
                 <ButtonFlexContainer>
                     <a
                         target="_blank"
@@ -42,7 +42,7 @@ const ModalElektroniskId = () => {
                     </a>
                     <Hovedknapp>Gå til søknaden</Hovedknapp>
                 </ButtonFlexContainer>
-            </Margin40TopContainer>
+            </Margin48TopContainer>
         </div>
     );
 };
