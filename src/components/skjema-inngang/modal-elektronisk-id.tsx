@@ -10,8 +10,15 @@ import {
 import Lenke from 'nav-frontend-lenker';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import BubbleChatInformation from '../../assets/images/icons/BubbleChatInformation';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Store } from '../../store/reducer';
+import { getUrlToPaperForm } from '../../types/ytelse';
 
 const ModalElektroniskId = () => {
+    const history = useHistory();
+    const { chosenYtelse } = useSelector((state: Store) => state);
+
     return (
         <div style={{ padding: '20px' }}>
             <CenteredContainer>
@@ -26,21 +33,21 @@ const ModalElektroniskId = () => {
             </Paragraph>
             <FlexWithSpacingContainer>
                 <Lenke target="_blank" rel="noopener noreferrer" href="https://www.norge.no/elektronisk-id">
-                    Slik skaffer du deg elektronisk ID.
+                    <span>Slik skaffer du deg elektronisk ID.</span>
+                    <ExternalLink />
                 </Lenke>
-                <ExternalLink />
             </FlexWithSpacingContainer>
             <Margin40TopContainer>
                 <ButtonFlexContainer>
+                    <Hovedknapp onClick={() => history.push(`klage`)}>Fortsett med elektronisk søknad</Hovedknapp>
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://www.nav.no/soknader/nb/klage/person"
+                        href={getUrlToPaperForm(chosenYtelse)}
                         className="knapp"
                     >
                         Gå til papirsøknaden
                     </a>
-                    <Hovedknapp>Gå til søknaden</Hovedknapp>
                 </ButtonFlexContainer>
             </Margin40TopContainer>
         </div>
