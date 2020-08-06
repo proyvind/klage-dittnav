@@ -231,7 +231,7 @@ const Begrunnelse = (props: any) => {
             </Margin40Container>
 
             <MarginContainer>
-                <Undertittel>Vedlegg</Undertittel>
+                <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
 
