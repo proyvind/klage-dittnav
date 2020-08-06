@@ -50,14 +50,14 @@ export const CenteredContainer = styled.div`
 `;
 
 export const MarginTopContainer = styled.div`
-    margin-top: 20px;
+    margin-top: 24px;
     width: 100%;
     display: inline-block;
 `;
 
 export const MarginContainer = styled.div`
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
     width: 100%;
 `;
 
@@ -82,8 +82,8 @@ export const Margin80Container = styled(MarginContainer)`
 `;
 
 export const PaddingContainer = styled.div`
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 32px;
+    padding-bottom: 32px;
 `;
 
 export const MasterPaddingContainer = styled(PaddingContainer)`
@@ -119,7 +119,7 @@ export const PointsFlexListContainer = styled(FlexContainer)`
     > div {
         flex-basis: 40%;
         flex-grow: 1;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
 `;
 
@@ -127,7 +127,7 @@ export const ButtonFlexContainer = styled(FlexContainer)`
     justify-content: flex-start;
     > a,
     > button {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
         margin-right: 10px;
     }
     > a:last-child,
