@@ -5,7 +5,7 @@ import {
     MarginContainer,
     FlexCenteredContainer,
     CenteredContainer,
-    Margin40Container
+    Margin48Container
 } from '../../styled-components/main-styled-components';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -97,7 +97,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                     <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
                 </div>
             </div>
-            <Margin40Container className="override-overlay">
+            <Margin48Container className="override-overlay">
                 <FlexCenteredContainer>
                     <Knapp className="row-element" onClick={() => props.previous()}>
                         Tilbake
@@ -106,7 +106,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                         Send inn
                     </Hovedknapp>
                 </FlexCenteredContainer>
-            </Margin40Container>
+            </Margin48Container>
         </>
     );
 };

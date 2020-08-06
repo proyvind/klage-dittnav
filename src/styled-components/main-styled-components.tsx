@@ -50,26 +50,28 @@ export const CenteredContainer = styled.div`
 `;
 
 export const MarginTopContainer = styled.div`
-    margin-top: 20px;
+    margin-top: 16px;
     width: 100%;
     display: inline-block;
 `;
 
 export const MarginContainer = styled.div`
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 16px;
+    margin-bottom: 16px;
     width: 100%;
 `;
 
-export const Margin40TopContainer = styled(MarginTopContainer)`
-    margin-top: 40px;
-    width: 100%;
-    display: inline-block;
+export const Margin32TopContainer = styled(MarginTopContainer)`
+    margin-top: 32px;
 `;
 
-export const Margin40Container = styled(MarginContainer)`
-    margin-top: 40px;
-    margin-bottom: 40px;
+export const Margin48TopContainer = styled(MarginTopContainer)`
+    margin-top: 48px;
+`;
+
+export const Margin48Container = styled(MarginContainer)`
+    margin-top: 48px;
+    margin-bottom: 48px;
 `;
 
 export const Margin80TopContainer = styled(MarginTopContainer)`
