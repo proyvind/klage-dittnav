@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import {
     MarginContainer,
     matchMediaQueries,
@@ -16,8 +16,10 @@ import QuestionInactive from '../../assets/images/icons/QuestionInactive';
 import Lenke from 'nav-frontend-lenker';
 import ModalWrapper from 'nav-frontend-modal';
 import ModalElektroniskId from './modal-elektronisk-id';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setValgtYtelse } from '../../store/actions';
+import { getUrlToPaperForm } from '../../types/ytelse';
+import { Store } from '../../store/reducer';
 
 export const BoxHeader = styled.div`
     background-color: #c1b5d0;
@@ -49,7 +51,10 @@ interface Props {
 const InngangInfoBox = (props: Props) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [mediaumMobileMode, setMediumMobileMode] = useState<boolean>(matchMediaQueries.mobileM.matches);
+
+    const { chosenYtelse } = useSelector((state: Store) => state);
+
+    const [mediumMobileMode, setMediumMobileMode] = useState<boolean>(matchMediaQueries.mobileM.matches);
     const [smallMobileMode, setSmallMobileMode] = useState<boolean>(matchMediaQueries.mobileS.matches);
     const [questionActive, setQuestionActive] = useState<boolean>(false);
     // const [popoverAnker, setPopoverAnker] = useState<HTMLElement | undefined>(undefined);
@@ -106,16 +111,24 @@ const InngangInfoBox = (props: Props) => {
                     <MarginContainer>
                         <ButtonFlexContainer>
                             <Hovedknapp
-                                kompakt={mediaumMobileMode}
+                                kompakt={mediumMobileMode}
                                 mini={smallMobileMode}
                                 onClick={() => history.push(`klage`)}
                             >
                                 Fortsett til innlogget skjema
                             </Hovedknapp>
 
-                            <Knapp kompakt={mediaumMobileMode} mini={smallMobileMode}>
+                            <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={getUrlToPaperForm(chosenYtelse)}
+                                className={`knapp
+                                    ${mediumMobileMode ? 'knapp--kompakt' : ''} ${
+                                    smallMobileMode ? 'knapp--mini' : ''
+                                }`}
+                            >
                                 Jeg klager på vegne av andre
-                            </Knapp>
+                            </a>
                         </ButtonFlexContainer>
                     </MarginContainer>
                     <MarginContainer>
