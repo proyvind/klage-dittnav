@@ -93,7 +93,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                 </div>
 
                 <div className="simulate-expandable-box">
-                    <Undertittel>Vedlagte dokumenter</Undertittel>
+                    <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
                     <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
                 </div>
             </div>
