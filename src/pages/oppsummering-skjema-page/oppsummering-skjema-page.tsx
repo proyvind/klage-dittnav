@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
 import {
@@ -19,25 +19,31 @@ import Lenke from 'nav-frontend-lenker';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
+import WithLoading from '../../components/general/loading/withLoading';
 
 const OppsummeringSkjemaPage = (props: any) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
+    const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
 
     const submitForm = (event: any) => {
         event.preventDefault();
+        setIsLoading(true);
         if (!activeKlage.id) {
             // TODO: Sett error message
+            setIsLoading(false);
             return;
         }
         finalizeKlage(activeKlage.id)
             .then(response => {
                 console.log(response);
                 history.push(`/kvittering`);
+                setIsLoading(false);
                 // TODO: Set success message
             })
             .catch(error => {
                 console.log(error);
+                setIsLoading(false);
                 // TODO: Set error message
             });
     };
@@ -53,60 +59,62 @@ const OppsummeringSkjemaPage = (props: any) => {
                 </MarginContainer>
             </CenteredContainer>
 
-            <div className="outlined">
-                <Ekspanderbartpanel
-                    border={false}
-                    apen={false}
-                    className="form-expand"
-                    tittel={
-                        <Undertittel>
-                            Opplysninger fra Folkeregisteret og Kontakt- og reserverasjonsregisteret
-                        </Undertittel>
-                    }
-                >
-                    <PersonligeOpplysningerSummary person={person} />
-                    <div className="list-align-right">
-                        <Lenke href="#">
-                            <span>Endre navn eller adresse (Folkeregisteret)</span>
-                            <ExternalLink />
-                        </Lenke>
-                        <Lenke href="#">
-                            <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
-                            <ExternalLink />
-                        </Lenke>
+            <WithLoading loading={loading}>
+                <div className="outlined">
+                    <Ekspanderbartpanel
+                        border={false}
+                        apen={false}
+                        className="form-expand"
+                        tittel={
+                            <Undertittel>
+                                Opplysninger fra Folkeregisteret og Kontakt- og reserverasjonsregisteret
+                            </Undertittel>
+                        }
+                    >
+                        <PersonligeOpplysningerSummary person={person} />
+                        <div className="list-align-right">
+                            <Lenke href="#">
+                                <span>Endre navn eller adresse (Folkeregisteret)</span>
+                                <ExternalLink />
+                            </Lenke>
+                            <Lenke href="#">
+                                <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
+                                <ExternalLink />
+                            </Lenke>
+                        </div>
+                    </Ekspanderbartpanel>
+                    <ColoredLine color="#a2a1a1" />
+                    <Ekspanderbartpanel
+                        border={false}
+                        apen={false}
+                        className="form-expand"
+                        tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
+                    >
+                        <VedtakSummary klage={activeKlage} />
+                    </Ekspanderbartpanel>
+                    <ColoredLine color="#a2a1a1" />
+
+                    <div className="simulate-expandable-box">
+                        <Undertittel>Begrunnelse i din klage</Undertittel>
+                        <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
                     </div>
-                </Ekspanderbartpanel>
-                <ColoredLine color="#a2a1a1" />
-                <Ekspanderbartpanel
-                    border={false}
-                    apen={false}
-                    className="form-expand"
-                    tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
-                >
-                    <VedtakSummary klage={activeKlage} />
-                </Ekspanderbartpanel>
-                <ColoredLine color="#a2a1a1" />
 
-                <div className="simulate-expandable-box">
-                    <Undertittel>Begrunnelse i din klage</Undertittel>
-                    <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
+                    <div className="simulate-expandable-box">
+                        <Undertittel>Vedlagte dokumenter</Undertittel>
+                        <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
+                    </div>
                 </div>
-
-                <div className="simulate-expandable-box">
-                    <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
-                    <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
-                </div>
-            </div>
-            <Margin48Container className="override-overlay">
-                <FlexCenteredContainer>
-                    <Knapp className="row-element" onClick={() => props.previous()}>
-                        Tilbake
-                    </Knapp>
-                    <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)}>
-                        Send inn
-                    </Hovedknapp>
-                </FlexCenteredContainer>
-            </Margin48Container>
+                <Margin48Container className="override-overlay">
+                    <FlexCenteredContainer>
+                        <Knapp className="row-element" onClick={() => props.previous()}>
+                            Tilbake
+                        </Knapp>
+                        <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)}>
+                            Send inn
+                        </Hovedknapp>
+                    </FlexCenteredContainer>
+                </Margin48Container>
+            </WithLoading>
         </>
     );
 };
