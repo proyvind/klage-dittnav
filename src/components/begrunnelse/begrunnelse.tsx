@@ -3,8 +3,10 @@ import { Textarea, RadioPanelGruppe } from 'nav-frontend-skjema';
 import {
     MarginContainer,
     FlexCenteredContainer,
-    Margin40Container,
-    Margin80TopContainer
+    Margin48Container,
+    Margin48TopContainer,
+    Margin32TopContainer,
+    MarginTopContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
@@ -63,7 +65,7 @@ const Begrunnelse = (props: any) => {
     }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, props.ytelse]);
 
     const INPUTDESCRIPTION =
-        'Gjør rede for hvilken endring du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved erklæringer eller bevis som du mener kan være til støtte for klagen.';
+        'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -216,7 +218,7 @@ const Begrunnelse = (props: any) => {
                 </MarginContainer>
             )}
 
-            <Margin40Container className="override-overlay">
+            <Margin48Container className="override-overlay">
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
@@ -228,10 +230,10 @@ const Begrunnelse = (props: any) => {
                     textareaClass="expanded-height"
                     feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
                 />
-            </Margin40Container>
+            </Margin48Container>
 
             <MarginContainer>
-                <Undertittel>Vedlegg</Undertittel>
+                <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
 
@@ -257,23 +259,26 @@ const Begrunnelse = (props: any) => {
                         style={{ display: 'none' }}
                     />
                 </MarginContainer>
-                <Normaltekst>
-                    Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
-                </Normaltekst>
-                <br />
-                <Normaltekst>
-                    All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger ikke
-                    lastes opp på nytt.
-                </Normaltekst>
+                <Margin32TopContainer>
+                    <Normaltekst>
+                        Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
+                    </Normaltekst>
+                    <MarginTopContainer>
+                        <Normaltekst>
+                            All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
+                            ikke lastes opp på nytt.
+                        </Normaltekst>
+                    </MarginTopContainer>
+                </Margin32TopContainer>
             </MarginContainer>
 
-            <Margin80TopContainer>
+            <Margin48TopContainer className="override-overlay">
                 <FlexCenteredContainer>
                     <Hovedknapp className="row-element" onClick={(event: any) => submitBegrunnelseOgDato(event)}>
                         Gå videre
                     </Hovedknapp>
                 </FlexCenteredContainer>
-            </Margin80TopContainer>
+            </Margin48TopContainer>
         </>
     );
 };
