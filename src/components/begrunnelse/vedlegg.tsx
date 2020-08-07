@@ -1,7 +1,7 @@
 import React from 'react';
 import { VedleggProps } from '../../types/vedlegg';
 import File from 'forhandsvisningsfil';
-import { FlexWithSpacingContainer } from '../../styled-components/main-styled-components';
+import { FlexWithSpacingContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
 
 interface Props {
     vedlegg: VedleggProps[];
@@ -24,25 +24,27 @@ const VedleggVisning = (props: Props) => {
     };
 
     return (
-        <FlexWithSpacingContainer>
-            {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
-                <File
-                    file={vedlegg.vedlegg}
-                    buttonsVisibility="always"
-                    buttonsPosition="inside"
-                    viewOnePage={true}
-                    showAddButton
-                    showDeleteButton
-                    showDownloadButton
-                    onAddFile={file => console.log('onAddFile: ', file)}
-                    onDeleteFile={file => deleteVedlegg(file)}
-                    onDownloadFile={file => console.log('onDownloadFile: ', file)}
-                    onPreviousPage={file => console.log('onPreviousPage: ', file)}
-                    onNextPage={file => console.log('onNextPage: ', file)}
-                    scale={2}
-                />
-            ))}
-        </FlexWithSpacingContainer>
+        <MasterPaddingContainer>
+            <FlexWithSpacingContainer>
+                {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
+                    <File
+                        file={vedlegg.vedlegg}
+                        buttonsVisibility="always"
+                        buttonsPosition="inside"
+                        viewOnePage={true}
+                        showAddButton
+                        showDeleteButton
+                        showDownloadButton
+                        onAddFile={file => console.log('onAddFile: ', file)}
+                        onDeleteFile={file => deleteVedlegg(file)}
+                        onDownloadFile={file => console.log('onDownloadFile: ', file)}
+                        onPreviousPage={file => console.log('onPreviousPage: ', file)}
+                        onNextPage={file => console.log('onNextPage: ', file)}
+                        scale={2}
+                    />
+                ))}
+            </FlexWithSpacingContainer>
+        </MasterPaddingContainer>
     );
 };
 
