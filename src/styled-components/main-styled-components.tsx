@@ -114,6 +114,17 @@ export const FlexContainer = styled.div`
     flex-flow: row wrap;
 `;
 
+export const FlexColumnContainer = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+`;
+
+export const FlexColumnWithSpacingContainer = styled(FlexColumnContainer)`
+    > * {
+        margin-bottom: 10px;
+    }
+`;
+
 export const FlexWithSpacingContainer = styled(FlexContainer)`
     > * {
         margin-right: 10px;

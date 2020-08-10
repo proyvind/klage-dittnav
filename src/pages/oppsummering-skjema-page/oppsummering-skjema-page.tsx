@@ -5,9 +5,11 @@ import {
     MarginContainer,
     FlexCenteredContainer,
     CenteredContainer,
-    Margin48Container
+    Margin48Container,
+    MarginTopContainer,
+    FlexColumnWithSpacingContainer
 } from '../../styled-components/main-styled-components';
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Systemtittel, Undertittel, Undertekst } from 'nav-frontend-typografi';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
 import { useSelector } from 'react-redux';
@@ -65,14 +67,13 @@ const OppsummeringSkjemaPage = (props: any) => {
                         border={false}
                         apen={false}
                         className="form-expand"
-                        tittel={
-                            <Undertittel>
-                                Opplysninger fra Folkeregisteret og Kontakt- og reserverasjonsregisteret
-                            </Undertittel>
-                        }
+                        tittel={<Undertittel>Person&shy;opplysninger</Undertittel>}
                     >
-                        <PersonligeOpplysningerSummary person={person} />
-                        <div className="list-align-right">
+                        <Undertekst>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Undertekst>
+                        <MarginTopContainer>
+                            <PersonligeOpplysningerSummary person={person} />
+                        </MarginTopContainer>
+                        <FlexColumnWithSpacingContainer>
                             <Lenke href="#">
                                 <span>Endre navn eller adresse (Folkeregisteret)</span>
                                 <ExternalLink />
@@ -81,7 +82,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                                 <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
                                 <ExternalLink />
                             </Lenke>
-                        </div>
+                        </FlexColumnWithSpacingContainer>
                     </Ekspanderbartpanel>
                     <ColoredLine color="#a2a1a1" />
                     <Ekspanderbartpanel
