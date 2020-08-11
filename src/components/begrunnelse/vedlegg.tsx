@@ -1,7 +1,7 @@
 import React from 'react';
 import { VedleggProps } from '../../types/vedlegg';
 import File from 'forhandsvisningsfil';
-import { FlexWithSpacingContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
+import { FlexWithSpacingContainer, PaddingContainer } from '../../styled-components/main-styled-components';
 
 interface Props {
     vedlegg: VedleggProps[];
@@ -24,7 +24,7 @@ const VedleggVisning = (props: Props) => {
     };
 
     return (
-        <MasterPaddingContainer>
+        <PaddingContainer>
             <FlexWithSpacingContainer>
                 {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
                     <File
@@ -32,10 +32,8 @@ const VedleggVisning = (props: Props) => {
                         buttonsVisibility="always"
                         buttonsPosition="inside"
                         viewOnePage={true}
-                        showAddButton
                         showDeleteButton
                         showDownloadButton
-                        onAddFile={file => console.log('onAddFile: ', file)}
                         onDeleteFile={file => deleteVedlegg(file)}
                         onDownloadFile={file => console.log('onDownloadFile: ', file)}
                         onPreviousPage={file => console.log('onPreviousPage: ', file)}
@@ -44,7 +42,7 @@ const VedleggVisning = (props: Props) => {
                     />
                 ))}
             </FlexWithSpacingContainer>
-        </MasterPaddingContainer>
+        </PaddingContainer>
     );
 };
 

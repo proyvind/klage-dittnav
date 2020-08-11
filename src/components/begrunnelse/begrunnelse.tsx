@@ -255,7 +255,10 @@ const Begrunnelse = (props: any) => {
                         accept="image/png, image/jpeg, image/jpg, .pdf"
                         id="uploadbutton"
                         ref={fileInput}
-                        onChange={e => uploadAttachment(e)}
+                        onChange={e => {
+                            uploadAttachment(e);
+                            e.currentTarget.value = '';
+                        }}
                         style={{ display: 'none' }}
                     />
                 </MarginContainer>
