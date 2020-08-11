@@ -34,9 +34,7 @@ const VedleggVisning = (props: Props) => {
                         buttonsPosition="inside"
                         viewOnePage={true}
                         showDeleteButton
-                        showDownloadButton
                         onDeleteFile={file => deleteVedlegg(file)}
-                        onDownloadFile={file => console.log('onDownloadFile: ', file)}
                         onPreviousPage={file => console.log('onPreviousPage: ', file)}
                         onNextPage={file => console.log('onNextPage: ', file)}
                         scale={2}
