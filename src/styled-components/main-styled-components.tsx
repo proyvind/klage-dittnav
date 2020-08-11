@@ -31,7 +31,7 @@ export const matchMediaQueries = {
     desktop: window.matchMedia(`(max-width: ${size.desktop})`)
 };
 
-export const ContentContainer = styled.div`
+export const MainContainer = styled.div`
     margin: 0 auto;
     @media ${device.mobileS} {
         max-width: 85%;
@@ -39,6 +39,10 @@ export const ContentContainer = styled.div`
     @media ${device.laptop} {
         max-width: 800px;
     }
+`;
+
+export const ContentContainer = styled.div`
+    margin: 0 auto;
 `;
 
 export const CenteredContentContainer = styled(ContentContainer)`

@@ -62,7 +62,7 @@ const OppsummeringSkjemaPage = (props: any) => {
             </CenteredContainer>
 
             <WithLoading loading={loading}>
-                <div className="outlined">
+                <div className="framed">
                     <Ekspanderbartpanel
                         border={false}
                         apen={false}

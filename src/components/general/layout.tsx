@@ -1,6 +1,6 @@
 import React from 'react';
 import PageTitle from './pageTitle';
-import { ContentContainer, MasterPaddingContainer } from '../../styled-components/main-styled-components';
+import { MasterPaddingContainer, MainContainer } from '../../styled-components/main-styled-components';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 
@@ -13,9 +13,9 @@ const Layout = (props: any) => {
         <>
             <PageTitle title={title} />
 
-            <ContentContainer>
+            <MainContainer>
                 <MasterPaddingContainer>{props.children}</MasterPaddingContainer>
-            </ContentContainer>
+            </MainContainer>
         </>
     );
 };

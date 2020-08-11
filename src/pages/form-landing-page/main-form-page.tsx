@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import { routesStepsIkkeValgtVedtak, routesStepsValgtVedtak, FormStep } from '../../utils/routes.config';
-import { MarginContainer, ContentContainer } from '../../styled-components/main-styled-components';
+import { MarginContainer } from '../../styled-components/main-styled-components';
 import Steps from '../../components/steps/steps';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 
@@ -35,7 +35,7 @@ const MainFormPage = (props: Props) => {
     };
 
     return (
-        <ContentContainer>
+        <>
             <MarginContainer>
                 <Steps activeRoutes={activeRoutes} activeStep={activeStep} chooseStep={chooseStep} />
             </MarginContainer>
@@ -50,7 +50,7 @@ const MainFormPage = (props: Props) => {
                 )}
                 {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage previous={() => previous()} />}
             </MarginContainer>
-        </ContentContainer>
+        </>
     );
 };
 
