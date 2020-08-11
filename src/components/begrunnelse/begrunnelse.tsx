@@ -263,18 +263,6 @@ const Begrunnelse = (props: any) => {
                     style={{ display: 'none' }}
                 />
             </MarginContainer>
-            <MarginContainer>
-                <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
-                <input
-                    type="file"
-                    multiple
-                    accept="image/png, image/jpeg, image/jpg, .pdf"
-                    id="uploadbutton"
-                    ref={fileInput}
-                    onChange={e => uploadAttachment(e)}
-                    style={{ display: 'none' }}
-                />
-            </MarginContainer>
 
             <Margin32TopContainer className="override-overlay">
                 <Normaltekst>
