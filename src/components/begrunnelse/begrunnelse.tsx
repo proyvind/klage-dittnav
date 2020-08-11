@@ -246,34 +246,35 @@ const Begrunnelse = (props: any) => {
                         </AlertStripeFeil>
                     </MarginContainer>
                 )}
-
-                <MarginContainer>
-                    <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
-                    <input
-                        type="file"
-                        multiple
-                        accept="image/png, image/jpeg, image/jpg, .pdf"
-                        id="uploadbutton"
-                        ref={fileInput}
-                        onChange={e => {
-                            uploadAttachment(e);
-                            e.currentTarget.value = '';
-                        }}
-                        style={{ display: 'none' }}
-                    />
-                </MarginContainer>
-                <Margin32TopContainer>
-                    <Normaltekst>
-                        Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
-                    </Normaltekst>
-                    <MarginTopContainer>
-                        <Normaltekst>
-                            All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
-                            ikke lastes opp på nytt.
-                        </Normaltekst>
-                    </MarginTopContainer>
-                </Margin32TopContainer>
             </MarginContainer>
+
+            <MarginContainer>
+                <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
+                <input
+                    type="file"
+                    multiple
+                    accept="image/png, image/jpeg, image/jpg, .pdf"
+                    id="uploadbutton"
+                    ref={fileInput}
+                    onChange={e => {
+                        uploadAttachment(e);
+                        e.currentTarget.value = '';
+                    }}
+                    style={{ display: 'none' }}
+                />
+            </MarginContainer>
+
+            <Margin32TopContainer className="override-overlay">
+                <Normaltekst>
+                    Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
+                </Normaltekst>
+                <MarginTopContainer>
+                    <Normaltekst>
+                        All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
+                        ikke lastes opp på nytt.
+                    </Normaltekst>
+                </MarginTopContainer>
+            </Margin32TopContainer>
 
             <Margin48TopContainer className="override-overlay">
                 <FlexCenteredContainer>
