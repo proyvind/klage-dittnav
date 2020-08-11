@@ -28,6 +28,7 @@ const VedleggVisning = (props: Props) => {
             <FlexWithSpacingContainer>
                 {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
                     <File
+                        className="file-flex-item"
                         file={vedlegg.vedlegg}
                         buttonsVisibility="always"
                         buttonsPosition="inside"
