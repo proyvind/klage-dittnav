@@ -4,7 +4,16 @@ import InformationPointBox from '../general/information-point-box';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 import { Klage } from '../../types/klage';
 
-const VEDTAK_OPPLYSNINGER_POINTS = [
+interface Props {
+    klage: Klage;
+}
+
+interface VedtakOpplysningPoint {
+    displayName: string;
+    content: any;
+}
+
+const VEDTAK_OPPLYSNINGER_POINTS: VedtakOpplysningPoint[] = [
     { displayName: 'Saksnummer', content: (klage: Klage) => <Normaltekst>{klage.referanse ?? ''}</Normaltekst> },
     {
         displayName: 'Vedtak',
@@ -12,14 +21,17 @@ const VEDTAK_OPPLYSNINGER_POINTS = [
     }
 ];
 
-interface Props {
-    klage: Klage;
-}
-
 const VedtakSummary = (props: Props) => {
+    const emptyReferanse = (point: VedtakOpplysningPoint) => {
+        return point.displayName === 'Saksnummer' && !props.klage.referanse;
+    };
+
     return (
         <PointsFlexListContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
+                if (emptyReferanse(point)) {
+                    return null;
+                }
                 return (
                     <InformationPointBox
                         key={point.displayName}
