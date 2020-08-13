@@ -1,43 +1,15 @@
 import { Vedtak } from '../../types/vedtak';
 
-export const okVedtak: Vedtak[] = [
-    {
-        tittel: 'Vedtak om avslag på sykepenger',
-        vedtaksdato: new Date().toISOString().substring(0, 10),
-        ytelse: 'foreldrepenger',
-        tema: 'SP',
-        enhet: 'NAV Hallingdal',
-        NAV_referanse: 'Herr Kylling'
-    },
-    {
-        tittel: 'Enda et vedtak om avslag på sykepenger',
-        vedtaksdato: new Date(2019, 1).toISOString().substring(0, 10),
-        ytelse: 'foreldrepenger',
-        tema: 'SP',
-        enhet: 'NAV Ringerike',
-        NAV_referanse: 'Byggmester Bob'
-    }
-];
-
-export const instanceOfVedtak = (element: any): boolean => {
-    return (
-        'tittel' in element &&
-        'vedtaksdato' in element &&
-        'ytelse' in element &&
-        'tema' in element &&
-        'enhet' in element &&
-        'NAV_referanse' in element
-    );
+export const validVedtakQuery = (element: any): boolean => {
+    return 'referanse' in element && 'tema' in element;
 };
 
 export const elementAsVedtak = (element: any): Vedtak => {
-    let chosenVedtak: Vedtak = {
-        tittel: element?.tittel,
-        vedtaksdato: new Date(element?.vedtaksdato).toISOString().substring(0, 10) ?? new Date().toISOString(),
+    return {
+        vedtaksdato: '',
         ytelse: element?.ytelse,
-        tema: element?.tema,
+        tema: element.tema ? element.tema : 'UKJ',
         enhet: element?.enhet,
-        NAV_referanse: element?.NAV_referanse
+        referanse: element?.referanse
     };
-    return chosenVedtak;
 };
