@@ -12,6 +12,7 @@ export interface KlageSkjema {
     id?: number;
     fritekst: string;
     tema: string;
+    ytelse: string;
     datoalternativ: string;
     vedtak?: string;
     vedtaksdatoobjekt?: Date;
@@ -23,6 +24,7 @@ export interface Klage {
     id?: number;
     fritekst: string;
     tema: string;
+    ytelse: string;
     vedtak?: string;
     saksnummer?: string;
     vedlegg?: Vedlegg[];
@@ -32,6 +34,7 @@ export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
     const klageskjema: KlageSkjema = {
         fritekst: '',
         tema: vedtak.tema,
+        ytelse: vedtak.ytelse,
         datoalternativ: '',
         vedtaksdatoobjekt: new Date(vedtak.vedtak),
         saksnummer: vedtak.saksnummer
@@ -63,6 +66,7 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
         id: klageskjema.id,
         fritekst: klageskjema.fritekst,
         tema: klageskjema.tema,
+        ytelse: klageskjema.ytelse,
         vedtak: getVedtaksDato(),
         saksnummer: klageskjema.saksnummer,
         vedlegg: klageskjema.vedlegg

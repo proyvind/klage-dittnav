@@ -24,7 +24,6 @@ const FormLandingPage = (props: any) => {
     useEffect(() => {
         if (props.location.search !== '') {
             let query = queryString.parse(props.location.search);
-            query.ytelse = chosenYtelse;
             if (validVedtakQuery(query)) {
                 setChosenVedtak(elementAsVedtak(query));
             }

@@ -39,7 +39,7 @@ const Begrunnelse = (props: any) => {
     useEffect(() => {
         const erFamilieOgPensjonEnhet = (): boolean => {
             // TODO: Litt midlertidlig losning
-            return ['foreldrepenger', 'engangsstonad', 'svangerskapspenger'].indexOf(props.ytelse) > -1;
+            return ['foreldrepenger', 'engangsstønad', 'svangerskapspenger'].indexOf(props.ytelse) > -1;
         };
 
         if (!activeKlage || !activeKlage.id) {
@@ -50,6 +50,7 @@ const Begrunnelse = (props: any) => {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
                     tema: erFamilieOgPensjonEnhet() ? 'FOR' : 'UKJ',
+                    ytelse: '',
                     datoalternativ: datoalternativ,
                     saksnummer: ''
                 };
