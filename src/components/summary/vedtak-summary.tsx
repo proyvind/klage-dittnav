@@ -3,17 +3,12 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from '../general/information-point-box';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 import { Klage } from '../../types/klage';
-import { Tema } from '../../types/tema';
 
 const VEDTAK_OPPLYSNINGER_POINTS = [
-    { displayName: 'NAV-referanse', content: (klage: Klage) => <Normaltekst>{klage.referanse ?? ''}</Normaltekst> },
+    { displayName: 'Saksnummer', content: (klage: Klage) => <Normaltekst>{klage.referanse ?? ''}</Normaltekst> },
     {
-        displayName: 'Vedtaksdato',
+        displayName: 'Vedtak',
         content: (klage: Klage) => <Normaltekst>{klage.vedtaksdato ?? ''}</Normaltekst>
-    },
-    {
-        displayName: 'NAV-enheten som har behandlet saken',
-        content: (klage: Klage) => <Normaltekst>{Tema[klage.tema] ?? Tema['UKJ']}</Normaltekst>
     }
 ];
 
@@ -23,7 +18,7 @@ interface Props {
 
 const VedtakSummary = (props: Props) => {
     return (
-        <PointsFlexListContainer className="first-element-alone">
+        <PointsFlexListContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
                 return (
                     <InformationPointBox
