@@ -49,11 +49,9 @@ const Begrunnelse = (props: any) => {
             } else {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
-                    ytelse: props.ytelse,
                     tema: erFamilieOgPensjonEnhet() ? 'FOR' : 'UKJ',
-                    enhetId: '',
                     datoalternativ: datoalternativ,
-                    referanse: ''
+                    saksnummer: ''
                 };
                 if (activeDatoISO !== '') {
                     klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);

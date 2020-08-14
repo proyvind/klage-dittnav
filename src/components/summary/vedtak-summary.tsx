@@ -14,16 +14,16 @@ interface VedtakOpplysningPoint {
 }
 
 const VEDTAK_OPPLYSNINGER_POINTS: VedtakOpplysningPoint[] = [
-    { displayName: 'Saksnummer', content: (klage: Klage) => <Normaltekst>{klage.referanse ?? ''}</Normaltekst> },
+    { displayName: 'Saksnummer', content: (klage: Klage) => <Normaltekst>{klage.saksnummer ?? ''}</Normaltekst> },
     {
         displayName: 'Vedtak',
-        content: (klage: Klage) => <Normaltekst>{klage.vedtaksdato ?? ''}</Normaltekst>
+        content: (klage: Klage) => <Normaltekst>{klage.vedtak ?? ''}</Normaltekst>
     }
 ];
 
 const VedtakSummary = (props: Props) => {
     const emptyReferanse = (point: VedtakOpplysningPoint) => {
-        return point.displayName === 'Saksnummer' && !props.klage.referanse;
+        return point.displayName === 'Saksnummer' && !props.klage.saksnummer;
     };
 
     return (

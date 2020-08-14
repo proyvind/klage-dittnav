@@ -4,7 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 const DummyRedirectPage = () => (
     <>
         <Element>Eksempel på redirect</Element>
-        <a href="/klage?referanse=12345&tema=FOR&stonad=engangsstønad" className="knapp">
+        <a href="/klage?saksnummer=12345&tema=FOR&ytelse=engangsstønad" className="knapp">
             Forhåndsutfylt klageskjema
         </a>
     </>
