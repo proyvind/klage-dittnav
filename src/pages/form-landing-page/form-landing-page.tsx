@@ -6,8 +6,6 @@ import { checkAuth, setValgtYtelse } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import MainFormPage from './main-form-page';
 import { elementAsVedtak, validVedtakQuery } from '../../mock-api/get/vedtak';
-import NotFoundPage from '../not-found/not-found-page';
-import { isValidYtelse } from '../../utils/routes.config';
 import WithLoading from '../../components/general/loading/withLoading';
 
 const FormLandingPage = (props: any) => {
@@ -35,14 +33,11 @@ const FormLandingPage = (props: any) => {
         }
     }, [dispatch, props.location.search, chosenYtelse]);
 
-    if (isValidYtelse(chosenYtelse)) {
-        return (
-            <WithLoading loading={loading}>
-                <MainFormPage ytelse={chosenYtelse} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
-            </WithLoading>
-        );
-    }
-    return <NotFoundPage />;
+    return (
+        <WithLoading loading={loading}>
+            <MainFormPage ytelse={chosenYtelse} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
+        </WithLoading>
+    );
 };
 
 export default FormLandingPage;
