@@ -2,7 +2,7 @@ export class Vedtak {
     tittel?: string = '';
     vedtaksdato: string = '';
     ytelse: string = '';
-    tema: string = '';
+    tema: string = 'UKJ';
     enhet: string = '';
-    NAV_referanse: string = '';
+    referanse: string = '';
 }

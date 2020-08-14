@@ -43,13 +43,13 @@ export const initialState: Store = {
     activeKlage: {
         fritekst: '',
         ytelse: '',
-        tema: ''
+        tema: 'UKJ'
     },
 
     activeKlageSkjema: {
         fritekst: '',
         ytelse: '',
-        tema: '',
+        tema: 'UKJ',
         datoalternativ: ''
     },
 

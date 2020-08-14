@@ -40,7 +40,7 @@ export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
         enhetId: vedtak.enhet,
         datoalternativ: '',
         vedtaksdatoobjekt: new Date(vedtak.vedtaksdato),
-        referanse: vedtak.NAV_referanse
+        referanse: vedtak.referanse
     };
     return klageskjema;
 };

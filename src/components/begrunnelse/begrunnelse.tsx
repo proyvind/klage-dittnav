@@ -46,13 +46,12 @@ const Begrunnelse = (props: any) => {
             let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
                 klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
-                setActiveDatoISO(props.chosenVedtak.vedtaksdato);
             } else {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
                     ytelse: props.ytelse,
-                    tema: erFamilieOgPensjonEnhet() ? 'FOR' : '',
-                    enhetId: erFamilieOgPensjonEnhet() ? 'FOP' : '',
+                    tema: erFamilieOgPensjonEnhet() ? 'FOR' : 'UKJ',
+                    enhetId: '',
                     datoalternativ: datoalternativ,
                     referanse: ''
                 };
@@ -183,26 +182,18 @@ const Begrunnelse = (props: any) => {
                 </MarginContainer>
             )}
 
-            {!props.chosenVedtak && (
-                <>
-                    <MarginContainer>
-                        <Undertittel>Hvilket vedtak gjelder klagen?</Undertittel>
-                    </MarginContainer>
-                    <MarginContainer>
-                        <RadioPanelGruppe
-                            name="datoValg"
-                            radios={datoValg}
-                            checked={datoalternativ}
-                            onChange={(event: any, value: string) => handleDatoalternativClick(event, value)}
-                            feil={
-                                submitted &&
-                                !validDatoalternativ() &&
-                                'Du må velge hvilket vedtak du ønsker å klage på.'
-                            }
-                        />
-                    </MarginContainer>
-                </>
-            )}
+            <MarginContainer>
+                <Undertittel>Hvilket vedtak gjelder klagen?</Undertittel>
+            </MarginContainer>
+            <MarginContainer>
+                <RadioPanelGruppe
+                    name="datoValg"
+                    radios={datoValg}
+                    checked={datoalternativ}
+                    onChange={(event: any, value: string) => handleDatoalternativClick(event, value)}
+                    feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
+                />
+            </MarginContainer>
 
             {datoalternativ === 'Tidligere vedtak' && (
                 <MarginContainer>
