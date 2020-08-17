@@ -1,5 +1,11 @@
 import * as baseService from './baseService';
-import { getKlagerUrl, getAddKlageUrl, getKlageByIdUrl, getFinalizeKlageUrl } from '../clients/apiUrls';
+import {
+    getKlagerUrl,
+    getAddKlageUrl,
+    getKlageByIdUrl,
+    getFinalizeKlageUrl,
+    getKlageJournalpostIdUrl
+} from '../clients/apiUrls';
 import { Klage } from '../types/klage';
 
 export const getKlager = () => {
@@ -16,4 +22,8 @@ export const putKlage = (klage: Klage) => {
 
 export const finalizeKlage = (klageId: number) => {
     return baseService.post(getFinalizeKlageUrl(klageId));
+};
+
+export const getJournalpostId = (klageId: number) => {
+    return baseService.get(getKlageJournalpostIdUrl(klageId));
 };
