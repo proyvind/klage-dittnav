@@ -1,4 +1,5 @@
 # Redirect fra vedtaksløsning (selvbetjeningsløsning)
+
 Når klageskjemaet settes opp så ser vi for oss at det er to inngangsporter til klageskjemaet:
 
 1. Navigering på nav.no
@@ -7,7 +8,8 @@ Når klageskjemaet settes opp så ser vi for oss at det er to inngangsporter til
 Dette dokumentet tar for seg punkt **2**, altså redirect fra en selvbetjeningsløsning.
 
 ## Beskrivelse av scenario
-Etterhvert som ytelsene blir modernisert vil de også få en selvbetjeningsløsning, det vil si en 
+
+Etterhvert som ytelsene blir modernisert vil de også få en selvbetjeningsløsning, det vil si en
 løsning for brukerne der de kan få innsyn i vedtak gjort. Det er fra et slikt innsynsbilde vi ser
 for oss at brukeren skal få direkte tilgang til klageskjema. Vi kan beskrive det som følger:
 
@@ -16,17 +18,20 @@ for oss at brukeren skal få direkte tilgang til klageskjema. Vi kan beskrive de
 3. Bruker redirectes til klageskjema med ferdigutfylt informasjon om vedtak
 
 ## Teknisk beskrivelse
+
 Siden bruker allerede er logget inn, er det ikke behov for å sende med brukerdata,
 men det er ønskelig at det sendes med følgende felter:
-* Referanse - Saksnummer. Dette hjelper oss å arkivere riktig
-* Tema - Arkivtema / Ytelse. Dette settes også ved arkivering
-* Stønad - Denne er valgfri, men for noen ytelser er det flere stønader, og da kan vi bruke denne i stedet for tema for å sette tittel på klageskjemaet, så bruker ikke risikerer å bli forvirret
+
+-   Referanse - Saksnummer. Dette hjelper oss å arkivere riktig
+-   Tema - Arkivtema / Ytelse. Dette settes også ved arkivering
+-   Stønad - Denne er valgfri, men for noen ytelser er det flere stønader, og da kan vi bruke denne i stedet for tema for å sette tittel på klageskjemaet, så bruker ikke risikerer å bli forvirret
 
 ```
-<URL>?referanse=12345&tema=FOR&stonad=engangsstønad
+<URL>/klage?saksnummer=12345&tema=FOR&ytelse=engangsstønad
 ```
 
 ## URL
-* labs: https://klage-dittnav.labs.nais.io
-* preprod: https://klage-dittnav.dev.nav.no
-* prod: N/A
+
+-   labs: https://klage-dittnav.labs.nais.io
+-   preprod: https://klage-dittnav.dev.nav.no
+-   prod: N/A
