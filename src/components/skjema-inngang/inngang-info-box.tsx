@@ -77,7 +77,7 @@ const InngangInfoBox = (props: Props) => {
         setQuestionActive(!questionActive);
     };
 
-    const ytelse = props.ytelse === 'engangsstonad' ? 'engangsstønad' : props.ytelse;
+    const ytelse = props.ytelse;
     const title = `Klage - ${ytelse}`;
 
     return (

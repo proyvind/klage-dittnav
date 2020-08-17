@@ -1,8 +1,7 @@
 export class Vedtak {
     tittel?: string = '';
-    vedtaksdato: string = '';
-    ytelse: string = '';
+    vedtak: string = '';
     tema: string = 'UKJ';
-    enhet: string = '';
-    referanse: string = '';
+    ytelse: string = '';
+    saksnummer: string = '';
 }

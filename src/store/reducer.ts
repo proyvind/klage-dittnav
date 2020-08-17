@@ -42,14 +42,14 @@ export const initialState: Store = {
 
     activeKlage: {
         fritekst: '',
-        ytelse: '',
-        tema: 'UKJ'
+        tema: 'UKJ',
+        ytelse: ''
     },
 
     activeKlageSkjema: {
         fritekst: '',
-        ytelse: '',
         tema: 'UKJ',
+        ytelse: '',
         datoalternativ: ''
     },
 
