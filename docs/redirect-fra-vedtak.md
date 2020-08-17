@@ -18,7 +18,7 @@ for oss at brukeren skal få direkte tilgang til klageskjema. Vi kan beskrive de
 ## Teknisk beskrivelse
 Siden bruker allerede er logget inn, er det ikke behov for å sende med brukerdata,
 men det er ønskelig at det sendes med følgende felter:
-* Saksreferanse - Dette hjelper oss å arkivere riktig
+* Referanse - Saksnummer. Dette hjelper oss å arkivere riktig
 * Tema - Arkivtema / Ytelse. Dette settes også ved arkivering
 * Stønad - Denne er valgfri, men for noen ytelser er det flere stønader, og da kan vi bruke denne i stedet for tema for å sette tittel på klageskjemaet, så bruker ikke risikerer å bli forvirret
 
