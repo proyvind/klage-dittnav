@@ -10,28 +10,31 @@ import { Redirect } from 'react-router-dom';
 const KvitteringPage = () => {
     const [waitingForJoark, setWaitingForJoark] = useState<boolean>(true);
     const [success, setSuccess] = useState<boolean>(false);
+    const [journalPostId, setJournalPostId] = useState<string>('');
 
     const { activeKlage } = useSelector((state: Store) => state);
 
     let waitingJoark = true;
 
+    // Gi opp med å vente på journalpost-ID etter 5 sek
     setTimeout(() => {
         waitingJoark = false;
     }, 5000);
 
-    const getJId = (klageId: number) => {
+    const waitForJournalpostId = (klageId: number) => {
         getJournalpostId(klageId)
             .then(response => {
                 if (response === '') {
                     if (waitingJoark) {
-                        getJId(klageId);
+                        // Spør etter journalpost-ID hvert halve sekund
+                        setTimeout(waitForJournalpostId(klageId), 500);
                     } else {
                         setWaitingForJoark(false);
                     }
                 } else {
-                    console.log('response!');
                     setSuccess(true);
                     setWaitingForJoark(false);
+                    setJournalPostId(response);
                     waitingJoark = false;
                 }
             })
@@ -41,7 +44,7 @@ const KvitteringPage = () => {
     };
 
     if (waitingForJoark && activeKlage.id) {
-        getJId(activeKlage.id);
+        waitForJournalpostId(activeKlage.id);
     }
 
     if (!activeKlage.id) {
@@ -50,7 +53,7 @@ const KvitteringPage = () => {
         if (waitingForJoark) {
             return <KvitteringLoading />;
         } else {
-            return success ? <KvitteringJournalfort /> : <KvitteringIkkeJournalfort />;
+            return success ? <KvitteringJournalfort journalPostId={journalPostId} /> : <KvitteringIkkeJournalfort />;
         }
     }
 };

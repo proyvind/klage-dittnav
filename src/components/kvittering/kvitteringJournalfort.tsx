@@ -4,7 +4,10 @@ import { ContentContainer, MarginContainer, CenteredContainer } from '../../styl
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 
-const KvitteringJournalfort = (props: any) => {
+interface Props {
+    journalPostId: string;
+}
+const KvitteringJournalfort = (props: Props) => {
     window.onbeforeunload = null;
 
     return (
@@ -23,8 +26,11 @@ const KvitteringJournalfort = (props: any) => {
                 </MarginContainer>
                 <MarginContainer>
                     <Normaltekst>
-                        Du kan finne igjen klagen din under Dine saker når vi starter å behandle den.{' '}
+                        Du kan finne igjen klagen din under Dine saker når vi starter å behandle den.
                     </Normaltekst>
+                </MarginContainer>
+                <MarginContainer>
+                    <Normaltekst>Din journalpost-ID: {props.journalPostId}</Normaltekst>
                 </MarginContainer>
 
                 <MarginContainer>

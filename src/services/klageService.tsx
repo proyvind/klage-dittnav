@@ -27,7 +27,3 @@ export const finalizeKlage = (klageId: number) => {
 export const getJournalpostId = (klageId: number) => {
     return baseService.get(getKlageJournalpostIdUrl(klageId));
 };
-
-export const getJournalpostId = (klageId: number) => {
-    return baseService.get(getKlageJournalpostIdUrl(klageId));
-};
