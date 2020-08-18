@@ -74,11 +74,11 @@ const OppsummeringSkjemaPage = (props: any) => {
                             <PersonligeOpplysningerSummary person={person} />
                         </MarginTopContainer>
                         <FlexColumnWithSpacingContainer>
-                            <Lenke href="#">
+                            <Lenke href="https://www.skatteetaten.no/person/folkeregister/">
                                 <span>Endre navn eller adresse (Folkeregisteret)</span>
                                 <ExternalLink />
                             </Lenke>
-                            <Lenke href="#">
+                            <Lenke href="https://brukerprofil.difi.no/minprofil">
                                 <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
                                 <ExternalLink />
                             </Lenke>
