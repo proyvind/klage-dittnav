@@ -7,12 +7,12 @@ import { Store } from '../../store/reducer';
 import MainFormPage from './main-form-page';
 import { elementAsVedtak, validVedtakQuery } from '../../mock-api/get/vedtak';
 import WithLoading from '../../components/general/loading/withLoading';
+import { Tema } from '../../types/tema';
 
 const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
     const { loading, chosenYtelse } = useSelector((state: Store) => state);
 
-    const [availableVedtak] = useState<Vedtak[]>([]);
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
 
     useEffect(() => {
@@ -25,6 +25,11 @@ const FormLandingPage = (props: any) => {
 
             if (query.ytelse && !Array.isArray(query.ytelse)) {
                 dispatch(setValgtYtelse(query.ytelse));
+            } else if (query.tema && !Array.isArray(query.tema)) {
+                query.ytelse = Tema[query.tema] ?? Tema['UKJ'];
+                if (query.ytelse && !Array.isArray(query.ytelse)) {
+                    dispatch(setValgtYtelse(query.ytelse));
+                }
             }
 
             if (validVedtakQuery(query)) {
@@ -35,7 +40,7 @@ const FormLandingPage = (props: any) => {
 
     return (
         <WithLoading loading={loading}>
-            <MainFormPage ytelse={chosenYtelse} availableVedtak={availableVedtak} chosenVedtak={chosenVedtak} />
+            <MainFormPage ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
         </WithLoading>
     );
 };

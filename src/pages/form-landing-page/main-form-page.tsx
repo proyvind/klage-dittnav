@@ -7,7 +7,6 @@ import Steps from '../../components/steps/steps';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
 
 interface Props {
-    availableVedtak: Vedtak[];
     chosenVedtak?: Vedtak;
     ytelse: string;
 }
