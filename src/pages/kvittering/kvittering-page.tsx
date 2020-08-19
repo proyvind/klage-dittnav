@@ -1,33 +1,39 @@
 import React, { useState } from 'react';
-import KvitteringJournalfort from '../../components/kvittering/kvitteringJournalfort';
+import Kvittering from '../../components/kvittering/kvittering';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import KvitteringLoading from '../../components/kvittering/kvitteringLoading';
 import { getJournalpostId } from '../../services/klageService';
-import KvitteringIkkeJournalfort from '../../components/kvittering/kvitteringIkkeJournalfort';
 import { Redirect } from 'react-router-dom';
 
-const KvitteringPage = () => {
+const KvitteringPage = (props: any) => {
     const [waitingForJoark, setWaitingForJoark] = useState<boolean>(true);
+    const [informStillWorking, setInformStillWorking] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
     const [journalPostId, setJournalPostId] = useState<string>('');
 
     const { activeKlage } = useSelector((state: Store) => state);
 
     let waitingJoark = true;
+    let finalizedDate = props.location.state.finalizedDate ?? '';
 
-    // Gi opp med å vente på journalpost-ID etter 5 sek
+    // Melding om at den fortsatt jobber etter 8 sek
+    setTimeout(() => {
+        setInformStillWorking(true);
+    }, 8000);
+
+    // Gi opp med å vente på journalpost-ID etter 15 sek
     setTimeout(() => {
         waitingJoark = false;
-    }, 5000);
+    }, 15000);
 
     const waitForJournalpostId = (klageId: number) => {
         getJournalpostId(klageId)
             .then(response => {
                 if (response === '') {
                     if (waitingJoark) {
-                        // Spør etter journalpost-ID hvert halve sekund
-                        setTimeout(waitForJournalpostId(klageId), 500);
+                        // Spør etter journalpost-ID hvert sekund
+                        setTimeout(waitForJournalpostId(klageId), 1000);
                     } else {
                         setWaitingForJoark(false);
                     }
@@ -51,9 +57,15 @@ const KvitteringPage = () => {
         return <Redirect to="/" />;
     } else {
         if (waitingForJoark) {
-            return <KvitteringLoading />;
+            return <KvitteringLoading informStillWorking={informStillWorking} />;
         } else {
-            return success ? <KvitteringJournalfort journalPostId={journalPostId} /> : <KvitteringIkkeJournalfort />;
+            return (
+                <Kvittering
+                    journalPostId={journalPostId !== '' ? journalPostId : undefined}
+                    finalizedDate={finalizedDate !== '' ? finalizedDate : undefined}
+                    success={success}
+                />
+            );
         }
     }
 };

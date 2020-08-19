@@ -21,12 +21,12 @@ import Lenke from 'nav-frontend-lenker';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
-import WithLoading from '../../components/general/loading/withLoading';
 
 const OppsummeringSkjemaPage = (props: any) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
+    let finalizedDate = '';
 
     const submitForm = (event: any) => {
         event.preventDefault();
@@ -39,7 +39,8 @@ const OppsummeringSkjemaPage = (props: any) => {
         finalizeKlage(activeKlage.id)
             .then(response => {
                 console.log(response);
-                history.push(`/kvittering`);
+                finalizedDate = response.data.finalizedDate;
+                history.push({ pathname: `/kvittering`, state: { finalizedDate: finalizedDate } });
                 setIsLoading(false);
                 // TODO: Set success message
             })
@@ -61,69 +62,63 @@ const OppsummeringSkjemaPage = (props: any) => {
                 </MarginContainer>
             </CenteredContainer>
 
-            <WithLoading loading={loading}>
-                <div className="framed">
-                    <Ekspanderbartpanel
-                        border={false}
-                        apen={false}
-                        className="form-expand"
-                        tittel={<Undertittel>Person&shy;opplysninger</Undertittel>}
-                    >
-                        <Undertekst>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Undertekst>
-                        <MarginTopContainer>
-                            <PersonligeOpplysningerSummary person={person} />
-                        </MarginTopContainer>
-                        <FlexColumnWithSpacingContainer>
-                            <Lenke
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                href="https://www.skatteetaten.no/person/folkeregister/"
-                            >
-                                <span>Endre navn eller adresse (Folkeregisteret)</span>
-                                <ExternalLink />
-                            </Lenke>
-                            <Lenke
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                href="https://brukerprofil.difi.no/minprofil"
-                            >
-                                <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
-                                <ExternalLink />
-                            </Lenke>
-                        </FlexColumnWithSpacingContainer>
-                    </Ekspanderbartpanel>
-                    <ColoredLine color="#a2a1a1" />
-                    <Ekspanderbartpanel
-                        border={false}
-                        apen={false}
-                        className="form-expand"
-                        tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
-                    >
-                        <VedtakSummary klage={activeKlage} />
-                    </Ekspanderbartpanel>
-                    <ColoredLine color="#a2a1a1" />
+            <div className="framed">
+                <Ekspanderbartpanel
+                    border={false}
+                    apen={false}
+                    className="form-expand"
+                    tittel={<Undertittel>Person&shy;opplysninger</Undertittel>}
+                >
+                    <Undertekst>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Undertekst>
+                    <MarginTopContainer>
+                        <PersonligeOpplysningerSummary person={person} />
+                    </MarginTopContainer>
+                    <FlexColumnWithSpacingContainer>
+                        <Lenke
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://www.skatteetaten.no/person/folkeregister/"
+                        >
+                            <span>Endre navn eller adresse (Folkeregisteret)</span>
+                            <ExternalLink />
+                        </Lenke>
+                        <Lenke target="_blank" rel="noopener noreferrer" href="https://brukerprofil.difi.no/minprofil">
+                            <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
+                            <ExternalLink />
+                        </Lenke>
+                    </FlexColumnWithSpacingContainer>
+                </Ekspanderbartpanel>
+                <ColoredLine color="#a2a1a1" />
+                <Ekspanderbartpanel
+                    border={false}
+                    apen={false}
+                    className="form-expand"
+                    tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
+                >
+                    <VedtakSummary klage={activeKlage} />
+                </Ekspanderbartpanel>
+                <ColoredLine color="#a2a1a1" />
 
-                    <div className="simulate-expandable-box">
-                        <Undertittel>Begrunnelse i din klage</Undertittel>
-                        <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
-                    </div>
-
-                    <div className="simulate-expandable-box">
-                        <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
-                        <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
-                    </div>
+                <div className="simulate-expandable-box">
+                    <Undertittel>Begrunnelse i din klage</Undertittel>
+                    <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
                 </div>
-                <Margin48Container className="override-overlay">
-                    <FlexCenteredContainer>
-                        <Knapp className="row-element" onClick={() => props.previous()}>
-                            Tilbake
-                        </Knapp>
-                        <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)}>
-                            Send inn
-                        </Hovedknapp>
-                    </FlexCenteredContainer>
-                </Margin48Container>
-            </WithLoading>
+
+                <div className="simulate-expandable-box">
+                    <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
+                    <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
+                </div>
+            </div>
+            <Margin48Container className="override-overlay">
+                <FlexCenteredContainer>
+                    <Knapp className="row-element" onClick={() => props.previous()}>
+                        Tilbake
+                    </Knapp>
+                    <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)} spinner={loading}>
+                        Send inn
+                    </Hovedknapp>
+                </FlexCenteredContainer>
+            </Margin48Container>
         </>
     );
 };
