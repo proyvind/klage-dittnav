@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
 import {
@@ -27,6 +27,10 @@ const OppsummeringSkjemaPage = (props: any) => {
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
     let finalizedDate = '';
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const submitForm = (event: any) => {
         event.preventDefault();
