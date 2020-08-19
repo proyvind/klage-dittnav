@@ -28,6 +28,7 @@ const VedleggSummary = (props: Props) => {
                                 className="no-background-style"
                                 href={getVedleggUrl(props.klage.id, vedlegg.vedlegg.id)}
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 key={index}
                             >
                                 <Vedleggtekst>{vedlegg.vedlegg?.name}</Vedleggtekst>
