@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Kvittering from '../../components/kvittering/kvittering';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
@@ -17,6 +17,12 @@ const KvitteringPage = (props: any) => {
     let waitingJoark = true;
     let finalizedDate = props.location.state.finalizedDate ?? '';
 
+    useEffect(() => {
+        if (waitingForJoark && activeKlage.id) {
+            waitForJournalpostId(activeKlage.id);
+        }
+    }, []);
+
     // Melding om at den fortsatt jobber etter 8 sek
     setTimeout(() => {
         setInformStillWorking(true);
@@ -33,7 +39,7 @@ const KvitteringPage = (props: any) => {
                 if (response === '') {
                     if (waitingJoark) {
                         // Spør etter journalpost-ID hvert sekund
-                        setTimeout(waitForJournalpostId(klageId), 1000);
+                        setTimeout(() => waitForJournalpostId(klageId), 1000);
                     } else {
                         setWaitingForJoark(false);
                     }
@@ -48,10 +54,6 @@ const KvitteringPage = (props: any) => {
                 console.log('error ', err);
             });
     };
-
-    if (waitingForJoark && activeKlage.id) {
-        waitForJournalpostId(activeKlage.id);
-    }
 
     if (!activeKlage.id) {
         return <Redirect to="/" />;
