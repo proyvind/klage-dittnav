@@ -5,8 +5,8 @@ import {
     FlexCenteredContainer,
     Margin48Container,
     Margin48TopContainer,
-    Margin32TopContainer,
-    MarginTopContainer
+    MarginTopContainer,
+    Margin40Container
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
@@ -22,7 +22,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
@@ -226,20 +226,20 @@ const Begrunnelse = (props: any) => {
             <MarginContainer>
                 <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
 
-                <MarginContainer>
-                    <AlertStripe type="info" form="inline">
-                        <Undertekst>
-                            Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
-                        </Undertekst>
-                        <Undertekst>
-                            Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke
-                            være større enn 32 MB.
-                        </Undertekst>
-                    </AlertStripe>
-                </MarginContainer>
-
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
+
+                <MarginTopContainer className="override-overlay">
+                    <Normaltekst>
+                        Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
+                    </Normaltekst>
+                    <MarginTopContainer>
+                        <Normaltekst>
+                            All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
+                            ikke lastes opp på nytt.
+                        </Normaltekst>
+                    </MarginTopContainer>
+                </MarginTopContainer>
 
                 {vedleggFeilmelding !== '' && (
                     <MarginContainer>
@@ -252,7 +252,7 @@ const Begrunnelse = (props: any) => {
                 )}
             </MarginContainer>
 
-            <MarginContainer>
+            <Margin40Container>
                 <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
                 <input
                     type="file"
@@ -266,19 +266,19 @@ const Begrunnelse = (props: any) => {
                     }}
                     style={{ display: 'none' }}
                 />
-            </MarginContainer>
+            </Margin40Container>
 
-            <Margin32TopContainer className="override-overlay">
-                <Normaltekst>
-                    Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
-                </Normaltekst>
-                <MarginTopContainer>
-                    <Normaltekst>
-                        All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
-                        ikke lastes opp på nytt.
-                    </Normaltekst>
-                </MarginTopContainer>
-            </Margin32TopContainer>
+            <MarginContainer>
+                <AlertStripe type="info" form="inline">
+                    <Undertekst>
+                        Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
+                    </Undertekst>
+                    <Undertekst>
+                        Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være
+                        større enn 32 MB.
+                    </Undertekst>
+                </AlertStripe>
+            </MarginContainer>
 
             <Margin48TopContainer className="override-overlay">
                 <FlexCenteredContainer>
