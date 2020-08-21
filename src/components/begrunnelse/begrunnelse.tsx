@@ -9,7 +9,7 @@ import {
     MarginTopContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
 import { VEDLEGG_STATUS, VedleggProps, toVedleggProps, VedleggErrorMessages } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { postNewKlage, updateKlage } from '../../store/actions';
@@ -22,6 +22,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import AlertStripe, { AlertStripeType } from 'nav-frontend-alertstriper';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
@@ -224,6 +225,19 @@ const Begrunnelse = (props: any) => {
 
             <MarginContainer>
                 <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
+
+                <MarginContainer>
+                    <AlertStripe type="info" form="inline">
+                        <Undertekst>
+                            Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
+                        </Undertekst>
+                        <Undertekst>
+                            Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke
+                            være større enn 32 MB.
+                        </Undertekst>
+                    </AlertStripe>
+                </MarginContainer>
+
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
                 {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
 
