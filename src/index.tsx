@@ -34,8 +34,6 @@ const init = async () => {
         setupMock();
     }
 
-    document.body.innerHTML = document.body.innerText.replace("{{FRONTENDLOGGER_SCRIPT}}", frontendLoggerScript);
-
     if (isLocalhost && process.env.NODE_ENV === 'development') {
         Environment.setEnv({
             appUrl: process.env.REACT_APP_URL!,
