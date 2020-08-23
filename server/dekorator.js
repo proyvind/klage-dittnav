@@ -34,7 +34,8 @@ const getDecorator = () =>
                         NAV_STYLES: document.getElementById('styles')[prop],
                         NAV_HEADING: document.getElementById('header-withmenu')[prop],
                         NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-                        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop]
+                        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop],
+                        TEST: 'This is a test'
                     };
                     cache.set('main-cache', data);
                     console.log(`Creating cache`);
