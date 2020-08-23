@@ -18,9 +18,6 @@ const decorator_base_url_gcp = 'https://appres-q1.nav.no';
 const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? decorator_base_url_gcp : decorator_base_url;
 const decoratorUrl = baseUrl + '/common-html/v4/navno?simple=true&redirectToApp=true';
 
-const frontendLoggerScriptBase = process.env.FRONTENDLOGGER_BASE_URL;
-const frontendLoggerScript = `<script type="application/javascript" src="${frontendLoggerScriptBase}/logger.js"></script>`;
-
 const getDecorator = () =>
     new Promise((resolve, reject) => {
         const decorator = cache.get('main-cache');
@@ -37,8 +34,7 @@ const getDecorator = () =>
                         NAV_STYLES: document.getElementById('styles')[prop],
                         NAV_HEADING: document.getElementById('header-withmenu')[prop],
                         NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-                        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop],
-                        FRONTEND_LOGGER_SCRIPT: frontendLoggerScript
+                        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop]
                     };
                     cache.set('main-cache', data);
                     console.log(`Creating cache`);

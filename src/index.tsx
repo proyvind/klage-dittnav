@@ -13,6 +13,8 @@ const store = configureStore();
 
 const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 
+const frontendLoggerScriptBase = process.env.FRONTENDLOGGER_BASE_URL;
+
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
         // Mock decorator
@@ -30,6 +32,11 @@ const init = async () => {
     if (mockEnabled) {
         setupMock();
     }
+
+    // Add frontend logger
+    let script = document.createElement('script');
+    script.src = `${frontendLoggerScriptBase}/logger.js`;
+    document.body.appendChild(script);
 
     if (isLocalhost && process.env.NODE_ENV === 'development') {
         Environment.setEnv({
