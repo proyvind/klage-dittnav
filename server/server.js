@@ -8,12 +8,7 @@ const getDecorator = require("./dekorator");
 const buildPath = path.resolve(__dirname, "../build");
 const server = express();
 
-const frontendloggerScript = () => {
-    const script = document.createElement('script');
-    script.type = 'application/javascript';
-    script.src = `${process.env.FRONTENDLOGGER_BASE_URL}/logger.js`;
-    return script;
-}
+const frontendloggerScript = `<script type="application/javascript" src="${process.env.FRONTENDLOGGER_BASE_URL}/logger.js"></script>`;
 
 server.set("views", `${__dirname}/../build`);
 server.set("view engine", "mustache");
@@ -46,7 +41,7 @@ server.get(`/config`, (req, res) =>
 server.use(/^(?!.*\/(internal|static)\/).*$/, (req, res) =>
   getDecorator()
     .then((fragments) => {
-      res.render("index.html", {...fragments, FRONTEND_LOGGER_SCRIPT: frontendloggerScript()});
+      res.render("index.html", {...fragments, FRONTEND_LOGGER_SCRIPT: frontendloggerScript});
     })
     .catch((e) => {
       const error = `Failed to get decorator: ${e}`;
