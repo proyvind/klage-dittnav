@@ -11,11 +11,9 @@ const server = express();
 const { JSDOM } = jsdom;
 
 const frontendloggerScript = () => {
-    const scriptTag = `<html><body><div id="frontendlogger"><script type="application/javascript" src="${process.env.FRONTENDLOGGER_BASE_URL}/logger.js"></script></div></body></html>`;
+    const scriptTag = `<div id="frontendlogger"><script type="application/javascript" src="${process.env.FRONTENDLOGGER_BASE_URL}/logger.js"></script></div>`;
     const { document } = new JSDOM(scriptTag).window;
-    const prop = 'innerHTML';
-    console.log(document.getElementById('frontendlogger'));
-    return document.getElementById('frontendlogger')[prop];
+    return document.getElementById('frontendlogger')['innerHTML'];
 }
 
 server.set("views", `${__dirname}/../build`);
