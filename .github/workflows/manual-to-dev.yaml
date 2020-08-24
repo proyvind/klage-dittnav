@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env:
-  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav:${{ github.sha }}
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,10 +23,6 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Lag tag for image
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
-      - name: Lag full image referanse
-        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
       - name: Build docker image
         run: docker build -t $IMAGE .
       - name: Login to Github Package Registry
