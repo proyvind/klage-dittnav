@@ -8,7 +8,7 @@ export const validVedtakQuery = (element: any): boolean => {
 export const elementAsVedtak = (element: any): Vedtak => {
     return {
         vedtak: '',
-        tema: element.tema ?? 'UKJ',
+        tema: element.tema,
         ytelse: element?.ytelse ?? Tema[element.tema ?? 'UKJ'],
         saksnummer: element?.saksnummer ?? ''
     };

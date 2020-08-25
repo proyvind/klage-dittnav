@@ -4,7 +4,8 @@ import {
     getAddKlageUrl,
     getKlageByIdUrl,
     getFinalizeKlageUrl,
-    getKlageJournalpostIdUrl
+    getKlageJournalpostIdUrl,
+    getTemaObjectUrl
 } from '../clients/apiUrls';
 import { Klage } from '../types/klage';
 
@@ -26,4 +27,8 @@ export const finalizeKlage = (klageId: number) => {
 
 export const getJournalpostId = (klageId: number) => {
     return baseService.get(getKlageJournalpostIdUrl(klageId));
+};
+
+export const getTemaObject = (temaKode: string) => {
+    return baseService.get(getTemaObjectUrl(temaKode));
 };

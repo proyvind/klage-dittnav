@@ -2,7 +2,6 @@ import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
 import { KlageSkjema, Klage } from '../types/klage';
 import { VedleggProps } from '../types/vedlegg';
-import { Tema } from '../types/tema';
 
 export interface Store {
     loading: boolean;
@@ -22,7 +21,7 @@ export interface Store {
 export const initialState: Store = {
     loading: true,
 
-    chosenYtelse: Tema['UKJ'],
+    chosenYtelse: '',
 
     person: {
         navn: {
@@ -42,14 +41,14 @@ export const initialState: Store = {
 
     activeKlage: {
         fritekst: '',
-        tema: 'UKJ',
-        ytelse: Tema['UKJ']
+        tema: '',
+        ytelse: ''
     },
 
     activeKlageSkjema: {
         fritekst: '',
-        tema: 'UKJ',
-        ytelse: Tema['UKJ'],
+        tema: '',
+        ytelse: '',
         datoalternativ: ''
     },
 
