@@ -3,7 +3,7 @@ import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
 import { Klage, klageSkjemaTilKlage, KlageSkjema } from '../types/klage';
 import { postKlage, putKlage } from '../services/klageService';
 import { VedleggProps } from '../types/vedlegg';
-import {logError} from "../utils/logger/frontendLogger";
+import { logError } from '../utils/logger/frontendLogger';
 
 export type ActionTypes =
     | {
@@ -72,7 +72,7 @@ export function updateKlage(klageskjema: KlageSkjema) {
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
-                logError(err, 'Update klage failed', {klageid: klageskjema.id});
+                logError(err, 'Update klage failed', { klageid: klageskjema.id });
             });
     };
 }
