@@ -3,6 +3,7 @@ import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
 import { Klage, klageSkjemaTilKlage, KlageSkjema } from '../types/klage';
 import { postKlage, putKlage } from '../services/klageService';
 import { VedleggProps } from '../types/vedlegg';
+import {logError} from "../utils/logger/frontendLogger";
 
 export type ActionTypes =
     | {
@@ -45,7 +46,7 @@ export function checkAuth() {
             .catch(error => {
                 if (error !== 401 && error !== 403) {
                     dispatch({ type: 'CHECK_AUTH_ERROR' });
-                    console.error(error);
+                    logError(error, 'Login failed');
                 }
             });
     };
@@ -59,7 +60,7 @@ export function postNewKlage(klageskjema: KlageSkjema) {
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
-                console.log(err);
+                logError(err, 'Post new klage failed');
             });
     };
 }
@@ -71,7 +72,7 @@ export function updateKlage(klageskjema: KlageSkjema) {
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
-                console.log(err);
+                logError(err, 'Update klage failed', {klageid: klageskjema.id});
             });
     };
 }
