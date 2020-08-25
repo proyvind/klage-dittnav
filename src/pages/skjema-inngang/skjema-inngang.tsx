@@ -6,13 +6,15 @@ import { Tema } from '../../types/tema';
 
 const SkjemaInngang = (props: any) => {
     const query = queryString.parse(props.location.search);
-    let ytelse;
+    let ytelse: string = Tema['UKJ'];
 
-    if (query.ytelse) {
+    if (query.ytelse && !Array.isArray(query.ytelse)) {
         ytelse = query.ytelse;
     } else {
         if (query.tema && !Array.isArray(query.tema)) {
-            ytelse = Tema[query.tema] ?? Tema['UKJ'];
+            if (Tema[query.tema]) {
+                ytelse = Tema[query.tema];
+            }
         }
     }
 
