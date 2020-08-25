@@ -13,7 +13,7 @@ const cache = new NodeCache({
 });
 
 const decorator_base_url = 'https://appres.nav.no';
-const decorator_base_url_gcp = 'https://appres-q1.nav.no';
+const decorator_base_url_gcp = 'https://dekoratoren.dev.nav.no';
 
 const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? decorator_base_url_gcp : decorator_base_url;
 const decoratorUrl = baseUrl + '/common-html/v4/navno?simple=true&redirectToApp=true';
