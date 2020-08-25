@@ -1,8 +1,8 @@
-import { defaultYtelse } from '../types/ytelse';
+import { Tema } from '../types/tema';
 
 export function getYtelseFromSearch(search?: string) {
     if (!search || search.length <= 1) {
-        return defaultYtelse;
+        return Tema['UKJ'];
     }
 
     const ytelseParams = search
@@ -11,5 +11,5 @@ export function getYtelseFromSearch(search?: string) {
         .find(s => s.startsWith('ytelse='))
         ?.split('=');
 
-    return ytelseParams ? ytelseParams[1] : defaultYtelse;
+    return ytelseParams ? ytelseParams[1] : Tema['UKJ'];
 }

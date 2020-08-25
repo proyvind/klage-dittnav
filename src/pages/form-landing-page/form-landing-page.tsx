@@ -8,7 +8,7 @@ import MainFormPage from './main-form-page';
 import { elementAsVedtak, validVedtakQuery } from '../../mock-api/get/vedtak';
 import WithLoading from '../../components/general/loading/withLoading';
 import { Tema } from '../../types/tema';
-import {logInfo} from "../../utils/logger/frontendLogger";
+import { logInfo } from '../../utils/logger/frontendLogger';
 
 const FormLandingPage = (props: any) => {
     const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const FormLandingPage = (props: any) => {
         }
     }, [dispatch, props.location.search, chosenYtelse]);
 
-    logInfo("Form landing page visited.", { chosenYtelse: chosenYtelse, referrer: document.referrer });
+    logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
     return (
         <WithLoading loading={loading}>

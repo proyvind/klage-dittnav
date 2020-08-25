@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import Begrunnelse from '../../components/begrunnelse/begrunnelse';
-import {logInfo} from "../../utils/logger/frontendLogger";
+import { logInfo } from '../../utils/logger/frontendLogger';
 
 const BegrunnelsePage = (props: any) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    logInfo("Begurnnelsepage entered.", { chosenYtelse: props.ytelse, referrer: document.referrer });
+    logInfo('Begurnnelsepage entered.', { chosenYtelse: props.ytelse, referrer: document.referrer });
 
     return (
         <Begrunnelse

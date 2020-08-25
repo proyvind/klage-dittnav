@@ -5,7 +5,6 @@ import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import NotFoundPage from '../pages/not-found/not-found-page';
-import { validYtelser } from '../types/ytelse';
 
 export type RouteType = {
     step?: number;
@@ -85,9 +84,5 @@ export const routesPages: RouteType[] = [
         exact: true
     }
 ];
-
-export const isValidYtelse = (ytelse: string): boolean => {
-    return validYtelser.includes(ytelse);
-};
 
 export const routesConfig = routesPages;
