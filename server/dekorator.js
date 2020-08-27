@@ -12,11 +12,11 @@ const cache = new NodeCache({
     checkperiod: SECONDS_PER_MINUTE
 });
 
-const decorator_base_url = 'https://appres.nav.no';
-const decorator_base_url_gcp = 'https://dekoratoren.dev.nav.no';
+const decorator_base_url = 'https://www.nav.no/dekoratoren/';
+const decorator_base_url_gcp = 'https://dekoratoren.dev.nav.no/common-html/v4/navno';
 
 const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? decorator_base_url_gcp : decorator_base_url;
-const decoratorUrl = baseUrl + '/common-html/v4/navno?simple=true&redirectToApp=true';
+const decoratorUrl = baseUrl + '?simple=true&redirectToApp=true';
 
 const getDecorator = () =>
     new Promise((resolve, reject) => {
