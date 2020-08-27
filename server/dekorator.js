@@ -12,7 +12,7 @@ const cache = new NodeCache({
     checkperiod: SECONDS_PER_MINUTE
 });
 
-const decorator_base_url = 'https://appres.nav.no';
+const decorator_base_url = 'https://www.nav.no/dekoratoren';
 const decorator_base_url_gcp = 'https://dekoratoren.dev.nav.no';
 
 const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? decorator_base_url_gcp : decorator_base_url;
