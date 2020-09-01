@@ -30,13 +30,13 @@ export type ActionTypes =
           value: string;
       };
 
-export function checkAuth() {
+export function checkAuth(search: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return fetch(getUserDataUrl(), {
             method: 'GET',
             credentials: 'include'
         })
-            .then(sjekkAuth)
+            .then(response => sjekkAuth(response, search))
             .then(sjekkHttpFeil)
             .then(response => response.json())
             .then(json => {
@@ -82,12 +82,12 @@ export function setValgtYtelse(ytelse: string) {
     };
 }
 
-const sjekkAuth = (response: Response): any => {
+export function sjekkAuth(response: Response, params: string) {
     if (response.status === 401 || response.status === 403) {
-        window.location.assign(getLoginserviceRedirectUrl());
+        window.location.assign(getLoginserviceRedirectUrl(encodeURIComponent(decodeURI(params))));
     }
     return response;
-};
+}
 
 const sjekkHttpFeil = (response: Response) => {
     if (response.ok) {
