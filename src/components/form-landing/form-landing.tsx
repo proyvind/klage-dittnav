@@ -7,12 +7,14 @@ import WithLoading from '../../components/general/loading/withLoading';
 import { logInfo } from '../../utils/logger/frontendLogger';
 import { validVedtakQuery, elementAsVedtak } from '../../mock-api/get/vedtak';
 import MainFormPage from '../../pages/form-landing-page/main-form-page';
+import Error from '../../components/error/error';
 
 const FormLanding = (props: any) => {
     const dispatch = useDispatch();
     const { loading, chosenYtelse } = useSelector((state: Store) => state);
 
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
+    const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(checkAuth());
@@ -21,10 +23,20 @@ const FormLanding = (props: any) => {
     useEffect(() => {
         if (validVedtakQuery(props.query)) {
             setChosenVedtak(elementAsVedtak(props.query));
+        } else {
+            setTemaNotSet(true);
         }
     }, [dispatch, props.query]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
+
+    if (temaNotSet) {
+        return (
+            <Error
+                error={{ code: 400, text: 'Tema er ikke spesifisert, vennligst gå gjennom våre innsynsløsninger.' }}
+            />
+        );
+    }
 
     return (
         <WithLoading loading={loading}>

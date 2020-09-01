@@ -72,7 +72,7 @@ const InngangInfoBox = (props: Props) => {
         setQuestionActive(!questionActive);
     };
 
-    const title = `Klage - ${chosenYtelse}`;
+    const title = chosenYtelse !== '' ? `Klage - ${chosenYtelse}` : `Klage`;
 
     return (
         <div>
