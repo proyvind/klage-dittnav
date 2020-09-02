@@ -17,8 +17,8 @@ const FormLandingPage = (props: any) => {
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
 
     useEffect(() => {
-        dispatch(checkAuth());
-    }, [dispatch]);
+        dispatch(checkAuth(props.location.search));
+    }, [dispatch, props.location.search]);
 
     useEffect(() => {
         if (props.location.search !== '') {
