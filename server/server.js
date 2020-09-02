@@ -1,12 +1,20 @@
 // Load environment
 require("console-stamp")(console, "[HH:MM:ss.l]");
 require("dotenv").config({ path: "../.env" });
+const jsdom = require('jsdom');
 const express = require("express");
 const path = require("path");
 const mustacheExpress = require("mustache-express");
 const getDecorator = require("./dekorator");
 const buildPath = path.resolve(__dirname, "../build");
 const server = express();
+const { JSDOM } = jsdom;
+
+const frontendloggerScript = () => {
+    const scriptTag = `<div id="frontendlogger"><script type="application/javascript" src="${process.env.FRONTENDLOGGER_BASE_URL}/logger.js"></script></div>`;
+    const { document } = new JSDOM(scriptTag).window;
+    return document.getElementById('frontendlogger')['innerHTML'];
+}
 
 server.set("views", `${__dirname}/../build`);
 server.set("view engine", "mustache");
@@ -39,7 +47,7 @@ server.get(`/config`, (req, res) =>
 server.use(/^(?!.*\/(internal|static)\/).*$/, (req, res) =>
   getDecorator()
     .then((fragments) => {
-      res.render("index.html", fragments);
+      res.render("index.html", {...fragments, FRONTEND_LOGGER_SCRIPT: frontendloggerScript()});
     })
     .catch((e) => {
       const error = `Failed to get decorator: ${e}`;
