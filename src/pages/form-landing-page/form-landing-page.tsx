@@ -8,7 +8,7 @@ const FormLandingPage = (props: any) => {
 
     return (
         <ErrorBoundary>
-            <FormLanding query={query} />
+            <FormLanding query={query} location={props.location} />
         </ErrorBoundary>
     );
 };

@@ -17,8 +17,8 @@ const FormLanding = (props: any) => {
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(checkAuth(props.search.location));
-    }, [dispatch, props.search.location]);
+        dispatch(checkAuth(props.location.search));
+    }, [dispatch, props.location.search]);
 
     useEffect(() => {
         if (validVedtakQuery(props.query)) {
