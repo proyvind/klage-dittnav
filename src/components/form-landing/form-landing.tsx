@@ -31,9 +31,15 @@ const FormLanding = (props: any) => {
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
     if (temaNotSet) {
+        logInfo('Form landing page visited with no tema.', { referrer: document.referrer });
+
         return (
             <Error
-                error={{ code: 400, text: 'Tema er ikke spesifisert, vennligst gå gjennom våre innsynsløsninger.' }}
+                error={{
+                    code: 400,
+                    text:
+                        'Ytelse du ønsker å klage på er ikke spesifisert. Dersom du navigerer til denne siden via en lenke på Ditt NAV vil ytelse bli satt riktig.'
+                }}
             />
         );
     }
