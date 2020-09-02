@@ -6,6 +6,7 @@ import { VedleggProps } from '../types/vedlegg';
 export interface Store {
     loading: boolean;
 
+    chosenTema: string;
     chosenYtelse: string;
 
     // Auth response
@@ -21,6 +22,7 @@ export interface Store {
 export const initialState: Store = {
     loading: true,
 
+    chosenTema: '',
     chosenYtelse: '',
 
     person: {
@@ -87,6 +89,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 chosenYtelse: action.value
+            };
+        case 'TEMA_SET':
+            return {
+                ...state,
+                chosenTema: action.value
             };
     }
     return state;

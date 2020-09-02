@@ -11,7 +11,7 @@ import Error from '../../components/error/error';
 
 const FormLanding = (props: any) => {
     const dispatch = useDispatch();
-    const { loading, chosenYtelse } = useSelector((state: Store) => state);
+    const { loading, chosenTema, chosenYtelse } = useSelector((state: Store) => state);
 
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
@@ -21,9 +21,9 @@ const FormLanding = (props: any) => {
             dispatch(checkAuth(props.location.search));
             setChosenVedtak(elementAsVedtak(props.query));
         } else {
-            setTemaNotSet(true);
+            setTemaNotSet(chosenTema === '');
         }
-    }, [dispatch, props.location.search, props.query]);
+    }, [dispatch, props.location.search, props.query, chosenTema]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
@@ -41,7 +41,7 @@ const FormLanding = (props: any) => {
     } else {
         return (
             <WithLoading loading={loading}>
-                <MainFormPage ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
+                <MainFormPage path={props.path} ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
             </WithLoading>
         );
     }

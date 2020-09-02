@@ -5,10 +5,11 @@ import queryString from 'query-string';
 
 const FormLandingPage = (props: any) => {
     const query = queryString.parse(props.location.search);
+    const path = props.location.pathname;
 
     return (
         <ErrorBoundary>
-            <FormLanding query={query} location={props.location} />
+            <FormLanding path={path} query={query} location={props.location} />
         </ErrorBoundary>
     );
 };

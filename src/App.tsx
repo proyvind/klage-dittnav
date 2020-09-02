@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { getTemaObject } from './services/klageService';
 import { useDispatch } from 'react-redux';
-import { setValgtYtelse } from './store/actions';
+import { setValgtYtelse, setValgtTema } from './store/actions';
 import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
@@ -22,6 +22,7 @@ const App = (props: any) => {
             const query = queryString.parse(props.location.search);
             if (query) {
                 if (query.tema && !Array.isArray(query.tema)) {
+                    dispatch(setValgtTema(query.tema));
                     getTemaObject(query.tema)
                         .then(res => {
                             let ytelse = '';

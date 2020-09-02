@@ -29,6 +29,10 @@ export type ActionTypes =
     | {
           type: 'YTELSE_SET';
           value: string;
+      }
+    | {
+          type: 'TEMA_SET';
+          value: string;
       };
 
 export function checkAuth(search: string) {
@@ -83,12 +87,18 @@ export function setValgtYtelse(ytelse: string) {
     };
 }
 
-export function sjekkAuth(response: Response, params: string) {
+export function setValgtTema(tema: string) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return dispatch({ type: 'TEMA_SET', value: tema });
+    };
+}
+
+const sjekkAuth = (response: Response, params: string): any => {
     if (response.status === 401 || response.status === 403) {
         window.location.assign(getLoginserviceRedirectUrl(encodeURIComponent(decodeURI(params))));
     }
     return response;
-}
+};
 
 export const sjekkHttpFeil = (response: Response) => {
     if (response.ok) {

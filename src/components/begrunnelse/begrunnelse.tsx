@@ -176,8 +176,12 @@ const Begrunnelse = (props: any) => {
             {submitted && !validForm() && (
                 <MarginContainer>
                     <AlertStripeFeil>
-                        {getFeilmeldinger().map(feilmelding => {
-                            return <p className="no-margin">{feilmelding}</p>;
+                        {getFeilmeldinger().map((feilmelding, index) => {
+                            return (
+                                <p className="no-margin" key={index}>
+                                    {feilmelding}
+                                </p>
+                            );
                         })}
                     </AlertStripeFeil>
                 </MarginContainer>
