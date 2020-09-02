@@ -17,22 +17,18 @@ const FormLanding = (props: any) => {
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(checkAuth(props.location.search));
-    }, [dispatch, props.location.search]);
-
-    useEffect(() => {
         if (validVedtakQuery(props.query)) {
+            dispatch(checkAuth(props.location.search));
             setChosenVedtak(elementAsVedtak(props.query));
         } else {
             setTemaNotSet(true);
         }
-    }, [dispatch, props.query]);
+    }, [dispatch, props.location.search, props.query]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
     if (temaNotSet) {
         logInfo('Form landing page visited with no tema.', { referrer: document.referrer });
-
         return (
             <Error
                 error={{
@@ -42,13 +38,13 @@ const FormLanding = (props: any) => {
                 }}
             />
         );
+    } else {
+        return (
+            <WithLoading loading={loading}>
+                <MainFormPage ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
+            </WithLoading>
+        );
     }
-
-    return (
-        <WithLoading loading={loading}>
-            <MainFormPage ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
-        </WithLoading>
-    );
 };
 
 export default FormLanding;
