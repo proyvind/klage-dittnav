@@ -1,7 +1,3 @@
-export const validYtelser = ['foreldrepenger', 'engangsstønad', 'svangerskapspenger'];
-
-export const defaultYtelse = 'foreldrepenger';
-
 export const ytelseUrlMap = {
     foreldrepenger:
         'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',

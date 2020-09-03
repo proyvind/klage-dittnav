@@ -8,6 +8,7 @@ import { footer, header, scripts, styles } from './mock-api/get/decorator';
 import { setupMock } from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
 import Environment, { fetchEnv, isLocalhost } from './utils/environment';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = configureStore();
 
@@ -51,9 +52,11 @@ const init = async () => {
     ReactDOM.render(
         <React.StrictMode>
             <Provider store={store}>
-                <div id="app">
-                    <App />
-                </div>
+                <BrowserRouter>
+                    <div id="app">
+                        <App />
+                    </div>
+                </BrowserRouter>
             </Provider>
         </React.StrictMode>,
         document.getElementById('root')

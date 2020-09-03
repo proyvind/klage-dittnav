@@ -6,8 +6,7 @@ import { Store } from '../../store/reducer';
 
 const Layout = (props: any) => {
     const { chosenYtelse } = useSelector((state: Store) => state);
-    const ytelse = chosenYtelse;
-    const title = `Klage på vedtak for ${ytelse}`;
+    const title = chosenYtelse !== '' ? `Klage på vedtak for ${chosenYtelse?.toLowerCase()}` : `Klage på vedtak`;
 
     return (
         <>

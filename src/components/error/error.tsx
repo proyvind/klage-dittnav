@@ -15,7 +15,7 @@ const Error = (props: Props) => {
     return (
         <div className="error__container">
             <AlertStripeFeil>
-                Oisann, noe gikk galt ved henting av data!
+                Oisann, noe gikk galt!
                 <br />
                 {error.code && <span>{`${error.code}: `}</span>}
                 {error.text && <span>{`${error.text}`}</span>}

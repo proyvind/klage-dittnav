@@ -21,7 +21,7 @@ import Lenke from 'nav-frontend-lenker';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
-import {logError} from "../../utils/logger/frontendLogger";
+import { logError } from '../../utils/logger/frontendLogger';
 
 const OppsummeringSkjemaPage = (props: any) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
@@ -50,7 +50,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                 // TODO: Set success message
             })
             .catch(error => {
-                logError(error, 'Finalize klage failed', {klageid: activeKlage.id});
+                logError(error, 'Finalize klage failed', { klageid: activeKlage.id });
                 setIsLoading(false);
                 // TODO: Set error message
             });

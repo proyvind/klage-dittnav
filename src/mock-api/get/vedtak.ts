@@ -1,4 +1,5 @@
 import { Vedtak } from '../../types/vedtak';
+import { Tema } from '../../types/tema';
 
 export const validVedtakQuery = (element: any): boolean => {
     return 'tema' in element;
@@ -7,8 +8,8 @@ export const validVedtakQuery = (element: any): boolean => {
 export const elementAsVedtak = (element: any): Vedtak => {
     return {
         vedtak: '',
-        tema: element.tema ? element.tema : 'UKJ',
-        ytelse: element?.ytelse,
+        tema: element.tema,
+        ytelse: element?.ytelse ?? Tema[element.tema ?? 'UKJ'],
         saksnummer: element?.saksnummer ?? ''
     };
 };

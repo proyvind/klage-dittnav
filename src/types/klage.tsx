@@ -36,7 +36,7 @@ export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
         tema: vedtak.tema,
         ytelse: vedtak.ytelse,
         datoalternativ: '',
-        vedtaksdatoobjekt: new Date(vedtak.vedtak),
+        vedtaksdatoobjekt: undefined,
         saksnummer: vedtak.saksnummer
     };
     return klageskjema;

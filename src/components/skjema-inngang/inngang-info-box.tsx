@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -16,10 +16,10 @@ import QuestionInactive from '../../assets/images/icons/QuestionInactive';
 import Lenke from 'nav-frontend-lenker';
 import ModalWrapper from 'nav-frontend-modal';
 import ModalElektroniskId from './modal-elektronisk-id';
-import { useDispatch, useSelector } from 'react-redux';
-import { setValgtYtelse } from '../../store/actions';
+import { useSelector } from 'react-redux';
 import { getUrlToPaperForm } from '../../types/ytelse';
 import { Store } from '../../store/reducer';
+import queryString from 'query-string';
 
 export const BoxHeader = styled.div`
     background-color: #c1b5d0;
@@ -45,11 +45,10 @@ export const BoxContent = styled.div`
 `;
 
 interface Props {
-    ytelse: string;
+    query: any;
 }
 
 const InngangInfoBox = (props: Props) => {
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const { chosenYtelse } = useSelector((state: Store) => state);
@@ -59,10 +58,6 @@ const InngangInfoBox = (props: Props) => {
     const [questionActive, setQuestionActive] = useState<boolean>(false);
     // const [popoverAnker, setPopoverAnker] = useState<HTMLElement | undefined>(undefined);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-
-    useEffect(() => {
-        dispatch(setValgtYtelse(props.ytelse));
-    }, [dispatch, props.ytelse]);
 
     matchMediaQueries.mobileM.addListener(width => {
         setMediumMobileMode(width.matches);
@@ -77,8 +72,7 @@ const InngangInfoBox = (props: Props) => {
         setQuestionActive(!questionActive);
     };
 
-    const ytelse = props.ytelse;
-    const title = `Klage - ${ytelse}`;
+    const title = chosenYtelse !== '' ? `Klage - ${chosenYtelse}` : `Klage`;
 
     return (
         <div>
@@ -113,7 +107,12 @@ const InngangInfoBox = (props: Props) => {
                             <Hovedknapp
                                 kompakt={mediumMobileMode}
                                 mini={smallMobileMode}
-                                onClick={() => history.push(`klage`)}
+                                onClick={() =>
+                                    // Keep query when moving to form
+                                    history.push(
+                                        'klage' + (props.query ? '?' + queryString.stringify(props.query) : '')
+                                    )
+                                }
                             >
                                 Fortsett til innlogget skjema
                             </Hovedknapp>
