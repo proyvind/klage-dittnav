@@ -15,13 +15,24 @@ jobs:
         run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
       - name: Lag full image referanse
         run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
-
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/prod.json
+      - name: Generate release version
+        run: |
+          TIME=$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M)
+          COMMIT=$(git rev-parse --short=7 HEAD)
+          VERSION=$TIME-$COMMIT
+          echo "::set-env name=VERSION::"$VERSION""
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }}
       - name: Post failures to Slack
         if: failure()
         run: |
