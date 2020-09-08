@@ -30,4 +30,6 @@ export const getFinalizeKlageUrl = (klageId: number): string =>
 export const getKlageJournalpostIdUrl = (klageId: number): string =>
     `${Environment.REACT_APP_API_URL}/klager/${klageId}/journalpostid`;
 
+export const getKlagePdfUrl = (klageId: number): string => `${Environment.REACT_APP_API_URL}/klager/${klageId}/pdf`;
+
 export const getTemaObjectUrl = (klageKode: string): string => `${Environment.REACT_APP_API_URL}/temaer/${klageKode}`;

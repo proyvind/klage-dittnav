@@ -4,13 +4,17 @@ import {
     ContentContainer,
     MarginContainer,
     CenteredContainer,
-    Margin40Container
+    Margin40Container,
+    Margin32Container
 } from '../../styled-components/main-styled-components';
 import { Systemtittel, Normaltekst, Element } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { formatDate } from '../../utils/date-util';
+import { getKlagePdfUrl } from '../../clients/apiUrls';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
+    klageId: number;
     journalPostId?: string;
     success: boolean;
     finalizedDate: string;
@@ -27,12 +31,19 @@ const Kvittering = (props: Props) => {
                 <Margin40Container>
                     <Systemtittel>Kvittering for innsendt klage</Systemtittel>
                 </Margin40Container>
-                {/* TODO: Hvis success så vis link til søknad-PDF */}
+
+                {props.success && (
+                    <Margin32Container>
+                        <Lenke target="_blank" rel="noopener noreferrer" href={getKlagePdfUrl(props.klageId)}>
+                            Se og last ned søknaden din
+                        </Lenke>
+                    </Margin32Container>
+                )}
 
                 {props.finalizedDate && (
-                    <Margin40Container>
+                    <Margin32Container>
                         <Normaltekst>Sendt inn: {formatDate(new Date(props.finalizedDate))}</Normaltekst>
-                    </Margin40Container>
+                    </Margin32Container>
                 )}
             </CenteredContainer>
             <Margin40Container>
@@ -49,13 +60,13 @@ const Kvittering = (props: Props) => {
                 <Margin40Container>
                     <Normaltekst>
                         Du kan lese mer om hvordan vi behandler klagen din videre på våre{' '}
-                        <a
+                        <Lenke
                             target="_blank"
                             rel="noopener noreferrer"
                             href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
                         >
                             tema-sider om klage og anke
-                        </a>
+                        </Lenke>
                         .
                     </Normaltekst>
                 </Margin40Container>

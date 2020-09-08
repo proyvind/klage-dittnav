@@ -64,6 +64,7 @@ const KvitteringPage = (props: any) => {
         } else {
             return (
                 <Kvittering
+                    klageId={activeKlage.id}
                     journalPostId={journalPostId !== '' ? journalPostId : undefined}
                     finalizedDate={finalizedDate !== '' ? finalizedDate : undefined}
                     success={success}

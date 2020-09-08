@@ -119,7 +119,12 @@ const OppsummeringSkjemaPage = (props: any) => {
                     <Knapp className="row-element" onClick={() => props.previous()}>
                         Tilbake
                     </Knapp>
-                    <Hovedknapp className="row-element" onClick={(event: any) => submitForm(event)} spinner={loading}>
+                    <Hovedknapp
+                        className="row-element"
+                        onClick={(event: any) => submitForm(event)}
+                        disabled={loading}
+                        spinner={loading}
+                    >
                         Send inn
                     </Hovedknapp>
                 </FlexCenteredContainer>
