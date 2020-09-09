@@ -2,7 +2,7 @@ import { Vedtak } from '../../types/vedtak';
 import { Tema } from '../../types/tema';
 
 export const validVedtakQuery = (element: any): boolean => {
-    return 'tema' in element;
+    return 'tema' in element || 'klageid' in element;
 };
 
 export const elementAsVedtak = (element: any): Vedtak => {
