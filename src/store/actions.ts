@@ -29,6 +29,10 @@ export type ActionTypes =
     | {
           type: 'YTELSE_SET';
           value: string;
+      }
+    | {
+          type: 'REFERRER_SET';
+          value: string;
       };
 
 export function checkAuth(search: string) {
@@ -80,6 +84,12 @@ export function updateKlage(klageskjema: KlageSkjema) {
 export function setValgtYtelse(ytelse: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'YTELSE_SET', value: ytelse });
+    };
+}
+
+export function setReferrer(referrer: string) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return dispatch({ type: 'REFERRER_SET', value: referrer });
     };
 }
 

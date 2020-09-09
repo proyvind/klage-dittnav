@@ -18,6 +18,7 @@ export interface KlageSkjema {
     vedtaksdatoobjekt?: Date;
     saksnummer?: string;
     vedlegg?: Vedlegg[];
+    referrer?: string;
 }
 
 export interface Klage {
@@ -28,6 +29,7 @@ export interface Klage {
     vedtak?: string;
     saksnummer?: string;
     vedlegg?: Vedlegg[];
+    referrer?: string;
 }
 
 export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
@@ -37,7 +39,8 @@ export const klageSkjemaBasertPaaVedtak = (vedtak: Vedtak): KlageSkjema => {
         ytelse: vedtak.ytelse,
         datoalternativ: '',
         vedtaksdatoobjekt: undefined,
-        saksnummer: vedtak.saksnummer
+        saksnummer: vedtak.saksnummer,
+        referrer: ''
     };
     return klageskjema;
 };
@@ -69,7 +72,8 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
         ytelse: klageskjema.ytelse,
         vedtak: getVedtaksDato(),
         saksnummer: klageskjema.saksnummer,
-        vedlegg: klageskjema.vedlegg
+        vedlegg: klageskjema.vedlegg,
+        referrer: klageskjema.referrer
     };
     return klage;
 };

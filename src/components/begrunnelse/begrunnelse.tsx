@@ -27,7 +27,7 @@ import { Tema } from '../../types/tema';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
-    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg, referrer } = useSelector((state: Store) => state);
 
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
     const [activeDatoISO, setActiveDatoISO] = useState<string>(
@@ -43,13 +43,15 @@ const Begrunnelse = (props: any) => {
             let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
                 klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
+                klageskjema.referrer = referrer;
             } else {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
                     tema: 'UKJ',
                     ytelse: Tema['UKJ'],
                     datoalternativ: datoalternativ,
-                    saksnummer: ''
+                    saksnummer: '',
+                    referrer: referrer
                 };
                 if (activeDatoISO !== '') {
                     klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);
@@ -59,7 +61,16 @@ const Begrunnelse = (props: any) => {
             }
             dispatch(postNewKlage(klageskjema));
         }
-    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, props.ytelse]);
+    }, [
+        activeKlage,
+        dispatch,
+        activeBegrunnelse,
+        activeDatoISO,
+        datoalternativ,
+        props.chosenVedtak,
+        props.ytelse,
+        referrer
+    ]);
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';

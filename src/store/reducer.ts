@@ -8,6 +8,8 @@ export interface Store {
 
     chosenYtelse: string;
 
+    referrer: string;
+
     // Auth response
     person: Bruker;
 
@@ -22,6 +24,8 @@ export const initialState: Store = {
     loading: true,
 
     chosenYtelse: '',
+
+    referrer: '',
 
     person: {
         navn: {
@@ -87,6 +91,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 chosenYtelse: action.value
+            };
+        case 'REFERRER_SET':
+            return {
+                ...state,
+                referrer: action.value
             };
     }
     return state;
