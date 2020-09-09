@@ -53,7 +53,7 @@ const init = async () => {
         <React.StrictMode>
             <Provider store={store}>
                 <BrowserRouter>
-                    <div id="app">
+                    <div id="app" className="app">
                         <App />
                     </div>
                 </BrowserRouter>
