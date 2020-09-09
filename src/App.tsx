@@ -9,13 +9,15 @@ import { getTemaObject } from './services/klageService';
 import { useDispatch } from 'react-redux';
 import { setValgtYtelse } from './store/actions';
 import NotFoundPage from './pages/not-found/not-found-page';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import { CenteredContainer } from './styled-components/main-styled-components';
 
 const App = (props: any) => {
+    const [loading, setLoading] = useState<boolean>(true);
     const [errorState, setErrorState] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('using effect...');
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
             if (query) {
@@ -25,33 +27,46 @@ const App = (props: any) => {
                             let ytelse = '';
                             ytelse = query.ytelse && !Array.isArray(query.ytelse) ? query.ytelse : res.value;
                             dispatch(setValgtYtelse(ytelse));
+                            setLoading(false);
                         })
                         .catch(err => {
                             if (err.response?.status === 404) {
                                 setErrorState(true);
+                                setLoading(false);
                                 return;
                             }
                             console.log(err);
                         });
                 }
             }
+        } else {
+            setLoading(false);
         }
     }, [dispatch, props.location.search]);
 
-    if (errorState) {
-        return <NotFoundPage />;
+    if (loading) {
+        return (
+            <CenteredContainer>
+                <NavFrontendSpinner type={'XL'} />
+            </CenteredContainer>
+        );
+    } else {
+        if (errorState) {
+            return <NotFoundPage />;
+        } else {
+            return (
+                <Router>
+                    <Layout>
+                        <Switch>
+                            {routesConfig.map(route => {
+                                return <Route key={route.path} {...route} />;
+                            })}
+                        </Switch>
+                    </Layout>
+                </Router>
+            );
+        }
     }
-    return (
-        <Router>
-            <Layout>
-                <Switch>
-                    {routesConfig.map(route => {
-                        return <Route key={route.path} {...route} />;
-                    })}
-                </Switch>
-            </Layout>
-        </Router>
-    );
 };
 
 export default withRouter(App);
