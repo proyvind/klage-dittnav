@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react';
 import InngangInfoBox from '../../components/skjema-inngang/inngang-info-box';
 import { Margin80TopContainer } from '../../styled-components/main-styled-components';
 import queryString from 'query-string';
-import { setReferrer } from '../../store/actions';
-import { useDispatch } from 'react-redux';
 import { getBruker } from '../../services/userService';
 import { useHistory } from 'react-router-dom';
 import WithLoading from '../../components/general/loading/withLoading';
+import { setReferrer } from '../../services/klageService';
 
 const SkjemaInngang = (props: any) => {
     const history = useHistory();
-    const dispatch = useDispatch();
-
     const query = queryString.parse(props.location.search);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -25,8 +22,8 @@ const SkjemaInngang = (props: any) => {
         });
 
     useEffect(() => {
-        dispatch(setReferrer(document.referrer ?? ''));
-    }, [dispatch]);
+        setReferrer(document.referrer);
+    }, []);
 
     return (
         <Margin80TopContainer>

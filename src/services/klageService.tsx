@@ -32,3 +32,11 @@ export const getJournalpostId = (klageId: number) => {
 export const getTemaObject = (temaKode: string) => {
     return baseService.get(getTemaObjectUrl(temaKode));
 };
+
+export const setReferrer = (referrer: string) => {
+    sessionStorage.setItem('referrer', referrer);
+};
+
+export const getReferrer = (): string => {
+    return sessionStorage.getItem('referrer') ?? '';
+};

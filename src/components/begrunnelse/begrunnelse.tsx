@@ -24,10 +24,11 @@ import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Tema } from '../../types/tema';
+import { getReferrer } from '../../services/klageService';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
-    const { activeKlage, activeKlageSkjema, activeVedlegg, referrer } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
 
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
     const [activeDatoISO, setActiveDatoISO] = useState<string>(
@@ -43,7 +44,7 @@ const Begrunnelse = (props: any) => {
             let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
                 klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
-                klageskjema.referrer = referrer;
+                klageskjema.referrer = getReferrer();
             } else {
                 klageskjema = {
                     fritekst: activeBegrunnelse,
@@ -51,7 +52,7 @@ const Begrunnelse = (props: any) => {
                     ytelse: Tema['UKJ'],
                     datoalternativ: datoalternativ,
                     saksnummer: '',
-                    referrer: referrer
+                    referrer: getReferrer()
                 };
                 if (activeDatoISO !== '') {
                     klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);
@@ -61,16 +62,7 @@ const Begrunnelse = (props: any) => {
             }
             dispatch(postNewKlage(klageskjema));
         }
-    }, [
-        activeKlage,
-        dispatch,
-        activeBegrunnelse,
-        activeDatoISO,
-        datoalternativ,
-        props.chosenVedtak,
-        props.ytelse,
-        referrer
-    ]);
+    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, props.ytelse]);
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
