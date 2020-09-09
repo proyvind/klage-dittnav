@@ -100,7 +100,7 @@ export function sjekkAuth(response: Response, params: string) {
     return response;
 }
 
-const sjekkHttpFeil = (response: Response) => {
+export const sjekkHttpFeil = (response: Response) => {
     if (response.ok) {
         return response;
     } else {
