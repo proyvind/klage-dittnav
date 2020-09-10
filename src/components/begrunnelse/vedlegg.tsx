@@ -26,12 +26,12 @@ const VedleggVisning = (props: Props) => {
     return (
         <PaddingContainer>
             <FlexWithSpacingContainer>
-                {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
+                {Array.from(props.vedlegg).map((vedlegg: VedleggProps) => (
                     <File
                         className="file-flex-item"
                         file={vedlegg.vedlegg}
                         buttonsVisibility="always"
-                        buttonsPosition="inside"
+                        buttonsPosition="header"
                         viewOnePage={true}
                         showDeleteButton
                         onDeleteFile={file => deleteVedlegg(file)}
