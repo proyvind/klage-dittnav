@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { VedleggProps } from '../../types/vedlegg';
 import File from 'forhandsvisningsfil';
-import { FlexWithSpacingContainer, PaddingContainer } from '../../styled-components/main-styled-components';
+import {
+    FlexWithSpacingContainer,
+    PaddingContainer,
+    matchMediaQueries
+} from '../../styled-components/main-styled-components';
 
 interface Props {
     vedlegg: VedleggProps[];
@@ -9,9 +13,15 @@ interface Props {
 }
 
 const VedleggVisning = (props: Props) => {
+    const [smallMobileMode, setSmallMobileMode] = useState<boolean>(matchMediaQueries.mobileS.matches);
+
     if (props.vedlegg.length === 0) {
         return null;
     }
+
+    matchMediaQueries.mobileS.addListener(width => {
+        setSmallMobileMode(width.matches);
+    });
 
     const deleteVedlegg = (ifile: any) => {
         let deletedItem = props.vedlegg.find(v => v.vedlegg.id === ifile.id);
@@ -25,20 +35,21 @@ const VedleggVisning = (props: Props) => {
 
     return (
         <PaddingContainer>
-            <FlexWithSpacingContainer>
-                {Array.from(props.vedlegg).map((vedlegg: VedleggProps) => (
-                    <File
-                        className="file-flex-item"
-                        file={vedlegg.vedlegg}
-                        buttonsVisibility="always"
-                        buttonsPosition="header"
-                        viewOnePage={true}
-                        showDeleteButton
-                        onDeleteFile={file => deleteVedlegg(file)}
-                        onPreviousPage={file => console.log('onPreviousPage: ', file)}
-                        onNextPage={file => console.log('onNextPage: ', file)}
-                        scale={2}
-                    />
+            <FlexWithSpacingContainer className="center-in-mobile">
+                {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
+                    <div className="file-flex-item" key={index}>
+                        <File
+                            file={vedlegg.vedlegg}
+                            buttonsVisibility="always"
+                            buttonsPosition="header"
+                            viewOnePage={true}
+                            showDeleteButton
+                            onDeleteFile={file => deleteVedlegg(file)}
+                            onPreviousPage={file => console.log('onPreviousPage: ', file)}
+                            onNextPage={file => console.log('onNextPage: ', file)}
+                            scale={smallMobileMode ? 1 : 2}
+                        />
+                    </div>
                 ))}
             </FlexWithSpacingContainer>
         </PaddingContainer>
