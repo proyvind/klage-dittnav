@@ -16,12 +16,17 @@ const frontendloggerScript = () => {
     return document.getElementById('frontendlogger')['innerHTML'];
 }
 
+const securityHeadersMiddleware = (req,res,next) => {
+    res.set("X-Frame-Options", "SAMEORIGIN");
+    res.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.set("X-Content-Type-Options", "nosniff");
+    res.set("X-XSS-Protection", "1; mode=block");
+    res.set("Referrer-Policy", "no-referrer-when-downgrade");
+    next();
+}
+
 server.set("views", `${__dirname}/../build`);
 server.set("view engine", "mustache");
-server.set("X-Frame-Options", "SAMEORIGIN");
-server.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-server.set("X-Content-Type-Options", "nosniff");
-server.set("X-XSS-Protection", "1; mode=block");
 server.engine("html", mustacheExpress());
 
 // Parse application/json
@@ -48,7 +53,7 @@ server.get(`/config`, (req, res) =>
 );
 
 // Match everything except internal og static
-server.use(/^(?!.*\/(internal|static)\/).*$/, (req, res) =>
+server.use(/^(?!.*\/(internal|static)\/).*$/, securityHeadersMiddleware, (req, res) =>
   getDecorator()
     .then((fragments) => {
       res.render("index.html", {...fragments, FRONTEND_LOGGER_SCRIPT: frontendloggerScript()});
