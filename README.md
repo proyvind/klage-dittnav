@@ -1,7 +1,7 @@
 Front end for klageskjema som skal legges ut på DittNAV.
 
 ## Kjøre lokalt
-`npm run start:js`
+`npm run start`
 
 ## Kjøre med docker-compose
 Kjøre med mock:
