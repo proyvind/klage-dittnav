@@ -15,5 +15,9 @@ export const formatDate = (date: Date | undefined): string => {
 
 export const toISOString = (date: Date): string => {
     let momentDate = moment(date);
-    return momentDate.isValid() ? (date.toISOString() ? date.toISOString().substring(0, 10) : '') : '';
+    return momentDate.isValid() ? momentDate.toISOString(true).substring(0, 10) : '';
+};
+
+export const dateStringToDate = (input: string): Date => {
+    return moment(input, "DD-MM-YYYY").toDate()
 };

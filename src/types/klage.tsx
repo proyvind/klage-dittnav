@@ -1,6 +1,6 @@
 import { Vedlegg } from './vedlegg';
 import { Vedtak } from './vedtak';
-import { formatDate } from '../utils/date-util';
+import { dateStringToDate, formatDate } from '../utils/date-util';
 import { datoValg } from '../components/begrunnelse/datoValg';
 
 export enum KlageStatus {
@@ -77,3 +77,35 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
     };
     return klage;
 };
+
+export const klageTilKlageSkjema = (klage: Klage): KlageSkjema => {
+    let klageSkjema: KlageSkjema;
+    klageSkjema = {
+        id: klage.id,
+        fritekst: klage.fritekst,
+        tema: klage.tema,
+        ytelse: klage.ytelse,
+        datoalternativ: getDatoAlternativ(klage.vedtak!!),
+        vedtak: klage.vedtak,
+        vedtaksdatoobjekt: getVedtaksDatoObjekt(klage.vedtak!!) || undefined,
+        saksnummer: klage.saksnummer
+    };
+
+    return klageSkjema
+}
+
+const getVedtaksDatoObjekt = (vedtak: string) => {
+    if (vedtak.startsWith('Tidligere vedtak') && (vedtak !== 'Tidligere vedtak - Ingen dato satt')) {
+        return dateStringToDate(vedtak.substr(19))
+    }
+}
+
+const getDatoAlternativ = (vedtak: string) => {
+    if (vedtak.startsWith('Tidligere vedtak')) {
+        return 'Tidligere vedtak'
+    } else if (vedtak.startsWith('Siste vedtak')) {
+        return 'Siste vedtak'
+    } else {
+        return ''
+    }
+}
