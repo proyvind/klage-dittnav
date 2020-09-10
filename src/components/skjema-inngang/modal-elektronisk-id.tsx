@@ -11,8 +11,6 @@ import Lenke from 'nav-frontend-lenker';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import BubbleChatInformation from '../../assets/images/icons/BubbleChatInformation';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Store } from '../../store/reducer';
 import { getUrlToPaperForm } from '../../types/ytelse';
 import queryString from 'query-string';
 
@@ -22,7 +20,6 @@ interface Props {
 
 const ModalElektroniskId = (props: Props) => {
     const history = useHistory();
-    const { chosenYtelse } = useSelector((state: Store) => state);
 
     return (
         <div style={{ padding: '20px' }}>
