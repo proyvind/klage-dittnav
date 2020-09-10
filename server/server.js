@@ -17,11 +17,11 @@ const frontendloggerScript = () => {
 }
 
 const securityHeadersMiddleware = (req,res,next) => {
-    res.set("X-Frame-Options", "SAMEORIGIN");
-    res.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-    res.set("X-Content-Type-Options", "nosniff");
-    res.set("X-XSS-Protection", "1; mode=block");
-    res.set("Referrer-Policy", "no-referrer-when-downgrade");
+    res.header("X-Frame-Options", "SAMEORIGIN");
+    res.header("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.header("X-Content-Type-Options", "nosniff");
+    res.header("X-XSS-Protection", "1; mode=block");
+    res.header("Referrer-Policy", "no-referrer-when-downgrade");
     next();
 }
 
@@ -41,6 +41,10 @@ server.get(`/internal/isReady`, (req, res) =>
 );
 
 server.get(`/internal/isAlive`, (req, res) =>
+    res.sendStatus(200)
+);
+
+server.get(`/test`, securityHeadersMiddleware, (req, res) =>
     res.sendStatus(200)
 );
 
