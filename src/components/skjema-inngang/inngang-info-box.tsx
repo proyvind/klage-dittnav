@@ -120,7 +120,7 @@ const InngangInfoBox = (props: Props) => {
                             <a
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                href={getUrlToPaperForm(chosenYtelse)}
+                                href={getUrlToPaperForm('FOR')}
                                 className={`knapp
                                     ${mediumMobileMode ? 'knapp--kompakt' : ''} ${
                                     smallMobileMode ? 'knapp--mini' : ''
@@ -148,7 +148,7 @@ const InngangInfoBox = (props: Props) => {
                                     closeButton={true}
                                     contentLabel="Min modalrute"
                                 >
-                                    <ModalElektroniskId />
+                                    <ModalElektroniskId query={props.query} />
                                 </ModalWrapper>
                             </div>
                             <span id="withPopover" onClick={() => toggleQuestionActive()} style={{ cursor: 'pointer' }}>
