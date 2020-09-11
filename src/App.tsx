@@ -24,8 +24,7 @@ const App = (props: any) => {
                 if (query.tema) {
                     getTemaObject(String(query.tema))
                         .then(res => {
-                            let ytelse = '';
-                            ytelse = query.ytelse ? String(query.ytelse) : res.value;
+                            const ytelse = query.ytelse ? query.ytelse.toString() : res.value;
                             dispatch(setValgtYtelse(ytelse));
                             setLoading(false);
                         })

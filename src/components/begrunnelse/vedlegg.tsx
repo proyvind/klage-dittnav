@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { VedleggProps } from '../../types/vedlegg';
-import File from 'forhandsvisningsfil';
+import File, { IFile } from 'forhandsvisningsfil';
 import {
     FlexWithSpacingContainer,
     PaddingContainer,
@@ -23,8 +23,8 @@ const VedleggVisning = (props: Props) => {
         setSmallMobileMode(width.matches);
     });
 
-    const deleteVedlegg = (ifile: any) => {
-        let deletedItem = props.vedlegg.find(v => v.vedlegg.id === ifile.id);
+    const deleteVedlegg = (ifile: IFile) => {
+        const deletedItem = props.vedlegg.find(v => v.vedlegg.id === ifile.id);
         if (deletedItem) {
             props.deleteAction(deletedItem);
         } else {

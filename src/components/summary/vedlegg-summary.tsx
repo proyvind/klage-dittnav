@@ -17,28 +17,29 @@ const Vedleggtekst = styled.span`
 `;
 
 const VedleggSummary = (props: Props) => {
-    return (
-        <div>
-            {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => {
-                return (
-                    props.klage.id &&
-                    vedlegg.vedlegg.id && (
+    const klageId = props.klage.id;
+    if (typeof klageId === 'number') {
+        return (
+            <div>
+                {Array.from(props.vedlegg)
+                    .filter(({ vedlegg: { id } }) => !!id)
+                    .map(({ vedlegg }) => (
                         <div>
                             <Lenke
                                 className="no-background-style"
-                                href={getVedleggUrl(props.klage.id, vedlegg.vedlegg.id)}
+                                href={getVedleggUrl(klageId, vedlegg.id)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                key={index}
+                                key={vedlegg.id}
                             >
-                                <Vedleggtekst>{vedlegg.vedlegg?.name}</Vedleggtekst>
+                                <Vedleggtekst>{vedlegg.name}</Vedleggtekst>
                             </Lenke>
                         </div>
-                    )
-                );
-            })}
-        </div>
-    );
+                    ))}
+            </div>
+        );
+    }
+    return null;
 };
 
 export default VedleggSummary;

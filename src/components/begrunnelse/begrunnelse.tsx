@@ -64,13 +64,13 @@ const Begrunnelse = (props: any) => {
             dispatch(postNewKlage(klageskjema));
         }
     }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, klageId]);
-    useEffect( () => {
-        setActiveBegrunnelse(activeKlage.fritekst)
-        setDatoalternativ(activeKlageSkjema.datoalternativ)
+    useEffect(() => {
+        setActiveBegrunnelse(activeKlage.fritekst);
+        setDatoalternativ(activeKlageSkjema.datoalternativ);
         if (activeKlageSkjema.vedtaksdatoobjekt) {
-            setActiveDatoISO(toISOString(activeKlageSkjema.vedtaksdatoobjekt))
+            setActiveDatoISO(toISOString(activeKlageSkjema.vedtaksdatoobjekt));
         }
-    }, [activeKlage, activeKlageSkjema])
+    }, [activeKlage, activeKlageSkjema]);
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
@@ -108,7 +108,7 @@ const Begrunnelse = (props: any) => {
                         console.log(response);
                         dispatch({
                             type: 'VEDLEGG_ADD_SUCCESS',
-                            value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response.data) }
+                            value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response) }
                         });
                         setVedleggLoading(false);
                     })

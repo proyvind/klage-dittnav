@@ -27,7 +27,7 @@ const init = async () => {
         script.src = 'https://www.nav.no/dekoratoren/client.js';
         document.body.appendChild(script);
     }
-    // If not i develop mode, but still want to run mock
+    // If not in develop mode, but still want to run mock
     if (mockEnabled) {
         setupMock();
     }

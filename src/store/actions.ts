@@ -24,7 +24,7 @@ export type ActionTypes =
       }
     | {
           type: 'KLAGE_GET_ERROR';
-    }
+      }
     | {
           type: 'VEDLEGG_ADD_SUCCESS';
           value: VedleggProps;
@@ -39,8 +39,8 @@ export type ActionTypes =
       }
     | {
           type: 'KLAGE_ID_SET';
-          value: string
-    }
+          value: string;
+      };
 
 export function checkAuth(search: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
@@ -90,12 +90,12 @@ export function updateKlage(klageskjema: KlageSkjema) {
 export function getExistingKlage(klageId: number) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return getKlage(klageId)
-            .then(response => {
-                dispatch( { type: 'KLAGE_GET_SUCCESS', payload: response });
+            .then(klage => {
+                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: klage });
             })
             .catch(err => {
                 logError(err, 'Get existing klage failed');
-                dispatch({type: 'KLAGE_GET_ERROR'})
+                dispatch({ type: 'KLAGE_GET_ERROR' });
             });
     };
 }

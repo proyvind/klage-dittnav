@@ -21,20 +21,20 @@ const vedleggPostOptions = {
     }
 };
 
-export async function get(resource: string) {
+export async function get<T>(resource: string): Promise<T> {
     let response = await axios.get(resource, getOptions);
     try {
-        return await response.data;
+        return response.data;
     } catch (error) {
         logError(error, 'Error from get call', { resource: resource });
         throw error;
     }
 }
 
-export async function post(resource: string) {
+export async function post<T>(resource: string): Promise<T> {
     let response = await axios.post(resource, null, postOptions);
     try {
-        return await response;
+        return response.data;
     } catch (error) {
         logError(error, 'Error from post call', { resource: resource });
         throw error;
@@ -46,8 +46,7 @@ export async function postKlage(resource: string, item: Klage): Promise<Klage> {
     logInfo('Posting new klage', { klage: item });
     let response = await axios.post(resource, JSON.stringify(item), postOptions);
     try {
-        let res = await response;
-        return res.data;
+        return response.data;
     } catch (error) {
         logError(error, 'Error from post klage call', { resource: resource, klage: item });
         throw error;
@@ -57,8 +56,7 @@ export async function postKlage(resource: string, item: Klage): Promise<Klage> {
 export async function putKlage(resource: string, item: Klage): Promise<Klage> {
     let response = await axios.put(resource, JSON.stringify(item), postOptions);
     try {
-        let res = await response;
-        return res.data;
+        return response.data;
     } catch (error) {
         logError(error, 'Error from put klage call', { resource: resource, klage: item });
         throw error;
@@ -68,7 +66,7 @@ export async function putKlage(resource: string, item: Klage): Promise<Klage> {
 export async function postVedlegg(resource: string, vedlegg: FormData) {
     let response = await axios.post(resource, vedlegg, vedleggPostOptions);
     try {
-        return await response;
+        return response.data;
     } catch (error) {
         logError(error, 'Error from post vedlegg call', { resource: resource });
         throw error;
@@ -78,7 +76,7 @@ export async function postVedlegg(resource: string, vedlegg: FormData) {
 export async function deleteVedlegg(resource: string) {
     let response = await axios.delete(resource, getOptions);
     try {
-        return await response;
+        return response;
     } catch (error) {
         logError(error, 'Error from delete vedlegg call', { resource: resource });
         throw error;

@@ -27,7 +27,6 @@ const OppsummeringSkjemaPage = (props: any) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
-    let finalizedDate = '';
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -44,8 +43,8 @@ const OppsummeringSkjemaPage = (props: any) => {
         finalizeKlage(activeKlage.id)
             .then(response => {
                 console.log(response);
-                finalizedDate = response.data.finalizedDate;
-                history.push({ pathname: `/kvittering`, state: { finalizedDate: finalizedDate } });
+                const finalizedDate = response.finalizedDate;
+                history.push({ pathname: `/kvittering`, state: { finalizedDate } });
                 setIsLoading(false);
                 // TODO: Set success message
             })

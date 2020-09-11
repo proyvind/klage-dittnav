@@ -81,12 +81,17 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 activeKlage: action.payload,
                 activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload },
-                klageId: action.payload.id as unknown as string
+                klageId: action.payload.id?.toString() ?? initialState.klageId
             };
         case 'KLAGE_GET_SUCCESS':
-            const incomingVedlegg = action.payload.vedlegg?.map(function(e):
-                VedleggProps { return { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(e)}
-            })
+            const incomingVedlegg = action.payload.vedlegg?.map(function (e): VedleggProps {
+                return {
+                    id: e.id.toString(),
+                    klageId: e.klageId,
+                    status: VEDLEGG_STATUS.OK,
+                    vedlegg: toVedleggProps(e)
+                };
+            });
 
             return {
                 ...state,
@@ -94,7 +99,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 activeKlageSkjema: klageTilKlageSkjema(action.payload),
                 chosenYtelse: action.payload.ytelse,
                 activeVedlegg: incomingVedlegg!!,
-                klageId: action.payload.id as unknown as string
+                klageId: action.payload.id?.toString() ?? initialState.klageId
             };
         case 'KLAGE_GET_ERROR':
             return { ...state, getKlageError: true };
@@ -104,7 +109,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             const vIndex = state.activeVedlegg.indexOf(action.value);
             return {
                 ...state,
-                activeVedlegg: state.activeVedlegg.filter((_: any, index: number) => index !== vIndex)
+                activeVedlegg: state.activeVedlegg.filter((_, index) => index !== vIndex)
             };
         case 'YTELSE_SET':
             return {
@@ -115,7 +120,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 klageId: action.value
-            }
+            };
     }
     return state;
 };

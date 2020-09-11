@@ -64,8 +64,7 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
         return result;
     };
 
-    let klage: Klage;
-    klage = {
+    return {
         id: klageskjema.id,
         fritekst: klageskjema.fritekst,
         tema: klageskjema.tema,
@@ -75,7 +74,6 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
         vedlegg: klageskjema.vedlegg,
         referrer: klageskjema.referrer
     };
-    return klage;
 };
 
 export const klageTilKlageSkjema = (klage: Klage): KlageSkjema => {
@@ -92,21 +90,21 @@ export const klageTilKlageSkjema = (klage: Klage): KlageSkjema => {
         referrer: klage.referrer
     };
 
-    return klageSkjema
-}
+    return klageSkjema;
+};
 
 const getVedtaksDatoObjekt = (vedtak: string) => {
-    if (vedtak.startsWith('Tidligere vedtak') && (vedtak !== 'Tidligere vedtak - Ingen dato satt')) {
-        return dateStringToDate(vedtak.substr(19))
+    if (vedtak.startsWith('Tidligere vedtak') && vedtak !== 'Tidligere vedtak - Ingen dato satt') {
+        return dateStringToDate(vedtak.substr(19));
     }
-}
+};
 
 const getDatoAlternativ = (vedtak: string) => {
     if (vedtak.startsWith('Tidligere vedtak')) {
-        return 'Tidligere vedtak'
+        return 'Tidligere vedtak';
     } else if (vedtak.startsWith('Siste vedtak')) {
-        return 'Siste vedtak'
+        return 'Siste vedtak';
     } else {
-        return ''
+        return '';
     }
-}
+};

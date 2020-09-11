@@ -9,38 +9,28 @@ import {
 } from '../clients/apiUrls';
 import { Klage } from '../types/klage';
 
-export const getKlager = () => {
-    return baseService.get(getKlagerUrl());
-};
+export const getKlager = () => baseService.get(getKlagerUrl());
 
-export const postKlage = (klage: Klage) => {
-    return baseService.postKlage(getAddKlageUrl(), klage);
-};
+export const postKlage = (klage: Klage) => baseService.postKlage(getAddKlageUrl(), klage);
 
-export const putKlage = (klage: Klage) => {
-    return baseService.putKlage(getKlageByIdUrl(klage.id!!), klage);
-};
+export const putKlage = (klage: Klage) => baseService.putKlage(getKlageByIdUrl(klage.id!!), klage);
 
-export const getKlage = (klageId: number) => {
-    return baseService.get(getKlageByIdUrl(klageId))
+export const getKlage = (klageId: number) => baseService.get<Klage>(getKlageByIdUrl(klageId));
+
+export const finalizeKlage = (klageId: number) => baseService.post<FinalizedKlage>(getFinalizeKlageUrl(klageId));
+
+export const getJournalpostId = (klageId: number) => baseService.get<string>(getKlageJournalpostIdUrl(klageId));
+
+export const getTemaObject = (temaKode: string) => baseService.get<TemaObject>(getTemaObjectUrl(temaKode));
+
+export const setReferrer = (referrer: string) => sessionStorage.setItem('referrer', referrer);
+
+export const getReferrer = () => sessionStorage.getItem('referrer') ?? '';
+
+interface TemaObject {
+    value: string;
 }
 
-export const finalizeKlage = (klageId: number) => {
-    return baseService.post(getFinalizeKlageUrl(klageId));
-};
-
-export const getJournalpostId = (klageId: number) => {
-    return baseService.get(getKlageJournalpostIdUrl(klageId));
-};
-
-export const getTemaObject = (temaKode: string) => {
-    return baseService.get(getTemaObjectUrl(temaKode));
-};
-
-export const setReferrer = (referrer: string) => {
-    sessionStorage.setItem('referrer', referrer);
-};
-
-export const getReferrer = (): string => {
-    return sessionStorage.getItem('referrer') ?? '';
-};
+interface FinalizedKlage {
+    finalizedDate: string;
+}

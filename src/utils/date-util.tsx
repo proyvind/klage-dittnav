@@ -19,5 +19,5 @@ export const toISOString = (date: Date): string => {
 };
 
 export const dateStringToDate = (input: string): Date => {
-    return moment(input, "DD-MM-YYYY").toDate()
+    return moment(input, 'DD-MM-YYYY').toDate();
 };
