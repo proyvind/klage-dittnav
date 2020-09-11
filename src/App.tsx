@@ -21,11 +21,11 @@ const App = (props: any) => {
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
             if (query) {
-                if (query.tema && !Array.isArray(query.tema)) {
-                    getTemaObject(query.tema)
+                if (query.tema) {
+                    getTemaObject(String(query.tema))
                         .then(res => {
                             let ytelse = '';
-                            ytelse = query.ytelse && !Array.isArray(query.ytelse) ? query.ytelse : res.value;
+                            ytelse = query.ytelse ? String(query.ytelse) : res.value;
                             dispatch(setValgtYtelse(ytelse));
                             setLoading(false);
                         })

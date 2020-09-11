@@ -20,7 +20,7 @@
         "body-parser": "^1.19.0",
         "classnames": "^2.2.6",
         "detect-browser": "^3.0.1",
-        "forhandsvisningsfil": "^1.0.4",
+        "forhandsvisningsfil": "^1.0.7",
         "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
         "moment": "2.24.0",

@@ -41,6 +41,10 @@ export const MainContainer = styled.div`
     }
 `;
 
+export const CenteredMainContainer = styled(MainContainer)`
+    text-align: center;
+`;
+
 export const ContentContainer = styled.div`
     margin: 0 auto;
 `;
@@ -138,8 +142,16 @@ export const FlexWithSpacingContainer = styled(FlexContainer)`
     > * {
         margin-right: 10px;
     }
-    > *:last-child {
-        margin-right: 0;
+
+    @media ${device.mobileS} {
+        > *:last-child {
+            margin-right: 10px;
+        }
+    }
+    @media ${device.mobileL} {
+        > *:last-child {
+            margin-right: 0;
+        }
     }
 `;
 

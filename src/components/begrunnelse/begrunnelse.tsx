@@ -6,7 +6,8 @@ import {
     Margin48Container,
     Margin48TopContainer,
     MarginTopContainer,
-    Margin40Container
+    Margin40Container,
+    CenteredContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
@@ -235,7 +236,11 @@ const Begrunnelse = (props: any) => {
                 <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
 
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
-                {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
+                {vedleggLoading && (
+                    <CenteredContainer>
+                        <NavFrontendSpinner type={'XL'} />
+                    </CenteredContainer>
+                )}
 
                 <MarginTopContainer className="override-overlay">
                     <Normaltekst>
@@ -278,7 +283,7 @@ const Begrunnelse = (props: any) => {
 
             <MarginContainer>
                 <AlertStripe type="info" form="inline">
-                    <Undertekst>
+                    <Undertekst className="no-margin">
                         Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
                     </Undertekst>
                     <Undertekst>
