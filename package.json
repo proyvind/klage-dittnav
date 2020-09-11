@@ -95,7 +95,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run prettier"
+            "pre-commit": "pretty-quick --staged"
         }
     },
     "eslintConfig": {
@@ -127,6 +127,7 @@
         "less-watch-compiler": "^1.14.6",
         "nav-faker": "^3.2.1",
         "npm-run-all": "^4.1.5",
+        "pretty-quick": "^3.0.2",
         "react-test-renderer": "^16.13.1",
         "yet-another-fetch-mock": "^3.4.0"
     },
