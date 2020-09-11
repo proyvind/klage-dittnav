@@ -88,7 +88,8 @@ export const klageTilKlageSkjema = (klage: Klage): KlageSkjema => {
         datoalternativ: getDatoAlternativ(klage.vedtak!!),
         vedtak: klage.vedtak,
         vedtaksdatoobjekt: getVedtaksDatoObjekt(klage.vedtak!!) || undefined,
-        saksnummer: klage.saksnummer
+        saksnummer: klage.saksnummer,
+        referrer: klage.referrer
     };
 
     return klageSkjema

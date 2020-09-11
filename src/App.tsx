@@ -37,7 +37,11 @@ const App = (props: any) => {
                             }
                             console.log(err);
                         });
+                } else {
+                    setLoading(false);
                 }
+            } else {
+                setLoading(false);
             }
         } else {
             setLoading(false);
