@@ -44,10 +44,6 @@ server.get(`/internal/isAlive`, (req, res) =>
     res.sendStatus(200)
 );
 
-server.get(`/test`, securityHeadersMiddleware, (req, res) =>
-    res.sendStatus(200)
-);
-
 server.get(`/config`, (req, res) =>
   res.send({
     appUrl: process.env.REACT_APP_URL,
