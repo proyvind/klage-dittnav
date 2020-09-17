@@ -21,6 +21,10 @@ export const putKlage = (klage: Klage) => {
     return baseService.putKlage(getKlageByIdUrl(klage.id!!), klage);
 };
 
+export const getKlage = (klageId: number) => {
+    return baseService.get(getKlageByIdUrl(klageId))
+}
+
 export const finalizeKlage = (klageId: number) => {
     return baseService.post(getFinalizeKlageUrl(klageId));
 };

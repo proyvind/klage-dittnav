@@ -46,32 +46,6 @@ jobs:
           MESSAGE: "Bygg av klage-dittnav feilet"
           CHANNEL: "#klage-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-  deploylabs:
-    name: Deploy to labs-gcp
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-        name: Checkout code
-      - name: Lag tag for image
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
-      - name: Lag full image referanse
-        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
-
-      - uses: nais/deploy/actions/deploy@master
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: labs-gcp
-          RESOURCE: nais/nais.yaml
-          VARS: nais/labs.json
-      - name: Post failures to Slack
-        if: failure()
-        run: |
-          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
-        env:
-          MESSAGE: "Deploy av klage-dittnav til labs-gcp feilet"
-          CHANNEL: "#klage-notifications"
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deploypreprod:
     name: Deploy to dev-gcp
     needs: build

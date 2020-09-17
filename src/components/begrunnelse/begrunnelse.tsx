@@ -6,7 +6,8 @@ import {
     Margin48Container,
     Margin48TopContainer,
     MarginTopContainer,
-    Margin40Container
+    Margin40Container,
+    CenteredContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
@@ -28,7 +29,7 @@ import { getReferrer } from '../../services/klageService';
 
 const Begrunnelse = (props: any) => {
     const dispatch = useDispatch();
-    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg, klageId } = useSelector((state: Store) => state);
 
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
     const [activeDatoISO, setActiveDatoISO] = useState<string>(
@@ -40,7 +41,7 @@ const Begrunnelse = (props: any) => {
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!activeKlage || !activeKlage.id) {
+        if ((!activeKlage || !activeKlage.id) && klageId === '') {
             let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
                 klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
@@ -62,7 +63,14 @@ const Begrunnelse = (props: any) => {
             }
             dispatch(postNewKlage(klageskjema));
         }
-    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, props.ytelse]);
+    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, klageId]);
+    useEffect( () => {
+        setActiveBegrunnelse(activeKlage.fritekst)
+        setDatoalternativ(activeKlageSkjema.datoalternativ)
+        if (activeKlageSkjema.vedtaksdatoobjekt) {
+            setActiveDatoISO(toISOString(activeKlageSkjema.vedtaksdatoobjekt))
+        }
+    }, [activeKlage, activeKlageSkjema])
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
@@ -232,7 +240,11 @@ const Begrunnelse = (props: any) => {
                 <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
 
                 <VedleggVisning vedlegg={activeVedlegg} deleteAction={vedlegg => removeAttachment(vedlegg)} />
-                {vedleggLoading && <NavFrontendSpinner type={'XL'} />}
+                {vedleggLoading && (
+                    <CenteredContainer>
+                        <NavFrontendSpinner type={'XL'} />
+                    </CenteredContainer>
+                )}
 
                 <MarginTopContainer className="override-overlay">
                     <Normaltekst>
@@ -275,7 +287,7 @@ const Begrunnelse = (props: any) => {
 
             <MarginContainer>
                 <AlertStripe type="info" form="inline">
-                    <Undertekst>
+                    <Undertekst className="no-margin">
                         Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
                     </Undertekst>
                     <Undertekst>

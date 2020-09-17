@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Vedtak } from '../../types/vedtak';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuth } from '../../store/actions';
+import { checkAuth, getExistingKlage, setKlageId } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import WithLoading from '../../components/general/loading/withLoading';
 import { logInfo } from '../../utils/logger/frontendLogger';
@@ -11,7 +11,7 @@ import Error from '../../components/error/error';
 
 const FormLanding = (props: any) => {
     const dispatch = useDispatch();
-    const { loading, chosenTema, chosenYtelse } = useSelector((state: Store) => state);
+    const { loading, chosenTema, chosenYtelse, getKlageError } = useSelector((state: Store) => state);
 
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
@@ -19,7 +19,12 @@ const FormLanding = (props: any) => {
     useEffect(() => {
         if (validVedtakQuery(props.query)) {
             dispatch(checkAuth(props.location.search));
-            setChosenVedtak(elementAsVedtak(props.query));
+            if (props.query.klageid) {
+                dispatch(setKlageId(props.query.klageid as string))
+                dispatch(getExistingKlage(parseInt(props.query.klageid as string)))
+            } else {
+                setChosenVedtak(elementAsVedtak(props.query));
+            }
         } else {
             setTemaNotSet(chosenTema === '');
         }
@@ -35,6 +40,17 @@ const FormLanding = (props: any) => {
                     code: 400,
                     text:
                         'Ytelse du ønsker å klage på er ikke spesifisert. Dersom du navigerer til denne siden via en lenke på Ditt NAV vil ytelse bli satt riktig.'
+                }}
+            />
+        );
+    } else if (getKlageError) {
+        logInfo('Form landing page visited, get klage failed.', { referrer: document.referrer });
+        return (
+            <Error
+                error={{
+                    code: 400,
+                    text:
+                        'Klagen du ba om kan ikke hentes. Prøv på nytt fra lenken på Ditt NAV.'
                 }}
             />
         );

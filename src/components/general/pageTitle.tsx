@@ -1,7 +1,7 @@
 import React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
 import styled from 'styled-components/macro';
-import { CenteredContentContainer } from '../../styled-components/main-styled-components';
+import { CenteredMainContainer } from '../../styled-components/main-styled-components';
 
 const TitleContainer = styled.div`
     background-color: #c1b5d0;
@@ -10,9 +10,9 @@ const TitleContainer = styled.div`
 
 const PageTitle = (props: { title: string }) => (
     <TitleContainer>
-        <CenteredContentContainer>
+        <CenteredMainContainer>
             <Undertittel>{props.title}</Undertittel>
-        </CenteredContentContainer>
+        </CenteredMainContainer>
     </TitleContainer>
 );
 export default PageTitle;

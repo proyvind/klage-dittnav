@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
-import { Klage, klageSkjemaTilKlage, KlageSkjema } from '../types/klage';
-import { postKlage, putKlage } from '../services/klageService';
+import { Klage, KlageSkjema, klageSkjemaTilKlage } from '../types/klage';
+import { postKlage, putKlage, getKlage } from '../services/klageService';
 import { VedleggProps } from '../types/vedlegg';
 import { logError } from '../utils/logger/frontendLogger';
 
@@ -19,6 +19,13 @@ export type ActionTypes =
           klageskjema: KlageSkjema;
       }
     | {
+          type: 'KLAGE_GET_SUCCESS';
+          payload: Klage;
+      }
+    | {
+          type: 'KLAGE_GET_ERROR';
+    }
+    | {
           type: 'VEDLEGG_ADD_SUCCESS';
           value: VedleggProps;
       }
@@ -33,7 +40,11 @@ export type ActionTypes =
     | {
           type: 'TEMA_SET';
           value: string;
-      };
+      }
+    | {
+          type: 'KLAGE_ID_SET';
+          value: string
+    }
 
 export function checkAuth(search: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
@@ -60,7 +71,6 @@ export function postNewKlage(klageskjema: KlageSkjema) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return postKlage(klageSkjemaTilKlage(klageskjema))
             .then(response => {
-                console.log('Response from server', response);
                 dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
             })
             .catch(err => {
@@ -81,6 +91,19 @@ export function updateKlage(klageskjema: KlageSkjema) {
     };
 }
 
+export function getExistingKlage(klageId: number) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return getKlage(klageId)
+            .then(response => {
+                dispatch( { type: 'KLAGE_GET_SUCCESS', payload: response });
+            })
+            .catch(err => {
+                logError(err, 'Get existing klage failed');
+                dispatch({type: 'KLAGE_GET_ERROR'})
+            });
+    };
+}
+
 export function setValgtYtelse(ytelse: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'YTELSE_SET', value: ytelse });
@@ -93,7 +116,13 @@ export function setValgtTema(tema: string) {
     };
 }
 
-const sjekkAuth = (response: Response, params: string): any => {
+export function setKlageId(klageId: string) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return dispatch({ type: 'KLAGE_ID_SET', value: klageId });
+    };
+}
+
+export function sjekkAuth(response: Response, params: string) {
     if (response.status === 401 || response.status === 403) {
         window.location.assign(getLoginserviceRedirectUrl(encodeURIComponent(decodeURI(params))));
     }

@@ -11,13 +11,15 @@ import Lenke from 'nav-frontend-lenker';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import BubbleChatInformation from '../../assets/images/icons/BubbleChatInformation';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Store } from '../../store/reducer';
 import { getUrlToPaperForm } from '../../types/ytelse';
+import queryString from 'query-string';
 
-const ModalElektroniskId = () => {
+interface Props {
+    query: any;
+}
+
+const ModalElektroniskId = (props: Props) => {
     const history = useHistory();
-    const { chosenYtelse } = useSelector((state: Store) => state);
 
     return (
         <div style={{ padding: '20px' }}>
@@ -39,13 +41,14 @@ const ModalElektroniskId = () => {
             </FlexWithSpacingContainer>
             <Margin48TopContainer>
                 <ButtonFlexContainer>
-                    <Hovedknapp onClick={() => history.push(`klage`)}>Fortsett med elektronisk søknad</Hovedknapp>
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={getUrlToPaperForm(chosenYtelse)}
-                        className="knapp"
+                    <Hovedknapp
+                        onClick={() =>
+                            history.push('klage' + (props.query ? '?' + queryString.stringify(props.query) : ''))
+                        }
                     >
+                        Fortsett med elektronisk søknad
+                    </Hovedknapp>
+                    <a target="_blank" rel="noopener noreferrer" href={getUrlToPaperForm('FOR')} className="knapp">
                         Gå til papirsøknaden
                     </a>
                 </ButtonFlexContainer>
