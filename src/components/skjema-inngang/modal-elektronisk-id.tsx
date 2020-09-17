@@ -15,7 +15,7 @@ import { getUrlToPaperForm } from '../../types/ytelse';
 import queryString from 'query-string';
 
 interface Props {
-    query: any;
+    query: queryString.ParsedQuery<string>;
 }
 
 const ModalElektroniskId = (props: Props) => {

@@ -1,12 +1,13 @@
 import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
-import { KlageSkjema, Klage, klageTilKlageSkjema } from '../types/klage';
-import { toVedleggProps, VEDLEGG_STATUS, VedleggProps } from '../types/vedlegg';
+import { KlageSkjema, Klage, klageToKlageSkjema } from '../types/klage';
+import { Vedlegg } from '../types/vedlegg';
 
 export interface Store {
     loading: boolean;
 
     chosenTema: string;
+
     chosenYtelse: string;
 
     // Auth response
@@ -16,7 +17,7 @@ export interface Store {
 
     activeKlageSkjema: KlageSkjema;
 
-    activeVedlegg: VedleggProps[];
+    activeVedlegg: Vedlegg[];
 
     klageId: string;
 
@@ -47,15 +48,19 @@ export const initialState: Store = {
 
     activeKlage: {
         fritekst: '',
+        id: 0,
         tema: '',
+        vedlegg: [],
+        vedtak: '',
         ytelse: ''
     },
 
     activeKlageSkjema: {
+        datoalternativ: '',
         fritekst: '',
         tema: '',
-        ytelse: '',
-        datoalternativ: ''
+        vedlegg: [],
+        ytelse: ''
     },
 
     activeVedlegg: [],
@@ -90,22 +95,13 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload }
             };
         case 'KLAGE_GET_SUCCESS':
-            const incomingVedlegg = action.payload.vedlegg?.map(function (e): VedleggProps {
-                return {
-                    id: e.id.toString(),
-                    klageId: e.klageId,
-                    status: VEDLEGG_STATUS.OK,
-                    vedlegg: toVedleggProps(e)
-                };
-            });
-
             return {
                 ...state,
                 activeKlage: action.payload,
-                activeKlageSkjema: klageTilKlageSkjema(action.payload),
+                activeKlageSkjema: klageToKlageSkjema(action.payload),
                 chosenYtelse: action.payload.ytelse,
                 chosenTema: action.payload.tema,
-                activeVedlegg: incomingVedlegg!!,
+                activeVedlegg: action.payload.vedlegg,
                 klageId: action.payload.id?.toString() ?? initialState.klageId
             };
         case 'KLAGE_GET_ERROR':
@@ -113,10 +109,9 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
         case 'VEDLEGG_ADD_SUCCESS':
             return { ...state, activeVedlegg: [...state.activeVedlegg, action.value] };
         case 'VEDLEGG_REMOVE':
-            const vIndex = state.activeVedlegg.indexOf(action.value);
             return {
                 ...state,
-                activeVedlegg: state.activeVedlegg.filter((_, index) => index !== vIndex)
+                activeVedlegg: state.activeVedlegg.filter(vedlegg => vedlegg.id.toString() !== action.value.id)
             };
         case 'YTELSE_SET':
             return {
@@ -129,8 +124,9 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 klageId: action.value
             };
+        default:
+            return state;
     }
-    return state;
 };
 
 export default reducer;

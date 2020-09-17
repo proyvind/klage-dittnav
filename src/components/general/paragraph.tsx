@@ -4,7 +4,7 @@ import { MarginContainer, MarginTopContainer } from '../../styled-components/mai
 
 interface Props {
     noSpaceOn?: 'top' | 'bottom';
-    children: any;
+    children: React.ReactNode | React.ReactChild | React.ReactChildren;
 }
 export const Paragraph = (props: Props) => {
     if (props.noSpaceOn === 'bottom') {

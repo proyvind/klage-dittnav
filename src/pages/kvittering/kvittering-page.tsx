@@ -3,18 +3,17 @@ import Kvittering from '../../components/kvittering/kvittering';
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import KvitteringLoading from '../../components/kvittering/kvitteringLoading';
-import { getJournalpostId } from '../../services/klageService';
-import { Redirect } from 'react-router-dom';
+import { getJournalpostId, FinalizedKlage } from '../../services/klageService';
+import { StaticContext } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
-const KvitteringPage = (props: any) => {
+const KvitteringPage = (props: RouteComponentProps<{}, StaticContext, FinalizedKlage>) => {
     const [waitingForJoark, setWaitingForJoark] = useState<boolean>(true);
     const [informStillWorking, setInformStillWorking] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
     const [journalPostId, setJournalPostId] = useState<string>('');
 
     const { activeKlage } = useSelector((state: Store) => state);
-
-    let finalizedDate = props.location.state.finalizedDate ?? '';
 
     useEffect(() => {
         let waitingJoark = true;
@@ -65,8 +64,8 @@ const KvitteringPage = (props: any) => {
             return (
                 <Kvittering
                     klageId={activeKlage.id}
-                    journalPostId={journalPostId !== '' ? journalPostId : undefined}
-                    finalizedDate={finalizedDate !== '' ? finalizedDate : undefined}
+                    journalPostId={journalPostId}
+                    finalizedDate={props.location.state.finalizedDate}
                     success={success}
                 />
             );

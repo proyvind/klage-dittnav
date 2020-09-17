@@ -1,8 +1,9 @@
 export interface Bruker {
     navn: Navn;
-    adresse: Adresse;
+    adresse?: Adresse;
     kontaktinformasjon?: Kontaktinformasjon;
     folkeregisteridentifikator?: Identifikator;
+    tokenExpires?: number;
 }
 
 export interface Identifikator {

@@ -15,7 +15,7 @@ import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     klageId: number;
-    journalPostId?: string;
+    journalPostId: string;
     success: boolean;
     finalizedDate: string;
 }

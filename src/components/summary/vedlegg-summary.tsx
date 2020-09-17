@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { VedleggProps } from '../../types/vedlegg';
+import { VedleggFile } from '../../types/vedlegg';
 import Lenke from 'nav-frontend-lenker';
 import { Klage } from '../../types/klage';
 import { getVedleggUrl } from '../../clients/apiUrls';
 
 interface Props {
     klage: Klage;
-    vedlegg: VedleggProps[];
+    vedlegg: VedleggFile[];
 }
 
 const Vedleggtekst = styled.span`
@@ -16,30 +16,21 @@ const Vedleggtekst = styled.span`
     color: #3385d1;
 `;
 
-const VedleggSummary = (props: Props) => {
-    const klageId = props.klage.id;
-    if (typeof klageId === 'number') {
-        return (
-            <div>
-                {Array.from(props.vedlegg)
-                    .filter(({ vedlegg: { id } }) => !!id)
-                    .map(({ vedlegg }) => (
-                        <div>
-                            <Lenke
-                                className="no-background-style"
-                                href={getVedleggUrl(klageId, vedlegg.id)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                key={vedlegg.id}
-                            >
-                                <Vedleggtekst>{vedlegg.name}</Vedleggtekst>
-                            </Lenke>
-                        </div>
-                    ))}
+const VedleggSummary = (props: Props) => (
+    <div>
+        {Array.from(props.vedlegg).map(({ id, name }) => (
+            <div key={id}>
+                <Lenke
+                    className="no-background-style"
+                    href={getVedleggUrl(props.klage.id, id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Vedleggtekst>{name}</Vedleggtekst>
+                </Lenke>
             </div>
-        );
-    }
-    return null;
-};
+        ))}
+    </div>
+);
 
 export default VedleggSummary;

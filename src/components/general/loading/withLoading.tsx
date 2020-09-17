@@ -2,7 +2,12 @@ import React from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from '../../../styled-components/main-styled-components';
 
-const WithLoading = (props: any) => {
+interface Props {
+    children: React.ReactElement;
+    loading: boolean;
+}
+
+const WithLoading = (props: Props) => {
     return props.loading ? (
         <CenteredContainer>
             <NavFrontendSpinner type={'XL'} />

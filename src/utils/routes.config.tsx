@@ -5,11 +5,12 @@ import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import NotFoundPage from '../pages/not-found/not-found-page';
+import { JSXElementConstructor } from 'react';
 
 export type RouteType = {
     step?: number;
     path: string;
-    component?: any;
+    component: JSXElementConstructor<any>;
     redirect?: string;
     exact: boolean;
 };
@@ -17,7 +18,7 @@ export type RouteType = {
 export type FormStep = {
     step?: number;
     path: string;
-    component?: any;
+    component: JSXElementConstructor<any>;
     label: string;
     redirect?: string;
     exact: boolean;

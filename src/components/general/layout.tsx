@@ -4,7 +4,11 @@ import { MasterPaddingContainer, MainContainer } from '../../styled-components/m
 import { useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 
-const Layout = (props: any) => {
+interface Props {
+    children: React.ReactChild | React.ReactChildren;
+}
+
+const Layout = ({ children }: Props) => {
     const { chosenYtelse } = useSelector((state: Store) => state);
     const title = chosenYtelse !== '' ? `Klage på vedtak for ${chosenYtelse?.toLowerCase()}` : `Klage på vedtak`;
 
@@ -13,7 +17,7 @@ const Layout = (props: any) => {
             <PageTitle title={title} />
 
             <MainContainer>
-                <MasterPaddingContainer>{props.children}</MasterPaddingContainer>
+                <MasterPaddingContainer>{children}</MasterPaddingContainer>
             </MainContainer>
         </>
     );

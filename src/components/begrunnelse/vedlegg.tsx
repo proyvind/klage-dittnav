@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { VedleggProps } from '../../types/vedlegg';
-import File, { IFile } from 'forhandsvisningsfil';
+import { VedleggFile } from '../../types/vedlegg';
+import File from 'forhandsvisningsfil';
 import {
     FlexWithSpacingContainer,
     PaddingContainer,
@@ -8,8 +8,8 @@ import {
 } from '../../styled-components/main-styled-components';
 
 interface Props {
-    vedlegg: VedleggProps[];
-    deleteAction: (vedlegg: VedleggProps) => void;
+    vedlegg: VedleggFile[];
+    deleteAction: (vedlegg: VedleggFile) => void;
 }
 
 const VedleggVisning = (props: Props) => {
@@ -23,30 +23,18 @@ const VedleggVisning = (props: Props) => {
         setSmallMobileMode(width.matches);
     });
 
-    const deleteVedlegg = (ifile: IFile) => {
-        const deletedItem = props.vedlegg.find(v => v.vedlegg.id === ifile.id);
-        if (deletedItem) {
-            props.deleteAction(deletedItem);
-        } else {
-            // TODO: Error handling
-            console.log('Får ikke slettet vedlegg.');
-        }
-    };
-
     return (
         <PaddingContainer>
             <FlexWithSpacingContainer className="center-in-mobile">
-                {Array.from(props.vedlegg).map((vedlegg: VedleggProps, index: number) => (
-                    <div className="file-flex-item" key={index}>
+                {Array.from(props.vedlegg).map(vedlegg => (
+                    <div className="file-flex-item" key={vedlegg.id}>
                         <File
-                            file={vedlegg.vedlegg}
+                            file={vedlegg}
                             buttonsVisibility="always"
                             buttonsPosition="header"
                             viewOnePage={true}
                             showDeleteButton
-                            onDeleteFile={file => deleteVedlegg(file)}
-                            onPreviousPage={file => console.log('onPreviousPage: ', file)}
-                            onNextPage={file => console.log('onNextPage: ', file)}
+                            onDeleteFile={() => props.deleteAction(vedlegg)}
                             scale={smallMobileMode ? 1 : 2}
                         />
                     </div>

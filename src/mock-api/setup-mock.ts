@@ -1,4 +1,4 @@
-import FetchMock, { Middleware } from 'yet-another-fetch-mock';
+import FetchMock, { HandlerArgument, Middleware } from 'yet-another-fetch-mock';
 import { getKlagerUrl, getAddKlageUrl, getUserDataUrl, getAddVedleggUrl } from '../clients/apiUrls';
 import { KLAGER } from './get/klager';
 import { withDelayedResponse } from '../utils/fetch-utils';
@@ -34,7 +34,7 @@ function setupGetPerson(mock: FetchMock) {
     );
 }
 
-function addKlageToLocalStorage(request: any): any {
+function addKlageToLocalStorage(request: HandlerArgument) {
     let klagerRaw = localStorage.getItem('klager');
     let klager = [];
     if (klagerRaw) {

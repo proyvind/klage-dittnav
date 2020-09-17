@@ -1,30 +1,21 @@
+import { IFile } from 'forhandsvisningsfil';
+
 export interface Vedlegg {
-    content: any;
-    id: string;
-    klageId: number;
-    mimetype: string;
-    name: string;
-    ref: string;
-    size: number;
+    readonly content: string;
+    readonly contentType: string; // Default value is "Ukjent" in backend.
+    readonly id: number;
+    readonly klageId: number;
+    readonly ref: string;
+    readonly sizeInBytes: number;
+    readonly tittel: string;
 }
 
-export interface VedleggResponse {
-    content: string;
-    contentType: string; // Default value: "Ukjent"
-    id: number;
-    klageId: number;
-    ref: string;
-    sizeInBytes: number;
-    tittel: string;
-}
-
-export interface VedleggProps {
-    id: string;
-    klageId: number;
-    message?: string;
-    name?: string;
-    status: VEDLEGG_STATUS;
-    vedlegg: Vedlegg;
+export interface VedleggFile extends IFile {
+    readonly id: string;
+    readonly content: {
+        base64: string;
+    };
+    readonly klageId: number;
 }
 
 export enum VEDLEGG_STATUS {
@@ -32,7 +23,26 @@ export enum VEDLEGG_STATUS {
     ERROR
 }
 
-export const VedleggErrorMessages = {
+export function toFiles(vedlegg: Vedlegg[]): VedleggFile[] {
+    return vedlegg.map(v => toFile(v));
+}
+
+export function toFile(vedlegg: Vedlegg): VedleggFile {
+    return {
+        content: { base64: vedlegg.content },
+        id: vedlegg.id.toString(),
+        mimetype: 'application/pdf',
+        name: toPdfFile(vedlegg.tittel),
+        size: vedlegg.sizeInBytes,
+        klageId: vedlegg.klageId
+    };
+}
+
+function toPdfFile(filename: string) {
+    return filename.substr(0, filename.lastIndexOf('.')) + '.pdf';
+}
+
+export const VEDLEGG_ERROR_MESSAGES = {
     TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',
     TOTAL_TOO_LARGE: 'Total filstørrelse kan ikke være større enn 32 MB.',
     ENCRYPTED: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med i din klage.',
@@ -40,31 +50,4 @@ export const VedleggErrorMessages = {
     VIRUS: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med i din klage.',
     FILE_COULD_NOT_BE_CONVERTED:
         'Du har prøvd å legge til et vedlegg med feil format. Vedlegg er begrenset til PNG, JPEG, og PDF.'
-};
-
-const rename = (obj: any, oldName: string, newName: string) => {
-    if (!obj.hasOwnProperty(oldName)) {
-        return false;
-    }
-
-    obj[newName] = obj[oldName];
-    delete obj[oldName];
-    return true;
-};
-
-const toPdfFile = (filename: string) => {
-    return filename.substr(0, filename.lastIndexOf('.')) + '.pdf';
-};
-
-export const toVedleggProps = (data: any) => {
-    rename(data, 'tittel', 'name');
-    rename(data, 'sizeInBytes', 'size');
-    data.name = toPdfFile(data.name);
-    data.id = '' + data.id;
-    data.mimetype = 'application/pdf';
-    data.content = {
-        base64: data.content
-    };
-    delete data.contentType;
-    return data;
 };

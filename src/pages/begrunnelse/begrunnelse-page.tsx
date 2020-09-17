@@ -1,8 +1,16 @@
 import React, { useEffect } from 'react';
 import Begrunnelse from '../../components/begrunnelse/begrunnelse';
+import { Vedtak } from '../../types/vedtak';
 import { logInfo } from '../../utils/logger/frontendLogger';
 
-const BegrunnelsePage = (props: any) => {
+interface Props {
+    ytelse: string;
+    chosenVedtak?: Vedtak;
+    next: () => void;
+    previous: () => void;
+}
+
+const BegrunnelsePage = (props: Props) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);

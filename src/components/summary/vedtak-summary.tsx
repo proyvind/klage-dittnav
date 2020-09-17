@@ -10,26 +10,29 @@ interface Props {
 
 interface VedtakOpplysningPoint {
     displayName: string;
-    content: any;
+    content: (klage: Klage) => React.ReactElement<Normaltekst>;
 }
 
 const VEDTAK_OPPLYSNINGER_POINTS: VedtakOpplysningPoint[] = [
-    { displayName: 'Saksnummer', content: (klage: Klage) => <Normaltekst>{klage.saksnummer ?? ''}</Normaltekst> },
+    {
+        displayName: 'Saksnummer',
+        content: (klage: Klage) => <Normaltekst>{klage.saksnummer ?? ''}</Normaltekst>
+    },
     {
         displayName: 'Vedtak',
         content: (klage: Klage) => <Normaltekst>{klage.vedtak ?? ''}</Normaltekst>
     }
 ];
 
-const VedtakSummary = (props: Props) => {
-    const emptyReferanse = (point: VedtakOpplysningPoint) => {
-        return point.displayName === 'Saksnummer' && !props.klage.saksnummer;
-    };
+const emptyReferanse = (point: VedtakOpplysningPoint, props: Props) => {
+    return point.displayName === 'Saksnummer' && !props.klage.saksnummer;
+};
 
+const VedtakSummary = (props: Props) => {
     return (
         <PointsFlexListContainer>
             {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
-                if (emptyReferanse(point)) {
+                if (emptyReferanse(point, props)) {
                     return null;
                 }
                 return (

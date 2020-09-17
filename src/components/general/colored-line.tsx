@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const ColoredLine = ({ color }: any) => (
+interface Props {
+    color: string;
+}
+
+export const ColoredLine = ({ color }: Props) => (
     <hr
         style={{
             color: color,

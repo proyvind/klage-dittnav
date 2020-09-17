@@ -45,7 +45,7 @@ export const BoxContent = styled.div`
 `;
 
 interface Props {
-    query: any;
+    query: queryString.ParsedQuery<string>;
 }
 
 const InngangInfoBox = (props: Props) => {

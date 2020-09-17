@@ -3,11 +3,11 @@ import InngangInfoBox from '../../components/skjema-inngang/inngang-info-box';
 import { Margin80TopContainer } from '../../styled-components/main-styled-components';
 import queryString from 'query-string';
 import { getBruker } from '../../services/userService';
-import { useHistory } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import WithLoading from '../../components/general/loading/withLoading';
 import { setReferrer } from '../../services/klageService';
 
-const SkjemaInngang = (props: any) => {
+const SkjemaInngang = (props: RouteComponentProps) => {
     const history = useHistory();
     const query = queryString.parse(props.location.search);
     const [loading, setLoading] = useState<boolean>(true);

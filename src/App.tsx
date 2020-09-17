@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.less';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, RouteComponentProps } from 'react-router-dom';
 import { routesConfig } from './utils/routes.config';
 import Layout from './components/general/layout';
 import { withRouter } from 'react-router-dom';
@@ -13,7 +13,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
 import { Tema } from './types/tema';
 
-const App = (props: any) => {
+const App = (props: RouteComponentProps) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [errorState, setErrorState] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -21,11 +21,12 @@ const App = (props: any) => {
     useEffect(() => {
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
+            const cachedKlageId = sessionStorage.getItem('nav.klage.klageId');
 
-            if (sessionStorage.getItem('nav.klage.klageId') && query && !query.klageid) {
+            if (cachedKlageId && query && !query.klageid) {
                 if (query.tema) {
-                    let cachedTema = sessionStorage.getItem('nav.klage.tema');
-                    let cachedYtelse = sessionStorage.getItem('nav.klage.ytelse');
+                    const cachedTema = sessionStorage.getItem('nav.klage.tema');
+                    const cachedYtelse = sessionStorage.getItem('nav.klage.ytelse');
                     if (cachedTema === query.tema) {
                         if (
                             cachedYtelse === query.ytelse ||
@@ -33,27 +34,27 @@ const App = (props: any) => {
                         ) {
                             if (query.saksnummer || sessionStorage.getItem('nav.klage.saksnr')) {
                                 if (query.saksnummer === sessionStorage.getItem('nav.klage.saksnr')) {
-                                    dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                                    dispatch(setKlageId(cachedKlageId));
                                 } else {
                                     sessionStorage.removeItem('nav.klage.saksnr');
                                 }
                             } else {
-                                dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                                dispatch(setKlageId(cachedKlageId));
                             }
                         }
                     }
                 } else {
-                    dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                    dispatch(setKlageId(cachedKlageId));
                 }
                 setLoading(false);
             }
 
-            if (query && query.tema) {
-                const tema = query.tema.toString();
+            const tema = query.tema;
+            if (query && typeof tema === 'string' && tema.length !== 0) {
                 dispatch(setValgtTema(tema));
                 getTemaObject(tema)
-                    .then(res => {
-                        const ytelse = query.ytelse ? String(query.ytelse) : res.value;
+                    .then(temaObject => {
+                        const ytelse = query.ytelse ? String(query.ytelse) : temaObject.value;
                         dispatch(setValgtYtelse(ytelse));
                         setLoading(false);
                     })
@@ -71,7 +72,7 @@ const App = (props: any) => {
         } else {
             setLoading(false);
         }
-    }, [dispatch, props.location.search, props.chosenYtelse]);
+    }, [dispatch, props.location.search]);
 
     if (loading) {
         return (

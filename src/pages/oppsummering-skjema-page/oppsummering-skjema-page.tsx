@@ -22,8 +22,13 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
 import { logError } from '../../utils/logger/frontendLogger';
+import { toFiles } from '../../types/vedlegg';
 
-const OppsummeringSkjemaPage = (props: any) => {
+interface Props {
+    previous: () => void;
+}
+
+const OppsummeringSkjemaPage = (props: Props) => {
     const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
@@ -32,7 +37,7 @@ const OppsummeringSkjemaPage = (props: any) => {
         window.scrollTo(0, 0);
     }, []);
 
-    const submitForm = (event: any) => {
+    const submitForm = (event: React.MouseEvent) => {
         event.preventDefault();
         setIsLoading(true);
         if (!activeKlage.id) {
@@ -113,7 +118,7 @@ const OppsummeringSkjemaPage = (props: any) => {
 
                 <div className="simulate-expandable-box">
                     <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
-                    <VedleggSummary klage={activeKlage} vedlegg={activeVedlegg} />
+                    <VedleggSummary klage={activeKlage} vedlegg={toFiles(activeVedlegg)} />
                 </div>
             </div>
             <Margin48Container className="override-overlay">
@@ -121,12 +126,7 @@ const OppsummeringSkjemaPage = (props: any) => {
                     <Knapp className="row-element" onClick={() => props.previous()}>
                         Tilbake
                     </Knapp>
-                    <Hovedknapp
-                        className="row-element"
-                        onClick={(event: any) => submitForm(event)}
-                        disabled={loading}
-                        spinner={loading}
-                    >
+                    <Hovedknapp className="row-element" onClick={submitForm} disabled={loading} spinner={loading}>
                         Send inn
                     </Hovedknapp>
                 </FlexCenteredContainer>

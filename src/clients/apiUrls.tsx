@@ -5,7 +5,7 @@ export const getUserDataUrl = (): string => `${Environment.REACT_APP_API_URL}/br
 
 export const getKlagerUrl = (): string => `${Environment.REACT_APP_API_URL}/klager`;
 
-export const getKlageByIdUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/${id}`;
+export const getKlageByIdUrl = (id: string | number): string => `${Environment.REACT_APP_API_URL}/klager/${id}`;
 
 export const getKlagerByKlageIdUrl = (id: number): string => `${Environment.REACT_APP_API_URL}/klager/klageid/${id}`;
 

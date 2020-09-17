@@ -1,12 +1,13 @@
-import axios from 'axios';
-import { Klage } from '../types/klage';
+import axios, { AxiosRequestConfig } from 'axios';
+import { Klage, KlageDraft } from '../types/klage';
+import { Vedlegg } from '../types/vedlegg';
 import { logError, logInfo } from '../utils/logger/frontendLogger';
 
-const getOptions = {
+const getOptions: AxiosRequestConfig = {
     withCredentials: true
 };
 
-const postOptions = {
+const postOptions: AxiosRequestConfig = {
     withCredentials: true,
     headers: {
         Accept: 'application/json',
@@ -14,16 +15,16 @@ const postOptions = {
     }
 };
 
-const vedleggPostOptions = {
+const vedleggPostOptions: AxiosRequestConfig = {
     withCredentials: true,
     headers: {
         Accept: 'application/json'
     }
 };
 
-export async function get<T>(resource: string): Promise<T> {
-    let response = await axios.get(resource, getOptions);
+export async function get<T>(resource: string) {
     try {
+        const response = await axios.get<T>(resource, getOptions);
         return response.data;
     } catch (error) {
         logError(error, 'Error from get call', { resource: resource });
@@ -31,9 +32,9 @@ export async function get<T>(resource: string): Promise<T> {
     }
 }
 
-export async function post<T>(resource: string): Promise<T> {
-    let response = await axios.post(resource, null, postOptions);
+export async function post<T>(resource: string) {
     try {
+        const response = await axios.post<T>(resource, null, postOptions);
         return response.data;
     } catch (error) {
         logError(error, 'Error from post call', { resource: resource });
@@ -41,31 +42,33 @@ export async function post<T>(resource: string): Promise<T> {
     }
 }
 
-export async function postKlage(resource: string, item: Klage): Promise<Klage> {
+export async function postKlage(resource: string, klage: KlageDraft) {
     // TODO: Needed to test frontend logger, remove when verified
-    logInfo('Posting new klage', { klage: item });
-    let response = await axios.post(resource, JSON.stringify(item), postOptions);
+    logInfo('Posting new klage', { klage: klage });
     try {
+        const response = await axios.post<Klage>(resource, JSON.stringify(klage), postOptions);
         return response.data;
     } catch (error) {
-        logError(error, 'Error from post klage call', { resource: resource, klage: item });
+        logError(error, 'Error from post klage call', { resource: resource, klage: klage });
         throw error;
     }
 }
 
-export async function putKlage(resource: string, item: Klage): Promise<Klage> {
-    let response = await axios.put(resource, JSON.stringify(item), postOptions);
+export async function putKlage(resource: string, klage: Klage) {
     try {
+        const response = await axios.put<Klage>(resource, JSON.stringify(klage), postOptions);
         return response.data;
     } catch (error) {
-        logError(error, 'Error from put klage call', { resource: resource, klage: item });
+        logError(error, 'Error from put klage call', { resource: resource, klage: klage });
         throw error;
     }
 }
 
-export async function postVedlegg(resource: string, vedlegg: FormData) {
-    let response = await axios.post(resource, vedlegg, vedleggPostOptions);
+export async function postVedlegg(resource: string, vedlegg: File) {
     try {
+        const formData = new FormData();
+        formData.append('vedlegg', vedlegg, vedlegg.name);
+        const response = await axios.post<Vedlegg>(resource, formData, vedleggPostOptions);
         return response.data;
     } catch (error) {
         logError(error, 'Error from post vedlegg call', { resource: resource });
@@ -74,9 +77,9 @@ export async function postVedlegg(resource: string, vedlegg: FormData) {
 }
 
 export async function deleteVedlegg(resource: string) {
-    let response = await axios.delete(resource, getOptions);
     try {
-        return response;
+        await axios.delete<never>(resource, getOptions);
+        return null;
     } catch (error) {
         logError(error, 'Error from delete vedlegg call', { resource: resource });
         throw error;
