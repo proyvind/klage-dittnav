@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { getTemaObject } from './services/klageService';
 import { useDispatch } from 'react-redux';
-import { setValgtYtelse } from './store/actions';
+import { setValgtYtelse, setValgtTema } from './store/actions';
 import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
@@ -20,25 +20,23 @@ const App = (props: any) => {
     useEffect(() => {
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
-            if (query) {
-                if (query.tema) {
-                    getTemaObject(String(query.tema))
-                        .then(res => {
-                            const ytelse = query.ytelse ? query.ytelse.toString() : res.value;
-                            dispatch(setValgtYtelse(ytelse));
+            if (query && query.tema) {
+                const tema = query.tema.toString();
+                dispatch(setValgtTema(tema));
+                getTemaObject(tema)
+                    .then(res => {
+                        const ytelse = query.ytelse ? String(query.ytelse) : res.value;
+                        dispatch(setValgtYtelse(ytelse));
+                        setLoading(false);
+                    })
+                    .catch(err => {
+                        if (err.response?.status === 404) {
+                            setErrorState(true);
                             setLoading(false);
-                        })
-                        .catch(err => {
-                            if (err.response?.status === 404) {
-                                setErrorState(true);
-                                setLoading(false);
-                                return;
-                            }
-                            console.log(err);
-                        });
-                } else {
-                    setLoading(false);
-                }
+                            return;
+                        }
+                        console.log(err);
+                    });
             } else {
                 setLoading(false);
             }

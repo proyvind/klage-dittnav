@@ -26,7 +26,7 @@ export type FormStep = {
 export const routesStepsValgtVedtak: FormStep[] = [
     {
         step: 0,
-        path: `/begrunnelse`,
+        path: `/klage`,
         component: BegrunnelsePage,
         label: 'Begrunnelse',
         exact: true
@@ -43,8 +43,8 @@ export const routesStepsValgtVedtak: FormStep[] = [
 export const routesStepsIkkeValgtVedtak: FormStep[] = [
     {
         step: 0,
-        path: `/begrunnelse`,
-        component: FormLandingPage,
+        path: `/klage`,
+        component: BegrunnelsePage,
         label: 'Begrunnelse',
         exact: true
     },
@@ -75,6 +75,11 @@ export const routesPages: RouteType[] = [
     },
     {
         path: `/klage`,
+        component: FormLandingPage,
+        exact: true
+    },
+    {
+        path: `/oppsummering`,
         component: FormLandingPage,
         exact: true
     },

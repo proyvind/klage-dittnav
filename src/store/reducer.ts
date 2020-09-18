@@ -6,6 +6,7 @@ import { toVedleggProps, VEDLEGG_STATUS, VedleggProps } from '../types/vedlegg';
 export interface Store {
     loading: boolean;
 
+    chosenTema: string;
     chosenYtelse: string;
 
     // Auth response
@@ -25,6 +26,7 @@ export interface Store {
 export const initialState: Store = {
     loading: true,
 
+    chosenTema: '',
     chosenYtelse: '',
 
     person: {
@@ -65,6 +67,11 @@ export const initialState: Store = {
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
     switch (action.type) {
+        case 'TEMA_SET':
+            return {
+                ...state,
+                chosenTema: action.value
+            };
         case 'CHECK_AUTH_SUCCESS':
             return {
                 ...state,
@@ -116,6 +123,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 chosenYtelse: action.value
             };
+
         case 'KLAGE_ID_SET':
             return {
                 ...state,

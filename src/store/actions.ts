@@ -38,6 +38,10 @@ export type ActionTypes =
           value: string;
       }
     | {
+          type: 'TEMA_SET';
+          value: string;
+      }
+    | {
           type: 'KLAGE_ID_SET';
           value: string;
       };
@@ -90,8 +94,8 @@ export function updateKlage(klageskjema: KlageSkjema) {
 export function getExistingKlage(klageId: number) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return getKlage(klageId)
-            .then(klage => {
-                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: klage });
+            .then(response => {
+                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: response });
             })
             .catch(err => {
                 logError(err, 'Get existing klage failed');
@@ -103,6 +107,12 @@ export function getExistingKlage(klageId: number) {
 export function setValgtYtelse(ytelse: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'YTELSE_SET', value: ytelse });
+    };
+}
+
+export function setValgtTema(tema: string) {
+    return function (dispatch: Dispatch<ActionTypes>) {
+        return dispatch({ type: 'TEMA_SET', value: tema });
     };
 }
 
