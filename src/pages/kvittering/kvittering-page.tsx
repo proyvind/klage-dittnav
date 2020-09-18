@@ -6,6 +6,7 @@ import KvitteringLoading from '../../components/kvittering/kvitteringLoading';
 import { getJournalpostId, FinalizedKlage } from '../../services/klageService';
 import { StaticContext } from 'react-router';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { logError } from '../../utils/logger/frontendLogger';
 
 const KvitteringPage = (props: RouteComponentProps<{}, StaticContext, FinalizedKlage>) => {
     const [waitingForJoark, setWaitingForJoark] = useState<boolean>(true);
@@ -45,9 +46,7 @@ const KvitteringPage = (props: RouteComponentProps<{}, StaticContext, FinalizedK
                         waitingJoark = false;
                     }
                 })
-                .catch(err => {
-                    console.log('error ', err);
-                });
+                .catch(err => logError(err));
         };
 
         if (waitingForJoark && activeKlage.id) {

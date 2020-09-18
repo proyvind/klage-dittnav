@@ -6,6 +6,7 @@ import { getBruker } from '../../services/userService';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import WithLoading from '../../components/general/loading/withLoading';
 import { setReferrer } from '../../services/klageService';
+import { logError } from '../../utils/logger/frontendLogger';
 
 const SkjemaInngang = (props: RouteComponentProps) => {
     const history = useHistory();
@@ -17,7 +18,7 @@ const SkjemaInngang = (props: RouteComponentProps) => {
             history.push(`/klage${props.location.search}`);
         })
         .catch(err => {
-            console.log('User is not logged in');
+            logError(err, 'User is not logged in');
             setLoading(false);
         });
 

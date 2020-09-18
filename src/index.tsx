@@ -9,6 +9,7 @@ import { footer, header, scripts, styles } from './mock-api/get/decorator';
 import configureStore from './store/configureStore';
 import Environment, { fetchEnv, isLocalhost } from './utils/environment';
 import { BrowserRouter } from 'react-router-dom';
+import { logError, logInfo } from './utils/logger/frontendLogger';
 
 //const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 const store = configureStore();
@@ -32,20 +33,19 @@ const init = async () => {
     //}
 
     if (isLocalhost && process.env.NODE_ENV === 'development') {
+        logInfo('Local environment.');
         Environment.setEnv({
             appUrl: process.env.REACT_APP_URL!,
             loginserviceUrl: process.env.REACT_APP_LOGINSERVICE_URL!,
             apiUrl: process.env.REACT_APP_API_URL!
         });
-        console.log('Local env');
     } else {
-        await fetchEnv()
-            .then(env => {
-                Environment.setEnv(env);
-            })
-            .catch(e => {
-                console.error(e);
-            });
+        try {
+            const env = await fetchEnv();
+            Environment.setEnv(env);
+        } catch (e) {
+            logError(e);
+        }
     }
 
     ReactDOM.render(

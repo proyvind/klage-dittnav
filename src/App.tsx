@@ -12,6 +12,7 @@ import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
 import { Tema } from './types/tema';
+import { logError } from './utils/logger/frontendLogger';
 
 const App = (props: RouteComponentProps) => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -64,7 +65,7 @@ const App = (props: RouteComponentProps) => {
                             setLoading(false);
                             return;
                         }
-                        console.log(err);
+                        logError(err);
                     });
             } else {
                 setLoading(false);
