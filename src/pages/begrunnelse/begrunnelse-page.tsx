@@ -7,7 +7,7 @@ const BegrunnelsePage = (props: any) => {
         window.scrollTo(0, 0);
     }, []);
 
-    logInfo('Begurnnelsepage entered.', { chosenYtelse: props.ytelse, referrer: document.referrer });
+    logInfo('Begrunnelsepage entered.', { chosenYtelse: props.ytelse, referrer: document.referrer });
 
     return (
         <Begrunnelse
