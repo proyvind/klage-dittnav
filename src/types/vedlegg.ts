@@ -1,28 +1,35 @@
 export interface Vedlegg {
-    name: string;
-    ref: string;
+    content: any;
+    id: string;
     klageId: number;
     mimetype: string;
-    id: string;
+    name: string;
+    ref: string;
     size: number;
-    content: any;
 }
 
 export interface VedleggResponse {
-    id?: number;
+    content: string;
+    contentType: string; // Default value: "Ukjent"
+    id: number;
+    klageId: number;
+    ref: string;
+    sizeInBytes: number;
+    tittel: string;
+}
+
+export interface VedleggProps {
+    id: string;
+    klageId: number;
     message?: string;
+    name?: string;
+    status: VEDLEGG_STATUS;
+    vedlegg: Vedlegg;
 }
 
 export enum VEDLEGG_STATUS {
     OK,
     ERROR
-}
-
-export interface VedleggProps {
-    status: VEDLEGG_STATUS;
-    message?: string;
-    id?: number;
-    vedlegg: Vedlegg;
 }
 
 export const VedleggErrorMessages = {
