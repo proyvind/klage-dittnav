@@ -30,7 +30,7 @@ const ModalElektroniskId = (props: Props) => {
                 Du vil få raskere svar på søknaden din hvis du søker elektronisk i stedet for å sende papirskjema i
                 posten.
             </Paragraph>
-            <Paragraph noSpaceBottom={true}>
+            <Paragraph noSpaceOn={'bottom'}>
                 For å søke på nett må du ha bank-id fra banken din eller en annen elektronisk id.
             </Paragraph>
             <FlexWithSpacingContainer>

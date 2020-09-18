@@ -42,7 +42,6 @@ const OppsummeringSkjemaPage = (props: any) => {
         }
         finalizeKlage(activeKlage.id)
             .then(response => {
-                console.log(response);
                 const finalizedDate = response.finalizedDate;
                 history.push({ pathname: `/kvittering`, state: { finalizedDate } });
                 setIsLoading(false);

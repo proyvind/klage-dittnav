@@ -4,6 +4,6 @@ import PageTitle from './pageTitle';
 
 describe('Page title', () => {
     it('should render page title', () => {
-        const wrapper = shallow(<PageTitle />);
+        const wrapper = shallow(<PageTitle title="Test" />);
     });
 });
