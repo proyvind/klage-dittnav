@@ -22,7 +22,7 @@ const App = (props: any) => {
             const query = queryString.parse(props.location.search);
             if (query && query.tema) {
                 const tema = query.tema.toString();
-                dispatch({ type: 'TEMA_SET', value: tema });
+                dispatch(setValgtTema(tema));
                 getTemaObject(tema)
                     .then(res => {
                         const ytelse = query.ytelse ? String(query.ytelse) : res.value;
