@@ -24,7 +24,7 @@ export type ActionTypes =
       }
     | {
           type: 'KLAGE_GET_ERROR';
-    }
+      }
     | {
           type: 'VEDLEGG_ADD_SUCCESS';
           value: VedleggProps;
@@ -43,8 +43,8 @@ export type ActionTypes =
       }
     | {
           type: 'KLAGE_ID_SET';
-          value: string
-    }
+          value: string;
+      };
 
 export function checkAuth(search: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
@@ -95,11 +95,11 @@ export function getExistingKlage(klageId: number) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return getKlage(klageId)
             .then(response => {
-                dispatch( { type: 'KLAGE_GET_SUCCESS', payload: response });
+                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: response });
             })
             .catch(err => {
                 logError(err, 'Get existing klage failed');
-                dispatch({type: 'KLAGE_GET_ERROR'})
+                dispatch({ type: 'KLAGE_GET_ERROR' });
             });
     };
 }
@@ -127,7 +127,7 @@ export function sjekkAuth(response: Response, params: string) {
         window.location.assign(getLoginserviceRedirectUrl(encodeURIComponent(decodeURI(params))));
     }
     return response;
-};
+}
 
 export const sjekkHttpFeil = (response: Response) => {
     if (response.ok) {

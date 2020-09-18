@@ -67,6 +67,11 @@ export const initialState: Store = {
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
     switch (action.type) {
+        case 'TEMA_SET':
+            return {
+                ...state,
+                chosenTema: action.value
+            };
         case 'CHECK_AUTH_SUCCESS':
             return {
                 ...state,
@@ -83,12 +88,12 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 activeKlage: action.payload,
                 activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload },
-                klageId: action.payload.id as unknown as string
+                klageId: (action.payload.id as unknown) as string
             };
         case 'KLAGE_GET_SUCCESS':
-            const incomingVedlegg = action.payload.vedlegg?.map(function(e):
-                VedleggProps { return { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(e)}
-            })
+            const incomingVedlegg = action.payload.vedlegg?.map(function (e): VedleggProps {
+                return { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(e) };
+            });
 
             return {
                 ...state,
@@ -96,7 +101,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 activeKlageSkjema: klageTilKlageSkjema(action.payload),
                 chosenYtelse: action.payload.ytelse,
                 activeVedlegg: incomingVedlegg!!,
-                klageId: action.payload.id as unknown as string
+                klageId: (action.payload.id as unknown) as string
             };
         case 'KLAGE_GET_ERROR':
             return { ...state, getKlageError: true };
@@ -113,16 +118,12 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 chosenYtelse: action.value
             };
-        case 'TEMA_SET':
-            return {
-                ...state,
-                chosenTema: action.value
-            };
+
         case 'KLAGE_ID_SET':
             return {
                 ...state,
                 klageId: action.value
-            }
+            };
     }
     return state;
 };

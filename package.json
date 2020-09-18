@@ -129,6 +129,7 @@
         "npm-run-all": "^4.1.5",
         "pretty-quick": "^3.0.2",
         "react-test-renderer": "^16.13.1",
+        "redux-devtools-extension": "^2.13.8",
         "yet-another-fetch-mock": "^3.4.0"
     },
     "resolutions": {

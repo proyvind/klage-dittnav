@@ -5,14 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { footer, header, scripts, styles } from './mock-api/get/decorator';
-import { setupMock } from './mock-api/setup-mock';
+//import { setupMock } from './mock-api/setup-mock';
 import configureStore from './store/configureStore';
 import Environment, { fetchEnv, isLocalhost } from './utils/environment';
 import { BrowserRouter } from 'react-router-dom';
 
+//const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 const store = configureStore();
-
-const mockEnabled = process.env.NODE_ENV === 'development' || process.env.REACT_APP_MOCK_DATA === 'true';
 
 const init = async () => {
     if (process.env.NODE_ENV === 'development') {
@@ -28,9 +27,9 @@ const init = async () => {
         document.body.appendChild(script);
     }
     // If not i develop mode, but still want to run mock
-    if (mockEnabled) {
-        setupMock();
-    }
+    //if (mockEnabled) {
+    //    setupMock();
+    //}
 
     if (isLocalhost && process.env.NODE_ENV === 'development') {
         Environment.setEnv({

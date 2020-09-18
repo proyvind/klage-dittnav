@@ -20,26 +20,24 @@ const App = (props: any) => {
     useEffect(() => {
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
-            if (query) {
-                if (query.tema) {
-                    getTemaObject(String(query.tema))
-                        .then(res => {
-                            let ytelse = '';
-                            ytelse = query.ytelse ? String(query.ytelse) : res.value;
-                            dispatch(setValgtYtelse(ytelse));
+            if (query && query.tema) {
+                const tema = query.tema.toString();
+                dispatch({ type: 'TEMA_SET', value: tema });
+                getTemaObject(tema)
+                    .then(res => {
+                        let ytelse = '';
+                        ytelse = query.ytelse ? String(query.ytelse) : res.value;
+                        dispatch(setValgtYtelse(ytelse));
+                        setLoading(false);
+                    })
+                    .catch(err => {
+                        if (err.response?.status === 404) {
+                            setErrorState(true);
                             setLoading(false);
-                        })
-                        .catch(err => {
-                            if (err.response?.status === 404) {
-                                setErrorState(true);
-                                setLoading(false);
-                                return;
-                            }
-                            console.log(err);
-                        });
-                } else {
-                    setLoading(false);
-                }
+                            return;
+                        }
+                        console.log(err);
+                    });
             } else {
                 setLoading(false);
             }
