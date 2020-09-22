@@ -1,6 +1,6 @@
 import { Vedlegg } from './vedlegg';
 import { Vedtak } from './vedtak';
-import { dateStringToDate, formatDate } from '../utils/date-util';
+import { formattedDateToDateObject, formatDate } from '../utils/date-util';
 import { datoValg } from '../components/begrunnelse/datoValg';
 
 export enum KlageStatus {
@@ -52,7 +52,7 @@ export const klageSkjemaTilKlage = (klageskjema: KlageSkjema): Klage => {
 
         let vedtaksdatoobjekt = klageskjema.vedtaksdatoobjekt;
 
-        if (foundDatoAlternativ !== undefined) {
+        if (foundDatoAlternativ !== undefined && vedtaksdatoobjekt) {
             result +=
                 foundDatoAlternativ.value +
                 (foundDatoAlternativ.id === 'tidligereVedtak' ? ' - ' + formatDate(vedtaksdatoobjekt) : '');
@@ -94,8 +94,11 @@ export const klageTilKlageSkjema = (klage: Klage): KlageSkjema => {
 };
 
 const getVedtaksDatoObjekt = (vedtak: string) => {
-    if (vedtak.startsWith('Tidligere vedtak') && vedtak !== 'Tidligere vedtak - Ingen dato satt') {
-        return dateStringToDate(vedtak.substr(19));
+    if (vedtak.startsWith('Tidligere vedtak -') && vedtak !== 'Tidligere vedtak - Ingen dato satt') {
+        // Will have a string 'Tidligere vedtak - <date>'
+        let splitString = vedtak.split(' ');
+        const dateString = splitString[splitString.length - 1];
+        return formattedDateToDateObject(dateString);
     }
 };
 

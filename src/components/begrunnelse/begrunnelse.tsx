@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
 import { klageSkjemaBasertPaaVedtak, KlageSkjema } from '../../types/klage';
-import { toISOString } from '../../utils/date-util';
+import { isValidDateString, toISOString } from '../../utils/date-util';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
@@ -55,7 +55,7 @@ const Begrunnelse = (props: any) => {
                     saksnummer: '',
                     referrer: getReferrer()
                 };
-                if (activeDatoISO !== '') {
+                if (activeDatoISO !== '' && isValidDateString(activeDatoISO)) {
                     klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);
                 } else {
                     klageskjema.vedtaksdatoobjekt = undefined;
