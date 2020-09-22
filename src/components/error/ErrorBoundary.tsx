@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 
     componentDidCatch(error: Error, info: React.ErrorInfo) {
         this.setState({ hasError: true });
-        const message: string = `ErrorBoundary${this.props.boundaryName ? ' i ' + this.props.boundaryName : ''}`;
+        const message = `ErrorBoundary${this.props.boundaryName ? ' i ' + this.props.boundaryName : ''}`;
         logError(error, message, { reactInfo: info });
     }
 
