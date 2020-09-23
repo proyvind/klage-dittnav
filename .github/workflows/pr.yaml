@@ -21,7 +21,9 @@ jobs:
 
       - name: Build
         run: |
-          export LC_ALL=nb_NO.UTF-8
           npm ci 
-          npm test
           npm build
+      - name: Test
+        run: |
+          export LC_ALL=nb_NO.UTF-8
+          npm test
