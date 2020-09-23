@@ -24,7 +24,9 @@ jobs:
             ${{ runner.os }}-
       - name: Build
         run: |
-          npm install
+          export LC_ALL=nb_NO.UTF-8
+          npm ci
+          npm test
           npm run build
       - name: Lag tag for image
         run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
