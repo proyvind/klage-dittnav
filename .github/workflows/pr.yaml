@@ -21,6 +21,7 @@ jobs:
 
       - name: Build
         run: |
-          npm install
+          export LC_ALL=nb_NO.UTF-8
+          npm ci 
           npm test
           npm build
