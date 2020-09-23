@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+import './App.less';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { routesConfig } from './utils/routes.config';
 import Layout from './components/general/layout';
