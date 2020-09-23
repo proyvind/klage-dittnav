@@ -25,4 +25,5 @@ jobs:
           npm build
       - name: Test
         run: |
+          export LC_ALL="nb_NO.UTF-8"
           npm test
