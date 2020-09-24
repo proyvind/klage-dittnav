@@ -1,30 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Textarea, RadioPanelGruppe } from 'nav-frontend-skjema';
+import React, { useEffect, useRef, useState } from 'react';
+import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
 import {
-    MarginContainer,
+    CenteredContainer,
     FlexCenteredContainer,
+    Margin40Container,
     Margin48Container,
     Margin48TopContainer,
-    MarginTopContainer,
-    Margin40Container,
-    CenteredContainer
+    MarginContainer,
+    MarginTopContainer
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
-import { VEDLEGG_STATUS, VedleggProps, toVedleggProps, VedleggErrorMessages } from '../../types/vedlegg';
+import { Element, Normaltekst, Undertekst, Undertittel } from 'nav-frontend-typografi';
+import { toVedleggProps, VEDLEGG_STATUS, VedleggErrorMessages, VedleggProps } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
-import { postNewKlage, updateKlage } from '../../store/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { postNewKlage, setKlageId, updateKlage } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
-import { klageSkjemaBasertPaaVedtak, KlageSkjema } from '../../types/klage';
-import { isValidDateString, toISOString } from '../../utils/date-util';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { KlageSkjema, klageSkjemaBasertPaaVedtak } from '../../types/klage';
+import { toISOString } from '../../utils/date-util';
+import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Tema } from '../../types/tema';
 import { getReferrer } from '../../services/klageService';
 
 const Begrunnelse = (props: any) => {
@@ -41,36 +39,26 @@ const Begrunnelse = (props: any) => {
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
-        if ((!activeKlage || !activeKlage.id) && klageId === '') {
+        if (klageId === '') {
             let klageskjema: KlageSkjema;
             if (props.chosenVedtak) {
                 klageskjema = klageSkjemaBasertPaaVedtak(props.chosenVedtak);
                 klageskjema.referrer = getReferrer();
-            } else {
-                klageskjema = {
-                    fritekst: activeBegrunnelse,
-                    tema: 'UKJ',
-                    ytelse: Tema['UKJ'],
-                    datoalternativ: datoalternativ,
-                    saksnummer: '',
-                    referrer: getReferrer()
-                };
-                if (activeDatoISO !== '' && isValidDateString(activeDatoISO)) {
-                    klageskjema.vedtaksdatoobjekt = new Date(activeDatoISO);
-                } else {
-                    klageskjema.vedtaksdatoobjekt = undefined;
-                }
+                dispatch(postNewKlage(klageskjema));
             }
-            dispatch(postNewKlage(klageskjema));
         }
-    }, [activeKlage, dispatch, activeBegrunnelse, activeDatoISO, datoalternativ, props.chosenVedtak, klageId]);
+    }, [dispatch, props.chosenVedtak, klageId]);
+
     useEffect(() => {
         setActiveBegrunnelse(activeKlage.fritekst);
         setDatoalternativ(activeKlageSkjema.datoalternativ);
+        if (activeKlage.id !== undefined) {
+            dispatch(setKlageId(String(activeKlage.id)));
+        }
         if (activeKlageSkjema.vedtaksdatoobjekt) {
             setActiveDatoISO(toISOString(activeKlageSkjema.vedtaksdatoobjekt));
         }
-    }, [activeKlage, activeKlageSkjema]);
+    }, [dispatch, activeKlage, activeKlageSkjema]);
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
@@ -108,7 +96,10 @@ const Begrunnelse = (props: any) => {
                         console.log(response);
                         dispatch({
                             type: 'VEDLEGG_ADD_SUCCESS',
-                            value: { status: VEDLEGG_STATUS.OK, vedlegg: toVedleggProps(response) }
+                            value: {
+                                status: VEDLEGG_STATUS.OK,
+                                vedlegg: toVedleggProps(response)
+                            }
                         });
                         setVedleggLoading(false);
                     })

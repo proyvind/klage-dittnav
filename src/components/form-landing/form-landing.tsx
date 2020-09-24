@@ -11,7 +11,9 @@ import Error from '../../components/error/error';
 
 const FormLanding = (props: any) => {
     const dispatch = useDispatch();
-    const { loading, chosenTema, chosenYtelse, getKlageError } = useSelector((state: Store) => state);
+    const { loading, chosenTema, chosenYtelse, getKlageError, klageId, activeKlage } = useSelector(
+        (state: Store) => state
+    );
 
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
@@ -19,16 +21,21 @@ const FormLanding = (props: any) => {
     useEffect(() => {
         if (validVedtakQuery(props.query)) {
             dispatch(checkAuth(props.location.search));
-            if (props.query.klageid) {
-                dispatch(setKlageId(props.query.klageid as string))
-                dispatch(getExistingKlage(parseInt(props.query.klageid as string)))
+            if (props.query.klageid && klageId === '') {
+                dispatch(setKlageId(props.query.klageid as string));
             } else {
                 setChosenVedtak(elementAsVedtak(props.query));
             }
         } else {
             setTemaNotSet(chosenTema === '');
         }
-    }, [dispatch, props.location.search, props.query, chosenTema]);
+    }, [dispatch, props.location.search, props.query, klageId, chosenTema]);
+
+    useEffect(() => {
+        if (klageId !== '' && activeKlage.tema === '') {
+            dispatch(getExistingKlage(parseInt(klageId)));
+        }
+    }, [dispatch, klageId, activeKlage]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
@@ -49,8 +56,7 @@ const FormLanding = (props: any) => {
             <Error
                 error={{
                     code: 400,
-                    text:
-                        'Klagen du ba om kan ikke hentes. Prøv på nytt fra lenken på Ditt NAV.'
+                    text: 'Klagen du ba om kan ikke hentes. Prøv på nytt fra lenken på Ditt NAV.'
                 }}
             />
         );

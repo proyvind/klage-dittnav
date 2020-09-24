@@ -7,10 +7,11 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { getTemaObject } from './services/klageService';
 import { useDispatch } from 'react-redux';
-import { setValgtYtelse, setValgtTema } from './store/actions';
+import { setValgtYtelse, setValgtTema, setKlageId } from './store/actions';
 import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
+import { Tema } from './types/tema';
 
 const App = (props: any) => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -20,6 +21,33 @@ const App = (props: any) => {
     useEffect(() => {
         if (props.location.search !== '') {
             const query = queryString.parse(props.location.search);
+
+            if (sessionStorage.getItem('nav.klage.klageId') && query && !query.klageid) {
+                if (query.tema) {
+                    let cachedTema = sessionStorage.getItem('nav.klage.tema');
+                    let cachedYtelse = sessionStorage.getItem('nav.klage.ytelse');
+                    if (cachedTema === query.tema) {
+                        if (
+                            cachedYtelse === query.ytelse ||
+                            (query.ytelse === undefined && cachedYtelse === Tema[cachedTema])
+                        ) {
+                            if (query.saksnummer || sessionStorage.getItem('nav.klage.saksnr')) {
+                                if (query.saksnummer === sessionStorage.getItem('nav.klage.saksnr')) {
+                                    dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                                } else {
+                                    sessionStorage.removeItem('nav.klage.saksnr');
+                                }
+                            } else {
+                                dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                            }
+                        }
+                    }
+                } else {
+                    dispatch(setKlageId(sessionStorage.getItem('nav.klage.klageId') as string));
+                }
+                setLoading(false);
+            }
+
             if (query && query.tema) {
                 const tema = query.tema.toString();
                 dispatch(setValgtTema(tema));
@@ -43,7 +71,7 @@ const App = (props: any) => {
         } else {
             setLoading(false);
         }
-    }, [dispatch, props.location.search]);
+    }, [dispatch, props.location.search, props.chosenYtelse]);
 
     if (loading) {
         return (

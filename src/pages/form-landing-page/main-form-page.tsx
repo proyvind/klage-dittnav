@@ -40,8 +40,7 @@ const MainFormPage = (props: Props) => {
     };
 
     const previous = () => {
-        history.push(activeRoutes[activeStep - 1].path);
-        setActiveStep(activeStep - 1);
+        history.goBack();
     };
 
     return (

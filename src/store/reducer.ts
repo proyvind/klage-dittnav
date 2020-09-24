@@ -87,8 +87,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 activeKlage: action.payload,
-                activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload },
-                klageId: action.payload.id?.toString() ?? initialState.klageId
+                activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload }
             };
         case 'KLAGE_GET_SUCCESS':
             const incomingVedlegg = action.payload.vedlegg?.map(function (e): VedleggProps {
@@ -105,6 +104,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 activeKlage: action.payload,
                 activeKlageSkjema: klageTilKlageSkjema(action.payload),
                 chosenYtelse: action.payload.ytelse,
+                chosenTema: action.payload.tema,
                 activeVedlegg: incomingVedlegg!!,
                 klageId: action.payload.id?.toString() ?? initialState.klageId
             };
