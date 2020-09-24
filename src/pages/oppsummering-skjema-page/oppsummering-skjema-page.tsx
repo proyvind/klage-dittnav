@@ -43,6 +43,10 @@ const OppsummeringSkjemaPage = (props: any) => {
         finalizeKlage(activeKlage.id)
             .then(response => {
                 const finalizedDate = response.finalizedDate;
+                sessionStorage.removeItem('nav.klage.klageId');
+                sessionStorage.removeItem('nav.klage.tema');
+                sessionStorage.removeItem('nav.klage.ytelse');
+                sessionStorage.removeItem('nav.klage.saksnr');
                 history.push({ pathname: `/kvittering`, state: { finalizedDate } });
                 setIsLoading(false);
                 // TODO: Set success message
