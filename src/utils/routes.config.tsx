@@ -6,6 +6,9 @@ import KvitteringPage from '../pages/kvittering/kvittering-page';
 import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import { JSXElementConstructor } from 'react';
+import KlageEllerAnkeYtelse from '../components/klage-eller-anke/klage-eller-anke-ytelse';
+import KlageEllerAnkeTema from '../components/klage-eller-anke/klage-eller-anke-tema';
+import KlageEllerAnkeInnsending from '../components/klage-eller-anke/klage-eller-anke-innsending';
 
 export type RouteType = {
     step?: number;
@@ -82,6 +85,21 @@ export const routesPages: RouteType[] = [
     {
         path: `/oppsummering`,
         component: FormLandingPage,
+        exact: true
+    },
+    {
+        path: `/klage-anke`,
+        component: KlageEllerAnkeTema,
+        exact: true
+    },
+    {
+        path: `/klage-anke/:kategori`,
+        component: KlageEllerAnkeYtelse,
+        exact: true
+    },
+    {
+        path: `/klage-anke/:kategori/:tema`,
+        component: KlageEllerAnkeInnsending,
         exact: true
     },
     {
