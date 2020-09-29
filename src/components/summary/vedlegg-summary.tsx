@@ -18,7 +18,7 @@ const Vedleggtekst = styled.span`
 
 const VedleggSummary = (props: Props) => (
     <div>
-        {Array.from(props.vedlegg).map(({ id, name }) => (
+        {props.vedlegg.map(({ id, name }) => (
             <div key={id}>
                 <Lenke
                     className="no-background-style"

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Klage, KlageDraft } from '../types/klage';
 import { Vedlegg } from '../types/vedlegg';
-import { logError, logInfo } from '../utils/logger/frontendLogger';
+import { logError } from '../utils/logger/frontendLogger';
 
 const getOptions: AxiosRequestConfig = {
     withCredentials: true
@@ -43,8 +43,6 @@ export async function post<T>(resource: string) {
 }
 
 export async function postKlage(resource: string, klage: KlageDraft) {
-    // TODO: Needed to test frontend logger, remove when verified
-    logInfo('Posting new klage', { klage: klage });
     try {
         const response = await axios.post<Klage>(resource, JSON.stringify(klage), postOptions);
         return response.data;

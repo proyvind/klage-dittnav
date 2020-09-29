@@ -13,17 +13,14 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
 import { toFiles, VEDLEGG_ERROR_MESSAGES, VedleggFile } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
-import { postNewKlage, setKlageId, updateKlage } from '../../store/actions';
+import { setKlageId, updateKlage } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
-import { klageSkjemaBasedOnVedtak } from '../../types/klage';
-import { toISOString } from '../../utils/date-util';
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { datoValg } from './datoValg';
+import { DatoValg, datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { getReferrer } from '../../services/klageService';
 import { Vedtak } from '../../types/vedtak';
 import { logError } from '../../utils/logger/frontendLogger';
 
@@ -36,31 +33,24 @@ interface Props {
 
 const Begrunnelse = (props: Props) => {
     const dispatch = useDispatch();
-    const { activeKlage, activeKlageSkjema, activeVedlegg, klageId } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
 
     const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
-    const [activeDatoISO, setActiveDatoISO] = useState<string>(
-        activeKlageSkjema.vedtaksdato ? toISOString(activeKlageSkjema.vedtaksdato) : ''
-    );
-    const [datoalternativ, setDatoalternativ] = useState<string>(activeKlageSkjema.datoalternativ ?? '');
+    const [activeDatoISO, setActiveDatoISO] = useState<string>(activeKlageSkjema.vedtak ?? '');
+    const [datoalternativ, setDatoalternativ] = useState<DatoValg>(activeKlageSkjema.datoalternativ);
     const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
     const [vedleggFeilmelding, setVedleggFeilmelding] = useState<string>('');
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
-        if (klageId === '' && typeof props.chosenVedtak !== 'undefined') {
-            const klageskjema = klageSkjemaBasedOnVedtak(props.chosenVedtak);
-            klageskjema.referrer = getReferrer();
-            dispatch(postNewKlage(klageskjema));
-        }
-    }, [dispatch, props.chosenVedtak, klageId]);
-
-    useEffect(() => {
-        setActiveBegrunnelse(activeKlage.fritekst);
         setDatoalternativ(activeKlageSkjema.datoalternativ);
-        dispatch(setKlageId(String(activeKlage.id)));
-        if (typeof activeKlageSkjema.vedtaksdato !== 'undefined') {
-            setActiveDatoISO(toISOString(activeKlageSkjema.vedtaksdato));
+        if (activeKlageSkjema.vedtak !== null) {
+            setActiveDatoISO(activeKlageSkjema.vedtak);
+        }
+        if (typeof activeKlage !== 'undefined') {
+            setActiveBegrunnelse(activeKlage.fritekst);
+            const klageId = activeKlage.id.toString();
+            dispatch(setKlageId(klageId, activeKlage.tema, activeKlage.ytelse, activeKlage.saksnummer));
         }
     }, [dispatch, activeKlage, activeKlageSkjema]);
 
@@ -76,6 +66,10 @@ const Begrunnelse = (props: Props) => {
 
     const uploadAttachment = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
+
+        if (typeof activeKlage === 'undefined') {
+            return;
+        }
 
         const files = event.target.files;
         if (files === null || files.length === 0) {
@@ -128,7 +122,7 @@ const Begrunnelse = (props: Props) => {
                 ...activeKlageSkjema,
                 fritekst: activeBegrunnelse,
                 datoalternativ: datoalternativ,
-                vedtaksdato: new Date(activeDatoISO)
+                vedtak: activeDatoISO
             })
         );
         props.next();
@@ -136,7 +130,7 @@ const Begrunnelse = (props: Props) => {
 
     const validForm = () => validBegrunnelse() && validDatoalternativ();
     const validBegrunnelse = () => activeBegrunnelse !== null && activeBegrunnelse !== '';
-    const validDatoalternativ = () => datoalternativ !== '';
+    const validDatoalternativ = () => datoalternativ !== DatoValg.INGEN;
 
     const getFeilmeldinger = () => {
         const feilmeldinger: string[] = [];
@@ -173,12 +167,12 @@ const Begrunnelse = (props: Props) => {
                     name="datoValg"
                     radios={datoValg}
                     checked={datoalternativ}
-                    onChange={(_, value: string) => setDatoalternativ(value)}
+                    onChange={(_, value: DatoValg) => setDatoalternativ(value)}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
 
-            {datoalternativ === 'Tidligere vedtak' && (
+            {datoalternativ === DatoValg.TIDLIGERE_VEDTAK && (
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datovelger

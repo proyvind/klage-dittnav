@@ -8,43 +8,18 @@ interface Props {
     klage: Klage;
 }
 
-interface VedtakOpplysningPoint {
-    displayName: string;
-    content: (klage: Klage) => React.ReactElement<Normaltekst>;
-}
+const VedtakSummary = ({ klage }: Props) => (
+    <PointsFlexListContainer>
+        {getSaksnummer(klage.saksnummer)}
+        <InformationPointBox header={'Vedtak'} info={<Normaltekst>{klage.vedtak}</Normaltekst>} />
+    </PointsFlexListContainer>
+);
 
-const VEDTAK_OPPLYSNINGER_POINTS: VedtakOpplysningPoint[] = [
-    {
-        displayName: 'Saksnummer',
-        content: (klage: Klage) => <Normaltekst>{klage.saksnummer ?? ''}</Normaltekst>
-    },
-    {
-        displayName: 'Vedtak',
-        content: (klage: Klage) => <Normaltekst>{klage.vedtak ?? ''}</Normaltekst>
+function getSaksnummer(saksnummer: string | null) {
+    if (saksnummer === null) {
+        return null;
     }
-];
-
-const emptyReferanse = (point: VedtakOpplysningPoint, props: Props) => {
-    return point.displayName === 'Saksnummer' && !props.klage.saksnummer;
-};
-
-const VedtakSummary = (props: Props) => {
-    return (
-        <PointsFlexListContainer>
-            {VEDTAK_OPPLYSNINGER_POINTS.map(point => {
-                if (emptyReferanse(point, props)) {
-                    return null;
-                }
-                return (
-                    <InformationPointBox
-                        key={point.displayName}
-                        header={point.displayName}
-                        info={point.content(props.klage)}
-                    />
-                );
-            })}
-        </PointsFlexListContainer>
-    );
-};
+    return <InformationPointBox header={'Saksnummer'} info={<Normaltekst>{saksnummer}</Normaltekst>} />;
+}
 
 export default VedtakSummary;

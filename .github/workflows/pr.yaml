@@ -25,4 +25,4 @@ jobs:
           npm run build
       - name: Test
         run: |
-          LC_ALL="nb_NO.UTF-8" npm test
+          npm test

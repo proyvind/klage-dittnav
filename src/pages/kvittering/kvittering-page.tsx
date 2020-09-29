@@ -49,12 +49,12 @@ const KvitteringPage = (props: RouteComponentProps<{}, StaticContext, FinalizedK
                 .catch(err => logError(err));
         };
 
-        if (waitingForJoark && activeKlage.id) {
+        if (waitingForJoark && typeof activeKlage !== 'undefined') {
             waitForJournalpostId(activeKlage.id);
         }
-    }, [waitingForJoark, activeKlage.id]);
+    }, [waitingForJoark, activeKlage]);
 
-    if (!activeKlage.id) {
+    if (typeof activeKlage === 'undefined') {
         return <Redirect to="/" />;
     } else {
         if (waitingForJoark) {

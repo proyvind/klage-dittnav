@@ -23,6 +23,7 @@ import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
 import { logError } from '../../utils/logger/frontendLogger';
 import { toFiles } from '../../types/vedlegg';
+import { clearStorageContent } from '../../store/actions';
 
 interface Props {
     previous: () => void;
@@ -39,6 +40,11 @@ const OppsummeringSkjemaPage = (props: Props) => {
 
     const submitForm = (event: React.MouseEvent) => {
         event.preventDefault();
+
+        if (typeof activeKlage === 'undefined') {
+            return;
+        }
+
         setIsLoading(true);
         if (!activeKlage.id) {
             // TODO: Sett error message
@@ -48,10 +54,7 @@ const OppsummeringSkjemaPage = (props: Props) => {
         finalizeKlage(activeKlage.id)
             .then(response => {
                 const finalizedDate = response.finalizedDate;
-                sessionStorage.removeItem('nav.klage.klageId');
-                sessionStorage.removeItem('nav.klage.tema');
-                sessionStorage.removeItem('nav.klage.ytelse');
-                sessionStorage.removeItem('nav.klage.saksnr');
+                clearStorageContent();
                 history.push({ pathname: `/kvittering`, state: { finalizedDate } });
                 setIsLoading(false);
                 // TODO: Set success message
@@ -62,6 +65,10 @@ const OppsummeringSkjemaPage = (props: Props) => {
                 // TODO: Set error message
             });
     };
+
+    if (typeof activeKlage === 'undefined') {
+        return null;
+    }
 
     return (
         <>

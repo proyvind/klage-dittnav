@@ -4,15 +4,17 @@ import { BrowserRouter as Router, Switch, Route, RouteComponentProps } from 'rea
 import { routesConfig } from './utils/routes.config';
 import Layout from './components/general/layout';
 import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
-import { getTemaObject } from './services/klageService';
+import { getReferrer, getTemaObject } from './services/klageService';
 import { useDispatch } from 'react-redux';
-import { setValgtYtelse, setValgtTema, setKlageId } from './store/actions';
+import { setValgtYtelse, setValgtTema, setKlageId, postNewKlage, setStorageContent } from './store/actions';
 import NotFoundPage from './pages/not-found/not-found-page';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from './styled-components/main-styled-components';
-import { Tema } from './types/tema';
 import { logError } from './utils/logger/frontendLogger';
+import { getResumeState } from './utils/get-resume-state';
+import { AxiosError } from 'axios';
+import { KlageSkjema } from './types/klage';
+import { DatoValg } from './components/begrunnelse/datoValg';
 
 const App = (props: RouteComponentProps) => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -20,56 +22,48 @@ const App = (props: RouteComponentProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (props.location.search !== '') {
-            const query = queryString.parse(props.location.search);
-            const cachedKlageId = sessionStorage.getItem('nav.klage.klageId');
+        const { klageId, tema, ytelse, saksnummer } = getResumeState(props.location.search, sessionStorage);
+        setStorageContent(klageId, tema, ytelse, saksnummer);
 
-            if (cachedKlageId && query && !query.klageid) {
-                if (query.tema) {
-                    const cachedTema = sessionStorage.getItem('nav.klage.tema');
-                    const cachedYtelse = sessionStorage.getItem('nav.klage.ytelse');
-                    if (cachedTema === query.tema) {
-                        if (
-                            cachedYtelse === query.ytelse ||
-                            (query.ytelse === undefined && cachedYtelse === Tema[cachedTema])
-                        ) {
-                            if (query.saksnummer || sessionStorage.getItem('nav.klage.saksnr')) {
-                                if (query.saksnummer === sessionStorage.getItem('nav.klage.saksnr')) {
-                                    dispatch(setKlageId(cachedKlageId));
-                                } else {
-                                    sessionStorage.removeItem('nav.klage.saksnr');
-                                }
-                            } else {
-                                dispatch(setKlageId(cachedKlageId));
-                            }
-                        }
-                    }
-                } else {
-                    dispatch(setKlageId(cachedKlageId));
-                }
-                setLoading(false);
-            }
+        if (ytelse !== null) {
+            dispatch(setValgtYtelse(ytelse));
+        }
+        if (tema !== null) {
+            dispatch(setValgtTema(tema));
+        }
 
-            const tema = query.tema;
-            if (query && typeof tema === 'string' && tema.length !== 0) {
-                dispatch(setValgtTema(tema));
-                getTemaObject(tema)
-                    .then(temaObject => {
-                        const ytelse = query.ytelse ? String(query.ytelse) : temaObject.value;
-                        dispatch(setValgtYtelse(ytelse));
+        if (klageId !== null) {
+            dispatch(setKlageId(klageId, tema, ytelse, saksnummer));
+            setLoading(false);
+        } else if (ytelse !== null && tema !== null) {
+            const klageSkjema: KlageSkjema = {
+                id: null,
+                ytelse,
+                tema,
+                saksnummer: saksnummer,
+                datoalternativ: DatoValg.INGEN,
+                vedtak: null,
+                fritekst: '',
+                vedlegg: [],
+                referrer: getReferrer()
+            };
+            dispatch(postNewKlage(klageSkjema));
+            setLoading(false);
+        } else if (tema !== null) {
+            dispatch(setValgtTema(tema));
+            getTemaObject(tema)
+                .then(temaObject => {
+                    dispatch(setValgtYtelse(ytelse ?? temaObject.value));
+                    setLoading(false);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response?.status === 404) {
+                        setErrorState(true);
                         setLoading(false);
-                    })
-                    .catch(err => {
-                        if (err.response?.status === 404) {
-                            setErrorState(true);
-                            setLoading(false);
-                            return;
-                        }
-                        logError(err);
-                    });
-            } else {
-                setLoading(false);
-            }
+                        return;
+                    }
+                    logError(err);
+                });
         } else {
             setLoading(false);
         }

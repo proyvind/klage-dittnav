@@ -5,6 +5,8 @@ import { postKlage, putKlage, getKlage } from '../services/klageService';
 import { Vedlegg, VedleggFile } from '../types/vedlegg';
 import { Bruker } from '../types/bruker';
 import { logError } from '../utils/logger/frontendLogger';
+import { StorageKey } from '../utils/get-resume-state';
+import { AxiosError } from 'axios';
 
 export type ActionTypes =
     | {
@@ -55,8 +57,8 @@ export function checkAuth(search: string) {
         })
             .then(response => sjekkAuth(response, search))
             .then(sjekkHttpFeil)
-            .then(response => response.json())
-            .then((bruker: Bruker) => {
+            .then(response => response.json() as Promise<Bruker>)
+            .then(bruker => {
                 dispatch({ type: 'CHECK_AUTH_SUCCESS', payload: bruker });
             })
             .catch(error => {
@@ -68,27 +70,28 @@ export function checkAuth(search: string) {
     };
 }
 
-export function postNewKlage(klageskjema: KlageSkjema) {
+export function postNewKlage(klageSkjema: KlageSkjema) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return postKlage(klageSkjemaToKlageDraft(klageskjema))
-            .then(response => {
-                setKlageId((response.id as unknown) as string, response.tema, response.ytelse, response.saksnummer);
-                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
+        return postKlage(klageSkjemaToKlageDraft(klageSkjema))
+            .then(klage => {
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: klage, klageskjema: klageSkjema });
+                setStorageContent(klage.id.toString(), klage.tema, klage.ytelse, klage.saksnummer);
             })
-            .catch(err => {
+            .catch((err: AxiosError) => {
                 logError(err, 'Post new klage failed');
             });
     };
 }
 
-export function updateKlage(klageskjema: KlageSkjema) {
+export function updateKlage(klageSkjema: KlageSkjema) {
     return function (dispatch: Dispatch<ActionTypes>) {
-        return putKlage(klageSkjemaToKlage(klageskjema))
-            .then(response => {
-                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: response, klageskjema: klageskjema });
+        return putKlage(klageSkjemaToKlage(klageSkjema))
+            .then(klage => {
+                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: klage, klageskjema: klageSkjema });
+                setStorageContent(klage.id.toString(), klage.tema, klage.ytelse, klage.saksnummer);
             })
-            .catch(err => {
-                logError(err, 'Update klage failed', { klageid: klageskjema.id });
+            .catch((err: AxiosError) => {
+                logError(err, 'Update klage failed', { klageid: klageSkjema.id });
             });
     };
 }
@@ -96,17 +99,14 @@ export function updateKlage(klageskjema: KlageSkjema) {
 export function getExistingKlage(klageId: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return getKlage(klageId)
-            .then(response => {
-                setStorageContent(response.tema, response.ytelse, response.saksnummer || '');
-                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: response });
+            .then(klage => {
+                dispatch({ type: 'KLAGE_GET_SUCCESS', payload: klage });
+                setStorageContent(klageId, klage.tema, klage.ytelse, klage.saksnummer);
             })
-            .catch(err => {
+            .catch((err: AxiosError) => {
                 logError(err, 'Get existing klage failed');
-                if (err.response.status !== 401) {
-                    sessionStorage.removeItem('nav.klage.klageId');
-                    sessionStorage.removeItem('nav.klage.tema');
-                    sessionStorage.removeItem('nav.klage.ytelse');
-                    sessionStorage.removeItem('nav.klage.saksnr');
+                if (err?.response?.status !== 401) {
+                    clearStorageContent();
                 }
                 dispatch({ type: 'KLAGE_GET_ERROR' });
             });
@@ -125,26 +125,40 @@ export function setValgtTema(tema: string) {
     };
 }
 
-export function setKlageId(
-    klageId: string,
-    tema: string = '*UNKNOWN*',
-    ytelse: string = '*UNKNOWN*',
-    saksnr: string = ''
-) {
-    sessionStorage.setItem('nav.klage.klageId', klageId);
-    if (tema !== '*UNKNOWN*' && ytelse !== '*UNKNOWN*') {
-        setStorageContent(tema, ytelse, saksnr);
+export function setKlageId(klageId: string, tema: string | null, ytelse: string | null, saksnummer: string | null) {
+    if (klageId.length === 0) {
+        throw new Error('Invalid klage ID.');
     }
-
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'KLAGE_ID_SET', value: klageId });
     };
 }
 
-export function setStorageContent(tema: string, ytelse: string, saksnr: string) {
-    sessionStorage.setItem('nav.klage.tema', tema);
-    sessionStorage.setItem('nav.klage.ytelse', ytelse);
-    sessionStorage.setItem('nav.klage.saksnr', saksnr);
+export function setStorageContent(
+    klageId?: string | null,
+    tema?: string | null,
+    ytelse?: string | null,
+    saksnummer?: string | null
+) {
+    new Map<string, string | undefined | null>([
+        [StorageKey.KLAGE_ID, klageId],
+        [StorageKey.TEMA, tema],
+        [StorageKey.YTELSE, ytelse],
+        [StorageKey.SAKSNUMMER, saksnummer]
+    ]).forEach((value, key) => {
+        if (typeof value === 'string' && value.length !== 0) {
+            sessionStorage.setItem(key, value);
+        } else {
+            sessionStorage.removeItem(key);
+        }
+    });
+}
+
+export function clearStorageContent() {
+    sessionStorage.removeItem(StorageKey.KLAGE_ID);
+    sessionStorage.removeItem(StorageKey.TEMA);
+    sessionStorage.removeItem(StorageKey.YTELSE);
+    sessionStorage.removeItem(StorageKey.SAKSNUMMER);
 }
 
 export function sjekkAuth(response: Response, params: string) {

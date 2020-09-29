@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Vedtak } from '../../types/vedtak';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuth, getExistingKlage, setKlageId } from '../../store/actions';
+import { checkAuth, getExistingKlage } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import WithLoading from '../../components/general/loading/withLoading';
 import { logInfo } from '../../utils/logger/frontendLogger';
-import { getKlageId, queryToVedtak } from '../../mock-api/get/vedtak';
+import { queryToVedtak } from '../../mock-api/get/vedtak';
 import MainFormPage from '../../pages/form-landing-page/main-form-page';
 import Error from '../../components/error/error';
 import queryString from 'query-string';
+import * as H from 'history';
 
 interface Props {
     query: queryString.ParsedQuery<string>;
-    location: Location;
+    location: H.Location;
     path: string;
 }
 
@@ -27,24 +28,17 @@ const FormLanding = (props: Props) => {
 
     useEffect(() => {
         dispatch(checkAuth(props.location.search));
-        if (klageId === '') {
-            const klageIdFromQuery = getKlageId(props.query);
-            if (klageIdFromQuery !== null) {
-                dispatch(setKlageId(klageIdFromQuery));
-                dispatch(getExistingKlage(klageIdFromQuery));
-                return;
-            }
+        if (typeof klageId !== 'undefined' && klageId.length !== 0 && typeof activeKlage === 'undefined') {
+            dispatch(getExistingKlage(klageId));
         }
 
         const vedtak = queryToVedtak(props.query);
         if (vedtak !== null) {
-            dispatch(checkAuth(props.location.search));
             setChosenVedtak(vedtak);
-            return;
         }
 
-        setTemaNotSet(chosenTema === '');
-    }, [dispatch, props.location.search, props.query, chosenTema]);
+        setTemaNotSet(chosenTema === null);
+    }, [dispatch, props.location.search, props.query, chosenTema, klageId, activeKlage]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 

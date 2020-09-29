@@ -1,18 +1,16 @@
 import { Vedlegg } from './vedlegg';
-import { Vedtak } from './vedtak';
-import { parseDate, formatDate } from '../utils/date-util';
-import { datoValg } from '../components/begrunnelse/datoValg';
-import { parse } from 'query-string';
+import { DatoValg } from '../components/begrunnelse/datoValg';
+import { isoDateToPretty, prettyDateToISO } from '../utils/date';
 
 export interface KlageDraft {
     fritekst: string;
     tema: string;
     ytelse: string;
     vedtak: string;
-    saksnummer?: string;
+    saksnummer: string | null;
     vedlegg: Vedlegg[];
-    journalpostId?: string;
-    referrer?: string;
+    journalpostId: string | null;
+    referrer: string | null;
 }
 
 export interface Klage extends KlageDraft {
@@ -20,96 +18,112 @@ export interface Klage extends KlageDraft {
 }
 
 export interface KlageSkjema {
-    id?: number;
+    id: number | null;
     fritekst: string;
     tema: string;
     ytelse: string;
-    datoalternativ: string;
-    vedtak?: string;
-    vedtaksdato?: Date;
-    saksnummer?: string;
+    datoalternativ: DatoValg;
+    vedtak: string | null;
+    saksnummer: string | null;
     vedlegg: Vedlegg[];
-    referrer?: string;
+    referrer: string | null;
 }
-
-export const klageSkjemaBasedOnVedtak = (vedtak: Vedtak): KlageSkjema => ({
-    fritekst: '',
-    tema: vedtak.tema,
-    ytelse: vedtak.ytelse,
-    datoalternativ: '',
-    saksnummer: vedtak.saksnummer,
-    vedlegg: []
-});
-
-const getVedtaksDato = (klageSkjema: KlageSkjema): string => {
-    let result = '';
-    const foundDatoAlternativ = datoValg.find(valg => valg.value === klageSkjema.datoalternativ);
-
-    let vedtaksdato = klageSkjema.vedtaksdato;
-
-    if (foundDatoAlternativ !== undefined && typeof vedtaksdato !== 'undefined') {
-        result +=
-            foundDatoAlternativ.value +
-            (foundDatoAlternativ.id === 'tidligereVedtak' ? ' - ' + formatDate(vedtaksdato) : '');
-    } else if (vedtaksdato) {
-        result += datoValg.find(valg => valg.id === 'tidligereVedtak')?.value + ' - ' + formatDate(vedtaksdato);
-    }
-
-    return result;
-};
 
 export const klageSkjemaToKlageDraft = (klageSkjema: KlageSkjema): KlageDraft => ({
     fritekst: klageSkjema.fritekst,
     tema: klageSkjema.tema,
     ytelse: klageSkjema.ytelse,
-    vedtak: getVedtaksDato(klageSkjema),
+    vedtak: dateToVedtakText(klageSkjema),
     saksnummer: klageSkjema.saksnummer,
     vedlegg: klageSkjema.vedlegg,
-    referrer: klageSkjema.referrer
+    referrer: klageSkjema.referrer,
+    journalpostId: null
 });
 
 export const klageSkjemaToKlage = (klageSkjema: KlageSkjema): Klage => {
-    if (typeof klageSkjema.id === 'undefined') {
-        throw new Error("KlageSkjema is missing required property 'id'.");
+    if (klageSkjema.id === null) {
+        throw new Error("KlageSkjema is missing required property 'id'. Did you mean to create a draft?");
     }
     return {
         id: klageSkjema.id,
         fritekst: klageSkjema.fritekst,
         tema: klageSkjema.tema,
         ytelse: klageSkjema.ytelse,
-        vedtak: getVedtaksDato(klageSkjema),
+        vedtak: dateToVedtakText(klageSkjema),
         saksnummer: klageSkjema.saksnummer,
         vedlegg: klageSkjema.vedlegg,
-        referrer: klageSkjema.referrer
+        referrer: klageSkjema.referrer,
+        journalpostId: null
     };
 };
 
-export const klageToKlageSkjema = (klage: Klage): KlageSkjema => ({
-    id: klage.id,
-    fritekst: klage.fritekst,
-    tema: klage.tema,
-    ytelse: klage.ytelse,
-    datoalternativ: getDatoAlternativ(klage.vedtak),
-    vedtak: klage.vedtak,
-    vedtaksdato: vedtakToDate(klage.vedtak),
-    saksnummer: klage.saksnummer,
-    vedlegg: klage.vedlegg,
-    referrer: klage.referrer
-});
-
-const vedtakToDate = (vedtak: string) => {
-    if (vedtak.startsWith('Tidligere vedtak') && vedtak !== 'Tidligere vedtak - Ingen dato satt') {
-        return parseDate(vedtak.substr(19));
-    }
-    return undefined;
+export const klageToKlageSkjema = (klage: Klage): KlageSkjema => {
+    const { isoDate, dateChoice } = parseVedtakText(klage.vedtak);
+    return {
+        id: klage.id,
+        fritekst: klage.fritekst,
+        tema: klage.tema,
+        ytelse: klage.ytelse,
+        datoalternativ: dateChoice,
+        vedtak: isoDate,
+        saksnummer: klage.saksnummer,
+        vedlegg: klage.vedlegg,
+        referrer: klage.referrer
+    };
 };
 
-const getDatoAlternativ = (vedtak: string) => {
-    if (vedtak.startsWith('Tidligere vedtak')) {
-        return 'Tidligere vedtak';
+export const TIDLIGERE_VEDTAK = 'Tidligere vedtak';
+export const SISTE_VEDTAK = 'Siste vedtak';
+
+export const dateToVedtakText = (klageSkjema: KlageSkjema): string => {
+    if (klageSkjema.datoalternativ === DatoValg.INGEN) {
+        return '';
     }
-    if (vedtak.startsWith('Siste vedtak')) {
-        return 'Siste vedtak';
+    if (klageSkjema.datoalternativ === DatoValg.SISTE_VEDTAK) {
+        return SISTE_VEDTAK;
     }
-    return '';
+    if (klageSkjema.datoalternativ === DatoValg.TIDLIGERE_VEDTAK) {
+        const prettyDate = isoDateToPretty(klageSkjema.vedtak);
+        if (prettyDate === null) {
+            return `${TIDLIGERE_VEDTAK} - Ingen dato satt`;
+        }
+        return `${TIDLIGERE_VEDTAK} - ${prettyDate}`;
+    }
+
+    throw new Error(`Unknown date choice state: ${klageSkjema.datoalternativ}`);
+};
+
+export interface ParsedVedtakText {
+    dateChoice: DatoValg;
+    isoDate: string | null;
+}
+
+const tidligereVedtakRegex = /\d{2}.\d{2}.\d{4}$/;
+export const parseVedtakText = (vedtak: string | null): ParsedVedtakText => {
+    if (vedtak === null) {
+        return {
+            dateChoice: DatoValg.INGEN,
+            isoDate: null
+        };
+    }
+
+    if (vedtak === SISTE_VEDTAK) {
+        return {
+            dateChoice: DatoValg.SISTE_VEDTAK,
+            isoDate: null
+        };
+    }
+
+    if (vedtak.startsWith(TIDLIGERE_VEDTAK)) {
+        const match = vedtak.match(tidligereVedtakRegex);
+        return {
+            dateChoice: DatoValg.TIDLIGERE_VEDTAK,
+            isoDate: match === null ? null : prettyDateToISO(match[0])
+        };
+    }
+
+    return {
+        dateChoice: DatoValg.INGEN,
+        isoDate: null
+    };
 };

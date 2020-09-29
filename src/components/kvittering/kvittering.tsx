@@ -9,9 +9,9 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Systemtittel, Normaltekst, Element } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
-import { formatDate, isValidDateString } from '../../utils/date-util';
 import { getKlagePdfUrl } from '../../clients/apiUrls';
 import Lenke from 'nav-frontend-lenker';
+import { isoDateToPretty } from '../../utils/date';
 
 interface Props {
     klageId: number;
@@ -39,12 +39,9 @@ const Kvittering = (props: Props) => {
                         </Lenke>
                     </Margin32Container>
                 )}
-
-                {props.finalizedDate && isValidDateString(props.finalizedDate) && (
-                    <Margin32Container>
-                        <Normaltekst>Sendt inn: {formatDate(new Date(props.finalizedDate))}</Normaltekst>
-                    </Margin32Container>
-                )}
+                <Margin32Container>
+                    <Normaltekst>Sendt inn: {isoDateToPretty(props.finalizedDate)}</Normaltekst>
+                </Margin32Container>
             </CenteredContainer>
             <Margin40Container>
                 <AlertStripeSuksess className="fit-content">

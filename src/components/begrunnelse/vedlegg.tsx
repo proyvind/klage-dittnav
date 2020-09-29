@@ -26,7 +26,7 @@ const VedleggVisning = (props: Props) => {
     return (
         <PaddingContainer>
             <FlexWithSpacingContainer className="center-in-mobile">
-                {Array.from(props.vedlegg).map(vedlegg => (
+                {props.vedlegg.map(vedlegg => (
                     <div className="file-flex-item" key={vedlegg.id}>
                         <File
                             file={vedlegg}

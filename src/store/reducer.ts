@@ -2,24 +2,25 @@ import { ActionTypes } from './actions';
 import { Bruker } from '../types/bruker';
 import { KlageSkjema, Klage, klageToKlageSkjema } from '../types/klage';
 import { Vedlegg } from '../types/vedlegg';
+import { DatoValg } from '../components/begrunnelse/datoValg';
 
 export interface Store {
     loading: boolean;
 
-    chosenTema: string;
+    chosenTema: string | null;
 
     chosenYtelse: string;
 
     // Auth response
     person: Bruker;
 
-    activeKlage: Klage;
+    activeKlage?: Klage;
 
     activeKlageSkjema: KlageSkjema;
 
     activeVedlegg: Vedlegg[];
 
-    klageId: string;
+    klageId?: string;
 
     getKlageError: boolean;
 }
@@ -27,7 +28,7 @@ export interface Store {
 export const initialState: Store = {
     loading: true,
 
-    chosenTema: '',
+    chosenTema: null,
     chosenYtelse: '',
 
     person: {
@@ -46,26 +47,19 @@ export const initialState: Store = {
         }
     },
 
-    activeKlage: {
-        fritekst: '',
-        id: 0,
-        tema: '',
-        vedlegg: [],
-        vedtak: '',
-        ytelse: ''
-    },
-
     activeKlageSkjema: {
-        datoalternativ: '',
+        id: null,
+        datoalternativ: DatoValg.INGEN,
         fritekst: '',
         tema: '',
         vedlegg: [],
-        ytelse: ''
+        ytelse: '',
+        referrer: null,
+        saksnummer: null,
+        vedtak: null
     },
 
     activeVedlegg: [],
-
-    klageId: '',
 
     getKlageError: false
 };
@@ -91,8 +85,16 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
         case 'KLAGE_POST_SUCCESS':
             return {
                 ...state,
+                klageId: action.payload.id.toString(),
                 activeKlage: action.payload,
-                activeKlageSkjema: { ...state.activeKlageSkjema, ...action.klageskjema, ...action.payload }
+                chosenTema: action.payload.tema,
+                chosenYtelse: action.payload.ytelse,
+                activeVedlegg: action.payload.vedlegg,
+                activeKlageSkjema: {
+                    ...state.activeKlageSkjema,
+                    ...action.klageskjema,
+                    ...klageToKlageSkjema(action.payload)
+                }
             };
         case 'KLAGE_GET_SUCCESS':
             return {
@@ -102,7 +104,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 chosenYtelse: action.payload.ytelse,
                 chosenTema: action.payload.tema,
                 activeVedlegg: action.payload.vedlegg,
-                klageId: action.payload.id?.toString() ?? initialState.klageId
+                klageId: action.payload.id?.toString()
             };
         case 'KLAGE_GET_ERROR':
             return { ...state, getKlageError: true };

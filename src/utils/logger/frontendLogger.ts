@@ -5,7 +5,7 @@ import { detect } from 'detect-browser';
 const logCorrelation = uuidv4();
 
 interface ValuePairs {
-    [name: string]: string | number | boolean | object | undefined;
+    [name: string]: string | number | boolean | object | null | undefined;
 }
 
 export function loggEvent(action: string, location: string, extraTags?: ValuePairs, fields?: ValuePairs) {
