@@ -30,7 +30,7 @@ interface Props {
 }
 
 const OppsummeringSkjemaPage = (props: Props) => {
-    const { activeKlage, activeVedlegg, person } = useSelector((state: Store) => state);
+    const { activeKlage, activeKlageSkjema, activeVedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
 
@@ -114,13 +114,13 @@ const OppsummeringSkjemaPage = (props: Props) => {
                     className="form-expand"
                     tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
                 >
-                    <VedtakSummary klage={activeKlage} />
+                    <VedtakSummary klage={activeKlageSkjema} />
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
 
                 <div className="simulate-expandable-box">
                     <Undertittel>Begrunnelse i din klage</Undertittel>
-                    <Normaltekst className="p_wrap">{activeKlage.fritekst ?? ''}</Normaltekst>
+                    <Normaltekst className="p_wrap">{activeKlageSkjema.fritekst}</Normaltekst>
                 </div>
 
                 <div className="simulate-expandable-box">

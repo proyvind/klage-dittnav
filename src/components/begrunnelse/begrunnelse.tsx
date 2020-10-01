@@ -23,6 +23,7 @@ import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Vedtak } from '../../types/vedtak';
 import { logError } from '../../utils/logger/frontendLogger';
+import { KlageSkjema } from '../../types/klage';
 
 interface Props {
     ytelse: string;
@@ -35,8 +36,8 @@ const Begrunnelse = (props: Props) => {
     const dispatch = useDispatch();
     const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
 
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst ?? '');
-    const [activeDatoISO, setActiveDatoISO] = useState<string>(activeKlageSkjema.vedtak ?? '');
+    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst);
+    const [activeDatoISO, setActiveDatoISO] = useState<string | null>(activeKlageSkjema.vedtak);
     const [datoalternativ, setDatoalternativ] = useState<DatoValg>(activeKlageSkjema.datoalternativ);
     const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
     const [vedleggFeilmelding, setVedleggFeilmelding] = useState<string>('');
@@ -44,11 +45,9 @@ const Begrunnelse = (props: Props) => {
 
     useEffect(() => {
         setDatoalternativ(activeKlageSkjema.datoalternativ);
-        if (activeKlageSkjema.vedtak !== null) {
-            setActiveDatoISO(activeKlageSkjema.vedtak);
-        }
+        setActiveDatoISO(activeKlageSkjema.vedtak);
+        setActiveBegrunnelse(activeKlageSkjema.fritekst);
         if (typeof activeKlage !== 'undefined') {
-            setActiveBegrunnelse(activeKlage.fritekst);
             const klageId = activeKlage.id.toString();
             dispatch(setKlageId(klageId, activeKlage.tema, activeKlage.ytelse, activeKlage.saksnummer));
         }
@@ -111,20 +110,23 @@ const Begrunnelse = (props: Props) => {
         }
     };
 
-    const submitBegrunnelseOgDato = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const submitBegrunnelseOgDato = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         setSubmitted(true);
         if (!validForm()) {
             return;
         }
-        dispatch(
-            updateKlage({
-                ...activeKlageSkjema,
-                fritekst: activeBegrunnelse,
-                datoalternativ: datoalternativ,
-                vedtak: activeDatoISO
-            })
-        );
+        const klageSkjema: KlageSkjema = {
+            ...activeKlageSkjema,
+            fritekst: activeBegrunnelse,
+            datoalternativ: datoalternativ,
+            vedtak: activeDatoISO
+        };
+        dispatch({
+            type: 'KLAGE_FORM_SET',
+            klageSkjema
+        });
+        updateKlage(klageSkjema);
         props.next();
     };
 
@@ -177,7 +179,7 @@ const Begrunnelse = (props: Props) => {
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datovelger
                         onChange={dateISO => setActiveDatoISO(dateISO ?? '')}
-                        valgtDato={activeDatoISO}
+                        valgtDato={activeDatoISO ?? undefined}
                         visÅrVelger={true}
                         avgrensninger={{
                             maksDato: new Date().toISOString().substring(0, 10)

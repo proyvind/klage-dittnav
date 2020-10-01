@@ -2,16 +2,16 @@ import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from '../general/information-point-box';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
-import { Klage } from '../../types/klage';
+import { dateToVedtakText, KlageSkjema } from '../../types/klage';
 
 interface Props {
-    klage: Klage;
+    klage: KlageSkjema;
 }
 
 const VedtakSummary = ({ klage }: Props) => (
     <PointsFlexListContainer>
         {getSaksnummer(klage.saksnummer)}
-        <InformationPointBox header={'Vedtak'} info={<Normaltekst>{klage.vedtak}</Normaltekst>} />
+        <InformationPointBox header={'Vedtak'} info={<Normaltekst>{dateToVedtakText(klage)}</Normaltekst>} />
     </PointsFlexListContainer>
 );
 

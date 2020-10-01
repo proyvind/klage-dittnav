@@ -54,8 +54,7 @@ export async function postKlage(resource: string, klage: KlageDraft) {
 
 export async function putKlage(resource: string, klage: Klage) {
     try {
-        const response = await axios.put<Klage>(resource, JSON.stringify(klage), postOptions);
-        return response.data;
+        await axios.put<never>(resource, JSON.stringify(klage), postOptions);
     } catch (error) {
         logError(error, 'Error from put klage call', { resource: resource, klage: klage });
         throw error;

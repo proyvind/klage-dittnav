@@ -82,6 +82,13 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 loading: false
             };
+        case 'KLAGE_FORM_SET':
+            return {
+                ...state,
+                chosenTema: action.klageSkjema.tema,
+                chosenYtelse: action.klageSkjema.ytelse,
+                activeKlageSkjema: action.klageSkjema
+            };
         case 'KLAGE_POST_SUCCESS':
             return {
                 ...state,

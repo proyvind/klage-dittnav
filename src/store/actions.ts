@@ -17,6 +17,10 @@ export type ActionTypes =
           payload: Bruker;
       }
     | {
+          type: 'KLAGE_FORM_SET';
+          klageSkjema: KlageSkjema;
+      }
+    | {
           type: 'KLAGE_POST_SUCCESS';
           payload: Klage;
           klageskjema: KlageSkjema;
@@ -84,16 +88,9 @@ export function postNewKlage(klageSkjema: KlageSkjema) {
 }
 
 export function updateKlage(klageSkjema: KlageSkjema) {
-    return function (dispatch: Dispatch<ActionTypes>) {
-        return putKlage(klageSkjemaToKlage(klageSkjema))
-            .then(klage => {
-                dispatch({ type: 'KLAGE_POST_SUCCESS', payload: klage, klageskjema: klageSkjema });
-                setStorageContent(klage.id.toString(), klage.tema, klage.ytelse, klage.saksnummer);
-            })
-            .catch((err: AxiosError) => {
-                logError(err, 'Update klage failed', { klageid: klageSkjema.id });
-            });
-    };
+    return putKlage(klageSkjemaToKlage(klageSkjema)).catch((err: AxiosError) => {
+        logError(err, 'Update klage failed', { klageid: klageSkjema.id });
+    });
 }
 
 export function getExistingKlage(klageId: string) {
