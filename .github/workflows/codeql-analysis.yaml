@@ -37,12 +37,7 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
-        paths-ignore:
-          - node_modules/
-          - '**/*.test.[tj]s'
-        paths:
-          - src/
-          - server/
+        config-file: ./.github/codeql/codeql-config.yaml
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
