@@ -11,7 +11,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
-import { toFiles, VEDLEGG_ERROR_MESSAGES, VedleggFile } from '../../types/vedlegg';
+import { toFiles, VedleggFile, getVedleggErrorMessage } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
 import { setKlageId, updateKlage } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,8 +48,7 @@ const Begrunnelse = (props: Props) => {
         setActiveDatoISO(activeKlageSkjema.vedtak);
         setActiveBegrunnelse(activeKlageSkjema.fritekst);
         if (typeof activeKlage !== 'undefined') {
-            const klageId = activeKlage.id.toString();
-            dispatch(setKlageId(klageId, activeKlage.tema, activeKlage.ytelse, activeKlage.saksnummer));
+            dispatch(setKlageId(activeKlage.id.toString()));
         }
     }, [dispatch, activeKlage, activeKlageSkjema]);
 
@@ -227,9 +226,7 @@ const Begrunnelse = (props: Props) => {
                 {vedleggFeilmelding !== '' && (
                     <MarginContainer>
                         <AlertStripeFeil>
-                            <p className="no-margin">
-                                {VEDLEGG_ERROR_MESSAGES[vedleggFeilmelding] ?? vedleggFeilmelding}
-                            </p>
+                            <p className="no-margin">{getVedleggErrorMessage(vedleggFeilmelding)}</p>
                         </AlertStripeFeil>
                     </MarginContainer>
                 )}

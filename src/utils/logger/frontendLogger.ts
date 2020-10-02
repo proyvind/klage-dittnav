@@ -8,6 +8,20 @@ interface ValuePairs {
     [name: string]: string | number | boolean | object | null | undefined;
 }
 
+type Message = { message: string };
+interface FrontendLogger {
+    info: (e: string | Message) => void;
+    warn: (e: string | Message) => void;
+    error: (e: string | Message) => void;
+    event: (name: string, fields: any, tags: any) => void;
+}
+
+declare global {
+    interface Window {
+        frontendlogger: FrontendLogger;
+    }
+}
+
 export function loggEvent(action: string, location: string, extraTags?: ValuePairs, fields?: ValuePairs) {
     if (!uselogger()) {
         return;
@@ -21,11 +35,7 @@ export function loggEvent(action: string, location: string, extraTags?: ValuePai
             ...extraTags
         }
     };
-    window['frontendlogger'].event(
-        event.table,
-        emptyStringToUndefined(event.fields),
-        emptyStringToUndefined(event.tags)
-    );
+    window.frontendlogger.event(event.table, emptyStringToUndefined(event.fields), emptyStringToUndefined(event.tags));
 }
 
 export function logInfo(message: string, fields?: ValuePairs) {
@@ -36,7 +46,7 @@ export function logInfo(message: string, fields?: ValuePairs) {
     };
     console.info(info);
     if (uselogger()) {
-        window['frontendlogger'].info(info);
+        window.frontendlogger.info(info);
     }
 }
 export function logWarning(error: Error, message?: string, fields?: ValuePairs, extraTagsLogEvent?: ValuePairs) {
@@ -51,7 +61,7 @@ export function logWarning(error: Error, message?: string, fields?: ValuePairs, 
     console.warn(info);
     if (uselogger()) {
         loggEvent('Warning', 'Logger', extraTagsLogEvent);
-        window['frontendlogger'].warn(info);
+        window.frontendlogger.warn(info);
     }
 }
 
@@ -67,12 +77,12 @@ export function logError(error: Error, message?: string, fields?: ValuePairs, ex
     console.error(info);
     if (uselogger()) {
         loggEvent('Error', 'Logger', extraTagsLogEvent);
-        window['frontendlogger'].error(info);
+        window.frontendlogger.error(info);
     }
 }
 
 function frontendLoggerIsInitialized(): boolean {
-    if (!window['frontendlogger']) {
+    if (!window.frontendlogger) {
         console.warn('frontend-logger not initialized properly');
         return false;
     }

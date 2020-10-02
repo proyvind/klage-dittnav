@@ -63,3 +63,22 @@ export enum Tema {
     YRA = 'Yrkesrettet attføring',
     YRK = 'Yrkesskade / Menerstatning'
 }
+
+export type TemaKey = keyof typeof Tema;
+
+const TEMA_KEYS = Object.keys(Tema);
+
+export const getYtelseByTema = (temaKey: TemaKey | string | null): Tema | null => {
+    const ensuredTemaKey = ensureStringIsTema(temaKey);
+    if (ensuredTemaKey === null) {
+        return null;
+    }
+    return Tema[ensuredTemaKey];
+};
+
+export const ensureStringIsTema = (potentialTemaKey: string | null): TemaKey | null => {
+    if (potentialTemaKey === null) {
+        return null;
+    }
+    return TEMA_KEYS.includes(potentialTemaKey) ? (potentialTemaKey as TemaKey) : null;
+};

@@ -42,7 +42,7 @@ function toPdfFile(filename: string) {
     return filename.substr(0, filename.lastIndexOf('.')) + '.pdf';
 }
 
-export const VEDLEGG_ERROR_MESSAGES = {
+const VEDLEGG_ERROR_MESSAGES = {
     TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',
     TOTAL_TOO_LARGE: 'Total filstørrelse kan ikke være større enn 32 MB.',
     ENCRYPTED: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med i din klage.',
@@ -51,3 +51,22 @@ export const VEDLEGG_ERROR_MESSAGES = {
     FILE_COULD_NOT_BE_CONVERTED:
         'Du har prøvd å legge til et vedlegg med feil format. Vedlegg er begrenset til PNG, JPEG, og PDF.'
 };
+
+type VedleggErrorKey = keyof typeof VEDLEGG_ERROR_MESSAGES;
+
+const VEDLEGG_ERROR_KEYS = Object.keys(VEDLEGG_ERROR_MESSAGES);
+
+export const getVedleggErrorMessage = (key: string): string => {
+    const ensuredKey = ensureStringIsVedleggErrorKey(key);
+    if (ensuredKey === null) {
+        return key;
+    }
+    return VEDLEGG_ERROR_MESSAGES[ensuredKey];
+};
+
+function ensureStringIsVedleggErrorKey(key: string): VedleggErrorKey | null {
+    if (VEDLEGG_ERROR_KEYS.includes(key)) {
+        return key as VedleggErrorKey;
+    }
+    return null;
+}

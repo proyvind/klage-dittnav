@@ -122,7 +122,7 @@ export function setValgtTema(tema: string) {
     };
 }
 
-export function setKlageId(klageId: string, tema: string | null, ytelse: string | null, saksnummer: string | null) {
+export function setKlageId(klageId: string) {
     if (klageId.length === 0) {
         throw new Error('Invalid klage ID.');
     }

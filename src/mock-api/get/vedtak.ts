@@ -1,5 +1,5 @@
 import { Vedtak } from '../../types/vedtak';
-import { Tema } from '../../types/tema';
+import { getYtelseByTema, Tema } from '../../types/tema';
 import queryString from 'query-string';
 
 export function getKlageId(query: queryString.ParsedQuery<string>): string | null {
@@ -15,13 +15,20 @@ export const queryToVedtak = (query: queryString.ParsedQuery<string>): Vedtak | 
         return {
             vedtak: '',
             tema: tema,
-            ytelse: query?.ytelse ?? Tema[tema ?? 'UKJ'],
+            ytelse: getYtelse(tema, query?.ytelse),
             saksnummer: getSaksnummer(query)
         };
     }
 
     return null;
 };
+
+function getYtelse(tema: string, ytelse: string | string[] | null | undefined) {
+    if (ytelse === null || typeof ytelse === 'undefined' || Array.isArray(ytelse)) {
+        return Tema.UKJ;
+    }
+    return getYtelseByTema(tema) ?? Tema.UKJ;
+}
 
 function getTema(query: queryString.ParsedQuery<string>): string {
     if (typeof query.tema === 'string' && query.tema.length > 0) {

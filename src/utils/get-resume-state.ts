@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { Tema } from '../types/tema';
+import { ensureStringIsTema, getYtelseByTema, Tema } from '../types/tema';
 
 interface ResumeState {
     klageId: string | null;
@@ -52,7 +52,7 @@ export function getResumeState(queryParams: string, storage: Storage): ResumeSta
 
     return {
         klageId: null,
-        tema: ensureTema(queryTema),
+        tema: ensureStringIsTema(queryTema),
         ytelse: queryYtelse,
         saksnummer: querySaksnummer
     };
@@ -62,7 +62,7 @@ function getDefaultYtelse(tema: string | null): Tema | null {
     if (tema === null || tema.length === 0) {
         return null;
     }
-    return Tema[tema];
+    return getYtelseByTema(tema);
 }
 
 function getQueryString(query: queryString.ParsedQuery<string>, paramName: string): string | null {
@@ -80,16 +80,5 @@ function getStorageItem(key: string, storage: Storage): string | null {
         return value;
     }
 
-    return null;
-}
-
-function ensureTema(tema: string | null): string | null {
-    if (tema === null) {
-        return null;
-    }
-    const found: string | undefined = Tema[tema];
-    if (typeof found === 'string') {
-        return tema;
-    }
     return null;
 }

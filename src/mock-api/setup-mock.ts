@@ -9,7 +9,7 @@ import { okVedlegg } from './get/vedlegg';
 
 const STATUS_OK = () => 200;
 
-const loggingMiddleware: Middleware = (request, response) => {
+const loggingMiddleware: Middleware = (_, response) => {
     return response;
 };
 

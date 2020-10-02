@@ -33,7 +33,7 @@ const App = (props: RouteComponentProps) => {
         }
 
         if (klageId !== null) {
-            dispatch(setKlageId(klageId, tema, ytelse, saksnummer));
+            dispatch(setKlageId(klageId));
             setLoading(false);
         } else if (ytelse !== null && tema !== null) {
             const klageSkjema: KlageSkjema = {
