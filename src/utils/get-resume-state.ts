@@ -41,7 +41,7 @@ export function getResumeState(queryParams: string, storage: Storage, pathName =
             queryTema === storedTema &&
             queryYtelse === storedYtelse &&
             querySaksnummer === storedSaksnummer) ||
-        (pathName !== '' && pathName === '/oppsummering' && storedKlageId !== null)
+        pathName === '/oppsummering'
     ) {
         return {
             klageId: storedKlageId,
