@@ -15,8 +15,7 @@ export enum StorageKey {
     SAKSNUMMER = 'nav.klage.saksnummer'
 }
 
-export function getResumeState(queryParams: string, storage: Storage, pathName?: string): ResumeState {
-    console.log(pathName);
+export function getResumeState(queryParams: string, storage: Storage, pathName = ''): ResumeState {
     const query = queryString.parse(queryParams);
     const queryKlageId = getQueryString(query, 'klageid');
     if (queryKlageId !== null) {
@@ -42,7 +41,7 @@ export function getResumeState(queryParams: string, storage: Storage, pathName?:
             queryTema === storedTema &&
             queryYtelse === storedYtelse &&
             querySaksnummer === storedSaksnummer) ||
-        (pathName !== null && pathName === '/oppsummering' && storedKlageId !== null)
+        (pathName !== '' && pathName === '/oppsummering' && storedKlageId !== null)
     ) {
         return {
             klageId: storedKlageId,
