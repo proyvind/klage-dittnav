@@ -160,6 +160,26 @@ describe('Resume klage', () => {
             saksnummer: null
         });
     });
+
+    it('Should get klage ID from sessionStorage, when current page is Oppsummering', () => {
+        const expectedKlageId = '123';
+        const expectedTema = 'FOR';
+        const expectedYtelse = Tema[expectedTema];
+        const mockSessionStorage = new MockSessionStorage({
+            [StorageKey.KLAGE_ID]: expectedKlageId,
+            [StorageKey.YTELSE]: expectedYtelse,
+            [StorageKey.TEMA]: expectedTema
+        });
+        const queryString = ``;
+        const pathName = '/oppsummering';
+        const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
+        expect(resumeState).toStrictEqual({
+            klageId: expectedKlageId,
+            tema: expectedTema,
+            ytelse: expectedYtelse,
+            saksnummer: null
+        });
+    });
 });
 
 class MockSessionStorage implements Storage {
