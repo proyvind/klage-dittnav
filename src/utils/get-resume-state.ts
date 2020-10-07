@@ -15,7 +15,7 @@ export enum StorageKey {
     SAKSNUMMER = 'nav.klage.saksnummer'
 }
 
-export function getResumeState(queryParams: string, storage: Storage): ResumeState {
+export function getResumeState(queryParams: string, storage: Storage, pathName: string): ResumeState {
     const query = queryString.parse(queryParams);
     const queryKlageId = getQueryString(query, 'klageid');
     if (queryKlageId !== null) {
@@ -27,14 +27,23 @@ export function getResumeState(queryParams: string, storage: Storage): ResumeSta
         };
     }
 
-    const queryTema = getQueryString(query, 'tema');
-    const queryYtelse = getQueryString(query, 'ytelse') ?? getDefaultYtelse(queryTema);
-    const querySaksnummer = getQueryString(query, 'saksnummer');
-
     const storedKlageId = getStorageItem(StorageKey.KLAGE_ID, storage);
     const storedTema = getStorageItem(StorageKey.TEMA, storage);
     const storedYtelse = getStorageItem(StorageKey.YTELSE, storage);
     const storedSaksnummer = getStorageItem(StorageKey.SAKSNUMMER, storage);
+
+    if (pathName === '/oppsummering') {
+        return {
+            klageId: storedKlageId,
+            tema: storedTema,
+            ytelse: storedYtelse,
+            saksnummer: storedSaksnummer
+        };
+    }
+
+    const queryTema = getQueryString(query, 'tema');
+    const queryYtelse = getQueryString(query, 'ytelse') ?? getDefaultYtelse(queryTema);
+    const querySaksnummer = getQueryString(query, 'saksnummer');
 
     if (
         storedKlageId !== null &&

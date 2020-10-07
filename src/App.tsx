@@ -22,7 +22,11 @@ const App = (props: RouteComponentProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const { klageId, tema, ytelse, saksnummer } = getResumeState(props.location.search, sessionStorage);
+        const { klageId, tema, ytelse, saksnummer } = getResumeState(
+            props.location.search,
+            sessionStorage,
+            props.location.pathname
+        );
         setStorageContent(klageId, tema, ytelse, saksnummer);
 
         if (ytelse !== null) {
@@ -67,7 +71,7 @@ const App = (props: RouteComponentProps) => {
         } else {
             setLoading(false);
         }
-    }, [dispatch, props.location.search]);
+    }, [dispatch, props.location.search, props.location.pathname]);
 
     if (loading) {
         return (
