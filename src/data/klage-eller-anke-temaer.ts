@@ -1,5 +1,5 @@
 import { TemaKey } from '../types/tema';
-
+import * as data from './klage-eller-anke-temaer.json';
 export interface KategoriTema {
     tema: TemaKey;
     tittel: string;
@@ -15,43 +15,7 @@ interface KlageAnkeTema {
     underkategorier: KategoriTema[];
 }
 
-export const KLAGE_ELLER_ANKE_TEMAER: KlageAnkeTema[] = [
-    {
-        tittel: 'Arbeid',
-        path: 'arbeid',
-        beskrivelse: 'Dagpenger, AAP, egen bedrift',
-        underkategorier: [
-            {
-                tema: 'AAP',
-                tittel: 'Arbeidsavklaringspenger (AAP)',
-                skjemaveileder: false,
-                digital: false,
-                bareAnke: false
-            },
-            {
-                tema: 'DAG',
-                tittel: 'Dagpenger',
-                skjemaveileder: false,
-                digital: false,
-                bareAnke: false
-            }
-        ]
-    },
-    {
-        tittel: 'Familie og barn',
-        path: 'familie-og-barn',
-        beskrivelse: 'Barnetrygd, foreldrepenger, pleie',
-        underkategorier: [
-            {
-                tema: 'FOR',
-                tittel: 'Foreldrepenger, engangsstønad og svangerskapspenger',
-                skjemaveileder: false,
-                digital: true,
-                bareAnke: false
-            }
-        ]
-    }
-];
+export const KLAGE_ELLER_ANKE_TEMAER: KlageAnkeTema[] = JSON.parse(JSON.stringify(data.temaer));
 
 export const getKategori = (kategori: string) => KLAGE_ELLER_ANKE_TEMAER.find(({ path }) => path === kategori) ?? null;
 
