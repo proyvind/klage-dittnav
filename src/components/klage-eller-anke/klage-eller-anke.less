@@ -6,14 +6,17 @@
 }
 
 .icon-container {
-    display: none;
+    margin-right: 0;
+    margin-bottom: 2rem;
 }
 
 .lenkepanel-content-with-image {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
     svg {
         display: block;
         width: 60px;
@@ -29,9 +32,16 @@
     .lenkepanel-content-with-image {
         padding: 2rem 2.5rem 2rem 2rem;
     }
+}
+
+@media @mobileL {
+    .lenkepanel-content-with-image {
+        padding: 0.5rem 2rem;
+        justify-content: initial;
+        flex-wrap: nowrap;
+    }
     .icon-container {
-        display: block;
-        text-align: center;
         margin-right: 2rem;
+        margin-bottom: 0;
     }
 }
