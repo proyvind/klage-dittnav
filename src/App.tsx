@@ -54,7 +54,6 @@ const App = (props: RouteComponentProps) => {
             dispatch(postNewKlage(klageSkjema));
             setLoading(false);
         } else if (tema !== null) {
-            dispatch(setValgtTema(tema));
             getTemaObject(tema)
                 .then(temaObject => {
                     dispatch(setValgtYtelse(ytelse ?? temaObject.value));
