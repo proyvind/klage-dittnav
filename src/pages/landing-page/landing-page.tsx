@@ -25,7 +25,7 @@ const LandingPage = (temaKey: TemaKey, saksnummer: string | null = null) => {
     }
 
     if (person === null) {
-        return InngangInnsendingDigital(temaKey, Tema[temaKey], saksnummer);
+        return <InngangInnsendingDigital temaKey={temaKey} title={Tema[temaKey]} saksnummer={saksnummer} />;
     }
 
     const saksnummerQuery = saksnummer === null ? '' : `&saksnummer=${saksnummer}`;

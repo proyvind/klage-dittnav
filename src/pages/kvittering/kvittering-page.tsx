@@ -6,6 +6,8 @@ import KvitteringLoading from '../../components/kvittering/kvitteringLoading';
 import { getJournalpostId } from '../../services/klageService';
 import { Redirect } from 'react-router-dom';
 import { logError } from '../../utils/logger/frontendLogger';
+import { PageIdentifier } from '../../utils/logger/amplitude';
+import { useLogPageView } from '../../utils/logger/use-log-page-view';
 
 const KvitteringPage = () => {
     const [waitingForJoark, setWaitingForJoark] = useState<boolean>(true);
@@ -14,6 +16,8 @@ const KvitteringPage = () => {
     const [journalPostId, setJournalPostId] = useState<string>('');
 
     const { klage } = useSelector((state: Store) => state);
+
+    useLogPageView(PageIdentifier.KLAGESKJEMA_KVITTERING);
 
     useEffect(() => {
         let waitingJoark = true;

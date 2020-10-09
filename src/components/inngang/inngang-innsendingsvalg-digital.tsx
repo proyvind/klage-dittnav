@@ -10,12 +10,17 @@ import KlageLinkPanel from '../link/link';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
+import { useLogPageView } from '../../utils/logger/use-log-page-view';
+import { PageIdentifier } from '../../utils/logger/amplitude';
 
-const InngangInnsendingDigital = (
-    temaKey: TemaKey,
-    title: string = Tema[temaKey],
-    saksnummer: string | null = null
-) => {
+interface Props {
+    temaKey: TemaKey;
+    title?: string;
+    saksnummer?: string | null;
+}
+
+const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer = null }: Props) => {
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

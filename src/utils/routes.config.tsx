@@ -1,3 +1,4 @@
+import React from 'react';
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
@@ -40,7 +41,7 @@ interface Route extends RouteProps {
     path: string;
 }
 
-export const routesPages: Route[] = [
+export const routesConfig: Route[] = [
     {
         path: LOGGED_IN_PATH,
         render: loggedInRedirect
@@ -59,7 +60,7 @@ export const routesPages: Route[] = [
     },
     ...INNGANG_KATEGORIER.map<Route>(inngangkategori => ({
         path: `/${inngangkategori.path}`,
-        render: () => InngangKategorier(inngangkategori)
+        render: () => <InngangKategorier inngangkategori={inngangkategori} />
     })),
     ...INNGANG_KATEGORIER.flatMap<Route>(inngangkategori =>
         inngangkategori.kategorier.map<Route>(kategori => ({
@@ -79,9 +80,7 @@ export const routesPages: Route[] = [
 
 function getInngangInnsendingComponent({ digital, title, temaKey }: Kategori) {
     if (digital) {
-        return InngangInnsendingDigital(temaKey, title);
+        return <InngangInnsendingDigital temaKey={temaKey} title={title} />;
     }
-    return InngangInnsendingPost(temaKey, title);
+    return <InngangInnsendingPost temaKey={temaKey} title={title} />;
 }
-
-export const routesConfig = routesPages;

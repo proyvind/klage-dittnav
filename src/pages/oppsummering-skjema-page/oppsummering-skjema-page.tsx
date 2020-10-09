@@ -24,6 +24,8 @@ import { ColoredLine } from '../../components/general/colored-line';
 import { logError } from '../../utils/logger/frontendLogger';
 import { toFiles } from '../../types/vedlegg';
 import { ActionTypes, clearStorageContent } from '../../store/actions';
+import { PageIdentifier } from '../../utils/logger/amplitude';
+import { useLogPageView } from '../../utils/logger/use-log-page-view';
 
 interface Props {
     previous: () => void;
@@ -35,9 +37,8 @@ const OppsummeringSkjemaPage = (props: Props) => {
     const history = useHistory();
     const dispatch: Dispatch<ActionTypes> = useDispatch();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    useEffect(() => window.scrollTo(0, 0), []);
+    useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
     const submitForm = (event: React.MouseEvent) => {
         event.preventDefault();

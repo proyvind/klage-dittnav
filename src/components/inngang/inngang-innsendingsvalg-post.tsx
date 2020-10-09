@@ -6,8 +6,16 @@ import { Tema, TemaKey } from '../../types/tema';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
 import { getUrlToPaperForm } from '../../types/ytelse';
+import { useLogPageView } from '../../utils/logger/use-log-page-view';
+import { PageIdentifier } from '../../utils/logger/amplitude';
 
-const InngangInnsendingPost = (temaKey: TemaKey, title: string = Tema[temaKey]) => {
+interface Props {
+    temaKey: TemaKey;
+    title?: string;
+}
+
+const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
