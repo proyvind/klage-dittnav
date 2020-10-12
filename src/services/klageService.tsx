@@ -15,11 +15,13 @@ export const postKlage = (klage: KlageDraft) => baseService.postKlage(getAddKlag
 
 export const putKlage = (klage: Klage) => baseService.putKlage(getKlageByIdUrl(klage.id), klage);
 
-export const getKlage = (klageId: string) => baseService.get<Klage>(getKlageByIdUrl(klageId));
+export const getKlage = (klageId: string | number) => baseService.get<Klage>(getKlageByIdUrl(klageId));
 
-export const finalizeKlage = (klageId: number) => baseService.post<FinalizedKlage>(getFinalizeKlageUrl(klageId));
+export const finalizeKlage = (klageId: string | number) =>
+    baseService.post<FinalizedKlage>(getFinalizeKlageUrl(klageId));
 
-export const getJournalpostId = (klageId: number) => baseService.get<string>(getKlageJournalpostIdUrl(klageId));
+export const getJournalpostId = (klageId: string | number) =>
+    baseService.get<string>(getKlageJournalpostIdUrl(klageId));
 
 export const getTemaObject = (temaKode: string) => baseService.get<TemaObject>(getTemaObjectUrl(temaKode));
 

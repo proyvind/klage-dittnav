@@ -14,7 +14,7 @@ import Lenke from 'nav-frontend-lenker';
 import { isoDateToPretty } from '../../utils/date';
 
 interface Props {
-    klageId: number;
+    klageId: string | number;
     journalPostId: string;
     success: boolean;
     finalizedDate: string;
