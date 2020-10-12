@@ -29,7 +29,7 @@ const KvitteringPage = (props: RouteComponentProps<{}, StaticContext, FinalizedK
             waitingJoark = false;
         }, 15000);
 
-        const waitForJournalpostId = (klageId: number) => {
+        const waitForJournalpostId = (klageId: string | number) => {
             getJournalpostId(klageId)
                 .then(response => {
                     if (response === '') {

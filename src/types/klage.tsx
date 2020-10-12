@@ -14,11 +14,11 @@ export interface KlageDraft {
 }
 
 export interface Klage extends KlageDraft {
-    readonly id: number;
+    readonly id: string | number;
 }
 
 export interface KlageSkjema {
-    id: number | null;
+    id: string | null;
     fritekst: string;
     tema: string;
     ytelse: string;
@@ -41,11 +41,11 @@ export const klageSkjemaToKlageDraft = (klageSkjema: KlageSkjema): KlageDraft =>
 });
 
 export const klageSkjemaToKlage = (klageSkjema: KlageSkjema): Klage => {
-    if (klageSkjema.id === null) {
-        throw new Error("KlageSkjema is missing required property 'id'. Did you mean to create a draft?");
+    if (klageSkjema.id === null || klageSkjema.id.length === 0) {
+        throw new Error('KlageSkjema is missing required property "id". Did you mean to create a draft?');
     }
     return {
-        id: klageSkjema.id,
+        id: ensureInt(klageSkjema.id),
         fritekst: klageSkjema.fritekst,
         tema: klageSkjema.tema,
         ytelse: klageSkjema.ytelse,
@@ -57,10 +57,20 @@ export const klageSkjemaToKlage = (klageSkjema: KlageSkjema): Klage => {
     };
 };
 
+const ensureInt = (klageId: string): number => {
+    const parsed = Number.parseInt(klageId, 10);
+    if (Number.isNaN(parsed)) {
+        throw new Error(
+            `KlageSkjema property "id" is not parsable to an integer. Expected string parsable to integer, got "${klageId}".`
+        );
+    }
+    return parsed;
+};
+
 export const klageToKlageSkjema = (klage: Klage): KlageSkjema => {
     const { isoDate, dateChoice } = parseVedtakText(klage.vedtak);
     return {
-        id: klage.id,
+        id: klage.id.toString(),
         fritekst: klage.fritekst,
         tema: klage.tema,
         ytelse: klage.ytelse,
