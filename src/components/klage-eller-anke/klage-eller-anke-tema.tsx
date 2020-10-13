@@ -1,6 +1,5 @@
 import React from 'react';
 import { Systemtittel, Normaltekst, Sidetittel, Undertittel } from 'nav-frontend-typografi';
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import { KLAGE_ELLER_ANKE_TEMAER } from '../../data/klage-eller-anke-temaer';
 import {
     Margin40Container,
@@ -9,6 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederIcon from '../../assets/Veileder.svg';
+import KlageLinkPanel from '../link/link';
 
 const KlageEllerAnkeTema = () => (
     <section>
@@ -37,12 +37,12 @@ const KlageEllerAnkeTema = () => (
 
 const getLinks = () =>
     KLAGE_ELLER_ANKE_TEMAER.map(tema => (
-        <LenkepanelBase key={tema.tittel} href={`klage-anke/${tema.path}`} className="lenkepanel-flex" border>
+        <KlageLinkPanel key={tema.tittel} href={`klage-anke/${tema.path}`} className="lenkepanel-flex" border>
             <div>
                 <Undertittel className="lenkepanel__heading">{tema.tittel}</Undertittel>
                 <Normaltekst>{tema.beskrivelse}</Normaltekst>
             </div>
-        </LenkepanelBase>
+        </KlageLinkPanel>
     ));
 
 export default KlageEllerAnkeTema;

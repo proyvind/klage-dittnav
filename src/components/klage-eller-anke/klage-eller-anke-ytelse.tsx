@@ -6,9 +6,9 @@ import {
     Margin40TopContainer,
     PointsFlexListContainer
 } from '../../styled-components/main-styled-components';
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import { RouteComponentProps } from 'react-router-dom';
 import NotFoundPage from '../../pages/not-found/not-found-page';
+import KlageLinkPanel from '../link/link';
 
 interface MatchParams {
     kategori: string;
@@ -41,11 +41,11 @@ const KlageEllerAnkeYtelse = (props: Props) => {
 
 const getLinks = (kategori: string, underkategorier: KategoriTema[]) =>
     underkategorier.map(tema => (
-        <LenkepanelBase key={tema.tittel} href={`${kategori}/${tema.tema}`} className="lenkepanel-flex" border>
+        <KlageLinkPanel key={tema.tittel} href={`${kategori}/${tema.tema}`} className="lenkepanel-flex" border>
             <div>
                 <Undertittel className="lenkepanel__heading">{tema.tittel}</Undertittel>
             </div>
-        </LenkepanelBase>
+        </KlageLinkPanel>
     ));
 
 export default KlageEllerAnkeYtelse;

@@ -10,6 +10,7 @@ import MobilePhone from '../../assets/images/icons/MobilePhone';
 import { RouteComponentProps } from 'react-router-dom';
 import { getKategori, hasDigitalForm } from '../../data/klage-eller-anke-temaer';
 import NotFoundPage from '../../pages/not-found/not-found-page';
+import KlageLinkPanel from '../link/link';
 
 interface MatchParams {
     kategori: string;
@@ -99,7 +100,7 @@ const DigitalContent = (props: DigitalContentProps) => {
     }
     return (
         <MarginContainer>
-            <LenkepanelBase href={'https://klage-dittnav.nav.no/klage?tema=' + props.tema} border>
+            <KlageLinkPanel href={'/klage?tema=' + props.tema} border>
                 <div className="lenkepanel-content-with-image">
                     <div className="icon-container">
                         <MobilePhone />
@@ -111,7 +112,7 @@ const DigitalContent = (props: DigitalContentProps) => {
                         </MarginTopContainer>
                     </div>
                 </div>
-            </LenkepanelBase>
+            </KlageLinkPanel>
             <Lenke
                 target="_blank"
                 rel="noopener noreferrer"
