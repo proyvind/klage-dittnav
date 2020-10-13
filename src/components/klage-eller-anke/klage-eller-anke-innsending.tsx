@@ -113,11 +113,7 @@ const DigitalContent = (props: DigitalContentProps) => {
                     </div>
                 </div>
             </KlageLinkPanel>
-            <Lenke
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-            >
+            <Lenke target="_blank" rel="noopener noreferrer" href="https://www.norge.no/elektronisk-id">
                 Jeg har ikke elektronisk ID
             </Lenke>
         </MarginContainer>
