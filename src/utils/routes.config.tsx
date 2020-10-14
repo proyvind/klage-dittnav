@@ -3,7 +3,6 @@ import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
-import SkjemaInngang from '../pages/skjema-inngang/skjema-inngang';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import { JSXElementConstructor } from 'react';
 import KlageEllerAnkeYtelse from '../components/klage-eller-anke/klage-eller-anke-ytelse';
@@ -27,24 +26,7 @@ export type FormStep = {
     exact: boolean;
 };
 
-export const routesStepsValgtVedtak: FormStep[] = [
-    {
-        step: 0,
-        path: `/klage`,
-        component: BegrunnelsePage,
-        label: 'Begrunnelse',
-        exact: true
-    },
-    {
-        step: 1,
-        path: `/oppsummering`,
-        component: OppsummeringSkjemaPage,
-        label: 'Oppsummering',
-        exact: true
-    }
-];
-
-export const routesStepsIkkeValgtVedtak: FormStep[] = [
+export const formSteps: FormStep[] = [
     {
         step: 0,
         path: `/klage`,
@@ -64,7 +46,7 @@ export const routesStepsIkkeValgtVedtak: FormStep[] = [
 export const routesPages: RouteType[] = [
     {
         path: `/`,
-        component: SkjemaInngang,
+        component: KlageEllerAnkeTema,
         exact: true
     },
     {
@@ -88,17 +70,12 @@ export const routesPages: RouteType[] = [
         exact: true
     },
     {
-        path: `/klage-anke`,
-        component: KlageEllerAnkeTema,
-        exact: true
-    },
-    {
-        path: `/klage-anke/:kategori`,
+        path: `/:kategori`,
         component: KlageEllerAnkeYtelse,
         exact: true
     },
     {
-        path: `/klage-anke/:kategori/:tema`,
+        path: `/:kategori/:tema`,
         component: KlageEllerAnkeInnsending,
         exact: true
     },

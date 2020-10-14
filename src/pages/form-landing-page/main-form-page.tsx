@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
-import { routesStepsIkkeValgtVedtak, routesStepsValgtVedtak } from '../../utils/routes.config';
+import { formSteps } from '../../utils/routes.config';
 import { MarginContainer } from '../../styled-components/main-styled-components';
 import Steps from '../../components/steps/steps';
 import OppsummeringSkjemaPage from '../oppsummering-skjema-page/oppsummering-skjema-page';
@@ -16,7 +16,7 @@ interface Props {
 const MainFormPage = (props: Props) => {
     const history = useHistory();
 
-    const activeRoutes = props.chosenVedtak ? routesStepsValgtVedtak : routesStepsIkkeValgtVedtak;
+    const activeRoutes = formSteps;
 
     const stepFromPath = (path: string) => activeRoutes.find(route => route.path === path)?.step ?? 0;
     const [activeStep, setActiveStep] = useState<number>(stepFromPath(props.path));
