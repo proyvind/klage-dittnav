@@ -11,7 +11,6 @@ import {
     setValgtYtelse
 } from '../../store/actions';
 import { Store } from '../../store/reducer';
-import WithLoading from '../../components/general/loading/withLoading';
 import { logError, logInfo } from '../../utils/logger/frontendLogger';
 import { queryToVedtak } from '../../mock-api/get/vedtak';
 import MainFormPage from '../../pages/form-landing-page/main-form-page';
@@ -41,7 +40,7 @@ const FormLanding = (props: Props) => {
 
     const [chosenVedtak, setChosenVedtak] = useState<Vedtak>();
     const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoadingDraft, setIsLoadingDraft] = useState<boolean>(true);
     const [errorState, setErrorState] = useState<boolean>(false);
 
     useEffect(() => {
@@ -63,7 +62,7 @@ const FormLanding = (props: Props) => {
 
         if (klageId !== null) {
             dispatch(setKlageId(klageId));
-            setIsLoading(false);
+            setIsLoadingDraft(false);
         } else if (ytelse !== null && tema !== null) {
             const klageSkjema: KlageSkjema = {
                 id: null,
@@ -77,23 +76,23 @@ const FormLanding = (props: Props) => {
                 referrer: getReferrer()
             };
             dispatch(postNewKlage(klageSkjema));
-            setIsLoading(false);
+            setIsLoadingDraft(false);
         } else if (tema !== null) {
             getTemaObject(tema)
                 .then(temaObject => {
                     dispatch(setValgtYtelse(ytelse ?? temaObject.value));
-                    setIsLoading(false);
+                    setIsLoadingDraft(false);
                 })
                 .catch((err: AxiosError) => {
                     if (err.response?.status === 404) {
                         setErrorState(true);
-                        setIsLoading(false);
+                        setIsLoadingDraft(false);
                         return;
                     }
                     logError(err);
                 });
         } else {
-            setIsLoading(false);
+            setIsLoadingDraft(false);
         }
 
         if (
@@ -115,7 +114,7 @@ const FormLanding = (props: Props) => {
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
-    if (isLoading) {
+    if (loading || isLoadingDraft) {
         return (
             <CenteredContainer>
                 <NavFrontendSpinner type={'XL'} />
@@ -148,13 +147,9 @@ const FormLanding = (props: Props) => {
                 }}
             />
         );
-    } else {
-        return (
-            <WithLoading loading={loading}>
-                <MainFormPage path={props.path} ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />
-            </WithLoading>
-        );
     }
+
+    return <MainFormPage path={props.path} ytelse={chosenYtelse} chosenVedtak={chosenVedtak} />;
 };
 
 export default FormLanding;
