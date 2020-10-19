@@ -3,27 +3,20 @@ import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
-import { JSXElementConstructor } from 'react';
 import KlageEllerAnkeYtelse from '../components/klage-eller-anke/klage-eller-anke-ytelse';
 import KlageEllerAnkeTema from '../components/klage-eller-anke/klage-eller-anke-tema';
 import KlageEllerAnkeInnsending from '../components/klage-eller-anke/klage-eller-anke-innsending';
+import RootOnlyTema from '../pages/root-only-tema/root-only-tema';
+import { TEMA_KEYS } from '../types/tema';
+import { RouteProps } from 'react-router';
+import { KLAGE_ELLER_ANKE_TEMAER } from '../data/klage-eller-anke-temaer';
 
-export type RouteType = {
-    step?: number;
+export interface FormStep extends RouteProps {
     path: string;
-    component: JSXElementConstructor<any>;
-    redirect?: string;
-    exact: boolean;
-};
-
-export type FormStep = {
     step?: number;
-    path: string;
-    component: JSXElementConstructor<any>;
     label: string;
     redirect?: string;
-    exact: boolean;
-};
+}
 
 export const formSteps: FormStep[] = [
     {
@@ -42,12 +35,7 @@ export const formSteps: FormStep[] = [
     }
 ];
 
-export const routesPages: RouteType[] = [
-    {
-        path: `/`,
-        component: KlageEllerAnkeTema,
-        exact: true
-    },
+export const routesPages: RouteProps[] = [
     {
         path: `/kvittering`,
         component: KvitteringPage,
@@ -64,13 +52,30 @@ export const routesPages: RouteType[] = [
         exact: true
     },
     {
-        path: `/:kategori`,
-        component: KlageEllerAnkeYtelse,
+        path: `/klage-anke`,
+        component: KlageEllerAnkeTema,
         exact: true
     },
+    ...TEMA_KEYS.map<RouteProps>(temaKey => ({
+        path: `/klage-anke/${temaKey}`,
+        render: () => KlageEllerAnkeInnsending(temaKey),
+        exact: true
+    })),
+    ...KLAGE_ELLER_ANKE_TEMAER.map<RouteProps>(kategori => ({
+        path: `/klage-anke/${kategori.path}`,
+        render: () => KlageEllerAnkeYtelse(kategori),
+        exact: true
+    })),
+    ...KLAGE_ELLER_ANKE_TEMAER.flatMap<RouteProps>(kategori =>
+        kategori.underkategorier.map<RouteProps>(tema => ({
+            path: `/klage-anke/${kategori.path}/${tema.tema}`,
+            render: () => KlageEllerAnkeInnsending(tema.tema),
+            exact: true
+        }))
+    ),
     {
-        path: `/:kategori/:tema`,
-        component: KlageEllerAnkeInnsending,
+        path: `/`,
+        component: RootOnlyTema,
         exact: true
     },
     {

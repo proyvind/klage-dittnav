@@ -76,7 +76,7 @@ Array [
         >
           <a
             className="lenkepanel lenkepanel-flex lenkepanel--border"
-            href="/arbeid"
+            href="/klage-anke/arbeid"
             onClick={[Function]}
           >
             <div>
@@ -97,7 +97,7 @@ Array [
           </a>
           <a
             className="lenkepanel lenkepanel-flex lenkepanel--border"
-            href="/familie-og-barn"
+            href="/klage-anke/familie-og-barn"
             onClick={[Function]}
           >
             <div>

@@ -130,7 +130,7 @@ export enum TemaKey {
     YRK = 'YRK'
 }
 
-const TEMA_KEYS = Object.values(TemaKey);
+export const TEMA_KEYS = Object.values(TemaKey);
 
 export const getYtelseByTema = (temaKey: TemaKey | string | null): Tema | null => {
     const ensuredTemaKey = ensureStringIsTema(temaKey);

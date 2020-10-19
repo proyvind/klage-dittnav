@@ -3,44 +3,24 @@ import React from 'react';
 import BookWithShield from '../../assets/images/icons/BookWithShield';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
 import { Margin40Container, MarginContainer, MarginTopContainer } from '../../styled-components/main-styled-components';
-import { ensureStringIsTema, Tema, TemaKey } from '../../types/tema';
+import { Tema, TemaKey } from '../../types/tema';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
 import MobilePhone from '../../assets/images/icons/MobilePhone';
-import { RouteComponentProps } from 'react-router-dom';
-import { getKategori, hasDigitalForm } from '../../data/klage-eller-anke-temaer';
-import NotFoundPage from '../../pages/not-found/not-found-page';
+import { hasDigitalForm } from '../../data/klage-eller-anke-temaer';
 import KlageLinkPanel from '../link/link';
 
-interface MatchParams {
-    kategori: string;
-    tema: string;
-}
-
-interface Props extends RouteComponentProps<MatchParams> {}
-
-const KlageEllerAnkeInnsending = (props: Props) => {
-    const kategori = getKategori(props.match.params.kategori);
-    if (kategori === null) {
-        return <NotFoundPage />;
-    }
-
-    const tema = ensureStringIsTema(props.match.params.tema);
-    if (tema === null) {
-        return <NotFoundPage />;
-    }
-
-    const isDigital = hasDigitalForm(kategori, tema);
-
-    const ytelse = Tema[tema];
+const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
+    const isDigital = hasDigitalForm(temaKey);
+    const temaTittel = Tema[temaKey];
 
     return (
         <div>
-            <Sidetittel>{ytelse}</Sidetittel>
+            <Sidetittel>{temaTittel}</Sidetittel>
             <Margin40Container>
                 <Intro isDigital />
             </Margin40Container>
-            <DigitalContent isDigital={isDigital} tema={tema} />
+            <DigitalContent isDigital={isDigital} tema={temaKey} />
             <Margin40Container>
                 <LenkepanelBase href="#" border>
                     <div className="lenkepanel-content-with-image">
