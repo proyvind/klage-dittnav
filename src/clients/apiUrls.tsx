@@ -1,4 +1,3 @@
-// const port = process.env.REACT_APP_API_PORT || 3001;
 import Environment from '../utils/environment';
 
 export const getUserDataUrl = () => `${Environment.REACT_APP_API_URL}/bruker`;

@@ -11,6 +11,4 @@ services:
             REACT_APP_URL: http://localhost:8080
             REACT_APP_LOGINSERVICE_URL: https://loginservice.dev.nav.no/login
             REACT_API_URL: https://klage-dittnav-api.dev.nav.no
-            #REACT_API_URL: http://localhost:7070
-            REACT_APP_API_PORT: 7070
             REACT_APP_MOCK_DATA: 'false'
