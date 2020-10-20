@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Vedtak } from '../../types/vedtak';
 import BegrunnelsePage from '../begrunnelse/begrunnelse-page';
 import { formSteps } from '../../utils/routes.config';
 import { MarginContainer } from '../../styled-components/main-styled-components';
@@ -9,8 +8,6 @@ import { useHistory } from 'react-router-dom';
 
 interface Props {
     path: string;
-    chosenVedtak?: Vedtak;
-    ytelse: string;
 }
 
 const MainFormPage = (props: Props) => {
@@ -44,14 +41,7 @@ const MainFormPage = (props: Props) => {
                 <Steps activeRoutes={activeRoutes} activeStep={activeStep} chooseStep={chooseStep} />
             </MarginContainer>
             <MarginContainer>
-                {activeRoute.label === 'Begrunnelse' && (
-                    <BegrunnelsePage
-                        ytelse={props.ytelse}
-                        chosenVedtak={props.chosenVedtak}
-                        next={() => next()}
-                        previous={() => previous()}
-                    />
-                )}
+                {activeRoute.label === 'Begrunnelse' && <BegrunnelsePage next={() => next()} />}
                 {activeRoute.label === 'Oppsummering' && <OppsummeringSkjemaPage previous={previous} />}
             </MarginContainer>
         </>
