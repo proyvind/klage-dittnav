@@ -1,7 +1,6 @@
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
 import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
-import DummyRedirectPage from '../pages/dummy-redirect/dummy-redirect-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import { JSXElementConstructor } from 'react';
@@ -47,11 +46,6 @@ export const routesPages: RouteType[] = [
     {
         path: `/`,
         component: KlageEllerAnkeTema,
-        exact: true
-    },
-    {
-        path: `/redirect`,
-        component: DummyRedirectPage,
         exact: true
     },
     {
