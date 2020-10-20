@@ -37,7 +37,7 @@ const KlageEllerAnkeTema = () => (
 
 const getLinks = () =>
     KLAGE_ELLER_ANKE_TEMAER.map(tema => (
-        <KlageLinkPanel key={tema.tittel} href={`/klage-anke/${tema.path}`} className="lenkepanel-flex" border>
+        <KlageLinkPanel key={tema.tittel} href={`/${tema.path}`} className="lenkepanel-flex" border>
             <div>
                 <Undertittel className="lenkepanel__heading">{tema.tittel}</Undertittel>
                 <Normaltekst>{tema.beskrivelse}</Normaltekst>

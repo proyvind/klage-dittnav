@@ -1,22 +1,17 @@
 import React from 'react';
 import { Redirect, useLocation } from 'react-router';
 import queryString from 'query-string';
-import { ensureStringIsTema, TemaKey } from '../../types/tema';
+import { ensureStringIsTema } from '../../types/tema';
+import KlageEllerAnkeTema from '../../components/klage-eller-anke/klage-eller-anke-tema';
 
-const RootOnlyTema = () => {
+const TemaFromQueryOrFrontpage = () => {
     const location = useLocation();
     const temaKey = getTemaKey(location.search);
-    const redirectPath = getRedirectPath(temaKey);
-    return <Redirect to={redirectPath} />;
-};
-
-export function getRedirectPath(temaKey: TemaKey | null) {
     if (temaKey === null) {
-        return '/klage-anke';
+        return <KlageEllerAnkeTema />;
     }
-
-    return `/klage-anke/${temaKey}`;
-}
+    return <Redirect to={`/${temaKey}`} />;
+};
 
 export function getTemaKey(search: string) {
     const { tema } = queryString.parse(search);
@@ -26,4 +21,4 @@ export function getTemaKey(search: string) {
     return null;
 }
 
-export default RootOnlyTema;
+export default TemaFromQueryOrFrontpage;
