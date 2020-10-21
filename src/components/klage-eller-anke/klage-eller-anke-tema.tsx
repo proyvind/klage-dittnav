@@ -1,6 +1,6 @@
 import React from 'react';
 import { Systemtittel, Normaltekst, Sidetittel, Undertittel } from 'nav-frontend-typografi';
-import { KLAGE_ELLER_ANKE_TEMAER } from '../../data/klage-eller-anke-temaer';
+import { INNGANG_KATEGORIER } from '../../data/kategorier';
 import {
     Margin40Container,
     Margin40TopContainer,
@@ -36,10 +36,10 @@ const KlageEllerAnkeTema = () => (
 );
 
 const getLinks = () =>
-    KLAGE_ELLER_ANKE_TEMAER.map(tema => (
-        <KlageLinkPanel key={tema.tittel} href={`/${tema.path}`} className="lenkepanel-flex" border>
+    INNGANG_KATEGORIER.map(tema => (
+        <KlageLinkPanel key={tema.title} href={`/${tema.path}`} className="lenkepanel-flex" border>
             <div>
-                <Undertittel className="lenkepanel__heading">{tema.tittel}</Undertittel>
+                <Undertittel className="lenkepanel__heading">{tema.title}</Undertittel>
                 <Normaltekst>{tema.beskrivelse}</Normaltekst>
             </div>
         </KlageLinkPanel>

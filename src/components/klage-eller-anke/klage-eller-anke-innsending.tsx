@@ -7,20 +7,17 @@ import { Tema, TemaKey } from '../../types/tema';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
 import MobilePhone from '../../assets/images/icons/MobilePhone';
-import { hasDigitalForm } from '../../data/klage-eller-anke-temaer';
 import KlageLinkPanel from '../link/link';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
 
-const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
-    const isDigital = hasDigitalForm(temaKey);
-    const temaTittel = Tema[temaKey];
+const KlageEllerAnkeInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDigital: boolean = false) => {
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
         <div>
-            <Sidetittel>{temaTittel}</Sidetittel>
+            <Sidetittel>{title}</Sidetittel>
             <Margin40Container>{getIntro(isDigital)}</Margin40Container>
             <DigitalContent isDigital={isDigital} tema={temaKey} />
             <Margin40Container>

@@ -7,7 +7,7 @@ import KlageEllerAnkeYtelse from '../components/klage-eller-anke/klage-eller-ank
 import KlageEllerAnkeInnsending from '../components/klage-eller-anke/klage-eller-anke-innsending';
 import { TEMA_KEYS } from '../types/tema';
 import { RouteProps } from 'react-router';
-import { KLAGE_ELLER_ANKE_TEMAER } from '../data/klage-eller-anke-temaer';
+import { INNGANG_KATEGORIER } from '../data/kategorier';
 import RootWithQuery from '../pages/root-with-query/root-with-query';
 
 export interface FormStep extends RouteProps {
@@ -55,15 +55,15 @@ export const routesPages: RouteProps[] = [
         render: () => KlageEllerAnkeInnsending(temaKey),
         exact: true
     })),
-    ...KLAGE_ELLER_ANKE_TEMAER.map<RouteProps>(kategori => ({
+    ...INNGANG_KATEGORIER.map<RouteProps>(kategori => ({
         path: `/${kategori.path}`,
         render: () => KlageEllerAnkeYtelse(kategori),
         exact: true
     })),
-    ...KLAGE_ELLER_ANKE_TEMAER.flatMap<RouteProps>(kategori =>
-        kategori.underkategorier.map<RouteProps>(tema => ({
+    ...INNGANG_KATEGORIER.flatMap<RouteProps>(kategori =>
+        kategori.kategorier.map<RouteProps>(tema => ({
             path: `/${kategori.path}/${tema.tema}`,
-            render: () => KlageEllerAnkeInnsending(tema.tema),
+            render: () => KlageEllerAnkeInnsending(tema.tema, tema.title, tema.digital),
             exact: true
         }))
     ),
