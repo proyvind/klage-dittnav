@@ -11,6 +11,7 @@ import { hasDigitalForm } from '../../data/klage-eller-anke-temaer';
 import KlageLinkPanel from '../link/link';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
+import { getUrlToPaperForm } from '../../types/ytelse';
 
 const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
     const isDigital = hasDigitalForm(temaKey);
@@ -23,7 +24,7 @@ const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
             <Margin40Container>{getIntro(isDigital)}</Margin40Container>
             <DigitalContent isDigital={isDigital} tema={temaKey} />
             <Margin40Container>
-                <LenkepanelBase href="#" border>
+                <LenkepanelBase href={paperUrl} border>
                     <div className="lenkepanel-content-with-image">
                         <div className="icon-container">
                             <LetterOpened />
@@ -38,7 +39,7 @@ const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
                         </div>
                     </div>
                 </LenkepanelBase>
-                <LenkepanelBase href="#" border>
+                <LenkepanelBase href={paperUrl} border>
                     <div className="lenkepanel-content-with-image">
                         <div className="icon-container">
                             <BookWithShield />
