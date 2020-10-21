@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { ensureStringIsTema } from '../../types/tema';
-import KlageEllerAnkeTema from '../../components/klage-eller-anke/klage-eller-anke-tema';
+import KlageEllerAnkeTema from '../../components/inngang/inngang-hovedkategorier';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
