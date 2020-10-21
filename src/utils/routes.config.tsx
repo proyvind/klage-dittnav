@@ -4,11 +4,12 @@ import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummeri
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import InngangKategorier from '../components/inngang/inngang-kategorier';
-import InngangInnsending from '../components/inngang/inngang-innsendingsvalg';
+import InngangInnsendingDigital from '../components/inngang/inngang-innsendingsvalg-digital';
 import { TEMA_KEYS } from '../types/tema';
 import { RouteProps } from 'react-router';
-import { INNGANG_KATEGORIER } from '../data/kategorier';
+import { INNGANG_KATEGORIER, Kategori } from '../data/kategorier';
 import RootWithQuery from '../pages/root-with-query/root-with-query';
+import InngangInnsendingPost from '../components/inngang/inngang-innsendingsvalg-post';
 
 export interface FormStep extends RouteProps {
     path: string;
@@ -52,7 +53,7 @@ export const routesPages: RouteProps[] = [
     },
     ...TEMA_KEYS.map<RouteProps>(temaKey => ({
         path: `/${temaKey}`,
-        render: () => InngangInnsending(temaKey),
+        render: () => InngangInnsendingPost(temaKey),
         exact: true
     })),
     ...INNGANG_KATEGORIER.map<RouteProps>(kategori => ({
@@ -63,7 +64,7 @@ export const routesPages: RouteProps[] = [
     ...INNGANG_KATEGORIER.flatMap<RouteProps>(kategori =>
         kategori.kategorier.map<RouteProps>(tema => ({
             path: `/${kategori.path}/${tema.tema}`,
-            render: () => InngangInnsending(tema.tema, tema.title, tema.digital),
+            render: () => getInngangInnsendingComponent(tema),
             exact: true
         }))
     ),
@@ -78,5 +79,12 @@ export const routesPages: RouteProps[] = [
         exact: true
     }
 ];
+
+function getInngangInnsendingComponent({ digital, title, tema }: Kategori) {
+    if (digital) {
+        return InngangInnsendingDigital(tema, title);
+    }
+    return InngangInnsendingPost(tema, title);
+}
 
 export const routesConfig = routesPages;

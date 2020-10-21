@@ -12,14 +12,20 @@ import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
 
-const InngangInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDigital: boolean = false) => {
+const InngangInnsendingDigital = (temaKey: TemaKey, title: string = Tema[temaKey]) => {
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
         <div>
             <Sidetittel>{title}</Sidetittel>
-            <Margin40Container>{getIntro(isDigital)}</Margin40Container>
-            <DigitalContent isDigital={isDigital} tema={temaKey} />
+            <Margin40Container>
+                <Normaltekst>
+                    For å fylle ut og sende inn en klage må du logge inn med elektronisk ID. Hvis du skal sende en anke
+                    eller du skal søke på vegne av andre må du fylle inn personopplysninger manuelt og sende skjema i
+                    posten.
+                </Normaltekst>
+            </Margin40Container>
+            <DigitalContent temaKey={temaKey} />
             <Margin40Container>
                 <LenkepanelBase href={paperUrl} border>
                     <div className="lenkepanel-content-with-image">
@@ -27,10 +33,10 @@ const InngangInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDi
                             <LetterOpened />
                         </div>
                         <div>
-                            <Systemtittel className="lenkepanel__heading">Klage på vegne av andre</Systemtittel>
+                            <Systemtittel className="lenkepanel__heading">Klage via post</Systemtittel>
                             <MarginTopContainer>
                                 <Normaltekst>
-                                    For å klage på vegne av andre fyller du ut et skjema som sendes via post.
+                                    Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av andre.
                                 </Normaltekst>
                             </MarginTopContainer>
                         </div>
@@ -69,16 +75,11 @@ const InngangInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDi
 };
 
 interface DigitalContentProps {
-    isDigital: boolean;
-    tema: TemaKey;
+    temaKey: TemaKey;
 }
 
-const DigitalContent = ({ isDigital, tema }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey: tema }: DigitalContentProps) => {
     const { search } = useLocation();
-    if (!isDigital) {
-        return null;
-    }
-
     const query = queryString.parse(search);
     const saksnummer = getQueryValue(query.saksnummer);
     const href = saksnummer === null ? `/klage?tema=${tema}` : `/klage?tema=${tema}&saksnummer=${saksnummer}`;
@@ -112,26 +113,4 @@ function getQueryValue(queryValue: string | string[] | null | undefined) {
     return null;
 }
 
-const getIntro = (isDigital: boolean) => (isDigital ? <IntroDigital /> : <IntroPost />);
-
-const IntroDigital = () => (
-    <Normaltekst>
-        For å fylle ut og sende inn en klage må du logge inn med elektronisk ID. Hvis du skal sende en anke eller du
-        skal søke på vegne av andre må du fylle inn personopplysninger manuelt og sende skjema i posten.
-    </Normaltekst>
-);
-
-const IntroPost = () => (
-    <div>
-        <Systemtittel>Innsending via post</Systemtittel>
-        <MarginTopContainer>
-            <Normaltekst>
-                Klage eller anke på denne tjenesten krever at du må du sende inn via post. Veiviseren hjelper deg med
-                utfylling av en førsteside og klageskjema. Dette må du skrive ut ut og sende inn til den adressen som
-                står på førstesiden, sammen med kopi av eventuelle andre dokumenter eller kvitteringer.
-            </Normaltekst>
-        </MarginTopContainer>
-    </div>
-);
-
-export default InngangInnsending;
+export default InngangInnsendingDigital;
