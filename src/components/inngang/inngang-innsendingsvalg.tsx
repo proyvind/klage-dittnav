@@ -12,7 +12,7 @@ import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
 
-const KlageEllerAnkeInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDigital: boolean = false) => {
+const InngangInnsending = (temaKey: TemaKey, title: string = Tema[temaKey], isDigital: boolean = false) => {
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
@@ -134,4 +134,4 @@ const IntroPost = () => (
     </div>
 );
 
-export default KlageEllerAnkeInnsending;
+export default InngangInnsending;

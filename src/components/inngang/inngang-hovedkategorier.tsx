@@ -10,7 +10,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederIcon from '../../assets/Veileder.svg';
 import KlageLinkPanel from '../link/link';
 
-const KlageEllerAnkeTema = () => (
+const InngangHovedkategorier = () => (
     <section>
         <div>
             <Margin40TopContainer>
@@ -45,4 +45,4 @@ const getLinks = () =>
         </KlageLinkPanel>
     ));
 
-export default KlageEllerAnkeTema;
+export default InngangHovedkategorier;

@@ -3,8 +3,8 @@ import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
-import KlageEllerAnkeYtelse from '../components/inngang/inngang-kategorier';
-import KlageEllerAnkeInnsending from '../components/inngang/inngang-innsendingsvalg';
+import InngangKategorier from '../components/inngang/inngang-kategorier';
+import InngangInnsending from '../components/inngang/inngang-innsendingsvalg';
 import { TEMA_KEYS } from '../types/tema';
 import { RouteProps } from 'react-router';
 import { INNGANG_KATEGORIER } from '../data/kategorier';
@@ -52,18 +52,18 @@ export const routesPages: RouteProps[] = [
     },
     ...TEMA_KEYS.map<RouteProps>(temaKey => ({
         path: `/${temaKey}`,
-        render: () => KlageEllerAnkeInnsending(temaKey),
+        render: () => InngangInnsending(temaKey),
         exact: true
     })),
     ...INNGANG_KATEGORIER.map<RouteProps>(kategori => ({
         path: `/${kategori.path}`,
-        render: () => KlageEllerAnkeYtelse(kategori),
+        render: () => InngangKategorier(kategori),
         exact: true
     })),
     ...INNGANG_KATEGORIER.flatMap<RouteProps>(kategori =>
         kategori.kategorier.map<RouteProps>(tema => ({
             path: `/${kategori.path}/${tema.tema}`,
-            render: () => KlageEllerAnkeInnsending(tema.tema, tema.title, tema.digital),
+            render: () => InngangInnsending(tema.tema, tema.title, tema.digital),
             exact: true
         }))
     ),

@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import KlageLinkPanel from '../link/link';
 
-const KlageEllerAnkeYtelse = (kategori: InngangKategori) => (
+const InngangKategorier = (kategori: InngangKategori) => (
     <section>
         <div>
             <Margin40TopContainer>
@@ -31,4 +31,4 @@ const getLinks = (kategori: string, underkategorier: Kategori[]) =>
         </KlageLinkPanel>
     ));
 
-export default KlageEllerAnkeYtelse;
+export default InngangKategorier;

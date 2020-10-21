@@ -2,14 +2,14 @@ import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { ensureStringIsTema } from '../../types/tema';
-import KlageEllerAnkeTema from '../../components/inngang/inngang-hovedkategorier';
+import InngangHovedkategorier from '../../components/inngang/inngang-hovedkategorier';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
     const query = queryString.parse(search);
     const temaKey = ensureStringIsTema(getQueryValue(query.tema));
     if (temaKey === null) {
-        return <KlageEllerAnkeTema />;
+        return <InngangHovedkategorier />;
     }
     const saksnummer = getQueryValue(query.saksnummer);
     if (saksnummer === null) {
