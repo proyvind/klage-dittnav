@@ -5,10 +5,10 @@ import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import KlageEllerAnkeYtelse from '../components/klage-eller-anke/klage-eller-anke-ytelse';
 import KlageEllerAnkeInnsending from '../components/klage-eller-anke/klage-eller-anke-innsending';
-import TemaFromQueryOrFrontpage from '../pages/root-only-tema/root-only-tema';
 import { TEMA_KEYS } from '../types/tema';
 import { RouteProps } from 'react-router';
 import { KLAGE_ELLER_ANKE_TEMAER } from '../data/klage-eller-anke-temaer';
+import RootWithQuery from '../pages/root-with-query/root-with-query';
 
 export interface FormStep extends RouteProps {
     path: string;
@@ -69,7 +69,7 @@ export const routesPages: RouteProps[] = [
     ),
     {
         path: `/`,
-        component: TemaFromQueryOrFrontpage,
+        component: RootWithQuery,
         exact: true
     },
     {

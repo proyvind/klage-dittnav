@@ -9,17 +9,18 @@ import Lenke from 'nav-frontend-lenker';
 import MobilePhone from '../../assets/images/icons/MobilePhone';
 import { hasDigitalForm } from '../../data/klage-eller-anke-temaer';
 import KlageLinkPanel from '../link/link';
+import { useLocation } from 'react-router';
+import queryString from 'query-string';
 
 const KlageEllerAnkeInnsending = (temaKey: TemaKey) => {
     const isDigital = hasDigitalForm(temaKey);
     const temaTittel = Tema[temaKey];
+    const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
         <div>
             <Sidetittel>{temaTittel}</Sidetittel>
-            <Margin40Container>
-                <Intro isDigital />
-            </Margin40Container>
+            <Margin40Container>{getIntro(isDigital)}</Margin40Container>
             <DigitalContent isDigital={isDigital} tema={temaKey} />
             <Margin40Container>
                 <LenkepanelBase href="#" border>
@@ -74,13 +75,19 @@ interface DigitalContentProps {
     tema: TemaKey;
 }
 
-const DigitalContent = (props: DigitalContentProps) => {
-    if (!props.isDigital) {
+const DigitalContent = ({ isDigital, tema }: DigitalContentProps) => {
+    const { search } = useLocation();
+    if (!isDigital) {
         return null;
     }
+
+    const query = queryString.parse(search);
+    const saksnummer = getQueryValue(query.saksnummer);
+    const href = saksnummer === null ? `/klage?tema=${tema}` : `/klage?tema=${tema}&saksnummer=${saksnummer}`;
+
     return (
         <MarginContainer>
-            <KlageLinkPanel href={'/klage?tema=' + props.tema} border>
+            <KlageLinkPanel href={href} border>
                 <div className="lenkepanel-content-with-image">
                     <div className="icon-container">
                         <MobilePhone />
@@ -100,11 +107,14 @@ const DigitalContent = (props: DigitalContentProps) => {
     );
 };
 
-interface IntroProps {
-    isDigital: boolean;
+function getQueryValue(queryValue: string | string[] | null | undefined) {
+    if (typeof queryValue === 'string' && queryValue.length !== 0) {
+        return queryValue;
+    }
+    return null;
 }
 
-const Intro = ({ isDigital }: IntroProps) => (isDigital ? <IntroDigital /> : <IntroPost />);
+const getIntro = (isDigital: boolean) => (isDigital ? <IntroDigital /> : <IntroPost />);
 
 const IntroDigital = () => (
     <Normaltekst>

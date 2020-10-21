@@ -21,7 +21,7 @@ import { DatoValg } from '../begrunnelse/datoValg';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from '../../styled-components/main-styled-components';
 import NotFoundPage from '../../pages/not-found/not-found-page';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 const FormLanding = () => {
     const location = useLocation();
