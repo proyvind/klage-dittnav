@@ -21,15 +21,11 @@ import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { DatoValg, datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Vedtak } from '../../types/vedtak';
 import { logError } from '../../utils/logger/frontendLogger';
 import { KlageSkjema } from '../../types/klage';
 
 interface Props {
-    ytelse: string;
-    chosenVedtak?: Vedtak;
     next: () => void;
-    previous: () => void;
 }
 
 const Begrunnelse = (props: Props) => {
