@@ -38,45 +38,36 @@ export const formSteps: FormStep[] = [
 export const routesPages: RouteProps[] = [
     {
         path: `/kvittering`,
-        component: KvitteringPage,
-        exact: true
+        component: KvitteringPage
     },
     {
         path: `/klage`,
-        component: FormLandingPage,
-        exact: true
+        component: FormLandingPage
     },
     {
         path: `/oppsummering`,
-        component: FormLandingPage,
-        exact: true
+        component: FormLandingPage
     },
     ...TEMA_KEYS.map<RouteProps>(temaKey => ({
         path: `/${temaKey}`,
-        render: () => InngangInnsendingPost(temaKey),
-        exact: true
+        render: () => InngangInnsendingPost(temaKey)
     })),
     ...INNGANG_KATEGORIER.map<RouteProps>(inngangkategori => ({
         path: `/${inngangkategori.path}`,
-        render: () => InngangKategorier(inngangkategori),
-        exact: true
+        render: () => InngangKategorier(inngangkategori)
     })),
     ...INNGANG_KATEGORIER.flatMap<RouteProps>(inngangkategori =>
         inngangkategori.kategorier.map<RouteProps>(kategori => ({
             path: `/${inngangkategori.path}/${kategori.path}`,
-            render: () => getInngangInnsendingComponent(kategori),
-            exact: true
+            render: () => getInngangInnsendingComponent(kategori)
         }))
     ),
     {
         path: `/`,
-        component: RootWithQuery,
-        exact: true
+        component: RootWithQuery
     },
     {
-        path: `*`,
-        component: NotFoundPage,
-        exact: true
+        component: NotFoundPage
     }
 ];
 
