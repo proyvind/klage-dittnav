@@ -1,6 +1,6 @@
 import { Sidetittel, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import React from 'react';
-import { InngangKategori, Kategori } from '../../data/kategorier';
+import { InngangKategori } from '../../data/kategorier';
 import {
     Margin40Container,
     Margin40TopContainer,
@@ -8,25 +8,25 @@ import {
 } from '../../styled-components/main-styled-components';
 import KlageLinkPanel from '../link/link';
 
-const InngangKategorier = (kategori: InngangKategori) => (
+const InngangKategorier = (inngangkategori: InngangKategori) => (
     <section>
         <div>
             <Margin40TopContainer>
-                <Sidetittel>{kategori.title}</Sidetittel>
+                <Sidetittel>{inngangkategori.title}</Sidetittel>
             </Margin40TopContainer>
             <Margin40Container>
                 <Systemtittel>Hvilken tjeneste eller ytelse gjelder det?</Systemtittel>
             </Margin40Container>
         </div>
-        <PointsFlexListContainer>{getLinks(kategori.path, kategori.kategorier)}</PointsFlexListContainer>
+        <PointsFlexListContainer>{getLinks(inngangkategori)}</PointsFlexListContainer>
     </section>
 );
 
-const getLinks = (kategori: string, underkategorier: Kategori[]) =>
-    underkategorier.map(tema => (
-        <KlageLinkPanel key={tema.title} href={`/${kategori}/${tema.tema}`} className="lenkepanel-flex" border>
+const getLinks = ({ kategorier, path }: InngangKategori) =>
+    kategorier.map(kategori => (
+        <KlageLinkPanel key={kategori.title} href={`/${path}/${kategori.temaKey}`} className="lenkepanel-flex" border>
             <div>
-                <Undertittel className="lenkepanel__heading">{tema.title}</Undertittel>
+                <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
             </div>
         </KlageLinkPanel>
     ));

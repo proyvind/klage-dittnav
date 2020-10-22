@@ -1,7 +1,7 @@
 import { TemaKey } from '../types/tema';
 
 export interface Kategori {
-    tema: TemaKey;
+    temaKey: TemaKey;
     title: string;
     digital: boolean;
 }
@@ -20,12 +20,12 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         beskrivelse: 'Dagpenger, AAP, egen bedrift',
         kategorier: [
             {
-                tema: TemaKey.AAP,
+                temaKey: TemaKey.AAP,
                 title: 'Arbeidsavklaringspenger (AAP)',
                 digital: false
             },
             {
-                tema: TemaKey.DAG,
+                temaKey: TemaKey.DAG,
                 title: 'Dagpenger',
                 digital: false
             }
@@ -37,7 +37,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         beskrivelse: 'Barnetrygd, foreldrepenger, pleie',
         kategorier: [
             {
-                tema: TemaKey.FOR,
+                temaKey: TemaKey.FOR,
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
                 digital: true
             }

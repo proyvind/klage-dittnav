@@ -36,11 +36,11 @@ const InngangHovedkategorier = () => (
 );
 
 const getLinks = () =>
-    INNGANG_KATEGORIER.map(tema => (
-        <KlageLinkPanel key={tema.title} href={`/${tema.path}`} className="lenkepanel-flex" border>
+    INNGANG_KATEGORIER.map(({ title, path, beskrivelse }) => (
+        <KlageLinkPanel key={title} href={`/${path}`} className="lenkepanel-flex" border>
             <div>
-                <Undertittel className="lenkepanel__heading">{tema.title}</Undertittel>
-                <Normaltekst>{tema.beskrivelse}</Normaltekst>
+                <Undertittel className="lenkepanel__heading">{title}</Undertittel>
+                <Normaltekst>{beskrivelse}</Normaltekst>
             </div>
         </KlageLinkPanel>
     ));

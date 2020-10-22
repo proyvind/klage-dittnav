@@ -56,15 +56,15 @@ export const routesPages: RouteProps[] = [
         render: () => InngangInnsendingPost(temaKey),
         exact: true
     })),
-    ...INNGANG_KATEGORIER.map<RouteProps>(kategori => ({
-        path: `/${kategori.path}`,
-        render: () => InngangKategorier(kategori),
+    ...INNGANG_KATEGORIER.map<RouteProps>(inngangkategori => ({
+        path: `/${inngangkategori.path}`,
+        render: () => InngangKategorier(inngangkategori),
         exact: true
     })),
-    ...INNGANG_KATEGORIER.flatMap<RouteProps>(kategori =>
-        kategori.kategorier.map<RouteProps>(tema => ({
-            path: `/${kategori.path}/${tema.tema}`,
-            render: () => getInngangInnsendingComponent(tema),
+    ...INNGANG_KATEGORIER.flatMap<RouteProps>(inngangkategori =>
+        inngangkategori.kategorier.map<RouteProps>(kategori => ({
+            path: `/${inngangkategori.path}/${kategori.temaKey}`,
+            render: () => getInngangInnsendingComponent(kategori),
             exact: true
         }))
     ),
@@ -80,11 +80,11 @@ export const routesPages: RouteProps[] = [
     }
 ];
 
-function getInngangInnsendingComponent({ digital, title, tema }: Kategori) {
+function getInngangInnsendingComponent({ digital, title, temaKey }: Kategori) {
     if (digital) {
-        return InngangInnsendingDigital(tema, title);
+        return InngangInnsendingDigital(temaKey, title);
     }
-    return InngangInnsendingPost(tema, title);
+    return InngangInnsendingPost(temaKey, title);
 }
 
 export const routesConfig = routesPages;
