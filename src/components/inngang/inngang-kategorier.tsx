@@ -24,7 +24,7 @@ const InngangKategorier = (inngangkategori: InngangKategori) => (
 
 const getLinks = ({ kategorier, path }: InngangKategori) =>
     kategorier.map(kategori => (
-        <KlageLinkPanel key={kategori.title} href={`/${path}/${kategori.temaKey}`} className="lenkepanel-flex" border>
+        <KlageLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} className="lenkepanel-flex" border>
             <div>
                 <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
             </div>

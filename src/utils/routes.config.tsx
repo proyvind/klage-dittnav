@@ -63,7 +63,7 @@ export const routesPages: RouteProps[] = [
     })),
     ...INNGANG_KATEGORIER.flatMap<RouteProps>(inngangkategori =>
         inngangkategori.kategorier.map<RouteProps>(kategori => ({
-            path: `/${inngangkategori.path}/${kategori.temaKey}`,
+            path: `/${inngangkategori.path}/${kategori.path}`,
             render: () => getInngangInnsendingComponent(kategori),
             exact: true
         }))

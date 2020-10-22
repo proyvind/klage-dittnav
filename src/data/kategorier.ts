@@ -4,6 +4,7 @@ export interface Kategori {
     temaKey: TemaKey;
     title: string;
     digital: boolean;
+    path: string;
 }
 
 export interface InngangKategori {
@@ -22,12 +23,14 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.AAP,
                 title: 'Arbeidsavklaringspenger (AAP)',
-                digital: false
+                digital: false,
+                path: 'arbeidsavklaringspenger'
             },
             {
                 temaKey: TemaKey.DAG,
                 title: 'Dagpenger',
-                digital: false
+                digital: false,
+                path: 'dagpenger'
             }
         ]
     },
@@ -39,7 +42,8 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.FOR,
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
-                digital: true
+                digital: true,
+                path: 'foreldrepenger-engangsstonad-svagerskapspenger'
             }
         ]
     }
