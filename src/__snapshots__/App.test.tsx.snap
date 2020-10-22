@@ -1,124 +1,109 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Welcome klage Renders correctly when there is no data 1`] = `
-Array [
+<div
+  className="sc-AxjAm iJhWxX"
+>
   <div
-    className="pageTitle__TitleContainer-sc-1jk3gv4-0 hBQdQw"
+    className="sc-fznZeY sc-fzokOt kkKxji"
   >
-    <div
-      className="sc-AxjAm sc-AxirZ jNSJve"
-    >
-      <h2
-        className="typo-undertittel"
-      >
-        Klage på vedtak
-      </h2>
-    </div>
-  </div>,
-  <div
-    className="sc-AxjAm iJhWxX"
-  >
-    <div
-      className="sc-fznZeY sc-fzokOt kkKxji"
-    >
-      <section>
-        <div>
-          <div
-            className="sc-AxgMl sc-fzozJi ycSJu"
+    <section>
+      <div>
+        <div
+          className="sc-AxgMl sc-fzozJi ycSJu"
+        >
+          <h1
+            className="typo-sidetittel"
           >
-            <h1
-              className="typo-sidetittel"
-            >
-              Klage eller anke på vedtak
-            </h1>
-          </div>
+            Klage eller anke på vedtak
+          </h1>
+        </div>
+        <div
+          className="sc-AxgMl sc-fzozJi ycSJu"
+        >
           <div
-            className="sc-AxgMl sc-fzozJi ycSJu"
+            className="nav-veilederpanel nav-veilederpanel--kompakt nav-veilederpanel--plakat"
           >
             <div
-              className="nav-veilederpanel nav-veilederpanel--kompakt nav-veilederpanel--plakat"
+              className="nav-veileder nav-veileder--flytende"
             >
               <div
-                className="nav-veileder nav-veileder--flytende"
+                className="nav-veileder__frame nav-veileder__frame--m"
               >
-                <div
-                  className="nav-veileder__frame nav-veileder__frame--m"
-                >
-                  <img
-                    alt="Veileder"
-                    src="Veileder.svg"
-                  />
-                </div>
-              </div>
-              <div
-                className="nav-veilederpanel__content"
-              >
-                <p
-                  className="typo-normal"
-                >
-                  Hvis NAV har behandlet en sak som gjelder deg og du er uenig i vedtaket, har du flere valgmuligheter for å belyse saken bedre og få en ny vurdering. Start med å velge hvilket tema saken gjelder. Du finner denne informasjonen i vedtaket som du har mottatt fra NAV.
-                </p>
+                <img
+                  alt="Veileder"
+                  src="Veileder.svg"
+                />
               </div>
             </div>
-          </div>
-          <div
-            className="sc-AxheI sc-fzoLsD ghDDDu"
-          >
-            <h2
-              className="typo-systemtittel"
+            <div
+              className="nav-veilederpanel__content"
             >
-              Hvilket tema gjelder det?
-            </h2>
+              <p
+                className="typo-normal"
+              >
+                Hvis NAV har behandlet en sak som gjelder deg og du er uenig i vedtaket, har du flere valgmuligheter for å belyse saken bedre og få en ny vurdering. Start med å velge hvilket tema saken gjelder. Du finner denne informasjonen i vedtaket som du har mottatt fra NAV.
+              </p>
+            </div>
           </div>
         </div>
         <div
-          className="sc-fzqNJr sc-fznxsB jjiZDc"
+          className="sc-AxheI sc-fzoLsD ghDDDu"
         >
-          <a
-            className="lenkepanel lenkepanel-flex lenkepanel--border"
-            href="/arbeid"
-            onClick={[Function]}
+          <h2
+            className="typo-systemtittel"
           >
-            <div>
-              <h2
-                className="typo-undertittel lenkepanel__heading"
-              >
-                Arbeid
-              </h2>
-              <p
-                className="typo-normal"
-              >
-                Dagpenger, AAP, egen bedrift
-              </p>
-            </div>
-            <span
-              className="lenkepanel__indikator"
-            />
-          </a>
-          <a
-            className="lenkepanel lenkepanel-flex lenkepanel--border"
-            href="/familie-og-barn"
-            onClick={[Function]}
-          >
-            <div>
-              <h2
-                className="typo-undertittel lenkepanel__heading"
-              >
-                Familie og barn
-              </h2>
-              <p
-                className="typo-normal"
-              >
-                Barnetrygd, foreldrepenger, pleie
-              </p>
-            </div>
-            <span
-              className="lenkepanel__indikator"
-            />
-          </a>
+            Hvilket tema gjelder det?
+          </h2>
         </div>
-      </section>
-    </div>
-  </div>,
-]
+      </div>
+      <div
+        className="sc-fzqNJr sc-fznxsB jjiZDc"
+      >
+        <a
+          className="lenkepanel lenkepanel-flex lenkepanel--border"
+          href="/arbeid"
+          onClick={[Function]}
+        >
+          <div>
+            <h2
+              className="typo-undertittel lenkepanel__heading"
+            >
+              Arbeid
+            </h2>
+            <p
+              className="typo-normal"
+            >
+              Dagpenger, AAP, egen bedrift
+            </p>
+          </div>
+          <span
+            className="lenkepanel__indikator"
+          />
+        </a>
+        <a
+          className="lenkepanel lenkepanel-flex lenkepanel--border"
+          href="/familie-og-barn"
+          onClick={[Function]}
+        >
+          <div>
+            <h2
+              className="typo-undertittel lenkepanel__heading"
+            >
+              Familie og barn
+            </h2>
+            <p
+              className="typo-normal"
+            >
+              Barnetrygd, foreldrepenger, pleie
+            </p>
+          </div>
+          <span
+            className="lenkepanel__indikator"
+          />
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
 `;
