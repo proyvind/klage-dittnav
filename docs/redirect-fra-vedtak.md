@@ -27,7 +27,7 @@ men det er ønskelig at det sendes med følgende felter:
 -   Stønad - Denne er valgfri, men for noen ytelser er det flere stønader, og da kan vi bruke denne i stedet for tema for å sette tittel på klageskjemaet, så bruker ikke risikerer å bli forvirret
 
 ```
-<URL>/klage?saksnummer=12345&tema=FOR&ytelse=engangsstønad
+<URL>/begrunnelse?saksnummer=12345&tema=FOR&ytelse=engangsstønad
 ```
 
 ## URL

@@ -10,7 +10,7 @@ export const getKlageByIdUrl = (klageId: string | number): string =>
 export const getAddKlageUrl = (): string => `${Environment.REACT_APP_API_URL}/klager`;
 
 export const getLoginserviceRedirectUrl = (params: string) =>
-    `${Environment.REACT_APP_LOGINSERVICE_URL}?redirect=${Environment.REACT_APP_URL}/klage${params}`;
+    `${Environment.REACT_APP_LOGINSERVICE_URL}?redirect=${Environment.REACT_APP_URL}/begrunnelse${params}`;
 
 export const getVedleggUrl = (klageId: string | number, vedleggId: string) =>
     `${Environment.REACT_APP_API_URL}/klager/${klageId}/vedlegg/${vedleggId}`;

@@ -82,7 +82,8 @@ const DigitalContent = ({ temaKey: tema }: DigitalContentProps) => {
     const { search } = useLocation();
     const query = queryString.parse(search);
     const saksnummer = getQueryValue(query.saksnummer);
-    const href = saksnummer === null ? `/klage?tema=${tema}` : `/klage?tema=${tema}&saksnummer=${saksnummer}`;
+    const href =
+        saksnummer === null ? `/begrunnelse?tema=${tema}` : `/begrunnelse?tema=${tema}&saksnummer=${saksnummer}`;
 
     return (
         <MarginContainer>

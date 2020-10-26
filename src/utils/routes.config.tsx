@@ -21,7 +21,7 @@ export interface FormStep extends RouteProps {
 export const formSteps: FormStep[] = [
     {
         step: 0,
-        path: `/klage`,
+        path: `/begrunnelse`,
         component: BegrunnelsePage,
         label: 'Begrunnelse',
         exact: true
@@ -45,7 +45,7 @@ export const routesPages: Route[] = [
         component: KvitteringPage
     },
     {
-        path: `/klage`,
+        path: `/begrunnelse`,
         component: FormLandingPage
     },
     {

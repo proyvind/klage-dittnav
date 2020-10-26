@@ -5,7 +5,7 @@ describe('Resume klage', () => {
     it('Should NOT get values from an empty query and sessionStorage', () => {
         const mockSessionStorage = new MockSessionStorage();
         const queryString = '';
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: null,
@@ -19,7 +19,7 @@ describe('Resume klage', () => {
         const mockSessionStorage = new MockSessionStorage();
         const expectedKlageId = '123';
         const queryString = `?klageid=${expectedKlageId}&tema=FOR&ytelse=test`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: expectedKlageId,
@@ -39,7 +39,7 @@ describe('Resume klage', () => {
             [StorageKey.TEMA]: expectedTema
         });
         const queryString = `?tema=${expectedTema}&ytelse=${expectedYtelse}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: expectedKlageId,
@@ -61,7 +61,7 @@ describe('Resume klage', () => {
             [StorageKey.SAKSNUMMER]: expectedSaksnummer
         });
         const queryString = `?tema=${expectedTema}&ytelse=${expectedYtelse}&saksnummer=${expectedSaksnummer}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: expectedKlageId,
@@ -81,7 +81,7 @@ describe('Resume klage', () => {
             [StorageKey.TEMA]: expectedTema
         });
         const queryString = `?tema=${expectedTema}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: expectedKlageId,
@@ -101,7 +101,7 @@ describe('Resume klage', () => {
             [StorageKey.SAKSNUMMER]: ''
         });
         const queryString = `?tema=${expectedTema}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: null,
@@ -118,7 +118,7 @@ describe('Resume klage', () => {
             [StorageKey.SAKSNUMMER]: 'saksnummer'
         });
         const queryString = ``;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: null,
@@ -140,7 +140,7 @@ describe('Resume klage', () => {
             [StorageKey.SAKSNUMMER]: expectedSaksnummer + 'mismatched_and_ignored'
         });
         const queryString = `?tema=${expectedTema}&ytelse=${expectedYtelse}&saksnummer=${expectedSaksnummer}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: null,
@@ -160,7 +160,7 @@ describe('Resume klage', () => {
             [StorageKey.TEMA]: expectedTema
         });
         const queryString = `?tema=${expectedTema}`;
-        const pathName = '/klage';
+        const pathName = '/begrunnelse';
         const resumeState = getResumeState(queryString, mockSessionStorage, pathName);
         expect(resumeState).toStrictEqual({
             klageId: null,
