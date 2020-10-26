@@ -9,8 +9,8 @@ const App = () => (
     <Router>
         <Layout>
             <Switch>
-                {routesConfig.map((route, index) => {
-                    return <Route key={index} {...route} exact />;
+                {routesConfig.map(route => {
+                    return <Route key={route.path} {...route} exact />;
                 })}
             </Switch>
         </Layout>

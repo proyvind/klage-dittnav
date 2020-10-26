@@ -35,7 +35,11 @@ export const formSteps: FormStep[] = [
     }
 ];
 
-export const routesPages: RouteProps[] = [
+interface Route extends RouteProps {
+    path: string;
+}
+
+export const routesPages: Route[] = [
     {
         path: `/kvittering`,
         component: KvitteringPage
@@ -48,16 +52,16 @@ export const routesPages: RouteProps[] = [
         path: `/oppsummering`,
         component: FormLandingPage
     },
-    ...TEMA_KEYS.map<RouteProps>(temaKey => ({
+    ...TEMA_KEYS.map<Route>(temaKey => ({
         path: `/${temaKey}`,
         render: () => InngangInnsendingPost(temaKey)
     })),
-    ...INNGANG_KATEGORIER.map<RouteProps>(inngangkategori => ({
+    ...INNGANG_KATEGORIER.map<Route>(inngangkategori => ({
         path: `/${inngangkategori.path}`,
         render: () => InngangKategorier(inngangkategori)
     })),
-    ...INNGANG_KATEGORIER.flatMap<RouteProps>(inngangkategori =>
-        inngangkategori.kategorier.map<RouteProps>(kategori => ({
+    ...INNGANG_KATEGORIER.flatMap<Route>(inngangkategori =>
+        inngangkategori.kategorier.map<Route>(kategori => ({
             path: `/${inngangkategori.path}/${kategori.path}`,
             render: () => getInngangInnsendingComponent(kategori)
         }))
@@ -67,6 +71,7 @@ export const routesPages: RouteProps[] = [
         component: RootWithQuery
     },
     {
+        path: '',
         component: NotFoundPage
     }
 ];
