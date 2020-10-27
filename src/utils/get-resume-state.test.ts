@@ -215,7 +215,11 @@ class MockSessionStorage implements Storage {
     }
 
     public key(index: number): string | null {
-        return this.values.keys[index];
+        if (index < 0 || index >= this.length) {
+            return null;
+        }
+        const keys = Array.from(this.values.keys());
+        return keys[index];
     }
 
     public clear() {
