@@ -11,7 +11,7 @@ import {
 } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import { logError, logInfo } from '../../utils/logger/frontendLogger';
-import MainFormPage from '../../pages/form-landing-page/main-form-page';
+import MainFormPage from '../../pages/main-form-page/main-form-page';
 import Error from '../../components/error/error';
 import { AxiosError } from 'axios';
 import { getReferrer, getTemaObject } from '../../services/klageService';

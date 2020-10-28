@@ -1,5 +1,4 @@
 import BegrunnelsePage from '../pages/begrunnelse/begrunnelse-page';
-import FormLandingPage from '../pages/form-landing-page/form-landing-page';
 import OppsummeringSkjemaPage from '../pages/oppsummering-skjema-page/oppsummering-skjema-page';
 import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
@@ -10,6 +9,7 @@ import { RouteProps } from 'react-router';
 import { INNGANG_KATEGORIER, Kategori } from '../data/kategorier';
 import RootWithQuery from '../pages/root-with-query/root-with-query';
 import InngangInnsendingPost from '../components/inngang/inngang-innsendingsvalg-post';
+import FormLanding from '../components/form-landing/form-landing';
 
 export interface FormStep extends RouteProps {
     path: string;
@@ -46,11 +46,11 @@ export const routesPages: Route[] = [
     },
     {
         path: `/begrunnelse`,
-        component: FormLandingPage
+        component: FormLanding
     },
     {
         path: `/oppsummering`,
-        component: FormLandingPage
+        component: FormLanding
     },
     ...TEMA_KEYS.map<Route>(temaKey => ({
         path: `/${temaKey}`,
