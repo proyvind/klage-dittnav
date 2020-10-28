@@ -100,7 +100,7 @@ const DigitalContent = ({ temaKey, saksnummer }: DigitalContentProps) => {
                         <MobilePhone />
                     </div>
                     <div>
-                        <Systemtittel className="lenkepanel__heading">Innsending av klage</Systemtittel>
+                        <Systemtittel className="lenkepanel__heading">Klage digitalt</Systemtittel>
                         <MarginTopContainer>
                             <Normaltekst>For å sende inn digitalt må du logge inn med elektronisk ID.</Normaltekst>
                         </MarginTopContainer>
