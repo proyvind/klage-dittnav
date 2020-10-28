@@ -12,7 +12,11 @@ import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
 
-const InngangInnsendingDigital = (temaKey: TemaKey, title: string = Tema[temaKey]) => {
+const InngangInnsendingDigital = (
+    temaKey: TemaKey,
+    title: string = Tema[temaKey],
+    saksnummer: string | null = null
+) => {
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
@@ -25,7 +29,7 @@ const InngangInnsendingDigital = (temaKey: TemaKey, title: string = Tema[temaKey
                     posten.
                 </Normaltekst>
             </Margin40Container>
-            <DigitalContent temaKey={temaKey} />
+            <DigitalContent temaKey={temaKey} saksnummer={saksnummer} />
             <Margin40Container>
                 <LenkepanelBase href={paperUrl} border>
                     <div className="lenkepanel-content-with-image">
@@ -76,14 +80,17 @@ const InngangInnsendingDigital = (temaKey: TemaKey, title: string = Tema[temaKey
 
 interface DigitalContentProps {
     temaKey: TemaKey;
+    saksnummer: string | null;
 }
 
-const DigitalContent = ({ temaKey: tema }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, saksnummer }: DigitalContentProps) => {
     const { search } = useLocation();
-    const query = queryString.parse(search);
-    const saksnummer = getQueryValue(query.saksnummer);
+    if (saksnummer === null) {
+        const query = queryString.parse(search);
+        saksnummer = getQueryValue(query.saksnummer);
+    }
     const href =
-        saksnummer === null ? `/begrunnelse?tema=${tema}` : `/begrunnelse?tema=${tema}&saksnummer=${saksnummer}`;
+        saksnummer === null ? `/begrunnelse?tema=${temaKey}` : `/begrunnelse?tema=${temaKey}&saksnummer=${saksnummer}`;
 
     return (
         <MarginContainer>

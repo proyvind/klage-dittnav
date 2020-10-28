@@ -1,8 +1,9 @@
 import React from 'react';
-import { Redirect, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import { ensureStringIsTema } from '../../types/tema';
+import { ensureStringIsTema, Tema } from '../../types/tema';
 import InngangHovedkategorier from '../../components/inngang/inngang-hovedkategorier';
+import InngangInnsendingDigital from '../../components/inngang/inngang-innsendingsvalg-digital';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
@@ -12,10 +13,7 @@ const RootWithQuery = () => {
         return <InngangHovedkategorier />;
     }
     const saksnummer = getQueryValue(query.saksnummer);
-    if (saksnummer === null) {
-        return <Redirect to={`/${temaKey}`} />;
-    }
-    return <Redirect to={`/${temaKey}?saksnummer=${saksnummer}`} />;
+    return InngangInnsendingDigital(temaKey, Tema[temaKey], saksnummer);
 };
 
 function getQueryValue(queryValue: string | string[] | null | undefined) {
