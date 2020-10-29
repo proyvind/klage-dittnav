@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import PersonligeOpplysningerSummary from '../../components/summary/personlige-opplysninger-summary';
 import VedtakSummary from '../../components/summary/vedtak-summary';
 import {
@@ -12,7 +12,7 @@ import {
 import { Normaltekst, Systemtittel, Undertittel, Undertekst } from 'nav-frontend-typografi';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import VedleggSummary from '../../components/summary/vedlegg-summary';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { finalizeKlage } from '../../services/klageService';
 import { useHistory } from 'react-router-dom';
@@ -23,7 +23,7 @@ import ExternalLink from '../../assets/images/icons/ExternalLink';
 import { ColoredLine } from '../../components/general/colored-line';
 import { logError } from '../../utils/logger/frontendLogger';
 import { toFiles } from '../../types/vedlegg';
-import { clearStorageContent } from '../../store/actions';
+import { ActionTypes, clearStorageContent } from '../../store/actions';
 
 interface Props {
     previous: () => void;
@@ -33,6 +33,7 @@ const OppsummeringSkjemaPage = (props: Props) => {
     const { activeKlage, activeKlageSkjema, activeVedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
+    const dispatch: Dispatch<ActionTypes> = useDispatch();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -53,9 +54,9 @@ const OppsummeringSkjemaPage = (props: Props) => {
         }
         finalizeKlage(activeKlage.id)
             .then(response => {
-                const finalizedDate = response.finalizedDate;
+                dispatch({ type: 'SET_FINALIZED_DATE', value: response.finalizedDate });
                 clearStorageContent();
-                history.push({ pathname: `/kvittering`, state: { finalizedDate } });
+                history.push({ pathname: '/kvittering' });
                 setIsLoading(false);
                 // TODO: Set success message
             })

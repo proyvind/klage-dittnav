@@ -51,6 +51,10 @@ export type ActionTypes =
     | {
           type: 'KLAGE_ID_SET';
           value: string;
+      }
+    | {
+          type: 'SET_FINALIZED_DATE';
+          value: string | null;
       };
 
 export function checkAuth(search: string) {

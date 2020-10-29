@@ -23,6 +23,8 @@ export interface Store {
     klageId?: string;
 
     getKlageError: boolean;
+
+    finalizedDate: string | null;
 }
 
 export const initialState: Store = {
@@ -61,7 +63,9 @@ export const initialState: Store = {
 
     activeVedlegg: [],
 
-    getKlageError: false
+    getKlageError: false,
+
+    finalizedDate: null
 };
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
@@ -132,6 +136,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 klageId: action.value
+            };
+        case 'SET_FINALIZED_DATE':
+            return {
+                ...state,
+                finalizedDate: action.value
             };
         default:
             return state;
