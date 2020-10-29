@@ -4,7 +4,6 @@ import KvitteringPage from '../pages/kvittering/kvittering-page';
 import NotFoundPage from '../pages/not-found/not-found-page';
 import InngangKategorier from '../components/inngang/inngang-kategorier';
 import InngangInnsendingDigital from '../components/inngang/inngang-innsendingsvalg-digital';
-import { TEMA_KEYS } from '../types/tema';
 import { RouteProps } from 'react-router';
 import { INNGANG_KATEGORIER, Kategori } from '../data/kategorier';
 import RootWithQuery from '../pages/root-with-query/root-with-query';
@@ -52,10 +51,6 @@ export const routesPages: Route[] = [
         path: `/oppsummering`,
         component: FormLanding
     },
-    ...TEMA_KEYS.map<Route>(temaKey => ({
-        path: `/${temaKey}`,
-        render: () => InngangInnsendingPost(temaKey)
-    })),
     ...INNGANG_KATEGORIER.map<Route>(inngangkategori => ({
         path: `/${inngangkategori.path}`,
         render: () => InngangKategorier(inngangkategori)
