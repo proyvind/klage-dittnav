@@ -88,17 +88,14 @@ const FormLanding = () => {
             setIsLoadingDraft(false);
         }
 
-        if (
-            typeof klageId !== 'undefined' &&
-            klageId !== null &&
-            klageId.length !== 0 &&
-            typeof activeKlage === 'undefined'
-        ) {
-            dispatch(getExistingKlage(klageId));
-        }
-
         setTemaNotSet(chosenTema === null);
     }, [dispatch, location.search, location.pathname, chosenTema, klageId, activeKlage]);
+
+    useEffect(() => {
+        if (typeof klageId !== 'undefined' && klageId.length !== 0 && typeof activeKlage === 'undefined') {
+            dispatch(getExistingKlage(klageId));
+        }
+    }, [dispatch, klageId, activeKlage]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
 
