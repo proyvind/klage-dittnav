@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederIcon from '../../assets/Veileder.svg';
-import KlageLinkPanel from '../link/link';
+import { KlageFlexLinkPanel } from '../link/link';
 import { PageIdentifier } from '../../utils/logger/amplitude';
 import { useLogPageView } from '../../utils/logger/use-log-page-view';
 
@@ -42,12 +42,12 @@ const InngangHovedkategorier = () => {
 
 const getLinks = () =>
     INNGANG_KATEGORIER.map(({ title, path, beskrivelse }) => (
-        <KlageLinkPanel key={title} href={`/${path}`} className="lenkepanel-flex" border>
+        <KlageFlexLinkPanel key={title} href={`/${path}`} border>
             <div>
                 <Undertittel className="lenkepanel__heading">{title}</Undertittel>
                 <Normaltekst>{beskrivelse}</Normaltekst>
             </div>
-        </KlageLinkPanel>
+        </KlageFlexLinkPanel>
     ));
 
 export default InngangHovedkategorier;

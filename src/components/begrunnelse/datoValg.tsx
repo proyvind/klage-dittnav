@@ -1,6 +1,6 @@
 import { RadioPanelProps } from 'nav-frontend-skjema';
 
-export enum DatoValg {
+export enum DateOption {
     SISTE_VEDTAK = 'sisteVedtak',
     TIDLIGERE_VEDTAK = 'tidligereVedtak',
     INGEN = ''
@@ -9,12 +9,12 @@ export enum DatoValg {
 export const datoValg: RadioPanelProps[] = [
     {
         label: 'Jeg klager på siste vedtak',
-        value: DatoValg.SISTE_VEDTAK,
-        id: DatoValg.SISTE_VEDTAK
+        value: DateOption.SISTE_VEDTAK,
+        id: DateOption.SISTE_VEDTAK
     },
     {
         label: 'Jeg klager på et tidligere vedtak',
-        value: DatoValg.TIDLIGERE_VEDTAK,
-        id: DatoValg.TIDLIGERE_VEDTAK
+        value: DateOption.TIDLIGERE_VEDTAK,
+        id: DateOption.TIDLIGERE_VEDTAK
     }
 ];

@@ -1,4 +1,3 @@
-import { isDevelopment } from '../environment';
 import { v4 as uuidv4 } from 'uuid';
 import { detect } from 'detect-browser';
 
@@ -90,7 +89,7 @@ function frontendLoggerIsInitialized(): boolean {
 }
 
 function uselogger(): boolean {
-    return !isDevelopment && frontendLoggerIsInitialized();
+    return frontendLoggerIsInitialized();
 }
 
 function emptyStringToUndefined(valuePairs: ValuePairs) {

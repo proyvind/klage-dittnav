@@ -1,7 +1,12 @@
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
-import { Margin40Container, MarginTopContainer } from '../../styled-components/main-styled-components';
+import {
+    IconContainer,
+    LenkePanelContentWithImage,
+    Margin40Container,
+    MarginTopContainer
+} from '../../styled-components/main-styled-components';
 import { Tema, TemaKey } from '../../types/tema';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
@@ -34,10 +39,10 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
             </Margin40Container>
             <Margin40Container>
                 <LenkepanelBase href={paperUrl} border>
-                    <div className="lenkepanel-content-with-image">
-                        <div className="icon-container">
+                    <LenkePanelContentWithImage>
+                        <IconContainer>
                             <LetterOpened />
-                        </div>
+                        </IconContainer>
                         <div>
                             <Systemtittel className="lenkepanel__heading">Skjema for klager</Systemtittel>
                             <MarginTopContainer>
@@ -46,7 +51,7 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
                                 </Normaltekst>
                             </MarginTopContainer>
                         </div>
-                    </div>
+                    </LenkePanelContentWithImage>
                 </LenkepanelBase>
             </Margin40Container>
 
@@ -65,4 +70,7 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
     );
 };
 
-export default InngangInnsendingPost;
+const arePropsEqual = (prevProps: Props, nextProps: Props) =>
+    prevProps.temaKey === nextProps.temaKey && prevProps.title === nextProps.title;
+
+export default React.memo(InngangInnsendingPost, arePropsEqual);

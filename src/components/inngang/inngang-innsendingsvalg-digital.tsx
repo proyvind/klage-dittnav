@@ -1,12 +1,18 @@
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
-import { Margin40Container, MarginContainer, MarginTopContainer } from '../../styled-components/main-styled-components';
+import {
+    IconContainer,
+    LenkePanelContentWithImage,
+    Margin40Container,
+    MarginContainer,
+    MarginTopContainer
+} from '../../styled-components/main-styled-components';
 import { Tema, TemaKey } from '../../types/tema';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
 import MobilePhone from '../../assets/images/icons/MobilePhone';
-import KlageLinkPanel from '../link/link';
+import { KlageLinkPanel } from '../link/link';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { getUrlToPaperForm } from '../../types/ytelse';
@@ -26,20 +32,13 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
     return (
         <div>
             <Sidetittel>{title}</Sidetittel>
-            <Margin40Container>
-                <Normaltekst>
-                    For å fylle ut og sende inn en klage må du logge inn med elektronisk ID. Hvis du skal sende en anke
-                    eller du skal søke på vegne av andre må du fylle inn personopplysninger manuelt og sende skjema i
-                    posten.
-                </Normaltekst>
-            </Margin40Container>
-            <DigitalContent temaKey={temaKey} saksnummer={saksnummer} />
+            <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
             <Margin40Container>
                 <LenkepanelBase href={paperUrl} border>
-                    <div className="lenkepanel-content-with-image">
-                        <div className="icon-container">
+                    <LenkePanelContentWithImage>
+                        <IconContainer>
                             <LetterOpened />
-                        </div>
+                        </IconContainer>
                         <div>
                             <Systemtittel className="lenkepanel__heading">Klage via post</Systemtittel>
                             <MarginTopContainer>
@@ -48,7 +47,7 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
                                 </Normaltekst>
                             </MarginTopContainer>
                         </div>
-                    </div>
+                    </LenkePanelContentWithImage>
                 </LenkepanelBase>
             </Margin40Container>
 
@@ -69,32 +68,41 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
 
 interface DigitalContentProps {
     temaKey: TemaKey;
+    title: string;
     saksnummer: string | null;
 }
 
-const DigitalContent = ({ temaKey, saksnummer }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => {
     const { search } = useLocation();
     if (saksnummer === null) {
         const query = queryString.parse(search);
         saksnummer = getQueryValue(query.saksnummer);
     }
-    const href =
-        saksnummer === null ? `/begrunnelse?tema=${temaKey}` : `/begrunnelse?tema=${temaKey}&saksnummer=${saksnummer}`;
+    const query = queryString.stringify(
+        {
+            tema: temaKey,
+            saksnummer,
+            tittel: title
+        },
+        {
+            skipNull: true
+        }
+    );
 
     return (
         <MarginContainer>
-            <KlageLinkPanel href={href} border>
-                <div className="lenkepanel-content-with-image">
-                    <div className="icon-container">
+            <KlageLinkPanel href={`/ny?${query}`} border>
+                <LenkePanelContentWithImage>
+                    <IconContainer>
                         <MobilePhone />
-                    </div>
+                    </IconContainer>
                     <div>
                         <Systemtittel className="lenkepanel__heading">Klage digitalt</Systemtittel>
                         <MarginTopContainer>
                             <Normaltekst>For å sende inn digitalt må du logge inn med elektronisk ID.</Normaltekst>
                         </MarginTopContainer>
                     </div>
-                </div>
+                </LenkePanelContentWithImage>
             </KlageLinkPanel>
             <Lenke target="_blank" rel="noopener noreferrer" href="https://www.norge.no/elektronisk-id">
                 Jeg har ikke elektronisk ID
@@ -110,4 +118,9 @@ function getQueryValue(queryValue: string | string[] | null | undefined) {
     return null;
 }
 
-export default InngangInnsendingDigital;
+const arePropsEqual = (prevProps: Props, nextProps: Props) =>
+    prevProps.temaKey === nextProps.temaKey &&
+    prevProps.saksnummer === nextProps.saksnummer &&
+    prevProps.title === nextProps.title;
+
+export default React.memo(InngangInnsendingDigital, arePropsEqual);

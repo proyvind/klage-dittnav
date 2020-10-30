@@ -1,6 +1,6 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { Bruker, Adresse, displayAddress, displayPoststed } from '../../types/bruker';
+import { User, Address, displayAddress, displayPoststed } from '../../types/user';
 import InformationPointBox from '../general/information-point-box';
 import { PointsFlexListContainer } from '../../styled-components/main-styled-components';
 import { foedselsnrFormat } from '../../utils/text-formatting';
@@ -8,34 +8,32 @@ import { foedselsnrFormat } from '../../utils/text-formatting';
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
     {
         displayName: 'For- og mellomnavn',
-        content: (person: Bruker) => <Normaltekst>{combineFirstMiddleName(person)}</Normaltekst>
+        content: (user: User) => <Normaltekst>{combineFirstMiddleName(user)}</Normaltekst>
     },
-    { displayName: 'Etternavn', content: (person: Bruker) => <Normaltekst>{person.navn.etternavn ?? ''}</Normaltekst> },
+    { displayName: 'Etternavn', content: (user: User) => <Normaltekst>{user.navn.etternavn ?? ''}</Normaltekst> },
     {
         displayName: 'Fødselsnummer',
-        content: (person: Bruker) => (
-            <Normaltekst>
-                {foedselsnrFormat(person.folkeregisteridentifikator?.identifikasjonsnummer ?? '')}
-            </Normaltekst>
+        content: (user: User) => (
+            <Normaltekst>{foedselsnrFormat(user.folkeregisteridentifikator?.identifikasjonsnummer ?? '')}</Normaltekst>
         )
     },
     {
         displayName: 'Telefonnummer',
-        content: (person: Bruker) => <Normaltekst>{person.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
+        content: (user: User) => <Normaltekst>{user.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
     },
     {
         displayName: 'Adresse',
-        content: (person: Bruker) => (person.adresse ? <AddressPointBox adress={person.adresse} /> : '')
+        content: (user: User) => (user.adresse ? <AddressPointBox adress={user.adresse} /> : '')
     }
 ];
 
-const combineFirstMiddleName = (person: Bruker): string => {
-    let name = person.navn.fornavn ?? '';
-    name += person.navn.mellomnavn ? ' ' + person.navn.mellomnavn : '';
+const combineFirstMiddleName = (user: User): string => {
+    let name = user.navn.fornavn ?? '';
+    name += user.navn.mellomnavn ? ' ' + user.navn.mellomnavn : '';
     return name;
 };
 
-const AddressPointBox = ({ adress }: { adress: Adresse }) => (
+const AddressPointBox = ({ adress }: { adress: Address }) => (
     <div>
         <Normaltekst>{displayAddress(adress)}</Normaltekst>
         <Normaltekst>{displayPoststed(adress)}</Normaltekst>
@@ -43,7 +41,7 @@ const AddressPointBox = ({ adress }: { adress: Adresse }) => (
 );
 
 interface Props {
-    person: Bruker;
+    user: User;
 }
 
 const PersonligeOpplysningerSummary = (props: Props) => {
@@ -55,7 +53,7 @@ const PersonligeOpplysningerSummary = (props: Props) => {
                         <InformationPointBox
                             key={point.displayName}
                             header={point.displayName}
-                            info={point.content(props.person)}
+                            info={point.content(props.user)}
                         />
                     );
                 })}

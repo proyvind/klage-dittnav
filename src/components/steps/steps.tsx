@@ -1,28 +1,44 @@
 import React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
-import { FormStep } from '../../utils/routes.config';
+import { StegindikatorStegProps } from 'nav-frontend-stegindikator/lib/stegindikator-steg';
+import { KlageStatus } from '../../types/klage';
 
 interface Props {
-    activeRoutes: FormStep[];
+    klageStatus: KlageStatus;
     activeStep: number;
-    chooseStep: (step: number) => void;
 }
 
-const Steps = (props: Props) => {
-    const activeRoutes = props.activeRoutes;
+const Steps = ({ klageStatus, activeStep }: Props) => {
+    const klageIsDone = klageStatus === KlageStatus.DONE;
 
-    return (
-        <Stegindikator
-            key={Math.random()}
-            steg={activeRoutes.map((route, i) => ({
-                index: i,
-                label: route.label,
-                aktiv: props.activeStep === i
-            }))}
-            autoResponsiv
-            kompakt
-        />
-    );
+    const formSteps: StegindikatorStegProps[] = [
+        {
+            index: 0,
+            label: 'Begrunnelse',
+            aktiv: true,
+            ferdig: klageIsDone,
+            disabled: klageIsDone
+        },
+        {
+            index: 1,
+            label: 'Oppsummering',
+            aktiv: true,
+            ferdig: klageIsDone,
+            disabled: false
+        },
+        {
+            index: 2,
+            label: 'Kvittering',
+            aktiv: true,
+            ferdig: false,
+            disabled: !klageIsDone
+        }
+    ];
+
+    return <Stegindikator steg={formSteps} aktivtSteg={activeStep} autoResponsiv kompakt />;
 };
 
-export default Steps;
+const propsAreEqual = (prevProps: Props, nextProps: Props): boolean =>
+    prevProps.activeStep === nextProps.activeStep && prevProps.klageStatus === nextProps.klageStatus;
+
+export default React.memo(Steps, propsAreEqual);

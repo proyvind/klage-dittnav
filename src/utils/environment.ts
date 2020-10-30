@@ -1,33 +1,80 @@
-export interface InboundEnvironment {
-    appUrl: string;
-    loginserviceUrl: string;
-    apiUrl: string;
+import { getJSON } from './fetch/fetch';
+
+interface InboundEnvironment {
+    readonly appUrl: string;
+    readonly loginserviceUrl: string;
+    readonly apiUrl: string;
 }
 
-export default class Environment {
-    static REACT_APP_URL: string;
-    static REACT_APP_API_URL: string;
-    static REACT_APP_LOGINSERVICE_URL: string;
+type KlageId = string | number;
 
-    static setEnv = (result: InboundEnvironment) => {
-        Environment.REACT_APP_URL = result.appUrl;
-        Environment.REACT_APP_LOGINSERVICE_URL = result.loginserviceUrl;
-        Environment.REACT_APP_API_URL = result.apiUrl;
-    };
+export const LOGGED_IN_PATH = '/loggedin-redirect';
+
+export class NotInitializedError extends Error {
+    constructor() {
+        super('Environment was accessed before it has been initialized.');
+    }
 }
 
-export const fetchEnv = () =>
-    fetch(`/config`, {
-        method: 'GET',
-        credentials: 'include'
-    }).then(result => result.json());
+export class Environment {
+    private initialized = false;
+    private _appUrl: string | null = null;
+    private _apiUrl: string | null = null;
+    private _loginserviceUrl: string | null = null;
 
-export const isLocalhost = Boolean(
-    window.location.hostname === 'localhost' ||
-        // [::1] is the IPv6 localhost address.
-        window.location.hostname === '[::1]' ||
-        // 127.0.0.0/8 are considered localhost for IPv4.
-        window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
-);
+    isInitialized = () => this.initialized;
 
-export const isDevelopment = Boolean(process.env.NODE_ENV !== 'production');
+    async init() {
+        if (this.initialized) {
+            return this;
+        }
+
+        const { appUrl, apiUrl, loginserviceUrl } = await getJSON<InboundEnvironment>(
+            '/config',
+            'Fant ikke konfigurasjonsendepunktet.'
+        );
+        this._apiUrl = apiUrl;
+        this._appUrl = appUrl;
+        this._loginserviceUrl = loginserviceUrl;
+        this.initialized = true;
+        return this;
+    }
+
+    get apiUrl() {
+        if (this.initialized && this._apiUrl !== null) {
+            return this._apiUrl;
+        }
+        throw new NotInitializedError();
+    }
+    get appUrl() {
+        if (this.initialized && this._appUrl !== null) {
+            return this._appUrl;
+        }
+        throw new NotInitializedError();
+    }
+    get loginServiceUrl() {
+        if (this.initialized && this._loginserviceUrl !== null) {
+            return this._loginserviceUrl;
+        }
+        throw new NotInitializedError();
+    }
+
+    get loginUrl() {
+        return `${this.loginServiceUrl}?redirect=${this.appUrl}${LOGGED_IN_PATH}`;
+    }
+    get userUrl() {
+        return `${this.apiUrl}/bruker`;
+    }
+    get klagerUrl() {
+        return `${this.apiUrl}/klager`;
+    }
+    klageUrl = (klageId: KlageId): string => `${this.klagerUrl}/${klageId}`;
+    finalizeKlageUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/finalize`;
+    klageJournalpostIdUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/journalpostid`;
+    klagePdfUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/pdf`;
+    attachmentsUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/vedlegg`;
+    attachmentUrl = (klageId: KlageId, attachmentId: string | number) =>
+        `${this.apiUrl}/klager/${klageId}/vedlegg/${attachmentId}`;
+}
+
+export const environment = new Environment();

@@ -8,7 +8,7 @@ import {
 } from '../../styled-components/main-styled-components';
 import { PageIdentifier } from '../../utils/logger/amplitude';
 import { useLogPageView } from '../../utils/logger/use-log-page-view';
-import KlageLinkPanel from '../link/link';
+import { KlageFlexLinkPanel } from '../link/link';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -33,11 +33,13 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
 
 const getLinks = ({ kategorier, path }: InngangKategori) =>
     kategorier.map(kategori => (
-        <KlageLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} className="lenkepanel-flex" border>
+        <KlageFlexLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} border>
             <div>
                 <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
             </div>
-        </KlageLinkPanel>
+        </KlageFlexLinkPanel>
     ));
 
-export default InngangKategorier;
+const arePropsEqual = (prevProps: Props, nextProps: Props) => prevProps.inngangkategori === nextProps.inngangkategori;
+
+export default React.memo(InngangKategorier, arePropsEqual);

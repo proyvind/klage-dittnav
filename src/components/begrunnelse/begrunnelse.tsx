@@ -1,62 +1,73 @@
-import React, { Dispatch, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
+import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Datovelger } from 'nav-datovelger';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
     CenteredContainer,
     FlexCenteredContainer,
+    InlineMargin48Container,
     Margin40Container,
-    Margin48Container,
     Margin48TopContainer,
     MarginContainer,
-    MarginTopContainer
+    MarginTopContainer,
+    NoMarginParagraph,
+    NoMarginUndertekst
 } from '../../styled-components/main-styled-components';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
-import { toFiles, VedleggFile, getVedleggErrorMessage } from '../../types/vedlegg';
-import VedleggVisning from './vedlegg';
-import { useDispatch, useSelector } from 'react-redux';
-import { Store } from '../../store/reducer';
-import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
-import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { DatoValg, datoValg } from './datoValg';
-import { Datovelger } from 'nav-datovelger';
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import { logError } from '../../utils/logger/frontendLogger';
-import { dateToVedtakText, UpdateKlage, parseVedtakText } from '../../types/klage';
-import { putKlage } from '../../services/klageService';
-import { AxiosError } from 'axios';
-import { ActionTypes } from '../../store/actions';
+import { getAttachmentErrorMessage, Attachment, AttachmentFile, toFiles } from '../../types/attachment';
+import AttachmentPreview from './attachment-preview';
+import { updateKlage, addAttachment, deleteAttachment } from '../../services/base-service';
+import { DateOption, datoValg } from './datoValg';
+import { dateToVedtakText, UpdateKlage, parseVedtakText, Klage, KlageStatus } from '../../types/klage';
+import { ApiError, CustomError } from '../../utils/fetch/errors';
+import { ISODateTime } from '../../utils/date';
+import { AppContext } from '../app-context/app-context';
+import styled from 'styled-components/macro';
 
-interface Props {
-    next: () => void;
+interface UploadError {
+    timestamp: ISODateTime;
+    status: number;
+    error: string;
+    message: string;
+    path: string;
 }
 
-const Begrunnelse = (props: Props) => {
-    const dispatch: Dispatch<ActionTypes> = useDispatch();
+interface Props {
+    klage: Klage;
+}
 
-    const { klage, vedlegg: activeVedlegg } = useSelector((state: Store) => state);
+const Begrunnelse = ({ klage }: Props) => {
+    const history = useHistory();
+    const { setKlage } = useContext(AppContext);
 
     const [loading, setIsLoading] = useState<boolean>(false);
 
-    const [fritekst, setFritekst] = useState<string>('');
-    const [chosenISODate, setISODate] = useState<string | null>(null);
-    const [chosenDateOption, setDateOption] = useState<DatoValg>(DatoValg.INGEN);
+    const vedtak = klage?.vedtak ?? null;
+    const klageFritekst = klage?.fritekst ?? '';
+    const klageVedlegg = klage?.vedlegg ?? [];
+
+    const { dateOption, isoDate } = useMemo(() => parseVedtakText(vedtak), [vedtak]);
+
+    const [fritekst, setFritekst] = useState<string>(klageFritekst);
+    const [chosenISODate, setISODate] = useState<string | null>(isoDate);
+    const [chosenDateOption, setDateOption] = useState<DateOption>(dateOption);
+    const [attachments, setAttachments] = useState<Attachment[]>(klageVedlegg);
 
     useEffect(() => {
-        if (klage === null) {
-            return;
+        if (klage.status !== KlageStatus.DRAFT) {
+            history.replace(`/${klage.id}/oppsummering`);
         }
-        setFritekst(klage.fritekst);
-        const { dateOption, isoDate } = parseVedtakText(klage.vedtak);
-        setDateOption(dateOption);
-        setISODate(isoDate);
-    }, [klage]);
+    }, [klage, history]);
 
-    const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
-    const [vedleggFeilmelding, setVedleggFeilmelding] = useState<string>('');
+    useEffect(() => window.scrollTo(0, 0), []);
+
+    const [error, setError] = useState<string | null>(null);
+    const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
+    const [attachmentError, setAttachmentError] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState<boolean>(false);
-
-    const INPUTDESCRIPTION =
-        'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -68,84 +79,90 @@ const Begrunnelse = (props: Props) => {
     const uploadAttachment = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
 
-        if (klage === null) {
-            return;
-        }
-
         const files = event.target.files;
         if (files === null || files.length === 0) {
             return;
         }
 
-        setVedleggLoading(true);
-        setVedleggFeilmelding('');
+        setAttachmentsLoading(true);
 
         const uploads = Array.from(files).map(async file => {
             try {
-                const vedlegg = await addVedleggToKlage(klage.id, file);
-                dispatch({
-                    type: 'VEDLEGG_ADD_SUCCESS',
-                    value: vedlegg
-                });
+                return await addAttachment(klage.id, file);
             } catch (err) {
-                logError(err);
-                setVedleggFeilmelding(err.response.data.message);
+                if (err instanceof ApiError) {
+                    const errorBody: UploadError = await err.response.json();
+                    const errorMessage = getAttachmentErrorMessage(errorBody.message);
+                    setAttachmentError(getUploadAttachmentErrorMessage(file, errorMessage));
+                } else if (err instanceof Error) {
+                    setAttachmentError(getUploadAttachmentErrorMessage(file, err.message));
+                } else {
+                    setAttachmentError(getUploadAttachmentErrorMessage(file));
+                }
+                return null;
             }
         });
 
-        Promise.all(uploads).then(() => setVedleggLoading(false));
+        await Promise.all(uploads).then(addedAttachments => {
+            const addedAttachmentList = addedAttachments.filter(notNull);
+            setAttachments(attachments.concat(addedAttachmentList));
+            setAttachmentsLoading(false);
+        });
     };
 
-    const removeAttachment = async (vedlegg: VedleggFile) => {
-        setVedleggLoading(true);
-        setVedleggFeilmelding('');
+    const deleteAttachmentHandler = async (attachmentFile: AttachmentFile) => {
+        setAttachmentsLoading(true);
         try {
-            await deleteVedlegg(vedlegg.klageId, vedlegg.id);
-            dispatch({
-                type: 'VEDLEGG_REMOVE',
-                value: vedlegg
-            });
-            setVedleggLoading(false);
+            await deleteAttachment(attachmentFile.klageId, attachmentFile.id);
+            setAttachments(attachments.filter(({ id }) => id.toString() !== attachmentFile.id));
+            setAttachmentsLoading(false);
         } catch (err) {
-            logError(err);
-            setVedleggLoading(false);
+            if (err instanceof Error) {
+                setAttachmentError(getDeleteAttachmentErrorMessage(attachmentFile, err.message));
+            } else {
+                setAttachmentError(getDeleteAttachmentErrorMessage(attachmentFile));
+            }
+            setAttachmentsLoading(false);
         }
     };
 
-    const submitBegrunnelseOgDato = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
+        id: klage.id,
+        tema: klage.tema,
+        ytelse: klage.ytelse,
+        saksnummer: klage.saksnummer,
+        fritekst,
+        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
+    });
+
+    const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-        if (klage === null) {
-            return;
-        }
+
         setSubmitted(true);
         if (!validForm()) {
             return;
         }
         setIsLoading(true);
-        const klageUpdate: UpdateKlage = {
-            id: klage.id,
-            tema: klage.tema,
-            fritekst,
-            vedtak: dateToVedtakText(chosenDateOption, chosenISODate),
-            ytelse: klage.ytelse,
-            saksnummer: klage.saksnummer
-        };
-        await putKlage(klageUpdate)
-            .then(() =>
-                dispatch({
-                    type: 'KLAGE_UPDATE',
-                    value: klageUpdate
-                })
-            )
-            .catch((err: AxiosError) => {
-                logError(err, 'Update klage failed', { klageId: klage.id });
-            })
-            .finally(() => props.next());
+
+        const klageUpdate = createKlageUpdate(klage);
+
+        setKlage({
+            ...klage,
+            ...klageUpdate,
+            vedlegg: attachments
+        });
+
+        await updateKlage(klageUpdate)
+            .then(() => history.push(`/${klage.id}/oppsummering`))
+            .catch((error: CustomError) => {
+                setError(error.message);
+                setIsLoading(false);
+            });
     };
 
     const validForm = () => validBegrunnelse() && validDatoalternativ();
-    const validBegrunnelse = () => fritekst !== null && fritekst !== '';
-    const validDatoalternativ = () => chosenDateOption !== DatoValg.INGEN;
+    const validBegrunnelse = () => fritekst.length !== 0;
+    const validDatoalternativ = () => chosenDateOption !== DateOption.INGEN;
 
     const getFeilmeldinger = () => {
         const feilmeldinger: string[] = [];
@@ -163,13 +180,9 @@ const Begrunnelse = (props: Props) => {
             {submitted && !validForm() && (
                 <MarginContainer>
                     <AlertStripeFeil>
-                        {getFeilmeldinger().map((feilmelding, index) => {
-                            return (
-                                <p className="no-margin" key={index}>
-                                    {feilmelding}
-                                </p>
-                            );
-                        })}
+                        {getFeilmeldinger().map((feilmelding, index) => (
+                            <NoMarginParagraph key={index}>{feilmelding}</NoMarginParagraph>
+                        ))}
                     </AlertStripeFeil>
                 </MarginContainer>
             )}
@@ -182,12 +195,11 @@ const Begrunnelse = (props: Props) => {
                     name="datoValg"
                     radios={datoValg}
                     checked={chosenDateOption}
-                    onChange={(_, value: DatoValg) => setDateOption(value)}
+                    onChange={(_, value: DateOption) => setDateOption(value)}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
-
-            {chosenDateOption === DatoValg.TIDLIGERE_VEDTAK && (
+            {chosenDateOption === DateOption.TIDLIGERE_VEDTAK && (
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datovelger
@@ -200,32 +212,27 @@ const Begrunnelse = (props: Props) => {
                     />
                 </MarginContainer>
             )}
-
-            <Margin48Container className="override-overlay">
+            <InlineMargin48Container>
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
                     value={fritekst}
                     description={INPUTDESCRIPTION}
                     placeholder="Skriv inn din begrunnelse her."
-                    onChange={e => setFritekst(e.target.value)}
                     maxLength={0}
-                    textareaClass="expanded-height"
+                    onChange={e => setFritekst(e.target.value)}
+                    style={{
+                        minHeight: '180px'
+                    }}
                     feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
                 />
-            </Margin48Container>
+            </InlineMargin48Container>
 
             <MarginContainer>
-                <Undertittel>Vedlegg ({activeVedlegg.length || '0'})</Undertittel>
-
-                <VedleggVisning vedlegg={toFiles(activeVedlegg)} deleteAction={vedlegg => removeAttachment(vedlegg)} />
-                {vedleggLoading && (
-                    <CenteredContainer>
-                        <NavFrontendSpinner type={'XL'} />
-                    </CenteredContainer>
-                )}
-
-                <MarginTopContainer className="override-overlay">
+                <Undertittel>Vedlegg ({attachments.length})</Undertittel>
+                <AttachmentPreview attachments={toFiles(attachments)} deleteAttachment={deleteAttachmentHandler} />
+                {showAttachmentLoader(attachmentsLoading)}
+                <InlineMarginTopContainer>
                     <Normaltekst>
                         Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
                     </Normaltekst>
@@ -235,19 +242,12 @@ const Begrunnelse = (props: Props) => {
                             ikke lastes opp på nytt.
                         </Normaltekst>
                     </MarginTopContainer>
-                </MarginTopContainer>
-
-                {vedleggFeilmelding !== '' && (
-                    <MarginContainer>
-                        <AlertStripeFeil>
-                            <p className="no-margin">{getVedleggErrorMessage(vedleggFeilmelding)}</p>
-                        </AlertStripeFeil>
-                    </MarginContainer>
-                )}
+                </InlineMarginTopContainer>
+                {getAttachmentError(attachmentError)}
             </MarginContainer>
 
             <Margin40Container>
-                <Knapp onClick={e => handleAttachmentClick(e)}>Last opp nytt vedlegg</Knapp>
+                <Knapp onClick={handleAttachmentClick}>Last opp nytt vedlegg</Knapp>
                 <input
                     type="file"
                     multiple
@@ -263,9 +263,9 @@ const Begrunnelse = (props: Props) => {
 
             <MarginContainer>
                 <AlertStripe type="info" form="inline">
-                    <Undertekst className="no-margin">
+                    <NoMarginUndertekst>
                         Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
-                    </Undertekst>
+                    </NoMarginUndertekst>
                     <Undertekst>
                         Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være
                         større enn 32 MB.
@@ -273,20 +273,79 @@ const Begrunnelse = (props: Props) => {
                 </AlertStripe>
             </MarginContainer>
 
-            <Margin48TopContainer className="override-overlay">
+            {getError(error)}
+
+            <InlineMargin48TopContainer>
                 <FlexCenteredContainer>
-                    <Hovedknapp
-                        className="row-element"
-                        onClick={event => submitBegrunnelseOgDato(event)}
-                        disabled={loading}
-                        spinner={loading}
-                    >
+                    <Hovedknapp className="row-element" onClick={submitKlage} disabled={loading} spinner={loading}>
                         Gå videre
                     </Hovedknapp>
                 </FlexCenteredContainer>
-            </Margin48TopContainer>
+            </InlineMargin48TopContainer>
         </>
     );
 };
+
+const showAttachmentLoader = (loading: boolean) => {
+    if (!loading) {
+        return null;
+    }
+    return (
+        <CenteredContainer>
+            <NavFrontendSpinner type={'XL'} />
+        </CenteredContainer>
+    );
+};
+
+const getAttachmentError = (error: string | null) => {
+    if (error === null) {
+        return null;
+    }
+
+    return (
+        <MarginContainer>
+            <AlertStripeFeil>
+                <NoMarginParagraph>{error}</NoMarginParagraph>
+            </AlertStripeFeil>
+        </MarginContainer>
+    );
+};
+
+const getError = (error: string | null) => {
+    if (error === null) {
+        return null;
+    }
+
+    return (
+        <MarginContainer>
+            <AlertStripeFeil>
+                <NoMarginParagraph>{error}</NoMarginParagraph>
+            </AlertStripeFeil>
+        </MarginContainer>
+    );
+};
+
+const getUploadAttachmentErrorMessage = ({ name, type, size }: File, reason: string = 'Ukjent årsak.') =>
+    `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${size} bytes. ${reason}`;
+
+const getDeleteAttachmentErrorMessage = ({ name, id }: AttachmentFile, reason: string = 'Ukjent årsak.') =>
+    `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`;
+
+function notNull<T>(v: T | null): v is T {
+    return v !== null;
+}
+
+const INPUTDESCRIPTION =
+    'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
+
+const InlineMargin48TopContainer = styled(Margin48TopContainer)`
+    display: inline-block;
+    position: initial;
+`;
+
+const InlineMarginTopContainer = styled(MarginTopContainer)`
+    display: inline-block;
+    position: initial;
+`;
 
 export default Begrunnelse;

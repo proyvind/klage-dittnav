@@ -132,14 +132,6 @@ export enum TemaKey {
 
 const TEMA_KEYS = Object.values(TemaKey);
 
-export const getYtelseByTema = (temaKey: TemaKey | string | null): Tema | null => {
-    const ensuredTemaKey = ensureStringIsTema(temaKey);
-    if (ensuredTemaKey === null) {
-        return null;
-    }
-    return Tema[ensuredTemaKey];
-};
-
 export const ensureStringIsTema = (potentialTemaKey: string | null): TemaKey | null => {
     if (potentialTemaKey === null) {
         return null;

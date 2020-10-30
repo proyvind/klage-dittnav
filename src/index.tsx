@@ -1,40 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import configureStore from './store/configureStore';
-import Environment, { fetchEnv } from './utils/environment';
-import { BrowserRouter } from 'react-router-dom';
 import { logError } from './utils/logger/frontendLogger';
+import './index.css';
 
-const store = configureStore();
-
-const init = async () => {
-    try {
-        const env = await fetchEnv();
-        Environment.setEnv(env);
-    } catch (e) {
-        logError(e);
-    }
-
-    ReactDOM.render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <BrowserRouter>
-                    <div id="app" className="app">
-                        <App />
-                    </div>
-                </BrowserRouter>
-            </Provider>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-};
-init();
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+try {
+    ReactDOM.render(<App />, document.getElementById('root'));
+} catch (e) {
+    logError(e);
+}

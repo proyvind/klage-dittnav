@@ -4,6 +4,8 @@ import queryString from 'query-string';
 import { ensureStringIsTema } from '../../types/tema';
 import InngangHovedkategorier from '../../components/inngang/inngang-hovedkategorier';
 import LandingPage from '../landing-page/landing-page';
+import { getQueryValue } from '../../utils/get-query-value';
+import { getTitle } from '../../utils/get-title';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
@@ -14,15 +16,9 @@ const RootWithQuery = () => {
         return <InngangHovedkategorier />;
     }
 
+    const title = getTitle(query, temaKey);
     const saksnummer = getQueryValue(query.saksnummer);
-    return LandingPage(temaKey, saksnummer);
+    return LandingPage(temaKey, title, saksnummer);
 };
-
-function getQueryValue(queryValue: string | string[] | null | undefined) {
-    if (typeof queryValue === 'string' && queryValue.length !== 0) {
-        return queryValue;
-    }
-    return null;
-}
 
 export default RootWithQuery;
