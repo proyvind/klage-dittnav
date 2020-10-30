@@ -12,7 +12,7 @@ export interface Store {
     chosenYtelse: string;
 
     // Auth response
-    person: Bruker;
+    person: Bruker | null;
 
     activeKlage?: Klage;
 
@@ -33,21 +33,7 @@ export const initialState: Store = {
     chosenTema: null,
     chosenYtelse: '',
 
-    person: {
-        navn: {
-            fornavn: '',
-            etternavn: ''
-        },
-        adresse: {
-            adressenavn: '',
-            postnummer: '',
-            poststed: ''
-        },
-        folkeregisteridentifikator: {
-            type: '',
-            identifikasjonsnummer: ''
-        }
-    },
+    person: null,
 
     activeKlageSkjema: {
         id: null,
@@ -141,6 +127,11 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 finalizedDate: action.value
+            };
+        case 'SET_LOADING':
+            return {
+                ...state,
+                loading: action.value
             };
         default:
             return state;

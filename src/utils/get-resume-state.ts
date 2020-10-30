@@ -1,10 +1,10 @@
 import queryString from 'query-string';
-import { ensureStringIsTema, getYtelseByTema, Tema } from '../types/tema';
+import { ensureStringIsTema, getYtelseByTema, Tema, TemaKey } from '../types/tema';
 
 interface ResumeState {
     klageId: string | null;
     ytelse: string | null;
-    tema: string | null;
+    tema: TemaKey | null;
     saksnummer: string | null;
 }
 
@@ -28,7 +28,7 @@ export function getResumeState(queryParams: string, storage: Storage, pathName: 
     }
 
     const storedKlageId = getStorageItem(StorageKey.KLAGE_ID, storage);
-    const storedTema = getStorageItem(StorageKey.TEMA, storage);
+    const storedTema = ensureStringIsTema(getStorageItem(StorageKey.TEMA, storage));
     const storedYtelse = getStorageItem(StorageKey.YTELSE, storage);
     const storedSaksnummer = getStorageItem(StorageKey.SAKSNUMMER, storage);
 
@@ -41,7 +41,7 @@ export function getResumeState(queryParams: string, storage: Storage, pathName: 
         };
     }
 
-    const queryTema = getQueryString(query, 'tema');
+    const queryTema = ensureStringIsTema(getQueryString(query, 'tema'));
     const queryYtelse = getQueryString(query, 'ytelse') ?? getDefaultYtelse(queryTema);
     const querySaksnummer = getQueryString(query, 'saksnummer');
 
@@ -61,7 +61,7 @@ export function getResumeState(queryParams: string, storage: Storage, pathName: 
 
     return {
         klageId: null,
-        tema: ensureStringIsTema(queryTema),
+        tema: queryTema,
         ytelse: queryYtelse,
         saksnummer: querySaksnummer
     };

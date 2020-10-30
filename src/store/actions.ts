@@ -1,5 +1,4 @@
 import { Dispatch } from 'react';
-import { getUserDataUrl } from '../clients/apiUrls';
 import { Klage, KlageSkjema, klageSkjemaToKlage, klageSkjemaToKlageDraft } from '../types/klage';
 import { postKlage, putKlage, getKlage } from '../services/klageService';
 import { Vedlegg, VedleggFile } from '../types/vedlegg';
@@ -8,6 +7,8 @@ import { logError } from '../utils/logger/frontendLogger';
 import { StorageKey } from '../utils/get-resume-state';
 import { AxiosError } from 'axios';
 import { login } from '../utils/login';
+import { getUser, JsonParseError, NetworkError, NotLoggedInError, RequestError } from '../utils/get-user';
+import { TemaKey } from '../types/tema';
 
 export type ActionTypes =
     | {
@@ -47,7 +48,7 @@ export type ActionTypes =
       }
     | {
           type: 'TEMA_SET';
-          value: string;
+          value: TemaKey;
       }
     | {
           type: 'KLAGE_ID_SET';
@@ -56,26 +57,36 @@ export type ActionTypes =
     | {
           type: 'SET_FINALIZED_DATE';
           value: string | null;
+      }
+    | {
+          type: 'SET_LOADING';
+          value: boolean;
       };
 
-export function checkAuth() {
-    return function (dispatch: Dispatch<ActionTypes>) {
-        return fetch(getUserDataUrl(), {
-            method: 'GET',
-            credentials: 'include'
-        })
-            .then(response => sjekkAuth(response))
-            .then(sjekkHttpFeil)
-            .then(response => response.json() as Promise<Bruker>)
-            .then(bruker => {
-                dispatch({ type: 'CHECK_AUTH_SUCCESS', payload: bruker });
-            })
-            .catch(error => {
-                if (error !== 401 && error !== 403) {
-                    dispatch({ type: 'CHECK_AUTH_ERROR' });
-                    logError(error, 'Login failed');
+export function checkAuth(required: boolean = true) {
+    return async function (dispatch: Dispatch<ActionTypes>) {
+        dispatch({ type: 'SET_LOADING', value: true });
+        try {
+            const user = await getUser();
+            dispatch({ type: 'CHECK_AUTH_SUCCESS', payload: user });
+            return user;
+        } catch (error) {
+            if (error instanceof NotLoggedInError) {
+                if (required) {
+                    login();
+                } else {
+                    dispatch({ type: 'SET_LOADING', value: false });
                 }
-            });
+            } else if (
+                error instanceof RequestError ||
+                error instanceof NetworkError ||
+                error instanceof JsonParseError
+            ) {
+                dispatch({ type: 'CHECK_AUTH_ERROR' });
+                logError(error);
+            }
+            return null;
+        }
     };
 }
 
@@ -121,7 +132,7 @@ export function setValgtYtelse(ytelse: string) {
     };
 }
 
-export function setValgtTema(tema: string) {
+export function setValgtTema(tema: TemaKey) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'TEMA_SET', value: tema });
     };
@@ -162,18 +173,3 @@ export function clearStorageContent() {
     sessionStorage.removeItem(StorageKey.YTELSE);
     sessionStorage.removeItem(StorageKey.SAKSNUMMER);
 }
-
-export function sjekkAuth(response: Response) {
-    if (response.status === 401 || response.status === 403) {
-        login();
-    }
-    return response;
-}
-
-export const sjekkHttpFeil = (response: Response) => {
-    if (response.ok) {
-        return response;
-    } else {
-        throw response.status;
-    }
-};

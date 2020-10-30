@@ -1,19 +1,21 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import { ensureStringIsTema, Tema } from '../../types/tema';
+import { ensureStringIsTema } from '../../types/tema';
 import InngangHovedkategorier from '../../components/inngang/inngang-hovedkategorier';
-import InngangInnsendingDigital from '../../components/inngang/inngang-innsendingsvalg-digital';
+import LandingPage from '../landing-page/landing-page';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
+
     const query = queryString.parse(search);
     const temaKey = ensureStringIsTema(getQueryValue(query.tema));
     if (temaKey === null) {
         return <InngangHovedkategorier />;
     }
+
     const saksnummer = getQueryValue(query.saksnummer);
-    return InngangInnsendingDigital(temaKey, Tema[temaKey], saksnummer);
+    return LandingPage(temaKey, saksnummer);
 };
 
 function getQueryValue(queryValue: string | string[] | null | undefined) {

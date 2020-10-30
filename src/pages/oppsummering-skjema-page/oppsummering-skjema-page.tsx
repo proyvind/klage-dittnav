@@ -67,7 +67,7 @@ const OppsummeringSkjemaPage = (props: Props) => {
             });
     };
 
-    if (typeof activeKlage === 'undefined') {
+    if (typeof activeKlage === 'undefined' || person === null) {
         return null;
     }
 
