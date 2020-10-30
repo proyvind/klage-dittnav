@@ -1,6 +1,5 @@
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
-import BookWithShield from '../../assets/images/icons/BookWithShield';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
 import { Margin40Container, MarginTopContainer } from '../../styled-components/main-styled-components';
 import { Tema, TemaKey } from '../../types/tema';
@@ -36,22 +35,6 @@ const InngangInnsendingPost = (temaKey: TemaKey, title: string = Tema[temaKey]) 
                             <MarginTopContainer>
                                 <Normaltekst>
                                     Dette velger du når du skal klage på et vedtak du har fått fra NAV.
-                                </Normaltekst>
-                            </MarginTopContainer>
-                        </div>
-                    </div>
-                </LenkepanelBase>
-                <LenkepanelBase href={paperUrl} border>
-                    <div className="lenkepanel-content-with-image">
-                        <div className="icon-container">
-                            <BookWithShield />
-                        </div>
-                        <div>
-                            <Systemtittel className="lenkepanel__heading">Skjema for anke</Systemtittel>
-                            <MarginTopContainer>
-                                <Normaltekst>
-                                    Dette velger du hvis du tidligere har sendt inn en klage og ønsker å anke til
-                                    Trygderetten.
                                 </Normaltekst>
                             </MarginTopContainer>
                         </div>

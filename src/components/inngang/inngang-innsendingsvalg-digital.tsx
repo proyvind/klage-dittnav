@@ -1,6 +1,5 @@
 import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
 import React from 'react';
-import BookWithShield from '../../assets/images/icons/BookWithShield';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
 import { Margin40Container, MarginContainer, MarginTopContainer } from '../../styled-components/main-styled-components';
 import { Tema, TemaKey } from '../../types/tema';
@@ -41,21 +40,6 @@ const InngangInnsendingDigital = (
                             <MarginTopContainer>
                                 <Normaltekst>
                                     Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av andre.
-                                </Normaltekst>
-                            </MarginTopContainer>
-                        </div>
-                    </div>
-                </LenkepanelBase>
-                <LenkepanelBase href={paperUrl} border>
-                    <div className="lenkepanel-content-with-image">
-                        <div className="icon-container">
-                            <BookWithShield />
-                        </div>
-                        <div>
-                            <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
-                            <MarginTopContainer>
-                                <Normaltekst>
-                                    For å sende inn en anke fyller du et skjema som sendes via post.
                                 </Normaltekst>
                             </MarginTopContainer>
                         </div>
