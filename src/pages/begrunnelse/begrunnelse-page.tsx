@@ -11,7 +11,7 @@ const BegrunnelsePage = (props: Props) => {
         window.scrollTo(0, 0);
     }, []);
 
-    logInfo('Begrunnelsepage entered.', { referrer: document.referrer });
+    logInfo('Begrunnelsepage entered.');
 
     return <Begrunnelse next={() => props.next()} />;
 };

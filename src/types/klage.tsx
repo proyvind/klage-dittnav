@@ -10,7 +10,6 @@ export interface KlageDraft {
     saksnummer: string | null;
     vedlegg: Vedlegg[];
     journalpostId: string | null;
-    referrer: string | null;
 }
 
 export interface Klage extends KlageDraft {
@@ -26,7 +25,6 @@ export interface KlageSkjema {
     vedtak: string | null;
     saksnummer: string | null;
     vedlegg: Vedlegg[];
-    referrer: string | null;
 }
 
 export const klageSkjemaToKlageDraft = (klageSkjema: KlageSkjema): KlageDraft => ({
@@ -36,7 +34,6 @@ export const klageSkjemaToKlageDraft = (klageSkjema: KlageSkjema): KlageDraft =>
     vedtak: dateToVedtakText(klageSkjema),
     saksnummer: klageSkjema.saksnummer,
     vedlegg: klageSkjema.vedlegg,
-    referrer: klageSkjema.referrer,
     journalpostId: null
 });
 
@@ -52,7 +49,6 @@ export const klageSkjemaToKlage = (klageSkjema: KlageSkjema): Klage => {
         vedtak: dateToVedtakText(klageSkjema),
         saksnummer: klageSkjema.saksnummer,
         vedlegg: klageSkjema.vedlegg,
-        referrer: klageSkjema.referrer,
         journalpostId: null
     };
 };
@@ -77,8 +73,7 @@ export const klageToKlageSkjema = (klage: Klage): KlageSkjema => {
         datoalternativ: dateChoice,
         vedtak: isoDate,
         saksnummer: klage.saksnummer,
-        vedlegg: klage.vedlegg,
-        referrer: klage.referrer
+        vedlegg: klage.vedlegg
     };
 };
 

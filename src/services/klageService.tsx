@@ -25,10 +25,6 @@ export const getJournalpostId = (klageId: string | number) =>
 
 export const getTemaObject = (temaKode: string) => baseService.get<TemaObject>(getTemaObjectUrl(temaKode));
 
-export const setReferrer = (referrer: string) => sessionStorage.setItem('referrer', referrer);
-
-export const getReferrer = () => sessionStorage.getItem('referrer') ?? '';
-
 interface TemaObject {
     value: string;
 }

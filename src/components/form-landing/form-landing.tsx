@@ -14,7 +14,7 @@ import { logError, logInfo } from '../../utils/logger/frontendLogger';
 import MainFormPage from '../../pages/main-form-page/main-form-page';
 import Error from '../../components/error/error';
 import { AxiosError } from 'axios';
-import { getReferrer, getTemaObject } from '../../services/klageService';
+import { getTemaObject } from '../../services/klageService';
 import { KlageSkjema } from '../../types/klage';
 import { getResumeState } from '../../utils/get-resume-state';
 import { DatoValg } from '../begrunnelse/datoValg';
@@ -65,8 +65,7 @@ const FormLanding = () => {
                 datoalternativ: DatoValg.INGEN,
                 vedtak: null,
                 fritekst: '',
-                vedlegg: [],
-                referrer: getReferrer()
+                vedlegg: []
             };
             dispatch(postNewKlage(klageSkjema));
             setIsLoadingDraft(false);
@@ -97,7 +96,7 @@ const FormLanding = () => {
         }
     }, [dispatch, klageId, activeKlage]);
 
-    logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse, referrer: document.referrer });
+    logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse });
 
     if (loading || isLoadingDraft) {
         return (
@@ -112,7 +111,7 @@ const FormLanding = () => {
     }
 
     if (temaNotSet) {
-        logInfo('Form landing page visited with no tema.', { referrer: document.referrer });
+        logInfo('Form landing page visited with no tema.');
         return (
             <Error
                 error={{
@@ -123,7 +122,7 @@ const FormLanding = () => {
             />
         );
     } else if (getKlageError) {
-        logInfo('Form landing page visited, get klage failed.', { referrer: document.referrer });
+        logInfo('Form landing page visited, get klage failed.');
         return (
             <Error
                 error={{

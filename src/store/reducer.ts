@@ -42,7 +42,6 @@ export const initialState: Store = {
         tema: '',
         vedlegg: [],
         ytelse: '',
-        referrer: null,
         saksnummer: null,
         vedtak: null
     },
