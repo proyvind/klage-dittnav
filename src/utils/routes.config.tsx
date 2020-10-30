@@ -9,6 +9,8 @@ import { INNGANG_KATEGORIER, Kategori } from '../data/kategorier';
 import RootWithQuery from '../pages/root-with-query/root-with-query';
 import InngangInnsendingPost from '../components/inngang/inngang-innsendingsvalg-post';
 import FormLanding from '../components/form-landing/form-landing';
+import { loggedInRedirect } from '../pages/loggedin-redirect/loggedin-redirect';
+import { LOGGED_IN_PATH } from './login';
 
 export interface FormStep extends RouteProps {
     path: string;
@@ -40,6 +42,10 @@ interface Route extends RouteProps {
 
 export const routesPages: Route[] = [
     {
+        path: LOGGED_IN_PATH,
+        render: loggedInRedirect
+    },
+    {
         path: `/kvittering`,
         component: KvitteringPage
     },
@@ -62,7 +68,7 @@ export const routesPages: Route[] = [
         }))
     ),
     {
-        path: `/`,
+        path: '/',
         component: RootWithQuery
     },
     {

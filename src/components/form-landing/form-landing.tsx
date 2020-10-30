@@ -35,7 +35,7 @@ const FormLanding = () => {
     const [errorState, setErrorState] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(checkAuth(location.search));
+        dispatch(checkAuth());
 
         const { klageId, tema, ytelse, saksnummer } = getResumeState(
             location.search,

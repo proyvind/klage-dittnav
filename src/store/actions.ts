@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { getLoginserviceRedirectUrl, getUserDataUrl } from '../clients/apiUrls';
+import { getUserDataUrl } from '../clients/apiUrls';
 import { Klage, KlageSkjema, klageSkjemaToKlage, klageSkjemaToKlageDraft } from '../types/klage';
 import { postKlage, putKlage, getKlage } from '../services/klageService';
 import { Vedlegg, VedleggFile } from '../types/vedlegg';
@@ -7,6 +7,7 @@ import { Bruker } from '../types/bruker';
 import { logError } from '../utils/logger/frontendLogger';
 import { StorageKey } from '../utils/get-resume-state';
 import { AxiosError } from 'axios';
+import { login } from '../utils/login';
 
 export type ActionTypes =
     | {
@@ -57,13 +58,13 @@ export type ActionTypes =
           value: string | null;
       };
 
-export function checkAuth(search: string) {
+export function checkAuth() {
     return function (dispatch: Dispatch<ActionTypes>) {
         return fetch(getUserDataUrl(), {
             method: 'GET',
             credentials: 'include'
         })
-            .then(response => sjekkAuth(response, search))
+            .then(response => sjekkAuth(response))
             .then(sjekkHttpFeil)
             .then(response => response.json() as Promise<Bruker>)
             .then(bruker => {
@@ -162,9 +163,9 @@ export function clearStorageContent() {
     sessionStorage.removeItem(StorageKey.SAKSNUMMER);
 }
 
-export function sjekkAuth(response: Response, params: string) {
+export function sjekkAuth(response: Response) {
     if (response.status === 401 || response.status === 403) {
-        window.location.assign(getLoginserviceRedirectUrl(encodeURIComponent(decodeURI(params))));
+        login();
     }
     return response;
 }
