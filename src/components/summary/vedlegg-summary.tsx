@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { VedleggFile } from '../../types/vedlegg';
 import Lenke from 'nav-frontend-lenker';
-import { Klage } from '../../types/klage';
+import { ReadOnlyKlage } from '../../types/klage';
 import { getVedleggUrl } from '../../clients/apiUrls';
 
 interface Props {
-    klage: Klage;
+    klage: ReadOnlyKlage;
     vedlegg: VedleggFile[];
 }
 

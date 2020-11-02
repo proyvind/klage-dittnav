@@ -11,13 +11,13 @@ import { Systemtittel, Normaltekst, Element } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import { getKlagePdfUrl } from '../../clients/apiUrls';
 import Lenke from 'nav-frontend-lenker';
-import { isoDateToPretty } from '../../utils/date';
+import { ISODate, isoDateToPretty } from '../../utils/date';
 
 interface Props {
     klageId: string | number;
     journalPostId: string;
     success: boolean;
-    finalizedDate: string;
+    finalizedDate: ISODate;
 }
 const Kvittering = (props: Props) => {
     window.onbeforeunload = null;

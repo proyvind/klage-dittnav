@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, useEffect, useRef, useState } from 'react';
 import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
 import {
     CenteredContainer,
@@ -13,7 +13,6 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
 import { toFiles, VedleggFile, getVedleggErrorMessage } from '../../types/vedlegg';
 import VedleggVisning from './vedlegg';
-import { setKlageId, updateKlage } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Store } from '../../store/reducer';
 import { addVedleggToKlage, deleteVedlegg } from '../../services/fileService';
@@ -22,31 +21,39 @@ import { DatoValg, datoValg } from './datoValg';
 import { Datovelger } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { logError } from '../../utils/logger/frontendLogger';
-import { KlageSkjema } from '../../types/klage';
+import { dateToVedtakText, UpdateKlage, parseVedtakText } from '../../types/klage';
+import { putKlage } from '../../services/klageService';
+import { AxiosError } from 'axios';
+import { ActionTypes } from '../../store/actions';
 
 interface Props {
     next: () => void;
 }
 
 const Begrunnelse = (props: Props) => {
-    const dispatch = useDispatch();
-    const { activeKlage, activeKlageSkjema, activeVedlegg } = useSelector((state: Store) => state);
+    const dispatch: Dispatch<ActionTypes> = useDispatch();
 
-    const [activeBegrunnelse, setActiveBegrunnelse] = useState<string>(activeKlageSkjema.fritekst);
-    const [activeDatoISO, setActiveDatoISO] = useState<string | null>(activeKlageSkjema.vedtak);
-    const [datoalternativ, setDatoalternativ] = useState<DatoValg>(activeKlageSkjema.datoalternativ);
+    const { klage, vedlegg: activeVedlegg } = useSelector((state: Store) => state);
+
+    const [loading, setIsLoading] = useState<boolean>(false);
+
+    const [fritekst, setFritekst] = useState<string>('');
+    const [chosenISODate, setISODate] = useState<string | null>(null);
+    const [chosenDateOption, setDateOption] = useState<DatoValg>(DatoValg.INGEN);
+
+    useEffect(() => {
+        if (klage === null) {
+            return;
+        }
+        setFritekst(klage.fritekst);
+        const { dateOption, isoDate } = parseVedtakText(klage.vedtak);
+        setDateOption(dateOption);
+        setISODate(isoDate);
+    }, [klage]);
+
     const [vedleggLoading, setVedleggLoading] = useState<boolean>(false);
     const [vedleggFeilmelding, setVedleggFeilmelding] = useState<string>('');
     const [submitted, setSubmitted] = useState<boolean>(false);
-
-    useEffect(() => {
-        setDatoalternativ(activeKlageSkjema.datoalternativ);
-        setActiveDatoISO(activeKlageSkjema.vedtak);
-        setActiveBegrunnelse(activeKlageSkjema.fritekst);
-        if (typeof activeKlage !== 'undefined') {
-            dispatch(setKlageId(activeKlage.id.toString()));
-        }
-    }, [dispatch, activeKlage, activeKlageSkjema]);
 
     const INPUTDESCRIPTION =
         'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
@@ -61,7 +68,7 @@ const Begrunnelse = (props: Props) => {
     const uploadAttachment = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
 
-        if (typeof activeKlage === 'undefined') {
+        if (klage === null) {
             return;
         }
 
@@ -75,7 +82,7 @@ const Begrunnelse = (props: Props) => {
 
         const uploads = Array.from(files).map(async file => {
             try {
-                const vedlegg = await addVedleggToKlage(activeKlage.id, file);
+                const vedlegg = await addVedleggToKlage(klage.id, file);
                 dispatch({
                     type: 'VEDLEGG_ADD_SUCCESS',
                     value: vedlegg
@@ -107,27 +114,38 @@ const Begrunnelse = (props: Props) => {
 
     const submitBegrunnelseOgDato = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
+        if (klage === null) {
+            return;
+        }
         setSubmitted(true);
         if (!validForm()) {
             return;
         }
-        const klageSkjema: KlageSkjema = {
-            ...activeKlageSkjema,
-            fritekst: activeBegrunnelse,
-            datoalternativ: datoalternativ,
-            vedtak: activeDatoISO
+        setIsLoading(true);
+        const klageUpdate: UpdateKlage = {
+            id: klage.id,
+            tema: klage.tema,
+            fritekst,
+            vedtak: dateToVedtakText(chosenDateOption, chosenISODate),
+            ytelse: klage.ytelse,
+            saksnummer: klage.saksnummer
         };
-        dispatch({
-            type: 'KLAGE_FORM_SET',
-            klageSkjema
-        });
-        updateKlage(klageSkjema);
-        props.next();
+        await putKlage(klageUpdate)
+            .then(() =>
+                dispatch({
+                    type: 'KLAGE_UPDATE',
+                    value: klageUpdate
+                })
+            )
+            .catch((err: AxiosError) => {
+                logError(err, 'Update klage failed', { klageId: klage.id });
+            })
+            .finally(() => props.next());
     };
 
     const validForm = () => validBegrunnelse() && validDatoalternativ();
-    const validBegrunnelse = () => activeBegrunnelse !== null && activeBegrunnelse !== '';
-    const validDatoalternativ = () => datoalternativ !== DatoValg.INGEN;
+    const validBegrunnelse = () => fritekst !== null && fritekst !== '';
+    const validDatoalternativ = () => chosenDateOption !== DatoValg.INGEN;
 
     const getFeilmeldinger = () => {
         const feilmeldinger: string[] = [];
@@ -163,18 +181,18 @@ const Begrunnelse = (props: Props) => {
                 <RadioPanelGruppe
                     name="datoValg"
                     radios={datoValg}
-                    checked={datoalternativ}
-                    onChange={(_, value: DatoValg) => setDatoalternativ(value)}
+                    checked={chosenDateOption}
+                    onChange={(_, value: DatoValg) => setDateOption(value)}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
 
-            {datoalternativ === DatoValg.TIDLIGERE_VEDTAK && (
+            {chosenDateOption === DatoValg.TIDLIGERE_VEDTAK && (
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datovelger
-                        onChange={dateISO => setActiveDatoISO(dateISO ?? '')}
-                        valgtDato={activeDatoISO ?? undefined}
+                        onChange={dateISO => setISODate(dateISO ?? null)}
+                        valgtDato={chosenISODate ?? undefined}
                         visÅrVelger={true}
                         avgrensninger={{
                             maksDato: new Date().toISOString().substring(0, 10)
@@ -187,10 +205,10 @@ const Begrunnelse = (props: Props) => {
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
-                    value={activeBegrunnelse}
+                    value={fritekst}
                     description={INPUTDESCRIPTION}
                     placeholder="Skriv inn din begrunnelse her."
-                    onChange={e => setActiveBegrunnelse(e.target.value)}
+                    onChange={e => setFritekst(e.target.value)}
                     maxLength={0}
                     textareaClass="expanded-height"
                     feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
@@ -257,7 +275,12 @@ const Begrunnelse = (props: Props) => {
 
             <Margin48TopContainer className="override-overlay">
                 <FlexCenteredContainer>
-                    <Hovedknapp className="row-element" onClick={event => submitBegrunnelseOgDato(event)}>
+                    <Hovedknapp
+                        className="row-element"
+                        onClick={event => submitBegrunnelseOgDato(event)}
+                        disabled={loading}
+                        spinner={loading}
+                    >
                         Gå videre
                     </Hovedknapp>
                 </FlexCenteredContainer>

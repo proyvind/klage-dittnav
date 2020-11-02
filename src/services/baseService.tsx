@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { Klage, KlageDraft } from '../types/klage';
+import { NewKlage, ReadOnlyKlage, UpdateKlage } from '../types/klage';
 import { Vedlegg } from '../types/vedlegg';
 import { logError } from '../utils/logger/frontendLogger';
 
@@ -42,9 +42,9 @@ export async function post<T>(resource: string) {
     }
 }
 
-export async function postKlage(resource: string, klage: KlageDraft) {
+export async function postKlage(resource: string, klage: NewKlage) {
     try {
-        const response = await axios.post<Klage>(resource, JSON.stringify(klage), postOptions);
+        const response = await axios.post<ReadOnlyKlage>(resource, JSON.stringify(klage), postOptions);
         return response.data;
     } catch (error) {
         logError(error, 'Error from post klage call', { resource: resource, klage: klage });
@@ -52,7 +52,7 @@ export async function postKlage(resource: string, klage: KlageDraft) {
     }
 }
 
-export async function putKlage(resource: string, klage: Klage) {
+export async function putKlage(resource: string, klage: UpdateKlage) {
     try {
         await axios.put<never>(resource, JSON.stringify(klage), postOptions);
     } catch (error) {

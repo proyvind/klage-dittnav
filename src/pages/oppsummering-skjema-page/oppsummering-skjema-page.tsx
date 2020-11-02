@@ -30,7 +30,7 @@ interface Props {
 }
 
 const OppsummeringSkjemaPage = (props: Props) => {
-    const { activeKlage, activeKlageSkjema, activeVedlegg, person } = useSelector((state: Store) => state);
+    const { klage, vedlegg, person } = useSelector((state: Store) => state);
     const [loading, setIsLoading] = useState<boolean>(false);
     const history = useHistory();
     const dispatch: Dispatch<ActionTypes> = useDispatch();
@@ -42,17 +42,12 @@ const OppsummeringSkjemaPage = (props: Props) => {
     const submitForm = (event: React.MouseEvent) => {
         event.preventDefault();
 
-        if (typeof activeKlage === 'undefined') {
+        if (klage === null) {
             return;
         }
 
         setIsLoading(true);
-        if (!activeKlage.id) {
-            // TODO: Sett error message
-            setIsLoading(false);
-            return;
-        }
-        finalizeKlage(activeKlage.id)
+        finalizeKlage(klage.id)
             .then(response => {
                 dispatch({ type: 'SET_FINALIZED_DATE', value: response.finalizedDate });
                 clearStorageContent();
@@ -61,13 +56,13 @@ const OppsummeringSkjemaPage = (props: Props) => {
                 // TODO: Set success message
             })
             .catch(error => {
-                logError(error, 'Finalize klage failed', { klageid: activeKlage.id });
+                logError(error, 'Finalize klage failed', { klageId: klage.id });
                 setIsLoading(false);
                 // TODO: Set error message
             });
     };
 
-    if (typeof activeKlage === 'undefined' || person === null) {
+    if (klage === null || person === null) {
         return null;
     }
 
@@ -115,18 +110,18 @@ const OppsummeringSkjemaPage = (props: Props) => {
                     className="form-expand"
                     tittel={<Undertittel>Opplysninger fra saken</Undertittel>}
                 >
-                    <VedtakSummary klage={activeKlageSkjema} />
+                    <VedtakSummary klage={klage} />
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
 
                 <div className="simulate-expandable-box">
                     <Undertittel>Begrunnelse i din klage</Undertittel>
-                    <Normaltekst className="p_wrap">{activeKlageSkjema.fritekst}</Normaltekst>
+                    <Normaltekst className="p_wrap">{klage.fritekst}</Normaltekst>
                 </div>
 
                 <div className="simulate-expandable-box">
-                    <Undertittel>Vedlagte dokumenter ({activeVedlegg.length || '0'})</Undertittel>
-                    <VedleggSummary klage={activeKlage} vedlegg={toFiles(activeVedlegg)} />
+                    <Undertittel>Vedlagte dokumenter ({vedlegg.length || '0'})</Undertittel>
+                    <VedleggSummary klage={klage} vedlegg={toFiles(vedlegg)} />
                 </div>
             </div>
             <Margin48Container className="override-overlay">

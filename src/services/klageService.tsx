@@ -7,15 +7,16 @@ import {
     getKlageJournalpostIdUrl,
     getTemaObjectUrl
 } from '../clients/apiUrls';
-import { Klage, KlageDraft } from '../types/klage';
+import { ReadOnlyKlage, NewKlage, UpdateKlage } from '../types/klage';
+import { ISODate } from '../utils/date';
 
-export const getKlager = () => baseService.get(getKlagerUrl());
+export const getKlager = () => baseService.get<ReadOnlyKlage[]>(getKlagerUrl());
 
-export const postKlage = (klage: KlageDraft) => baseService.postKlage(getAddKlageUrl(), klage);
+export const postKlage = (klage: NewKlage) => baseService.postKlage(getAddKlageUrl(), klage);
 
-export const putKlage = (klage: Klage) => baseService.putKlage(getKlageByIdUrl(klage.id), klage);
+export const putKlage = (klage: UpdateKlage) => baseService.putKlage(getKlageByIdUrl(klage.id), klage);
 
-export const getKlage = (klageId: string | number) => baseService.get<Klage>(getKlageByIdUrl(klageId));
+export const getKlage = (klageId: string | number) => baseService.get<ReadOnlyKlage>(getKlageByIdUrl(klageId));
 
 export const finalizeKlage = (klageId: string | number) =>
     baseService.post<FinalizedKlage>(getFinalizeKlageUrl(klageId));
@@ -30,5 +31,5 @@ interface TemaObject {
 }
 
 export interface FinalizedKlage {
-    finalizedDate: string;
+    finalizedDate: ISODate;
 }

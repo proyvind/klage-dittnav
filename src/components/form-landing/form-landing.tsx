@@ -1,38 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    checkAuth,
-    getExistingKlage,
-    postNewKlage,
-    setKlageId,
-    setStorageContent,
-    setValgtTema,
-    setValgtYtelse
-} from '../../store/actions';
+import { checkAuth, clearStorageContent, setStorageContent, setValgtTema, setValgtYtelse } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import { logError, logInfo } from '../../utils/logger/frontendLogger';
 import MainFormPage from '../../pages/main-form-page/main-form-page';
 import Error from '../../components/error/error';
-import { AxiosError } from 'axios';
-import { getTemaObject } from '../../services/klageService';
-import { KlageSkjema } from '../../types/klage';
 import { getResumeState } from '../../utils/get-resume-state';
-import { DatoValg } from '../begrunnelse/datoValg';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { CenteredContainer } from '../../styled-components/main-styled-components';
-import NotFoundPage from '../../pages/not-found/not-found-page';
 import { useLocation } from 'react-router-dom';
+import { NewKlage } from '../../types/klage';
+import { getKlage, postKlage } from '../../services/klageService';
+import { AxiosError } from 'axios';
 
 const FormLanding = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const { loading, chosenTema, chosenYtelse, getKlageError, klageId, activeKlage } = useSelector(
-        (state: Store) => state
-    );
+    const { loading, chosenTema, chosenYtelse, getKlageError, klage } = useSelector((state: Store) => state);
 
-    const [temaNotSet, setTemaNotSet] = useState<boolean>(false);
     const [isLoadingDraft, setIsLoadingDraft] = useState<boolean>(true);
-    const [errorState, setErrorState] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(checkAuth());
@@ -53,48 +39,44 @@ const FormLanding = () => {
             dispatch(setValgtTema(tema));
         }
 
+        if (klage !== null) {
+            setIsLoadingDraft(false);
+            return;
+        }
+
         if (klageId !== null) {
-            dispatch(setKlageId(klageId));
-            setIsLoadingDraft(false);
-        } else if (ytelse !== null && tema !== null) {
-            const klageSkjema: KlageSkjema = {
-                id: null,
-                ytelse,
-                tema,
-                saksnummer: saksnummer,
-                datoalternativ: DatoValg.INGEN,
-                vedtak: null,
-                fritekst: '',
-                vedlegg: []
-            };
-            dispatch(postNewKlage(klageSkjema));
-            setIsLoadingDraft(false);
-        } else if (tema !== null) {
-            getTemaObject(tema)
-                .then(temaObject => {
-                    dispatch(setValgtYtelse(ytelse ?? temaObject.value));
-                    setIsLoadingDraft(false);
+            getKlage(klageId)
+                .then(klage => {
+                    dispatch({ type: 'KLAGE_GET_SUCCESS', value: klage });
+                    setStorageContent(klageId, klage.tema, klage.ytelse, klage.saksnummer);
                 })
                 .catch((err: AxiosError) => {
-                    if (err.response?.status === 404) {
-                        setErrorState(true);
-                        setIsLoadingDraft(false);
-                        return;
+                    logError(err, 'Get existing klage failed');
+                    if (err?.response?.status !== 401) {
+                        clearStorageContent();
                     }
-                    logError(err);
-                });
-        } else {
-            setIsLoadingDraft(false);
+                    dispatch({ type: 'KLAGE_GET_ERROR' });
+                })
+                .finally(() => setIsLoadingDraft(false));
+        } else if (ytelse !== null && tema !== null) {
+            const newKlage: NewKlage = {
+                ytelse,
+                tema,
+                saksnummer,
+                vedtak: '',
+                fritekst: ''
+            };
+            postKlage(newKlage)
+                .then(klage => {
+                    dispatch({ type: 'KLAGE_POST_SUCCESS', value: klage });
+                    setStorageContent(klage.id.toString(), klage.tema, klage.ytelse, klage.saksnummer);
+                })
+                .catch((err: AxiosError) => {
+                    logError(err, 'Post new klage failed');
+                })
+                .finally(() => setIsLoadingDraft(false));
         }
-
-        setTemaNotSet(chosenTema === null);
-    }, [dispatch, location.search, location.pathname, chosenTema, klageId, activeKlage]);
-
-    useEffect(() => {
-        if (typeof klageId !== 'undefined' && klageId.length !== 0 && typeof activeKlage === 'undefined') {
-            dispatch(getExistingKlage(klageId));
-        }
-    }, [dispatch, klageId, activeKlage]);
+    }, [dispatch, location.search, location.pathname, klage]);
 
     logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse });
 
@@ -106,11 +88,7 @@ const FormLanding = () => {
         );
     }
 
-    if (errorState) {
-        return <NotFoundPage />;
-    }
-
-    if (temaNotSet) {
+    if (chosenTema === null) {
         logInfo('Form landing page visited with no tema.');
         return (
             <Error
