@@ -5,7 +5,6 @@ import { Vedlegg } from '../types/vedlegg';
 
 export interface Store {
     loading: boolean;
-    chosenYtelse: string;
     person: Bruker | null;
     klage: ReadOnlyKlage | null;
     vedlegg: Vedlegg[];
@@ -14,7 +13,6 @@ export interface Store {
 
 export const initialState: Store = {
     loading: true,
-    chosenYtelse: '',
     person: null,
     klage: null,
     vedlegg: [],
@@ -38,14 +36,12 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 klage: action.value,
-                chosenYtelse: action.value.ytelse,
                 vedlegg: action.value.vedlegg
             };
         case 'KLAGE_GET_SUCCESS':
             return {
                 ...state,
                 klage: action.value,
-                chosenYtelse: action.value.ytelse,
                 vedlegg: action.value.vedlegg
             };
         case 'KLAGE_UPDATE':
@@ -67,11 +63,6 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 vedlegg: state.vedlegg.filter(vedlegg => vedlegg.id.toString() !== action.value.id)
-            };
-        case 'YTELSE_SET':
-            return {
-                ...state,
-                chosenYtelse: action.value
             };
         case 'SET_FINALIZED_DATE':
             if (state.klage === null) {

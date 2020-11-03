@@ -39,10 +39,6 @@ export type ActionTypes =
           value: VedleggFile;
       }
     | {
-          type: 'YTELSE_SET';
-          value: string;
-      }
-    | {
           type: 'KLAGE_ID_SET';
           value: string;
       }
@@ -79,12 +75,6 @@ export function checkAuth(required: boolean = true) {
             }
             return null;
         }
-    };
-}
-
-export function setValgtYtelse(ytelse: string) {
-    return function (dispatch: Dispatch<ActionTypes>) {
-        return dispatch({ type: 'YTELSE_SET', value: ytelse });
     };
 }
 

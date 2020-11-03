@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuth, clearStorageContent, setStorageContent, setValgtYtelse } from '../../store/actions';
+import { checkAuth, clearStorageContent, setStorageContent } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import { logError, logInfo } from '../../utils/logger/frontendLogger';
 import MainFormPage from '../../pages/main-form-page/main-form-page';
@@ -16,7 +16,7 @@ import { AxiosError } from 'axios';
 const FormLanding = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const { loading, chosenYtelse, getKlageError, klage } = useSelector((state: Store) => state);
+    const { loading, getKlageError, klage } = useSelector((state: Store) => state);
 
     const [isLoadingDraft, setIsLoadingDraft] = useState<boolean>(true);
 
@@ -32,9 +32,6 @@ const FormLanding = () => {
         );
         setStorageContent(klageId, tema, ytelse, saksnummer);
 
-        if (ytelse !== null) {
-            dispatch(setValgtYtelse(ytelse));
-        }
         if (klage !== null) {
             setIsLoadingDraft(false);
             return;
@@ -74,7 +71,7 @@ const FormLanding = () => {
         }
     }, [dispatch, location.search, location.pathname, klage]);
 
-    logInfo('Form landing page visited.', { chosenYtelse: chosenYtelse });
+    logInfo('Form landing page visited.');
 
     if (loading || isLoadingDraft) {
         return (
