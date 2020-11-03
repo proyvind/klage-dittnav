@@ -6,7 +6,6 @@ import { logError } from '../utils/logger/frontendLogger';
 import { StorageKey } from '../utils/get-resume-state';
 import { login } from '../utils/login';
 import { getUser, JsonParseError, NetworkError, NotLoggedInError, RequestError } from '../utils/get-user';
-import { TemaKey } from '../types/tema';
 
 export type ActionTypes =
     | {
@@ -42,10 +41,6 @@ export type ActionTypes =
     | {
           type: 'YTELSE_SET';
           value: string;
-      }
-    | {
-          type: 'TEMA_SET';
-          value: TemaKey;
       }
     | {
           type: 'KLAGE_ID_SET';
@@ -90,12 +85,6 @@ export function checkAuth(required: boolean = true) {
 export function setValgtYtelse(ytelse: string) {
     return function (dispatch: Dispatch<ActionTypes>) {
         return dispatch({ type: 'YTELSE_SET', value: ytelse });
-    };
-}
-
-export function setValgtTema(tema: TemaKey) {
-    return function (dispatch: Dispatch<ActionTypes>) {
-        return dispatch({ type: 'TEMA_SET', value: tema });
     };
 }
 

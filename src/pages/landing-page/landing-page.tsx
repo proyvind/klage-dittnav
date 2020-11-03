@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import InngangInnsendingDigital from '../../components/inngang/inngang-innsendingsvalg-digital';
-import { checkAuth, setValgtTema } from '../../store/actions';
+import { checkAuth } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import { CenteredContainer } from '../../styled-components/main-styled-components';
 import { Tema, TemaKey } from '../../types/tema';
@@ -15,10 +15,6 @@ const LandingPage = (temaKey: TemaKey, saksnummer: string | null = null) => {
     useEffect(() => {
         dispatch(checkAuth(false));
     }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(setValgtTema(temaKey));
-    }, [dispatch, temaKey]);
 
     if (loading) {
         return (

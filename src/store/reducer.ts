@@ -5,7 +5,6 @@ import { Vedlegg } from '../types/vedlegg';
 
 export interface Store {
     loading: boolean;
-    chosenTema: string | null;
     chosenYtelse: string;
     person: Bruker | null;
     klage: ReadOnlyKlage | null;
@@ -15,7 +14,6 @@ export interface Store {
 
 export const initialState: Store = {
     loading: true,
-    chosenTema: null,
     chosenYtelse: '',
     person: null,
     klage: null,
@@ -25,11 +23,6 @@ export const initialState: Store = {
 
 const reducer = (state = initialState, action: ActionTypes): Store => {
     switch (action.type) {
-        case 'TEMA_SET':
-            return {
-                ...state,
-                chosenTema: action.value
-            };
         case 'CHECK_AUTH_SUCCESS':
             return {
                 ...state,
@@ -45,7 +38,6 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
             return {
                 ...state,
                 klage: action.value,
-                chosenTema: action.value.tema,
                 chosenYtelse: action.value.ytelse,
                 vedlegg: action.value.vedlegg
             };
@@ -54,7 +46,6 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 klage: action.value,
                 chosenYtelse: action.value.ytelse,
-                chosenTema: action.value.tema,
                 vedlegg: action.value.vedlegg
             };
         case 'KLAGE_UPDATE':

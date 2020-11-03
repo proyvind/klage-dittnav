@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuth, clearStorageContent, setStorageContent, setValgtTema, setValgtYtelse } from '../../store/actions';
+import { checkAuth, clearStorageContent, setStorageContent, setValgtYtelse } from '../../store/actions';
 import { Store } from '../../store/reducer';
 import { logError, logInfo } from '../../utils/logger/frontendLogger';
 import MainFormPage from '../../pages/main-form-page/main-form-page';
@@ -16,7 +16,7 @@ import { AxiosError } from 'axios';
 const FormLanding = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const { loading, chosenTema, chosenYtelse, getKlageError, klage } = useSelector((state: Store) => state);
+    const { loading, chosenYtelse, getKlageError, klage } = useSelector((state: Store) => state);
 
     const [isLoadingDraft, setIsLoadingDraft] = useState<boolean>(true);
 
@@ -35,10 +35,6 @@ const FormLanding = () => {
         if (ytelse !== null) {
             dispatch(setValgtYtelse(ytelse));
         }
-        if (tema !== null) {
-            dispatch(setValgtTema(tema));
-        }
-
         if (klage !== null) {
             setIsLoadingDraft(false);
             return;
@@ -88,18 +84,7 @@ const FormLanding = () => {
         );
     }
 
-    if (chosenTema === null) {
-        logInfo('Form landing page visited with no tema.');
-        return (
-            <Error
-                error={{
-                    code: 400,
-                    text:
-                        'Ytelse du ønsker å klage på er ikke spesifisert. Dersom du navigerer til denne siden via en lenke på Ditt NAV vil ytelse bli satt riktig.'
-                }}
-            />
-        );
-    } else if (getKlageError) {
+    if (getKlageError) {
         logInfo('Form landing page visited, get klage failed.');
         return (
             <Error
