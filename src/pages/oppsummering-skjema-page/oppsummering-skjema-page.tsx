@@ -53,12 +53,10 @@ const OppsummeringSkjemaPage = (props: Props) => {
                 clearStorageContent();
                 history.push({ pathname: '/kvittering' });
                 setIsLoading(false);
-                // TODO: Set success message
             })
             .catch(error => {
                 logError(error, 'Finalize klage failed', { klageId: klage.id });
                 setIsLoading(false);
-                // TODO: Set error message
             });
     };
 
