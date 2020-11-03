@@ -40,7 +40,7 @@ const FormLanding = () => {
         if (klageId !== null) {
             getKlage(klageId)
                 .then(klage => {
-                    dispatch({ type: 'KLAGE_GET_SUCCESS', value: klage });
+                    dispatch({ type: 'KLAGE_SET', value: klage });
                     setStorageContent(klageId, klage.tema, klage.ytelse, klage.saksnummer);
                 })
                 .catch((err: AxiosError) => {
@@ -61,7 +61,7 @@ const FormLanding = () => {
             };
             postKlage(newKlage)
                 .then(klage => {
-                    dispatch({ type: 'KLAGE_POST_SUCCESS', value: klage });
+                    dispatch({ type: 'KLAGE_SET', value: klage });
                     setStorageContent(klage.id.toString(), klage.tema, klage.ytelse, klage.saksnummer);
                 })
                 .catch((err: AxiosError) => {

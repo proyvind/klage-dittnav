@@ -16,11 +16,7 @@ export type ActionTypes =
           value: Bruker;
       }
     | {
-          type: 'KLAGE_POST_SUCCESS';
-          value: ReadOnlyKlage;
-      }
-    | {
-          type: 'KLAGE_GET_SUCCESS';
+          type: 'KLAGE_SET';
           value: ReadOnlyKlage;
       }
     | {

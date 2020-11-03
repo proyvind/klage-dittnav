@@ -32,13 +32,7 @@ const reducer = (state = initialState, action: ActionTypes): Store => {
                 ...state,
                 loading: false
             };
-        case 'KLAGE_POST_SUCCESS':
-            return {
-                ...state,
-                klage: action.value,
-                vedlegg: action.value.vedlegg
-            };
-        case 'KLAGE_GET_SUCCESS':
+        case 'KLAGE_SET':
             return {
                 ...state,
                 klage: action.value,
