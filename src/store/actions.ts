@@ -35,10 +35,6 @@ export type ActionTypes =
           value: VedleggFile;
       }
     | {
-          type: 'KLAGE_ID_SET';
-          value: string;
-      }
-    | {
           type: 'SET_FINALIZED_DATE';
           value: string | null;
       }
@@ -71,15 +67,6 @@ export function checkAuth(required: boolean = true) {
             }
             return null;
         }
-    };
-}
-
-export function setKlageId(klageId: string) {
-    if (klageId.length === 0) {
-        throw new Error('Invalid klage ID.');
-    }
-    return function (dispatch: Dispatch<ActionTypes>) {
-        return dispatch({ type: 'KLAGE_ID_SET', value: klageId });
     };
 }
 
