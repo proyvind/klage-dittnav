@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@master
         name: Checkout code
       - name: Lag tag for image
-        run: echo "TAG=$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
+        run: echo "TAG=$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')" >> $GITHUB_ENV
       - name: Lag full image referanse
-        run: echo "IMAGE=$BASEIMAGE:$TAG"
+        run: echo "IMAGE=$BASEIMAGE:$TAG" >> $GITHUB_ENV
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
