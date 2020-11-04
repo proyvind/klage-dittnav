@@ -4,9 +4,9 @@ import { ISODate, ISODateTime, isoDateToPretty, prettyDateToISO } from '../utils
 import { TemaKey } from './tema';
 
 export enum KlageStatus {
-    DRAFT,
-    DONE,
-    DELETED
+    DRAFT = 'DRAFT',
+    DONE = 'DONE',
+    DELETED = 'DELETED'
 }
 
 export interface NewKlage {
