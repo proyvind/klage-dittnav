@@ -31,9 +31,9 @@ jobs:
           npm test
       - name: Lag tag for image
           npm run build
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
+        run: echo "TAG=$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
       - name: Lag full image referanse
-        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
+        run: echo "IMAGE=$BASEIMAGE:$TAG"
       - name: Build docker image
         run: docker build -t $IMAGE .
       - name: Login to Github Package Registry
@@ -58,9 +58,9 @@ jobs:
       - uses: actions/checkout@master
         name: Checkout code
       - name: Lag tag for image
-        run: echo "::set-env name=TAG::$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
+        run: echo "TAG=$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')"
       - name: Lag full image referanse
-        run: echo "::set-env name=IMAGE::$BASEIMAGE:$TAG"
+        run: echo "IMAGE=$BASEIMAGE:$TAG"
 
       - uses: nais/deploy/actions/deploy@master
         env:
