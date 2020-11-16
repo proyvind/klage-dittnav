@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { logError } from './utils/logger/frontendLogger';
+import App from './routes/routes';
+import { logError } from './logging/frontendLogger';
 import './index.css';
 
 try {
