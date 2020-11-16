@@ -4,7 +4,7 @@ import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { Datovelger } from 'nav-datovelger';
+import { Datepicker } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
     CenteredContainer,
@@ -202,12 +202,12 @@ const Begrunnelse = ({ klage }: Props) => {
             {chosenDateOption === DateOption.TIDLIGERE_VEDTAK && (
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
-                    <Datovelger
-                        onChange={dateISO => setISODate(dateISO ?? null)}
-                        valgtDato={chosenISODate ?? undefined}
-                        visÅrVelger={true}
-                        avgrensninger={{
-                            maksDato: new Date().toISOString().substring(0, 10)
+                    <Datepicker
+                        onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
+                        value={chosenISODate ?? undefined}
+                        showYearSelector
+                        limitations={{
+                            maxDate: new Date().toISOString().substring(0, 10)
                         }}
                     />
                 </MarginContainer>
