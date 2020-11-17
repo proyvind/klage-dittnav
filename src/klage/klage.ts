@@ -1,5 +1,4 @@
-import { ISODate, ISODateTime, isoDateToPretty, prettyDateToISO } from '../date/date';
-import { DateOption } from '../routes/klageskjema/begrunnelse/date-option';
+import { ISODate, ISODateTime, isoDateToPretty } from '../date/date';
 import { TemaKey } from '../tema/tema';
 import { Attachment } from './attachment';
 
@@ -7,6 +6,11 @@ export enum KlageStatus {
     DRAFT = 'DRAFT',
     DONE = 'DONE',
     DELETED = 'DELETED'
+}
+
+export enum VedtakType {
+    EARLIER = 'EARLIER',
+    LATEST = 'LATEST'
 }
 
 export interface FinalizedKlage {
@@ -18,7 +22,8 @@ export interface NewKlage {
     readonly fritekst: string;
     readonly tema: TemaKey;
     readonly ytelse: string;
-    readonly vedtak: string;
+    readonly vedtakType: VedtakType | null;
+    readonly vedtakDate: ISODate | null;
     readonly saksnummer: string | null;
 }
 
@@ -37,14 +42,14 @@ export interface Klage extends UpdateKlage {
 export const TIDLIGERE_VEDTAK = 'Tidligere vedtak';
 export const SISTE_VEDTAK = 'Siste vedtak';
 
-export const dateToVedtakText = (dateOption: DateOption | null, isoDate: ISODate | null): string => {
-    if (dateOption === null || dateOption === DateOption.INGEN) {
+export const dateToVedtakText = (vedtakType: VedtakType | null, isoDate: ISODate | null): string => {
+    if (vedtakType === null) {
         return '';
     }
-    if (dateOption === DateOption.SISTE_VEDTAK) {
+    if (vedtakType === VedtakType.LATEST) {
         return SISTE_VEDTAK;
     }
-    if (dateOption === DateOption.TIDLIGERE_VEDTAK) {
+    if (vedtakType === VedtakType.EARLIER) {
         const prettyDate = isoDateToPretty(isoDate);
         if (prettyDate === null) {
             return `${TIDLIGERE_VEDTAK} - Ingen dato satt`;
@@ -52,40 +57,5 @@ export const dateToVedtakText = (dateOption: DateOption | null, isoDate: ISODate
         return `${TIDLIGERE_VEDTAK} - ${prettyDate}`;
     }
 
-    throw new Error(`Unknown date choice state: ${dateOption}`);
-};
-
-export interface ParsedVedtakText {
-    readonly dateOption: DateOption;
-    readonly isoDate: ISODate | null;
-}
-
-const tidligereVedtakRegex = /\d{2}.\d{2}.\d{4}$/;
-export const parseVedtakText = (vedtak: string | null): ParsedVedtakText => {
-    if (vedtak === null) {
-        return {
-            dateOption: DateOption.INGEN,
-            isoDate: null
-        };
-    }
-
-    if (vedtak === SISTE_VEDTAK) {
-        return {
-            dateOption: DateOption.SISTE_VEDTAK,
-            isoDate: null
-        };
-    }
-
-    if (vedtak.startsWith(TIDLIGERE_VEDTAK)) {
-        const match = vedtak.match(tidligereVedtakRegex);
-        return {
-            dateOption: DateOption.TIDLIGERE_VEDTAK,
-            isoDate: match === null ? null : prettyDateToISO(match[0])
-        };
-    }
-
-    return {
-        dateOption: DateOption.INGEN,
-        isoDate: null
-    };
+    throw new Error(`Unknown date choice state: ${vedtakType}`);
 };

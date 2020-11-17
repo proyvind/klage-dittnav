@@ -37,7 +37,8 @@ const CreateKlage = () => {
             fritekst: '',
             tema: temaKey,
             ytelse: title,
-            vedtak: '',
+            vedtakDate: null,
+            vedtakType: null,
             saksnummer
         };
 

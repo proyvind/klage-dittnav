@@ -2,7 +2,7 @@ import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from './information-point-box';
 import { PointsFlexListContainer } from '../../../styled-components/common';
-import { UpdateKlage } from '../../../klage/klage';
+import { dateToVedtakText, UpdateKlage } from '../../../klage/klage';
 
 interface Props {
     klage: UpdateKlage;
@@ -11,7 +11,10 @@ interface Props {
 const VedtakSummary = ({ klage }: Props) => (
     <PointsFlexListContainer>
         {getSaksnummer(klage.saksnummer)}
-        <InformationPointBox header={'Vedtak'} info={<Normaltekst>{klage.vedtak}</Normaltekst>} />
+        <InformationPointBox
+            header={'Vedtak'}
+            info={<Normaltekst>{dateToVedtakText(klage.vedtakType, klage.vedtakDate)}</Normaltekst>}
+        />
     </PointsFlexListContainer>
 );
 

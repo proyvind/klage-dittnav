@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
@@ -21,11 +21,11 @@ import {
 import { getAttachmentErrorMessage, Attachment, AttachmentFile, toFiles } from '../../../klage/attachment';
 import AttachmentPreview from './attachment-preview';
 import { updateKlage, addAttachment, deleteAttachment } from '../../../api/api';
-import { DateOption, datoValg } from './date-option';
+import { datoValg } from './date-option';
 import { ApiError, CustomError } from '../../../api/errors';
 import { AppContext } from '../../../app-context/app-context';
-import { ISODateTime } from '../../../date/date';
-import { Klage, parseVedtakText, KlageStatus, UpdateKlage, dateToVedtakText } from '../../../klage/klage';
+import { ISODate, ISODateTime } from '../../../date/date';
+import { Klage, KlageStatus, UpdateKlage, VedtakType } from '../../../klage/klage';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -44,17 +44,10 @@ const Begrunnelse = ({ klage }: Props) => {
     const { setKlage } = useContext(AppContext);
 
     const [loading, setIsLoading] = useState<boolean>(false);
-
-    const vedtak = klage?.vedtak ?? null;
-    const klageFritekst = klage?.fritekst ?? '';
-    const klageVedlegg = klage?.vedlegg ?? [];
-
-    const { dateOption, isoDate } = useMemo(() => parseVedtakText(vedtak), [vedtak]);
-
-    const [fritekst, setFritekst] = useState<string>(klageFritekst);
-    const [chosenISODate, setISODate] = useState<string | null>(isoDate);
-    const [chosenDateOption, setDateOption] = useState<DateOption>(dateOption);
-    const [attachments, setAttachments] = useState<Attachment[]>(klageVedlegg);
+    const [fritekst, setFritekst] = useState<string>(klage.fritekst);
+    const [vedtakDate, setVedtakDate] = useState<string | null>(klage.vedtakDate);
+    const [vedtakType, setVedtakType] = useState<VedtakType | null>(klage.vedtakType);
+    const [attachments, setAttachments] = useState<Attachment[]>(klage.vedlegg);
     const [error, setError] = useState<string | null>(null);
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
@@ -68,23 +61,14 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
-        id: klage.id,
-        tema: klage.tema,
-        ytelse: klage.ytelse,
-        saksnummer: klage.saksnummer,
-        fritekst,
-        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
-    });
-
     useEffect(() => {
-        const timeout = setTimeout(
-            () => updateKlage(createKlageUpdate(klage)).catch((error: CustomError) => setError(error.message)),
-            1000
-        ); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
+        const timeout = setTimeout(() => {
+            const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
+            updateKlage(klageUpdate).catch((error: CustomError) => setError(error.message));
+        }, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
 
         return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
-    }, [fritekst, chosenISODate, chosenDateOption]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [fritekst, vedtakDate, vedtakType, klage]);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -152,7 +136,7 @@ const Begrunnelse = ({ klage }: Props) => {
         }
         setIsLoading(true);
 
-        const klageUpdate = createKlageUpdate(klage);
+        const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
 
         setKlage({
             ...klage,
@@ -170,7 +154,7 @@ const Begrunnelse = ({ klage }: Props) => {
 
     const validForm = () => validBegrunnelse() && validDatoalternativ();
     const validBegrunnelse = () => fritekst.length !== 0;
-    const validDatoalternativ = () => chosenDateOption !== DateOption.INGEN;
+    const validDatoalternativ = () => vedtakType !== null;
 
     const getFeilmeldinger = () => {
         const feilmeldinger: string[] = [];
@@ -202,17 +186,17 @@ const Begrunnelse = ({ klage }: Props) => {
                 <RadioPanelGruppe
                     name="datoValg"
                     radios={datoValg}
-                    checked={chosenDateOption}
-                    onChange={(_, value: DateOption) => setDateOption(value)}
+                    checked={vedtakType ?? undefined}
+                    onChange={(_, value: VedtakType) => setVedtakType(value)}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
-            {chosenDateOption === DateOption.TIDLIGERE_VEDTAK && (
+            {vedtakType === VedtakType.EARLIER && (
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datepicker
-                        onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
-                        value={chosenISODate ?? undefined}
+                        onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
+                        value={vedtakDate ?? undefined}
                         showYearSelector
                         limitations={{
                             maxDate: new Date().toISOString().substring(0, 10)
@@ -293,6 +277,21 @@ const Begrunnelse = ({ klage }: Props) => {
         </>
     );
 };
+
+const createKlageUpdate = (
+    klage: Klage,
+    fritekst: string,
+    vedtakType: VedtakType | null,
+    vedtakDate: ISODate | null
+): UpdateKlage => ({
+    id: klage.id,
+    tema: klage.tema,
+    ytelse: klage.ytelse,
+    saksnummer: klage.saksnummer,
+    fritekst,
+    vedtakType,
+    vedtakDate
+});
 
 const showAttachmentLoader = (loading: boolean) => {
     if (!loading) {

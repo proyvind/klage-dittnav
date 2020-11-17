@@ -1,20 +1,15 @@
 import { RadioPanelProps } from 'nav-frontend-skjema';
-
-export enum DateOption {
-    SISTE_VEDTAK = 'sisteVedtak',
-    TIDLIGERE_VEDTAK = 'tidligereVedtak',
-    INGEN = ''
-}
+import { VedtakType } from '../../../klage/klage';
 
 export const datoValg: RadioPanelProps[] = [
     {
         label: 'Jeg klager på siste vedtak',
-        value: DateOption.SISTE_VEDTAK,
-        id: DateOption.SISTE_VEDTAK
+        value: VedtakType.LATEST,
+        id: VedtakType.LATEST
     },
     {
         label: 'Jeg klager på et tidligere vedtak',
-        value: DateOption.TIDLIGERE_VEDTAK,
-        id: DateOption.TIDLIGERE_VEDTAK
+        value: VedtakType.EARLIER,
+        id: VedtakType.EARLIER
     }
 ];
