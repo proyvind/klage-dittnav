@@ -10,7 +10,6 @@ import KlageLoader from '../klage/klage-loader';
 import Oppsummering from './klageskjema/oppsummering';
 import KvitteringPage from './klageskjema/kvittering/kvittering-page';
 import { INNGANG_KATEGORIER, Kategori } from '../kategorier/kategorier';
-import EnvironmentLoader from '../environment/environment-loader';
 import AppContextComponenet from '../app-context/app-context';
 import { MainContainer } from '../styled-components/common';
 import { Klage } from '../klage/klage';
@@ -27,23 +26,21 @@ const App = () => (
             <AppContextComponenet>
                 <MainContainer>
                     <ErrorBoundary>
-                        <EnvironmentLoader>
-                            <Switch>
-                                {innsendingsRoutes}
-                                {kategoriRoutes}
-                                <Route path={'/ny'} exact>
-                                    <UserLoader>
-                                        <CreateKlage />
-                                    </UserLoader>
-                                </Route>
-                                <Route path={LOGGED_IN_PATH} render={loggedInRedirect} exact />
-                                <Route path={'/:klageId/begrunnelse'} render={begrunnelse} exact />
-                                <Route path={'/:klageId/oppsummering'} render={oppsummering} exact />
-                                <Route path={'/:klageId/kvittering'} render={kvittering} exact />
-                                <Route path={'/'} component={RootWithQuery} exact />
-                                <Route component={NotFoundPage} />
-                            </Switch>
-                        </EnvironmentLoader>
+                        <Switch>
+                            {innsendingsRoutes}
+                            {kategoriRoutes}
+                            <Route path={'/ny'} exact>
+                                <UserLoader>
+                                    <CreateKlage />
+                                </UserLoader>
+                            </Route>
+                            <Route path={LOGGED_IN_PATH} render={loggedInRedirect} exact />
+                            <Route path={'/:klageId/begrunnelse'} render={begrunnelse} exact />
+                            <Route path={'/:klageId/oppsummering'} render={oppsummering} exact />
+                            <Route path={'/:klageId/kvittering'} render={kvittering} exact />
+                            <Route path={'/'} component={RootWithQuery} exact />
+                            <Route component={NotFoundPage} />
+                        </Switch>
                     </ErrorBoundary>
                 </MainContainer>
             </AppContextComponenet>

@@ -43,14 +43,6 @@ server.get(`/internal/isReady`, (req, res) => res.sendStatus(200));
 
 server.get(`/internal/isAlive`, (req, res) => res.sendStatus(200));
 
-server.get(`/config`, (req, res) =>
-    res.send({
-        appUrl: process.env.REACT_APP_URL,
-        loginserviceUrl: process.env.REACT_APP_LOGINSERVICE_URL,
-        apiUrl: process.env.REACT_API_URL
-    })
-);
-
 // Match everything except internal og static
 server.use(/^(?!.*\/(internal|static)\/).*$/, securityHeadersMiddleware, (req, res) =>
     getDecorator()
