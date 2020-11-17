@@ -11,11 +11,9 @@ interface Props {
 }
 
 const KvitteringPage = ({ klage }: Props) => {
-    const klageJournalpostId = klage?.journalpostId ?? null;
-
-    const [waitingForJoark, setWaitingForJoark] = useState<boolean>(klageJournalpostId === null);
+    const [waitingForJoark, setWaitingForJoark] = useState<boolean>(klage.journalpostId === null);
     const [informStillWorking, setInformStillWorking] = useState<boolean>(false);
-    const [journalPostId, setJournalPostId] = useState<string | null>(klageJournalpostId);
+    const [journalPostId, setJournalPostId] = useState<string | null>(klage.journalpostId);
 
     useLogPageView(PageIdentifier.KLAGESKJEMA_KVITTERING);
 

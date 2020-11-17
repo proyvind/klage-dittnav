@@ -2,7 +2,8 @@ import { environment } from '../environment/environment';
 
 export const LOGGED_IN_REDIRECT_PATH_KEY = 'logged-in-redirect-path';
 
-export function login(redirectAfter: string = current(window.location)) {
+export function login() {
+    const redirectAfter = current(window.location);
     localStorage.setItem(LOGGED_IN_REDIRECT_PATH_KEY, redirectAfter);
     window.location.replace(environment.loginUrl);
 }

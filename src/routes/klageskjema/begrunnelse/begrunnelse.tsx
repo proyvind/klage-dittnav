@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
@@ -22,10 +22,12 @@ import { getAttachmentErrorMessage, Attachment, AttachmentFile, toFiles } from '
 import AttachmentPreview from './attachment-preview';
 import { updateKlage, addAttachment, deleteAttachment } from '../../../api/api';
 import { datoValg } from './date-option';
-import { ApiError, CustomError } from '../../../api/errors';
 import { AppContext } from '../../../app-context/app-context';
 import { ISODate, ISODateTime } from '../../../date/date';
 import { Klage, KlageStatus, UpdateKlage, VedtakType } from '../../../klage/klage';
+import { ApiError, NotLoggedInError } from '../../../api/errors';
+import klageStore from '../../../klage/klage-store';
+import { login } from '../../../auth/login';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -48,7 +50,7 @@ const Begrunnelse = ({ klage }: Props) => {
     const [vedtakDate, setVedtakDate] = useState<string | null>(klage.vedtakDate);
     const [vedtakType, setVedtakType] = useState<VedtakType | null>(klage.vedtakType);
     const [attachments, setAttachments] = useState<Attachment[]>(klage.vedlegg);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<Error | null>(null);
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState<boolean>(false);
@@ -61,14 +63,32 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
-            updateKlage(klageUpdate).catch((error: CustomError) => setError(error.message));
-        }, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
+    const performKlageUpdate = useCallback(() => {
+        const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
+        return updateKlage(klageUpdate)
+            .then(() => {
+                setKlage({
+                    ...klage,
+                    ...klageUpdate,
+                    vedlegg: attachments
+                });
+                klageStore.clear();
+                return true;
+            })
+            .catch((error: Error) => {
+                klageStore.store(fritekst, vedtakType, vedtakDate);
+                setError(error);
+                return false;
+            });
+    }, [fritekst, vedtakDate, vedtakType, attachments, klage, setKlage]);
 
+    useEffect(() => {
+        if (klage.vedtakType === vedtakType && klage.vedtakDate === vedtakDate && klage.fritekst === fritekst) {
+            return;
+        }
+        const timeout = setTimeout(performKlageUpdate, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
         return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
-    }, [fritekst, vedtakDate, vedtakType, klage]);
+    }, [fritekst, vedtakDate, vedtakType, klage, performKlageUpdate]);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -136,20 +156,18 @@ const Begrunnelse = ({ klage }: Props) => {
         }
         setIsLoading(true);
 
-        const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
+        const klageUpdated = await performKlageUpdate();
+        if (klageUpdated) {
+            history.push(`/${klage.id}/oppsummering`);
+            return;
+        }
 
-        setKlage({
-            ...klage,
-            ...klageUpdate,
-            vedlegg: attachments
-        });
+        setIsLoading(false);
+    };
 
-        await updateKlage(klageUpdate)
-            .then(() => history.push(`/${klage.id}/oppsummering`))
-            .catch((error: CustomError) => {
-                setError(error.message);
-                setIsLoading(false);
-            });
+    const storeKlageAndLogIn = () => {
+        klageStore.store(fritekst, vedtakType, vedtakDate);
+        login();
     };
 
     const validForm = () => validBegrunnelse() && validDatoalternativ();
@@ -265,7 +283,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 </AlertStripe>
             </MarginContainer>
 
-            {getError(error)}
+            {getError(error, storeKlageAndLogIn)}
 
             <InlineMargin48TopContainer>
                 <FlexCenteredContainer>
@@ -318,15 +336,28 @@ const getAttachmentError = (error: string | null) => {
     );
 };
 
-const getError = (error: string | null) => {
+const getError = (error: Error | null, logIn: () => void) => {
     if (error === null) {
         return null;
+    }
+
+    if (error instanceof NotLoggedInError) {
+        return (
+            <MarginContainer>
+                <AlertStripeFeil>
+                    <Normaltekst>
+                        Du har blitt logget ut. Vi har lagret klagen du jobbet med. Logg inn for å fortsette der du var.
+                    </Normaltekst>
+                    <LoginButton onClick={logIn}>Logg inn</LoginButton>
+                </AlertStripeFeil>
+            </MarginContainer>
+        );
     }
 
     return (
         <MarginContainer>
             <AlertStripeFeil>
-                <NoMarginParagraph>{error}</NoMarginParagraph>
+                <NoMarginParagraph>{error.message}</NoMarginParagraph>
             </AlertStripeFeil>
         </MarginContainer>
     );
@@ -353,6 +384,10 @@ const InlineMargin48TopContainer = styled(Margin48TopContainer)`
 const InlineMarginTopContainer = styled(MarginTopContainer)`
     display: inline-block;
     position: initial;
+`;
+
+const LoginButton = styled(Hovedknapp)`
+    margin-top: 16px;
 `;
 
 export default Begrunnelse;
