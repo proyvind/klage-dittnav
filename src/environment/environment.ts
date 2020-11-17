@@ -1,62 +1,33 @@
-import { getJSON } from '../api/fetch';
-
-interface InboundEnvironment {
-    readonly appUrl: string;
-    readonly loginserviceUrl: string;
-    readonly apiUrl: string;
-}
-
 type KlageId = string | number;
 
 export const LOGGED_IN_PATH = '/loggedin-redirect';
 
-export class NotInitializedError extends Error {
-    constructor() {
-        super('Environment was accessed before it has been initialized.');
+export class EnvironmentInitError extends Error {
+    constructor(appUrl: string | undefined, apiUrl: string | undefined, loginUrl: string | undefined) {
+        super(`Environment failed to initialize. App URL: "${appUrl}", API URL: "${apiUrl}", login URL: "${loginUrl}"`);
     }
 }
 
 export class Environment {
-    private initialized = false;
-    private _appUrl: string | null = null;
-    private _apiUrl: string | null = null;
-    private _loginserviceUrl: string | null = null;
+    public appUrl: string;
+    public apiUrl: string;
+    public loginServiceUrl: string;
 
-    isInitialized = () => this.initialized;
-
-    async init() {
-        if (this.initialized) {
-            return this;
+    constructor() {
+        if (
+            typeof process.env.REACT_APP_URL === 'undefined' ||
+            typeof process.env.REACT_APP_API_URL === 'undefined' ||
+            typeof process.env.REACT_APP_LOGINSERVICE_URL === 'undefined'
+        ) {
+            throw new EnvironmentInitError(
+                process.env.REACT_APP_URL,
+                process.env.REACT_APP_API_URL,
+                process.env.REACT_APP_LOGINSERVICE_URL
+            );
         }
-
-        const { appUrl, apiUrl, loginserviceUrl } = await getJSON<InboundEnvironment>(
-            '/config',
-            'Fant ikke konfigurasjonsendepunktet.'
-        );
-        this._apiUrl = apiUrl;
-        this._appUrl = appUrl;
-        this._loginserviceUrl = loginserviceUrl;
-        this.initialized = true;
-        return this;
-    }
-
-    get apiUrl() {
-        if (this.initialized && this._apiUrl !== null) {
-            return this._apiUrl;
-        }
-        throw new NotInitializedError();
-    }
-    get appUrl() {
-        if (this.initialized && this._appUrl !== null) {
-            return this._appUrl;
-        }
-        throw new NotInitializedError();
-    }
-    get loginServiceUrl() {
-        if (this.initialized && this._loginserviceUrl !== null) {
-            return this._loginserviceUrl;
-        }
-        throw new NotInitializedError();
+        this.appUrl = process.env.REACT_APP_URL;
+        this.apiUrl = process.env.REACT_APP_API_URL;
+        this.loginServiceUrl = process.env.REACT_APP_LOGINSERVICE_URL;
     }
 
     get loginUrl() {
