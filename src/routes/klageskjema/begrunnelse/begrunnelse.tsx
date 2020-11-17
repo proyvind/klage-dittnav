@@ -71,6 +71,43 @@ const Begrunnelse = ({ klage }: Props) => {
 
     const fileInput = useRef<HTMLInputElement>(null);
 
+    const handleInputChange = (event: React.ChangeEvent | React.SyntheticEvent<EventTarget> | string) => {
+        console.log('event: ', event);
+
+        let name;
+        let type;
+        let value;
+
+        if (typeof event !== 'string') {
+            name = (event.target as HTMLInputElement).name;
+            type = (event.target as HTMLInputElement).type;
+            value = (event.target as HTMLInputElement).value;
+        } else {
+            value = event;
+        }
+
+        console.log('name: ', name);
+        console.log('type: ', type);
+        console.log('value: ', value);
+
+        console.log(value in DateOption);
+
+        // const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+
+        if (name === 'datoValg') {
+            // setDateOption(DateOption[value]);
+        }
+        if (name === 'begrunnelse') {
+            setFritekst(value);
+        }
+        if (name === 'begrunnelse') {
+            setFritekst(value);
+        }
+
+        setDateOption(DateOption.INGEN);
+        setISODate('');
+    };
+
     const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         fileInput.current?.click();
@@ -195,7 +232,8 @@ const Begrunnelse = ({ klage }: Props) => {
                     name="datoValg"
                     radios={datoValg}
                     checked={chosenDateOption}
-                    onChange={(_, value: DateOption) => setDateOption(value)}
+                    // onChange={(_, value: DateOption) => setDateOption(value)}
+                    onChange={handleInputChange}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
@@ -203,7 +241,8 @@ const Begrunnelse = ({ klage }: Props) => {
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datepicker
-                        onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
+                        // onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
+                        onChange={handleInputChange}
                         value={chosenISODate ?? undefined}
                         showYearSelector
                         limitations={{
@@ -220,7 +259,8 @@ const Begrunnelse = ({ klage }: Props) => {
                     description={INPUTDESCRIPTION}
                     placeholder="Skriv inn din begrunnelse her."
                     maxLength={0}
-                    onChange={e => setFritekst(e.target.value)}
+                    // onChange={e => setFritekst(e.target.value)}
+                    onChange={handleInputChange}
                     style={{
                         minHeight: '180px'
                     }}
