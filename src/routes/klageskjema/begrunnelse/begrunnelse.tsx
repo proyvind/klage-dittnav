@@ -55,6 +55,10 @@ const Begrunnelse = ({ klage }: Props) => {
     const [chosenISODate, setISODate] = useState<string | null>(isoDate);
     const [chosenDateOption, setDateOption] = useState<DateOption>(dateOption);
     const [attachments, setAttachments] = useState<Attachment[]>(klageVedlegg);
+    const [error, setError] = useState<string | null>(null);
+    const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
+    const [attachmentError, setAttachmentError] = useState<string | null>(null);
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
         if (klage.status !== KlageStatus.DRAFT) {
@@ -64,49 +68,40 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-    const [error, setError] = useState<string | null>(null);
-    const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
-    const [attachmentError, setAttachmentError] = useState<string | null>(null);
-    const [submitted, setSubmitted] = useState<boolean>(false);
+    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
+        id: klage.id,
+        tema: klage.tema,
+        ytelse: klage.ytelse,
+        saksnummer: klage.saksnummer,
+        fritekst,
+        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
+    });
+
+    useEffect(() => {
+        const autosave = async () => {
+            const klageUpdate = createKlageUpdate(klage);
+
+            setKlage({
+                ...klage,
+                ...klageUpdate
+            });
+
+            await updateKlage(klageUpdate)
+                .then()
+                .catch((error: CustomError) => {
+                    setError(error.message);
+                    setIsLoading(false);
+                });
+        };
+
+        const timeout = setTimeout(() => {
+            autosave();
+        }, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
+
+        return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
+    }, [fritekst, chosenISODate, chosenDateOption]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fileInput = useRef<HTMLInputElement>(null);
-
-    const handleInputChange = (event: React.ChangeEvent | React.SyntheticEvent<EventTarget> | string) => {
-        console.log('event: ', event);
-
-        let name;
-        let type;
-        let value;
-
-        if (typeof event !== 'string') {
-            name = (event.target as HTMLInputElement).name;
-            type = (event.target as HTMLInputElement).type;
-            value = (event.target as HTMLInputElement).value;
-        } else {
-            value = event;
-        }
-
-        console.log('name: ', name);
-        console.log('type: ', type);
-        console.log('value: ', value);
-
-        console.log(value in DateOption);
-
-        // const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-
-        if (name === 'datoValg') {
-            // setDateOption(DateOption[value]);
-        }
-        if (name === 'begrunnelse') {
-            setFritekst(value);
-        }
-        if (name === 'begrunnelse') {
-            setFritekst(value);
-        }
-
-        setDateOption(DateOption.INGEN);
-        setISODate('');
-    };
 
     const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
@@ -162,15 +157,6 @@ const Begrunnelse = ({ klage }: Props) => {
             setAttachmentsLoading(false);
         }
     };
-
-    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
-        id: klage.id,
-        tema: klage.tema,
-        ytelse: klage.ytelse,
-        saksnummer: klage.saksnummer,
-        fritekst,
-        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
-    });
 
     const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
@@ -232,8 +218,7 @@ const Begrunnelse = ({ klage }: Props) => {
                     name="datoValg"
                     radios={datoValg}
                     checked={chosenDateOption}
-                    // onChange={(_, value: DateOption) => setDateOption(value)}
-                    onChange={handleInputChange}
+                    onChange={(_, value: DateOption) => setDateOption(value)}
                     feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                 />
             </MarginContainer>
@@ -241,8 +226,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 <MarginContainer>
                     <Element>Vedtaksdato (valgfritt)</Element>
                     <Datepicker
-                        // onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
-                        onChange={handleInputChange}
+                        onChange={(dateISO, isValid) => setISODate(isValid ? dateISO : null)}
                         value={chosenISODate ?? undefined}
                         showYearSelector
                         limitations={{
@@ -259,8 +243,7 @@ const Begrunnelse = ({ klage }: Props) => {
                     description={INPUTDESCRIPTION}
                     placeholder="Skriv inn din begrunnelse her."
                     maxLength={0}
-                    // onChange={e => setFritekst(e.target.value)}
-                    onChange={handleInputChange}
+                    onChange={e => setFritekst(e.target.value)}
                     style={{
                         minHeight: '180px'
                     }}
