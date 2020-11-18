@@ -78,24 +78,9 @@ const Begrunnelse = ({ klage }: Props) => {
     });
 
     useEffect(() => {
-        const autosave = async () => {
+        const timeout = setTimeout(async () => {
             const klageUpdate = createKlageUpdate(klage);
-
-            setKlage({
-                ...klage,
-                ...klageUpdate
-            });
-
-            await updateKlage(klageUpdate)
-                .then()
-                .catch((error: CustomError) => {
-                    setError(error.message);
-                    setIsLoading(false);
-                });
-        };
-
-        const timeout = setTimeout(() => {
-            autosave();
+            await updateKlage(klageUpdate).catch((error: CustomError) => setError(error.message));
         }, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
 
         return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
