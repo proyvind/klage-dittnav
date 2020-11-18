@@ -78,10 +78,10 @@ const Begrunnelse = ({ klage }: Props) => {
     });
 
     useEffect(() => {
-        const timeout = setTimeout(async () => {
-            const klageUpdate = createKlageUpdate(klage);
-            await updateKlage(klageUpdate).catch((error: CustomError) => setError(error.message));
-        }, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
+        const timeout = setTimeout(
+            () => updateKlage(createKlageUpdate(klage)).catch((error: CustomError) => setError(error.message)),
+            1000
+        ); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
 
         return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
     }, [fritekst, chosenISODate, chosenDateOption]); // eslint-disable-line react-hooks/exhaustive-deps
