@@ -3,7 +3,7 @@ export interface User {
     adresse?: Address;
     kontaktinformasjon?: ContactInfo;
     folkeregisteridentifikator?: Identifikator;
-    tokenExpires?: number;
+    tokenExpires: number; // Expiration timestamp in milliseconds since 01-01-1970.
 }
 
 export interface Identifikator {

@@ -28,6 +28,7 @@ import { Klage, KlageStatus, UpdateKlage, VedtakType } from '../../../klage/klag
 import { ApiError, NotLoggedInError } from '../../../api/errors';
 import klageStore from '../../../klage/klage-store';
 import { login } from '../../../auth/login';
+import { LoginButton } from '../../../styled-components/login-button';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -384,10 +385,6 @@ const InlineMargin48TopContainer = styled(Margin48TopContainer)`
 const InlineMarginTopContainer = styled(MarginTopContainer)`
     display: inline-block;
     position: initial;
-`;
-
-const LoginButton = styled(Hovedknapp)`
-    margin-top: 16px;
 `;
 
 export default Begrunnelse;

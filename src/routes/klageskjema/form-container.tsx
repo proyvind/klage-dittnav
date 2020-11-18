@@ -5,6 +5,7 @@ import { MarginContainer } from '../../styled-components/common';
 import Begrunnelse from './begrunnelse/begrunnelse';
 import Steps from './steps';
 import { Klage } from '../../klage/klage';
+import LogoutWarning from '../../logout-warning/logout-warning';
 
 interface Props {
     activeStep: number;
@@ -14,6 +15,7 @@ interface Props {
 
 const FormContainer = (props: Props) => (
     <>
+        <LogoutWarning />
         <MarginContainer>
             <Steps klageStatus={props.klage.status} activeStep={props.activeStep} />
         </MarginContainer>
