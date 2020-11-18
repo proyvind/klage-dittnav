@@ -55,6 +55,10 @@ const Begrunnelse = ({ klage }: Props) => {
     const [chosenISODate, setISODate] = useState<string | null>(isoDate);
     const [chosenDateOption, setDateOption] = useState<DateOption>(dateOption);
     const [attachments, setAttachments] = useState<Attachment[]>(klageVedlegg);
+    const [error, setError] = useState<string | null>(null);
+    const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
+    const [attachmentError, setAttachmentError] = useState<string | null>(null);
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
         if (klage.status !== KlageStatus.DRAFT) {
@@ -64,10 +68,23 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-    const [error, setError] = useState<string | null>(null);
-    const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
-    const [attachmentError, setAttachmentError] = useState<string | null>(null);
-    const [submitted, setSubmitted] = useState<boolean>(false);
+    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
+        id: klage.id,
+        tema: klage.tema,
+        ytelse: klage.ytelse,
+        saksnummer: klage.saksnummer,
+        fritekst,
+        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
+    });
+
+    useEffect(() => {
+        const timeout = setTimeout(
+            () => updateKlage(createKlageUpdate(klage)).catch((error: CustomError) => setError(error.message)),
+            1000
+        ); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
+
+        return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
+    }, [fritekst, chosenISODate, chosenDateOption]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -125,15 +142,6 @@ const Begrunnelse = ({ klage }: Props) => {
             setAttachmentsLoading(false);
         }
     };
-
-    const createKlageUpdate = (klage: Klage): UpdateKlage => ({
-        id: klage.id,
-        tema: klage.tema,
-        ytelse: klage.ytelse,
-        saksnummer: klage.saksnummer,
-        fritekst,
-        vedtak: dateToVedtakText(chosenDateOption, chosenISODate)
-    });
 
     const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
