@@ -77,6 +77,11 @@ export const InlineMargin48Container = styled(Margin48Container)`
     position: initial;
 `;
 
+export const InlineMargin48TopContainer = styled(Margin48TopContainer)`
+    display: inline-block;
+    position: initial;
+`;
+
 export const PaddingContainer = styled.div`
     padding-top: 32px;
     padding-bottom: 32px;

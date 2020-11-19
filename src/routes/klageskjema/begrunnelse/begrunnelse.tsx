@@ -10,7 +10,6 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
     CenteredContainer,
     FlexCenteredContainer,
-    InlineMargin48Container,
     Margin40Container,
     Margin48TopContainer,
     MarginContainer,
@@ -29,6 +28,7 @@ import { ApiError, NotLoggedInError } from '../../../api/errors';
 import klageStore from '../../../klage/klage-store';
 import { login } from '../../../auth/login';
 import { LoginButton } from '../../../styled-components/login-button';
+import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -55,6 +55,7 @@ const Begrunnelse = ({ klage }: Props) => {
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState<boolean>(false);
+    const [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>(AutosaveStatus.NONE);
 
     useEffect(() => {
         if (klage.status !== KlageStatus.DRAFT) {
@@ -64,31 +65,34 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => window.scrollTo(0, 0), []);
 
-    const performKlageUpdate = useCallback(() => {
+    const performKlageUpdate = useCallback(async () => {
         const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
-        return updateKlage(klageUpdate)
-            .then(() => {
-                setKlage({
-                    ...klage,
-                    ...klageUpdate,
-                    vedlegg: attachments
-                });
-                klageStore.clear();
-                return true;
-            })
-            .catch((error: Error) => {
-                klageStore.store(fritekst, vedtakType, vedtakDate);
-                setError(error);
-                return false;
+        try {
+            await updateKlage(klageUpdate);
+            setKlage({
+                ...klage,
+                ...klageUpdate,
+                vedlegg: attachments
             });
+            klageStore.clear();
+            setAutosaveStatus(AutosaveStatus.SAVED);
+            return true;
+        } catch (error) {
+            setAutosaveStatus(AutosaveStatus.FAILED);
+            klageStore.store(fritekst, vedtakType, vedtakDate);
+            setError(error);
+            return false;
+        }
     }, [fritekst, vedtakDate, vedtakType, attachments, klage, setKlage]);
 
     useEffect(() => {
         if (klage.vedtakType === vedtakType && klage.vedtakDate === vedtakDate && klage.fritekst === fritekst) {
+            setAutosaveStatus(AutosaveStatus.SAVED);
             return;
         }
-        const timeout = setTimeout(performKlageUpdate, 1000); // 1s - timeout til å kjøre funksjon om timeouten ikke blir nullstillt
-        return () => clearTimeout(timeout); // Nullstill og ikke kjør funksjon
+        setAutosaveStatus(AutosaveStatus.SAVING);
+        const timeout = setTimeout(performKlageUpdate, 1000);
+        return () => clearTimeout(timeout); // Clear existing timer every time it runs.
     }, [fritekst, vedtakDate, vedtakType, klage, performKlageUpdate]);
 
     const fileInput = useRef<HTMLInputElement>(null);
@@ -223,7 +227,7 @@ const Begrunnelse = ({ klage }: Props) => {
                     />
                 </MarginContainer>
             )}
-            <InlineMargin48Container>
+            <InlineMargin48TopContainer>
                 <Undertittel>Begrunn klagen din</Undertittel>
                 <Textarea
                     name="begrunnelse"
@@ -237,7 +241,9 @@ const Begrunnelse = ({ klage }: Props) => {
                     }}
                     feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
                 />
-            </InlineMargin48Container>
+            </InlineMargin48TopContainer>
+
+            <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
 
             <MarginContainer>
                 <Undertittel>Vedlegg ({attachments.length})</Undertittel>
