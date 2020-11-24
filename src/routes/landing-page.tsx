@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import queryString from 'query-string';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import InngangInnsendingDigital from './inngang/inngang-innsendingsvalg-digital';
-import { checkAuth } from '../auth/check-auth';
+import { getUser } from '../user/get-user';
 import { CenteredContainer } from '../styled-components/common';
 import { TemaKey } from '../tema/tema';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -15,7 +15,10 @@ const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null 
 
     useEffect(() => {
         if (user === null) {
-            checkAuth(setUser, false).then(() => setLoading(false));
+            getUser().then(user => {
+                setLoading(false);
+                setUser(user);
+            });
         }
     }, [user, setUser]);
 

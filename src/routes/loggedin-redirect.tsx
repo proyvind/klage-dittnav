@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { LOGGED_IN_REDIRECT_PATH_KEY } from '../auth/login';
+import { LOGGED_IN_REDIRECT_PATH_KEY } from '../user/login';
 
 export const loggedInRedirect = () => <Redirect to={getRedirectPath(localStorage)} />;
 

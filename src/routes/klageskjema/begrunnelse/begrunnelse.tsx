@@ -26,7 +26,7 @@ import { ISODate, ISODateTime } from '../../../date/date';
 import { Klage, KlageStatus, UpdateKlage, VedtakType } from '../../../klage/klage';
 import { ApiError, NotLoggedInError } from '../../../api/errors';
 import klageStore from '../../../klage/klage-store';
-import { login } from '../../../auth/login';
+import { login } from '../../../user/login';
 import { LoginButton } from '../../../styled-components/login-button';
 import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
 
