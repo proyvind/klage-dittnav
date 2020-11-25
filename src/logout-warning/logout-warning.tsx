@@ -55,7 +55,7 @@ const LogoutWarning = () => {
     if (expired || user === null) {
         return (
             <Veilederpanel fargetema="advarsel" svg={<VeilederAdvarsel />}>
-                <Normaltekst>Du er blitt logget ut. For å fortsette trenger du bare logge inn igjen.</Normaltekst>
+                <Normaltekst>Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.</Normaltekst>
                 <LoginButton>Logg inn</LoginButton>
             </Veilederpanel>
         );
