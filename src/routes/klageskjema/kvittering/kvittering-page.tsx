@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Kvittering from './kvittering';
-import KvitteringLoading from './kvitteringLoading';
+import KvitteringLoading from './kvittering-loading';
 import { getJournalpostId } from '../../../api/api';
 import { PageIdentifier } from '../../../logging/amplitude';
 import { useLogPageView } from '../../../logging/use-log-page-view';

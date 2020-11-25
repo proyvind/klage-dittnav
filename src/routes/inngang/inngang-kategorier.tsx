@@ -1,10 +1,17 @@
 import React from 'react';
 import { Sidetittel, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { InngangKategori } from '../../kategorier/kategorier';
-import { Margin40Container, Margin40TopContainer, PointsFlexListContainer } from '../../styled-components/common';
+import {
+    CenterInMobileContainer,
+    Margin40Container,
+    Margin40TopContainer,
+    PointsFlexListContainer,
+    WhiteBackgroundContainer
+} from '../../styled-components/common';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { KlageFlexLinkPanel } from '../../link/link';
+import Layout from '../layout';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -13,17 +20,21 @@ interface Props {
 const InngangKategorier = ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
     return (
-        <section>
-            <div>
-                <Margin40TopContainer>
+        <Layout backgroundColor="#e7e9e9">
+            <Margin40TopContainer>
+                <CenterInMobileContainer>
                     <Sidetittel>{inngangkategori.title}</Sidetittel>
-                </Margin40TopContainer>
-                <Margin40Container>
+                </CenterInMobileContainer>
+            </Margin40TopContainer>
+            <Margin40Container>
+                <WhiteBackgroundContainer>
                     <Systemtittel>Hvilken tjeneste eller ytelse gjelder det?</Systemtittel>
-                </Margin40Container>
-            </div>
-            <PointsFlexListContainer>{getLinks(inngangkategori)}</PointsFlexListContainer>
-        </section>
+                    <Margin40TopContainer>
+                        <PointsFlexListContainer>{getLinks(inngangkategori)}</PointsFlexListContainer>
+                    </Margin40TopContainer>
+                </WhiteBackgroundContainer>
+            </Margin40Container>
+        </Layout>
     );
 };
 

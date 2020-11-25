@@ -8,27 +8,25 @@ interface Props {
     informStillWorking: boolean;
 }
 
-const KvitteringLoading = (props: Props) => {
-    return (
-        <ContentContainer>
-            <CenteredContainer>
-                <MarginContainer>
-                    <BouncingEnvelope />
-                </MarginContainer>
+const KvitteringLoading = (props: Props) => (
+    <ContentContainer>
+        <CenteredContainer>
+            <MarginContainer>
+                <BouncingEnvelope />
+            </MarginContainer>
 
-                <MarginContainer>
-                    <Systemtittel>Sender inn klage...</Systemtittel>
-                </MarginContainer>
+            <MarginContainer>
+                <Systemtittel>Sender inn klage...</Systemtittel>
+            </MarginContainer>
 
-                {props.informStillWorking && (
-                    <MarginContainer>
-                        <Normaltekst>Jobber fortsatt...</Normaltekst>
-                    </MarginContainer>
-                )}
-            </CenteredContainer>
-        </ContentContainer>
-    );
-};
+            {props.informStillWorking && (
+                <MarginContainer>
+                    <Normaltekst>Jobber fortsatt...</Normaltekst>
+                </MarginContainer>
+            )}
+        </CenteredContainer>
+    </ContentContainer>
+);
 
 const bounce = keyframes`
     0%,100% {

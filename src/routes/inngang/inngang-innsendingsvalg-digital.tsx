@@ -6,11 +6,14 @@ import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Lenke from 'nav-frontend-lenker';
 import LetterOpened from '../../assets/images/icons/LetterOpened';
 import {
+    CenterInMobileContainer,
     IconContainer,
     LenkePanelContentWithImage,
     Margin40Container,
+    Margin40TopContainer,
     MarginContainer,
-    MarginTopContainer
+    MarginTopContainer,
+    WhiteBackgroundContainer
 } from '../../styled-components/common';
 import MobilePhone from '../../assets/images/icons/MobilePhone';
 import { useLogPageView } from '../../logging/use-log-page-view';
@@ -18,6 +21,7 @@ import { PageIdentifier } from '../../logging/amplitude';
 import { KlageLinkPanel } from '../../link/link';
 import { TemaKey, Tema } from '../../tema/tema';
 import { getUrlToPaperForm } from '../../tema/ytelse';
+import Layout from '../layout';
 
 interface Props {
     temaKey: TemaKey;
@@ -30,39 +34,48 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
-        <div>
-            <Sidetittel>{title}</Sidetittel>
-            <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
-            <Margin40Container>
-                <LenkepanelBase href={paperUrl} border>
-                    <LenkePanelContentWithImage>
-                        <IconContainer>
-                            <LetterOpened />
-                        </IconContainer>
-                        <div>
-                            <Systemtittel className="lenkepanel__heading">Klage via post</Systemtittel>
-                            <MarginTopContainer>
-                                <Normaltekst>
-                                    Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av andre.
-                                </Normaltekst>
-                            </MarginTopContainer>
-                        </div>
-                    </LenkePanelContentWithImage>
-                </LenkepanelBase>
-            </Margin40Container>
+        <Layout backgroundColor="#e7e9e9">
+            <Margin40TopContainer>
+                <CenterInMobileContainer>
+                    <Sidetittel>{title}</Sidetittel>
+                </CenterInMobileContainer>
+            </Margin40TopContainer>
+            <Margin40TopContainer>
+                <WhiteBackgroundContainer>
+                    <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
+                    <Margin40Container>
+                        <LenkepanelBase href={paperUrl} border>
+                            <LenkePanelContentWithImage>
+                                <IconContainer>
+                                    <LetterOpened />
+                                </IconContainer>
+                                <div>
+                                    <Systemtittel className="lenkepanel__heading">Klage via post</Systemtittel>
+                                    <MarginTopContainer>
+                                        <Normaltekst>
+                                            Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av
+                                            andre.
+                                        </Normaltekst>
+                                    </MarginTopContainer>
+                                </div>
+                            </LenkePanelContentWithImage>
+                        </LenkepanelBase>
+                    </Margin40Container>
 
-            <div>
-                Les mer om{' '}
-                <Lenke
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-                >
-                    dine klagerettigheter på våre tema-sider
-                </Lenke>
-                .
-            </div>
-        </div>
+                    <div>
+                        Les mer om{' '}
+                        <Lenke
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
+                        >
+                            dine klagerettigheter på våre tema-sider
+                        </Lenke>
+                        .
+                    </div>
+                </WhiteBackgroundContainer>
+            </Margin40TopContainer>
+        </Layout>
     );
 };
 
@@ -105,7 +118,7 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
                 </LenkePanelContentWithImage>
             </KlageLinkPanel>
             <Lenke target="_blank" rel="noopener noreferrer" href="https://www.norge.no/elektronisk-id">
-                Jeg har ikke elektronisk ID
+                Slik skaffer du deg elektronisk ID
             </Lenke>
         </MarginContainer>
     );
