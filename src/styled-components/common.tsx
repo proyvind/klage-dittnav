@@ -26,6 +26,15 @@ export const CenteredContainer = styled.div`
     text-align: center;
 `;
 
+export const SmallMarginTopContainer = styled.div`
+    @media ${device.mobileS} {
+        margin-top: 0;
+    }
+    @media ${device.mobileL} {
+        margin-top: 8px;
+    }
+`;
+
 export const MarginTopContainer = styled.div`
     margin-top: 16px;
     width: 100%;

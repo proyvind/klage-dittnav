@@ -6,6 +6,7 @@ import Begrunnelse from './begrunnelse/begrunnelse';
 import Steps from './steps';
 import { Klage } from '../../klage/klage';
 import LogoutWarning from '../../logout-warning/logout-warning';
+import FormTitle from '../form-title';
 
 interface Props {
     activeStep: number;
@@ -15,6 +16,7 @@ interface Props {
 
 const FormContainer = (props: Props) => (
     <>
+        <FormTitle klage={props.klage} />
         <LogoutWarning />
         <MarginContainer>
             <Steps klageStatus={props.klage.status} activeStep={props.activeStep} />
