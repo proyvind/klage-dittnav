@@ -27,9 +27,9 @@ spec:
       severity: danger
       expr: (100 * (sum by (backend) (rate(traefik_backend_requests_total{code=~"^5\\d\\d", backend=~"{{appUrl}}*"}[3m])) / sum by (backend) (rate(traefik_backend_requests_total{backend=~"{{appUrl}}*"}[3m])))) > 1
       for: 3m
-      action: "Check the logs for \{{ $labels.log_app }} to see why \{{ $labels.backend }} returns error responses."
+      action: "Check the logs for klage-dittnav to see why \{{ $labels.backend }} returns error responses."
     - alert: High amount of HTTP client errors (4xx responses)
       severity: warning
       expr: (100 * (sum by (backend) (rate(traefik_backend_requests_total{code=~"^4\\d\\d", backend=~"{{appUrl}}*"}[3m])) / sum by (backend) (rate(traefik_backend_requests_total{backend=~"{{appUrl}}*"}[3m])))) > 10
       for: 3m
-      action: "Check the logs for \{{ $labels.log_app }} to see why \{{ $labels.backend }} returns error responses."
+      action: "Check the logs for klage-dittnav to see why \{{ $labels.backend }} returns error responses."
