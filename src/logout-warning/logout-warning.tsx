@@ -9,6 +9,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import nb from 'dayjs/locale/nb';
 import { LoginButton } from '../styled-components/login-button';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { login } from '../user/login';
 
 dayjs.extend(utc);
 dayjs.extend(relative);
@@ -56,7 +57,7 @@ const LogoutWarning = () => {
         return (
             <Veilederpanel fargetema="advarsel" svg={<VeilederAdvarsel />}>
                 <Normaltekst>Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.</Normaltekst>
-                <LoginButton>Logg inn</LoginButton>
+                <LoginButton onClick={login}>Logg inn</LoginButton>
             </Veilederpanel>
         );
     }
