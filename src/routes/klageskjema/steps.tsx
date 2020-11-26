@@ -2,6 +2,7 @@ import React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { StegindikatorStegProps } from 'nav-frontend-stegindikator/lib/stegindikator-steg';
 import { KlageStatus } from '../../klage/klage';
+import { Row } from '../../styled-components/row';
 
 interface Props {
     klageStatus: KlageStatus;
@@ -35,7 +36,11 @@ const Steps = ({ klageStatus, activeStep }: Props) => {
         }
     ];
 
-    return <Stegindikator steg={formSteps} aktivtSteg={activeStep} autoResponsiv kompakt />;
+    return (
+        <Row>
+            <Stegindikator steg={formSteps} aktivtSteg={activeStep} autoResponsiv kompakt />
+        </Row>
+    );
 };
 
 const propsAreEqual = (prevProps: Props, nextProps: Props): boolean =>

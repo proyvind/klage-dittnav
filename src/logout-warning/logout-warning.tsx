@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederAdvarsel from '../assets/images/icons/VeilederAdvarsel';
-import { AppContext } from '../app-context/app-context';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import relative from 'dayjs/plugin/relativeTime';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import nb from 'dayjs/locale/nb';
-import { LoginButton } from '../styled-components/login-button';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import relative from 'dayjs/plugin/relativeTime';
+import Veilederpanel from 'nav-frontend-veilederpanel';
 import { Normaltekst } from 'nav-frontend-typografi';
+import VeilederIcon from '../icons/VeilederIcon';
+import { AppContext } from '../app-context/app-context';
+import { LoginButton } from '../styled-components/login-button';
 import { login } from '../user/login';
+import { Row } from '../styled-components/row';
 
 dayjs.extend(utc);
 dayjs.extend(relative);
@@ -55,17 +56,23 @@ const LogoutWarning = () => {
 
     if (expired || user === null) {
         return (
-            <Veilederpanel fargetema="advarsel" svg={<VeilederAdvarsel />}>
-                <Normaltekst>Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.</Normaltekst>
-                <LoginButton onClick={login}>Logg inn</LoginButton>
-            </Veilederpanel>
+            <Row>
+                <Veilederpanel fargetema="advarsel" svg={<VeilederIcon />}>
+                    <Normaltekst>
+                        Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.
+                    </Normaltekst>
+                    <LoginButton onClick={login}>Logg inn</LoginButton>
+                </Veilederpanel>
+            </Row>
         );
     }
     if (expiresIn !== null) {
         return (
-            <Veilederpanel fargetema="advarsel" svg={<VeilederAdvarsel />}>
-                <Normaltekst>{`Du vil bli logget ut ${expiresIn}. For å fortsette trenger du bare logge inn igjen.`}</Normaltekst>
-            </Veilederpanel>
+            <Row>
+                <Veilederpanel fargetema="advarsel" svg={<VeilederIcon />}>
+                    <Normaltekst>{`Du vil bli logget ut ${expiresIn}. For å fortsette trenger du bare logge inn igjen.`}</Normaltekst>
+                </Veilederpanel>
+            </Row>
         );
     }
 

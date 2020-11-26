@@ -1,8 +1,18 @@
 import React from 'react';
 
-function Envelope() {
+interface Props {
+    className?: string;
+}
+
+function EnvelopeIcon(props: Props) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="none" viewBox="0 0 100 100">
+        <svg
+            className={props.className}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 100 100"
+            role="presentation"
+        >
             <path
                 fill="#99C2E8"
                 fillRule="evenodd"
@@ -38,4 +48,4 @@ function Envelope() {
     );
 }
 
-export default Envelope;
+export default EnvelopeIcon;

@@ -1,38 +1,10 @@
-import FileFC from 'forhandsvisningsfil';
-import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import styled from 'styled-components/macro';
+import FileFC from 'forhandsvisningsfil';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { device } from './media-queries';
-
-export const MainContainer = styled.main`
-    margin: 0 auto;
-    min-width: 320px;
-    padding-bottom: 64px;
-    padding-top: 32px;
-    text-align: left;
-
-    @media ${device.mobileS} {
-        max-width: 85%;
-    }
-    @media ${device.laptop} {
-        max-width: 800px;
-    }
-`;
-
-export const ContentContainer = styled.div`
-    margin: 0 auto;
-`;
 
 export const CenteredContainer = styled.div`
     text-align: center;
-`;
-
-export const SmallMarginTopContainer = styled.div`
-    @media ${device.mobileS} {
-        margin-top: 0;
-    }
-    @media ${device.mobileL} {
-        margin-top: 8px;
-    }
 `;
 
 export const MarginTopContainer = styled.div`
@@ -45,52 +17,6 @@ export const MarginContainer = styled.div`
     margin-top: 16px;
     margin-bottom: 16px;
     width: 100%;
-`;
-
-export const Margin32Container = styled(MarginContainer)`
-    margin-top: 32px;
-    margin-bottom: 32px;
-`;
-
-export const Margin40TopContainer = styled(MarginTopContainer)`
-    margin-top: 40px;
-    width: 100%;
-    display: inline-block;
-`;
-
-export const Margin40Container = styled(MarginContainer)`
-    margin-top: 40px;
-    margin-bottom: 40px;
-`;
-
-export const Margin48TopContainer = styled(MarginTopContainer)`
-    margin-top: 48px;
-`;
-
-export const Margin48Container = styled(MarginContainer)`
-    margin-top: 48px;
-    margin-bottom: 48px;
-`;
-
-export const InlineMargin48Container = styled(Margin48Container)`
-    display: inline-block;
-    position: initial;
-`;
-
-export const InlineMargin48TopContainer = styled(Margin48TopContainer)`
-    display: inline-block;
-    position: initial;
-`;
-
-export const PaddingContainer = styled.div`
-    padding-top: 32px;
-    padding-bottom: 32px;
-`;
-
-export const ContainedContent = styled.div`
-    * {
-        max-width: 100%;
-    }
 `;
 
 export const FlexContainer = styled.div`
@@ -160,10 +86,6 @@ export const FileFlexItem = styled(FileFC)`
     }
 `;
 
-export const FlexCenteredContainer = styled(FlexContainer)`
-    justify-content: center;
-`;
-
 export const PointsFlexListContainer = styled(FlexContainer)`
     justify-content: space-between;
     > div {
@@ -171,14 +93,6 @@ export const PointsFlexListContainer = styled(FlexContainer)`
         flex-grow: 1;
         margin-bottom: 24px;
     }
-`;
-
-export const NoMarginParagraph = styled.p`
-    margin: 0;
-`;
-
-export const NoMarginUndertekst = styled(Undertekst)`
-    margin: 0;
 `;
 
 export const WrapNormaltekst = styled(Normaltekst)`
@@ -218,20 +132,5 @@ export const LenkePanelContentWithImage = styled.div`
         padding: 0.5rem 2rem;
         justify-content: initial;
         flex-wrap: nowrap;
-    }
-`;
-
-export const WhiteBackgroundContainer = styled.div`
-    background-color: #fff;
-    padding: 32px;
-`;
-
-export const CenterInMobileContainer = styled.div`
-    margin: 0 auto;
-    @media ${device.mobileS} {
-        text-align: center;
-    }
-    @media ${device.laptop} {
-        text-align: initial;
     }
 `;

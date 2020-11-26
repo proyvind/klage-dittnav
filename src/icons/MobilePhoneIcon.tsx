@@ -1,8 +1,18 @@
 import React from 'react';
 
-function MobilePhone() {
+interface Props {
+    className?: string;
+}
+
+function MobilePhone(props: Props) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="29" height="50" fill="none" viewBox="0 0 29 50">
+        <svg
+            className={props.className}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 29 50"
+            role="presentation"
+        >
             <path
                 fill="#B7B1A9"
                 fillRule="evenodd"

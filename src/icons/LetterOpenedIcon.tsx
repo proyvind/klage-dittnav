@@ -1,8 +1,18 @@
 import React from 'react';
 
-function LetterOpened() {
+interface Props {
+    className?: string;
+}
+
+function LetterOpened(props: Props) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="67" height="67" fill="none" viewBox="0 0 67 67">
+        <svg
+            className={props.className}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 67 67"
+            role="presentation"
+        >
             <path
                 fill="#194D62"
                 fillRule="evenodd"

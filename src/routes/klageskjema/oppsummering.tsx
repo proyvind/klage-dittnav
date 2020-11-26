@@ -2,33 +2,29 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Systemtittel, Undertittel, Undertekst } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Undertittel, Undertekst, Normaltekst } from 'nav-frontend-typografi';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import PersonligeOpplysningerSummary from './summary/personlige-opplysninger-summary';
 import VedtakSummary from './summary/vedtak-summary';
 import {
     MarginContainer,
-    FlexCenteredContainer,
     CenteredContainer,
-    MarginTopContainer,
     FlexColumnWithSpacingContainer,
-    NoMarginParagraph,
-    WrapNormaltekst,
-    InlineMargin48Container
+    WrapNormaltekst
 } from '../../styled-components/common';
 import AttachmentSummary from './summary/attachment-summary';
 import { finalizeKlage } from '../../api/api';
-import Clipboard from '../../assets/images/icons/Clipboard';
-import ExternalLink from '../../assets/images/icons/ExternalLink';
+import Clipboard from '../../icons/ClipboardIcon';
 import { ColoredLine } from '../../styled-components/colored-line';
 import { toFiles } from '../../klage/attachment';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { AppContext } from '../../app-context/app-context';
 import { device } from '../../styled-components/media-queries';
 import { Klage, KlageStatus } from '../../klage/klage';
+import { ExternalLink } from '../../link/link';
+import { CenteredPageSubTitle } from '../../styled-components/page-title';
 
 interface Props {
     klage: Klage;
@@ -76,15 +72,8 @@ const Oppsummering = ({ klage }: Props) => {
 
     return (
         <>
-            <CenteredContainer>
-                <MarginContainer>
-                    <Clipboard />
-                </MarginContainer>
-                <MarginContainer>
-                    <Systemtittel>Oppsummering</Systemtittel>
-                </MarginContainer>
-            </CenteredContainer>
-
+            <Icon />
+            <CenteredPageSubTitle tag={'h2'}>Oppsummering</CenteredPageSubTitle>
             <Frame>
                 <Ekspanderbartpanel
                     border={false}
@@ -92,23 +81,15 @@ const Oppsummering = ({ klage }: Props) => {
                     className="form-expand"
                     tittel={<BlackUndertittel>Person&shy;opplysninger</BlackUndertittel>}
                 >
-                    <Undertekst>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Undertekst>
-                    <MarginTopContainer>
-                        <PersonligeOpplysningerSummary user={user} />
-                    </MarginTopContainer>
+                    <Text>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Text>
+                    <PersonligeOpplysningerSummary user={user} />
                     <FlexColumnWithSpacingContainer>
-                        <Lenke
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://www.skatteetaten.no/person/folkeregister/"
-                        >
-                            <span>Endre navn eller adresse (Folkeregisteret)</span>
-                            <ExternalLink />
-                        </Lenke>
-                        <Lenke target="_blank" rel="noopener noreferrer" href="https://brukerprofil.difi.no/minprofil">
-                            <span>Endre telefonnummer (Kontakt- og reservasjonsregisteret)</span>
-                            <ExternalLink />
-                        </Lenke>
+                        <ExternalLink showIcon href="https://www.skatteetaten.no/person/folkeregister/">
+                            Endre navn eller adresse (Folkeregisteret)
+                        </ExternalLink>
+                        <ExternalLink showIcon href="https://brukerprofil.difi.no/minprofil">
+                            Endre telefonnummer (Kontakt- og reservasjonsregisteret)
+                        </ExternalLink>
                     </FlexColumnWithSpacingContainer>
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
@@ -121,30 +102,29 @@ const Oppsummering = ({ klage }: Props) => {
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
 
-                <PaddedDiv>
+                <SummarySection>
                     <Undertittel>Begrunnelse i din klage</Undertittel>
                     <WrapNormaltekst>{klage.fritekst}</WrapNormaltekst>
-                </PaddedDiv>
+                </SummarySection>
 
-                <PaddedDiv>
+                <SummarySection>
                     <Undertittel>Vedlagte dokumenter ({klage.vedlegg.length})</Undertittel>
                     <AttachmentSummary klage={klage} attachments={toFiles(klage.vedlegg)} />
-                </PaddedDiv>
+                </SummarySection>
             </Frame>
             {getError(error)}
-            <InlineMargin48Container>
-                <FlexCenteredContainer>
-                    <RowKnapp
-                        onClick={() => history.push(`/${klage.id}/begrunnelse`)}
-                        disabled={klage.status !== KlageStatus.DRAFT}
-                    >
-                        Tilbake
-                    </RowKnapp>
-                    <RowHovedknapp onClick={submitForm} disabled={loading} spinner={loading}>
-                        {getSubmitText(klage.status)}
-                    </RowHovedknapp>
-                </FlexCenteredContainer>
-            </InlineMargin48Container>
+
+            <CenteredContainer>
+                <RowKnapp
+                    onClick={() => history.push(`/${klage.id}/begrunnelse`)}
+                    disabled={klage.status !== KlageStatus.DRAFT}
+                >
+                    Tilbake
+                </RowKnapp>
+                <Hovedknapp onClick={submitForm} disabled={loading} spinner={loading}>
+                    {getSubmitText(klage.status)}
+                </Hovedknapp>
+            </CenteredContainer>
         </>
     );
 };
@@ -157,7 +137,7 @@ const getError = (error: string | null) => {
     return (
         <MarginContainer>
             <AlertStripeFeil>
-                <NoMarginParagraph>{error}</NoMarginParagraph>
+                <Normaltekst>{error}</Normaltekst>
             </AlertStripeFeil>
         </MarginContainer>
     );
@@ -165,32 +145,41 @@ const getError = (error: string | null) => {
 
 const getSubmitText = (status: KlageStatus) => (status === KlageStatus.DRAFT ? 'Send inn' : 'Se innsendt klage');
 
-const Frame = styled.div`
-    @media ${device.mobileS} {
-        padding: 0px;
-        padding-bottom: 100px;
-        border: none;
-    }
+const Frame = styled.section`
+    margin-bottom: 48px;
+    padding: 0;
+    border: none;
+
     @media ${device.tablet} {
-        padding: 48px;
-        padding-bottom: 150px;
+        padding: 16px;
         border: 1px solid #a2a1a1;
     }
+`;
+
+const Text = styled(Undertekst)`
+    margin-bottom: 16px;
 `;
 
 const BlackUndertittel = styled(Undertittel)`
     color: #000;
 `;
 
-const PaddedDiv = styled.div`
+const SummarySection = styled.section`
     padding: 1rem;
 `;
 
 const RowKnapp = styled(Knapp)`
-    margin: 10px 5px;
+    margin-right: 10px;
 `;
 
-const RowHovedknapp = styled(Hovedknapp)`
-    margin: 10px 5px;
+const Icon = styled(Clipboard)`
+    && {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 16px;
+        width: 100px;
+    }
 `;
+
 export default Oppsummering;

@@ -1,13 +1,13 @@
 import React from 'react';
 import KvitteringPage from './kvittering/kvittering-page';
 import Oppsummering from './oppsummering';
-import { Margin32Container, MarginContainer } from '../../styled-components/common';
 import Begrunnelse from './begrunnelse/begrunnelse';
 import Steps from './steps';
 import { Klage } from '../../klage/klage';
 import LogoutWarning from '../../logout-warning/logout-warning';
 import FormTitle from '../form-title';
-import Layout from '../layout';
+import { FormMainContainer } from '../../styled-components/main-container';
+import { ContentContainer } from '../../styled-components/content-container';
 
 interface Props {
     activeStep: number;
@@ -16,16 +16,14 @@ interface Props {
 }
 
 const FormContainer = (props: Props) => (
-    <Layout backgroundColor="#fff">
+    <FormMainContainer>
         <FormTitle klage={props.klage} />
-        <LogoutWarning />
-        <Margin32Container>
+        <ContentContainer>
+            <LogoutWarning />
             <Steps klageStatus={props.klage.status} activeStep={props.activeStep} />
-        </Margin32Container>
-        <MarginContainer>
             <props.render klage={props.klage} />
-        </MarginContainer>
-    </Layout>
+        </ContentContainer>
+    </FormMainContainer>
 );
 
 export default FormContainer;

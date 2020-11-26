@@ -1,17 +1,15 @@
 import React from 'react';
-import { Sidetittel, Systemtittel, Undertittel } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import { InngangKategori } from '../../kategorier/kategorier';
-import {
-    CenterInMobileContainer,
-    Margin40Container,
-    Margin40TopContainer,
-    PointsFlexListContainer,
-    WhiteBackgroundContainer
-} from '../../styled-components/common';
+import { PointsFlexListContainer } from '../../styled-components/common';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { KlageFlexLinkPanel } from '../../link/link';
-import Layout from '../layout';
+import { InngangMainContainer } from '../../styled-components/main-container';
+import { ContentContainer } from '../../styled-components/content-container';
+import { PageTitle } from '../../styled-components/page-title';
+import { WhiteSection } from '../../styled-components/white-section';
+import { SectionTitle } from '../../styled-components/section-title';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -20,21 +18,15 @@ interface Props {
 const InngangKategorier = ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
     return (
-        <Layout backgroundColor="#e7e9e9">
-            <Margin40TopContainer>
-                <CenterInMobileContainer>
-                    <Sidetittel>{inngangkategori.title}</Sidetittel>
-                </CenterInMobileContainer>
-            </Margin40TopContainer>
-            <Margin40Container>
-                <WhiteBackgroundContainer>
-                    <Systemtittel>Hvilken tjeneste eller ytelse gjelder det?</Systemtittel>
-                    <Margin40TopContainer>
-                        <PointsFlexListContainer>{getLinks(inngangkategori)}</PointsFlexListContainer>
-                    </Margin40TopContainer>
-                </WhiteBackgroundContainer>
-            </Margin40Container>
-        </Layout>
+        <InngangMainContainer>
+            <ContentContainer>
+                <PageTitle>{inngangkategori.title}</PageTitle>
+                <WhiteSection>
+                    <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
+                    <PointsFlexListContainer>{getLinks(inngangkategori)}</PointsFlexListContainer>
+                </WhiteSection>
+            </ContentContainer>
+        </InngangMainContainer>
     );
 };
 

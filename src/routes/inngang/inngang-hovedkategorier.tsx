@@ -1,54 +1,40 @@
 import React from 'react';
-import { Systemtittel, Normaltekst, Sidetittel, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederIcon from '../../assets/Veileder.svg';
+import VeilederIcon from '../../icons/VeilederIcon';
 import { INNGANG_KATEGORIER } from '../../kategorier/kategorier';
 import { KlageFlexLinkPanel } from '../../link/link';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import {
-    Margin40TopContainer,
-    Margin40Container,
-    PointsFlexListContainer,
-    CenterInMobileContainer,
-    WhiteBackgroundContainer
-} from '../../styled-components/common';
-import Layout from '../layout';
+import { PointsFlexListContainer } from '../../styled-components/common';
+import { InngangMainContainer } from '../../styled-components/main-container';
+import { ContentContainer } from '../../styled-components/content-container';
+import { PageTitle } from '../../styled-components/page-title';
+import { InlineRow } from '../../styled-components/row';
+import { WhiteSection } from '../../styled-components/white-section';
+import { SectionTitle } from '../../styled-components/section-title';
 
 const InngangHovedkategorier = () => {
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
     return (
-        <Layout backgroundColor="#e7e9e9">
-            <section>
-                <div>
-                    <Margin40TopContainer>
-                        <CenterInMobileContainer>
-                            <Sidetittel>Klage eller anke på vedtak</Sidetittel>
-                        </CenterInMobileContainer>
-                    </Margin40TopContainer>
+        <InngangMainContainer>
+            <ContentContainer>
+                <PageTitle>Klage eller anke på vedtak</PageTitle>
+                <InlineRow>
+                    <Veilederpanel type={'plakat'} kompakt svg={<VeilederIcon />}>
+                        <Normaltekst>
+                            Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start
+                            med å velge hvilket tema saken gjelder.
+                        </Normaltekst>
+                    </Veilederpanel>
+                </InlineRow>
 
-                    <Margin40TopContainer>
-                        <Veilederpanel type={'plakat'} kompakt svg={<img src={VeilederIcon} alt="Veileder" />}>
-                            <Normaltekst>
-                                Hvis NAV har behandlet en sak som gjelder deg og du er uenig i vedtaket, har du flere
-                                valgmuligheter for å belyse saken bedre og få en ny vurdering. Start med å velge hvilket
-                                område saken gjelder. Du finner denne informasjonen i vedtaket som du har mottatt fra
-                                NAV.
-                            </Normaltekst>
-                        </Veilederpanel>
-                    </Margin40TopContainer>
-
-                    <Margin40Container>
-                        <WhiteBackgroundContainer>
-                            <Systemtittel>Hvilket område gjelder det?</Systemtittel>
-                            <Margin40TopContainer>
-                                <PointsFlexListContainer>{getLinks()}</PointsFlexListContainer>
-                            </Margin40TopContainer>
-                        </WhiteBackgroundContainer>
-                    </Margin40Container>
-                </div>
-            </section>
-        </Layout>
+                <WhiteSection>
+                    <SectionTitle>Hvilket område gjelder det?</SectionTitle>
+                    <PointsFlexListContainer>{getLinks()}</PointsFlexListContainer>
+                </WhiteSection>
+            </ContentContainer>
+        </InngangMainContainer>
     );
 };
 

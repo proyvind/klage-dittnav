@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import { device } from '../styled-components/media-queries';
+import ExternalLinkIcon from '../icons/ExternalLinkIcon';
 
 export interface KlageLinkProps {
     className?: string;
@@ -30,4 +31,15 @@ const RouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <Link {...props} to={props.href ?? ''}>
         {props.children}
     </Link>
+);
+
+interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+    showIcon?: boolean;
+}
+
+export const ExternalLink = (props: ExternalLinkProps) => (
+    <a {...props} target="_blank" rel="noopener noreferrer">
+        {props.children}
+        {props.showIcon ? <ExternalLinkIcon /> : null}
+    </a>
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { AttachmentFile } from '../../../klage/attachment';
 import Lenke from 'nav-frontend-lenker';
+import { AttachmentFile } from '../../../klage/attachment';
 import { environment } from '../../../environment/environment';
 import { Klage, KlageStatus } from '../../../klage/klage';
 

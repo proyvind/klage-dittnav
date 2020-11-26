@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { ensureAuth } from './get-user';
 import { CenteredContainer } from '../styled-components/common';
 import { AppContext } from '../app-context/app-context';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { LoginButton } from '../styled-components/login-button';
 import { NetworkError } from '../api/errors';
 

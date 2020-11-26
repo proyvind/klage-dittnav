@@ -1,27 +1,21 @@
 import React from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
-import { Normaltekst, Sidetittel, Systemtittel } from 'nav-frontend-typografi';
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import Lenke from 'nav-frontend-lenker';
-import LetterOpened from '../../assets/images/icons/LetterOpened';
-import {
-    CenterInMobileContainer,
-    IconContainer,
-    LenkePanelContentWithImage,
-    Margin40Container,
-    Margin40TopContainer,
-    MarginContainer,
-    MarginTopContainer,
-    WhiteBackgroundContainer
-} from '../../styled-components/common';
-import MobilePhone from '../../assets/images/icons/MobilePhone';
+import LetterOpened from '../../icons/LetterOpenedIcon';
+import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
+import MobilePhone from '../../icons/MobilePhoneIcon';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
-import { KlageLinkPanel } from '../../link/link';
+import { ExternalLink, KlageLinkPanel } from '../../link/link';
 import { TemaKey, Tema } from '../../tema/tema';
 import { getUrlToPaperForm } from '../../tema/ytelse';
-import Layout from '../layout';
+import { InngangMainContainer } from '../../styled-components/main-container';
+import { ContentContainer } from '../../styled-components/content-container';
+import { PageTitle } from '../../styled-components/page-title';
+import { WhiteSection } from '../../styled-components/white-section';
+import { InlineRow } from '../../styled-components/row';
 
 interface Props {
     temaKey: TemaKey;
@@ -34,16 +28,12 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
-        <Layout backgroundColor="#e7e9e9">
-            <Margin40TopContainer>
-                <CenterInMobileContainer>
-                    <Sidetittel>{title}</Sidetittel>
-                </CenterInMobileContainer>
-            </Margin40TopContainer>
-            <Margin40TopContainer>
-                <WhiteBackgroundContainer>
+        <InngangMainContainer>
+            <ContentContainer>
+                <PageTitle>{title}</PageTitle>
+                <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
-                    <Margin40Container>
+                    <InlineRow>
                         <LenkepanelBase href={paperUrl} border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
@@ -60,22 +50,15 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
                                 </div>
                             </LenkePanelContentWithImage>
                         </LenkepanelBase>
-                    </Margin40Container>
-
-                    <div>
-                        Les mer om{' '}
-                        <Lenke
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-                        >
-                            dine klagerettigheter på våre tema-sider
-                        </Lenke>
-                        .
-                    </div>
-                </WhiteBackgroundContainer>
-            </Margin40TopContainer>
-        </Layout>
+                    </InlineRow>
+                    Les mer om{' '}
+                    <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                        dine klagerettigheter på våre tema-sider
+                    </ExternalLink>
+                    .
+                </WhiteSection>
+            </ContentContainer>
+        </InngangMainContainer>
     );
 };
 
@@ -103,7 +86,7 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
     );
 
     return (
-        <MarginContainer>
+        <InlineRow>
             <KlageLinkPanel href={`/ny?${query}`} border>
                 <LenkePanelContentWithImage>
                     <IconContainer>
@@ -117,10 +100,8 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
                     </div>
                 </LenkePanelContentWithImage>
             </KlageLinkPanel>
-            <Lenke target="_blank" rel="noopener noreferrer" href="https://www.norge.no/elektronisk-id">
-                Slik skaffer du deg elektronisk ID
-            </Lenke>
-        </MarginContainer>
+            <ExternalLink href="https://www.norge.no/elektronisk-id">Slik skaffer du deg elektronisk ID</ExternalLink>
+        </InlineRow>
     );
 };
 

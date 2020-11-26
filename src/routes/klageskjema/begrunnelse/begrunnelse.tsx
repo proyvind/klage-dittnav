@@ -7,16 +7,7 @@ import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typo
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Datepicker } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import {
-    CenteredContainer,
-    FlexCenteredContainer,
-    Margin40Container,
-    Margin48TopContainer,
-    MarginContainer,
-    MarginTopContainer,
-    NoMarginParagraph,
-    NoMarginUndertekst
-} from '../../../styled-components/common';
+import { CenteredContainer, MarginContainer } from '../../../styled-components/common';
 import { getAttachmentErrorMessage, Attachment, AttachmentFile, toFiles } from '../../../klage/attachment';
 import AttachmentPreview from './attachment-preview';
 import { updateKlage, addAttachment, deleteAttachment } from '../../../api/api';
@@ -31,6 +22,8 @@ import { LoginButton } from '../../../styled-components/login-button';
 import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
 import { useLogPageView } from '../../../logging/use-log-page-view';
 import { PageIdentifier } from '../../../logging/amplitude';
+import { Row, SlimRow } from '../../../styled-components/row';
+import { Section } from '../../../styled-components/section';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -196,42 +189,40 @@ const Begrunnelse = ({ klage }: Props) => {
     return (
         <>
             {submitted && !validForm() && (
-                <MarginContainer>
-                    <AlertStripeFeil>
-                        {getFeilmeldinger().map((feilmelding, index) => (
-                            <NoMarginParagraph key={index}>{feilmelding}</NoMarginParagraph>
-                        ))}
-                    </AlertStripeFeil>
-                </MarginContainer>
+                <KlageAlertStripeFeil>
+                    {getFeilmeldinger().map((feilmelding, index) => (
+                        <Normaltekst key={index}>{feilmelding}</Normaltekst>
+                    ))}
+                </KlageAlertStripeFeil>
             )}
 
-            <MarginContainer>
-                <Undertittel>Hvilket vedtak gjelder klagen?</Undertittel>
-            </MarginContainer>
-            <MarginContainer>
-                <RadioPanelGruppe
-                    name="datoValg"
-                    radios={datoValg}
-                    checked={vedtakType ?? undefined}
-                    onChange={(_, value: VedtakType) => setVedtakType(value)}
-                    feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
-                />
-            </MarginContainer>
-            {vedtakType === VedtakType.EARLIER && (
-                <MarginContainer>
-                    <Element>Vedtaksdato (valgfritt)</Element>
-                    <Datepicker
-                        onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
-                        value={vedtakDate ?? undefined}
-                        showYearSelector
-                        limitations={{
-                            maxDate: new Date().toISOString().substring(0, 10)
-                        }}
+            <Section>
+                <KlageUndertittel>Hvilket vedtak gjelder klagen?</KlageUndertittel>
+                <SlimRow>
+                    <RadioPanelGruppe
+                        name="datoValg"
+                        radios={datoValg}
+                        checked={vedtakType ?? undefined}
+                        onChange={(_, value: VedtakType) => setVedtakType(value)}
+                        feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
                     />
-                </MarginContainer>
-            )}
-            <InlineMargin48TopContainer>
-                <Undertittel>Begrunn klagen din</Undertittel>
+                </SlimRow>
+                {vedtakType === VedtakType.EARLIER && (
+                    <SlimRow>
+                        <Element>Vedtaksdato (valgfritt)</Element>
+                        <Datepicker
+                            onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
+                            value={vedtakDate ?? undefined}
+                            showYearSelector
+                            limitations={{
+                                maxDate: new Date().toISOString().substring(0, 10)
+                            }}
+                        />
+                    </SlimRow>
+                )}
+            </Section>
+            <Section>
+                <KlageUndertittel>Begrunn klagen din</KlageUndertittel>
                 <Textarea
                     name="begrunnelse"
                     value={fritekst}
@@ -244,29 +235,24 @@ const Begrunnelse = ({ klage }: Props) => {
                     }}
                     feil={submitted && !validBegrunnelse() && 'Du må skrive en begrunnelse før du går videre.'}
                 />
-            </InlineMargin48TopContainer>
+                <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
+            </Section>
 
-            <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
-
-            <MarginContainer>
-                <Undertittel>Vedlegg ({attachments.length})</Undertittel>
+            <Section>
+                <KlageUndertittel>Vedlegg ({attachments.length})</KlageUndertittel>
                 <AttachmentPreview attachments={toFiles(attachments)} deleteAttachment={deleteAttachmentHandler} />
                 {showAttachmentLoader(attachmentsLoading)}
-                <InlineMarginTopContainer>
-                    <Normaltekst>
-                        Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
-                    </Normaltekst>
-                    <MarginTopContainer>
-                        <Normaltekst>
-                            All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger
-                            ikke lastes opp på nytt.
-                        </Normaltekst>
-                    </MarginTopContainer>
-                </InlineMarginTopContainer>
+                <Normaltekst>
+                    Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
+                </Normaltekst>
+                <Normaltekst>
+                    All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger ikke
+                    lastes opp på nytt.
+                </Normaltekst>
                 {getAttachmentError(attachmentError)}
-            </MarginContainer>
+            </Section>
 
-            <Margin40Container>
+            <Row>
                 <Knapp onClick={handleAttachmentClick}>Last opp nytt vedlegg</Knapp>
                 <input
                     type="file"
@@ -279,29 +265,27 @@ const Begrunnelse = ({ klage }: Props) => {
                     }}
                     style={{ display: 'none' }}
                 />
-            </Margin40Container>
+            </Row>
 
-            <MarginContainer>
+            <Row>
                 <AlertStripe type="info" form="inline">
-                    <NoMarginUndertekst>
+                    <Undertekst>
                         Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
-                    </NoMarginUndertekst>
+                    </Undertekst>
                     <Undertekst>
                         Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være
                         større enn 32 MB.
                     </Undertekst>
                 </AlertStripe>
-            </MarginContainer>
+            </Row>
 
             {getError(error, storeKlageAndLogIn)}
 
-            <InlineMargin48TopContainer>
-                <FlexCenteredContainer>
-                    <Hovedknapp className="row-element" onClick={submitKlage} disabled={loading} spinner={loading}>
-                        Gå videre
-                    </Hovedknapp>
-                </FlexCenteredContainer>
-            </InlineMargin48TopContainer>
+            <CenteredContainer>
+                <Hovedknapp onClick={submitKlage} disabled={loading} spinner={loading}>
+                    Gå videre
+                </Hovedknapp>
+            </CenteredContainer>
         </>
     );
 };
@@ -340,7 +324,7 @@ const getAttachmentError = (error: string | null) => {
     return (
         <MarginContainer>
             <AlertStripeFeil>
-                <NoMarginParagraph>{error}</NoMarginParagraph>
+                <Normaltekst>{error}</Normaltekst>
             </AlertStripeFeil>
         </MarginContainer>
     );
@@ -367,7 +351,7 @@ const getError = (error: Error | null, logIn: () => void) => {
     return (
         <MarginContainer>
             <AlertStripeFeil>
-                <NoMarginParagraph>{error.message}</NoMarginParagraph>
+                <Normaltekst>{error.message}</Normaltekst>
             </AlertStripeFeil>
         </MarginContainer>
     );
@@ -386,14 +370,16 @@ function notNull<T>(v: T | null): v is T {
 const INPUTDESCRIPTION =
     'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
 
-const InlineMargin48TopContainer = styled(Margin48TopContainer)`
-    display: inline-block;
-    position: initial;
+const KlageAlertStripeFeil = styled(AlertStripeFeil)`
+    && {
+        margin-bottom: 16px;
+    }
 `;
 
-const InlineMarginTopContainer = styled(MarginTopContainer)`
-    display: inline-block;
-    position: initial;
+const KlageUndertittel = styled(Undertittel)`
+    && {
+        margin-bottom: 16px;
+    }
 `;
 
 export default Begrunnelse;

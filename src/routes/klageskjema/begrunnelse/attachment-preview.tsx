@@ -39,8 +39,7 @@ const AttachmentPreview = (props: Props) => {
 };
 
 const AttachmentPreviewContainer = styled(CenterOnMobile)`
-    padding-top: 32px;
-    padding-bottom: 32px;
+    margin-bottom: 32px;
 `;
 
 export default AttachmentPreview;

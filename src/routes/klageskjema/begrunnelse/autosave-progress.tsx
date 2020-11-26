@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Element } from 'nav-frontend-typografi';
 import styled from 'styled-components/macro';
-import { Ellipsis } from '../../../styled-components/ellipsis';
-import Success from '../../../assets/images/icons/Success';
+import { Element } from 'nav-frontend-typografi';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
+import { Ellipsis } from '../../../styled-components/ellipsis';
+import Success from '../../../icons/SuccessIcon';
 
 export enum AutosaveStatus {
     NONE,
@@ -17,20 +17,20 @@ interface Props {
 }
 
 const AutosaveContainer = styled.div`
-    margin-top: 16px;
     color: #78706a;
     text-align: right;
     display: flex;
     justify-content: flex-end;
-    div {
-        cursor: pointer;
-        > svg {
-            margin-right: 5px;
-        }
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
+`;
+
+const AutosaveContent = styled.div`
+    cursor: pointer;
+    > svg {
+        margin-right: 5px;
     }
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
 `;
 
 const AutosaveProgressIndicator = (props: Props) => {
@@ -45,11 +45,13 @@ const AutosaveProgressIndicator = (props: Props) => {
                 onRequestClose={() => setAnker(undefined)}
                 orientering={PopoverOrientering.OverHoyre}
             >
-                <p style={{ padding: '1rem' }}>Vi lagrer endringene dine automatisk.</p>
+                <p style={{ padding: '16px' }}>Vi lagrer endringene dine automatisk.</p>
             </Popover>
 
             <AutosaveContainer>
-                <div onClick={e => togglePopover(e.currentTarget)}>{getContent(props.autosaveStatus)}</div>
+                <AutosaveContent onClick={e => togglePopover(e.currentTarget)}>
+                    {getContent(props.autosaveStatus)}
+                </AutosaveContent>
             </AutosaveContainer>
         </>
     );

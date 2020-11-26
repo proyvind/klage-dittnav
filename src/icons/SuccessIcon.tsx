@@ -1,8 +1,18 @@
 import React from 'react';
 
-function Success() {
+interface Props {
+    className?: string;
+}
+
+function Success(props: Props) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
+        <svg
+            className={props.className}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 18 18"
+            role="presentation"
+        >
             <path stroke="#78706A" d="M9 1C4.589 1 1 4.59 1 9s3.589 8 8 8c4.41 0 8-3.59 8-8s-3.59-8-8-8z"></path>
             <path
                 fill="#78706A"

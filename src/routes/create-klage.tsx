@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import { Normaltekst } from 'nav-frontend-typografi';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { CenteredContainer } from '../styled-components/common';
 import { ensureStringIsTema } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
 import { createKlage } from '../api/api';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
 import { NewKlage } from '../klage/klage';

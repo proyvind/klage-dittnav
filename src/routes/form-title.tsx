@@ -1,17 +1,29 @@
 import React from 'react';
-import { Ingress, Innholdstittel } from 'nav-frontend-typografi';
 import styled from 'styled-components/macro';
-import { CenteredContainer, SmallMarginTopContainer } from '../styled-components/common';
+import { Ingress, Innholdstittel } from 'nav-frontend-typografi';
 import { Klage } from '../klage/klage';
+import { device } from '../styled-components/media-queries';
 
 const TitleContainer = styled.div`
     background-color: #cce1f3;
     border-bottom: 4px solid #66a4dc;
     padding: 16px 0;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-top: -32px;
-    margin-bottom: 10px;
+    width: 100%;
+    margin-bottom: 32px;
+    text-align: center;
+
+    @media ${device.mobileL} {
+        padding-top: 24px;
+    }
+`;
+
+const Title = styled(Innholdstittel)`
+    @media ${device.mobileS} {
+        margin-top: 0;
+    }
+    @media ${device.mobileL} {
+        margin-top: 8px;
+    }
 `;
 
 interface Props {
@@ -20,14 +32,8 @@ interface Props {
 
 const FormTitle = ({ klage }: Props) => (
     <TitleContainer>
-        <CenteredContainer>
-            <SmallMarginTopContainer>
-                <Innholdstittel>Klage på vedtak</Innholdstittel>
-                <SmallMarginTopContainer>
-                    <Ingress>{klage.ytelse}</Ingress>
-                </SmallMarginTopContainer>
-            </SmallMarginTopContainer>
-        </CenteredContainer>
+        <Title>Klage på vedtak</Title>
+        <Ingress>{klage.ytelse}</Ingress>
     </TitleContainer>
 );
 export default FormTitle;
