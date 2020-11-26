@@ -29,6 +29,8 @@ import klageStore from '../../../klage/klage-store';
 import { login } from '../../../user/login';
 import { LoginButton } from '../../../styled-components/login-button';
 import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
+import { useLogPageView } from '../../../logging/use-log-page-view';
+import { PageIdentifier } from '../../../logging/amplitude';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -45,6 +47,7 @@ interface Props {
 const Begrunnelse = ({ klage }: Props) => {
     const history = useHistory();
     const { setKlage } = useContext(AppContext);
+    useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
 
     const [loading, setIsLoading] = useState<boolean>(false);
     const [fritekst, setFritekst] = useState<string>(klage.fritekst);
