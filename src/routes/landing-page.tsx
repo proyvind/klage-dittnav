@@ -15,10 +15,9 @@ const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null 
 
     useEffect(() => {
         if (user === null) {
-            getUser().then(user => {
-                setLoading(false);
-                setUser(user);
-            });
+            getUser()
+                .then(setUser)
+                .finally(() => setLoading(false));
         }
     }, [user, setUser]);
 

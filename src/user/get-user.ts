@@ -19,6 +19,7 @@ export const ensureAuth = () =>
     getUser().catch((error: Error) => {
         if (error instanceof NotLoggedInError) {
             login();
+            return null;
         }
         throw error;
     });
