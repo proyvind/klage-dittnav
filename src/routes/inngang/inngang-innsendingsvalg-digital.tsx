@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
@@ -25,7 +25,11 @@ interface Props {
 
 const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer = null }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
-    document.title = `${title} \u2013 klage eller anke`;
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        UseDocumentTitle(`${title} \u2013 klage eller anke`);
+    });
+
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

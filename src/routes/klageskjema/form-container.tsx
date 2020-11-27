@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import KvitteringPage from './kvittering/kvittering-page';
 import Oppsummering from './oppsummering';
 import Begrunnelse from './begrunnelse/begrunnelse';

@@ -17,7 +17,10 @@ import { SectionTitle } from '../../styled-components/section-title';
 const InngangHovedkategorier = () => {
     const title = 'Klage eller anke på vedtak';
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
-    document.title = title;
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        UseDocumentTitle(title);
+    });
 
     return (
         <InngangMainContainer>

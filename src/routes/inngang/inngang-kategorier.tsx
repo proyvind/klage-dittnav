@@ -17,7 +17,10 @@ interface Props {
 
 const InngangKategorier = ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
-    document.title = `${inngangkategori.title} \u2013 klage eller anke`;
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        UseDocumentTitle(`${inngangkategori.title} \u2013 klage eller anke`);
+    });
 
     return (
         <InngangMainContainer>
