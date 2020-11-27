@@ -26,6 +26,7 @@ interface Props {
 
 const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
+    document.title = `${title} \u2013 klage eller anke`;
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

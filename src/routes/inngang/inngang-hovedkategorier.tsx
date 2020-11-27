@@ -15,11 +15,14 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 
 const InngangHovedkategorier = () => {
+    const title = 'Klage eller anke på vedtak';
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
+    document.title = title;
+
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>Klage eller anke på vedtak</PageTitle>
+                <PageTitle>{title}</PageTitle>
                 <InlineRow>
                     <Veilederpanel type={'plakat'} kompakt svg={<VeilederIcon />}>
                         <Normaltekst>

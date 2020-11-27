@@ -25,6 +25,7 @@ interface Props {
 
 const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer = null }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
+    document.title = `${title} \u2013 klage eller anke`;
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

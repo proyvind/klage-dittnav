@@ -2,7 +2,7 @@ import React from 'react';
 import KvitteringPage from './kvittering/kvittering-page';
 import Oppsummering from './oppsummering';
 import Begrunnelse from './begrunnelse/begrunnelse';
-import Steps from './steps';
+import Steps, { stepLabels } from './steps';
 import { Klage } from '../../klage/klage';
 import LogoutWarning from '../../logout-warning/logout-warning';
 import FormTitle from '../form-title';
