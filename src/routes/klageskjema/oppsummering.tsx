@@ -156,11 +156,15 @@ const Frame = styled.section`
 `;
 
 const Text = styled(Undertekst)`
-    margin-bottom: 16px;
+    && {
+        margin-bottom: 16px;
+    }
 `;
 
 const BlackUndertittel = styled(Undertittel)`
-    color: #000;
+    && {
+        color: #000;
+    }
 `;
 
 const SummarySection = styled.section`
@@ -168,7 +172,9 @@ const SummarySection = styled.section`
 `;
 
 const RowKnapp = styled(Knapp)`
-    margin-right: 10px;
+    && {
+        margin-right: 10px;
+    }
 `;
 
 const Icon = styled(Clipboard)`

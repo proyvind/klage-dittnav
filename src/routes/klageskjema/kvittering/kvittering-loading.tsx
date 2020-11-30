@@ -38,13 +38,17 @@ const BouncingEnvelope = styled(Envelope)`
 `;
 
 const PageTitle = styled(Systemtittel)`
-    margin-top: 0;
-    margin-bottom: 16px;
-    text-align: center;
+    && {
+        margin-top: 0;
+        margin-bottom: 16px;
+        text-align: center;
+    }
 `;
 
 const Description = styled(Normaltekst)`
-    text-align: center;
+    && {
+        text-align: center;
+    }
 `;
 
 export default KvitteringLoading;

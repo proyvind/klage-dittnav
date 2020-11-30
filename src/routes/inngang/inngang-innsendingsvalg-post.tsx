@@ -74,7 +74,9 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
 };
 
 const VeilederContainer = styled(Veileder)`
-    margin-bottom: 32px;
+    && {
+        margin-bottom: 32px;
+    }
 `;
 
 const arePropsEqual = (prevProps: Props, nextProps: Props) =>

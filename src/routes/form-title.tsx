@@ -18,11 +18,12 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled(Innholdstittel)`
-    @media ${device.mobileS} {
-        margin-top: 0;
-    }
-    @media ${device.mobileL} {
-        margin-top: 8px;
+    && {
+        margin-bottom: 0;
+
+        @media ${device.mobileL} {
+            margin-bottom: 8px;
+        }
     }
 `;
 

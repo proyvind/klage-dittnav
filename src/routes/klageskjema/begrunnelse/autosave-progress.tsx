@@ -17,10 +17,11 @@ interface Props {
 }
 
 const AutosaveContainer = styled.div`
-    color: #78706a;
-    text-align: right;
     display: flex;
     justify-content: flex-end;
+    color: #78706a;
+    text-align: right;
+    margin-top: 4px;
 `;
 
 const AutosaveContent = styled.div`
