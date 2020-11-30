@@ -13,14 +13,12 @@ import { PageTitle } from '../../styled-components/page-title';
 import { InlineRow } from '../../styled-components/row';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
+import { usePageInit } from '../../page-title/page-title';
 
 const InngangHovedkategorier = () => {
     const title = 'Klage eller anke på vedtak';
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        UseDocumentTitle(title);
-    });
+    usePageInit(title);
 
     return (
         <InngangMainContainer>
