@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { ensureAuth } from './get-user';
-import { CenteredContainer } from '../styled-components/common';
 import { AppContext } from '../app-context/app-context';
 import { LoginButton } from '../styled-components/login-button';
 import { NetworkError } from '../api/errors';
+import LoadingPage from '../loading-page/loading-page';
 
 interface Props {
     children: JSX.Element;
@@ -42,12 +41,7 @@ const UserLoader = (props: Props) => {
     }
 
     if (user === null) {
-        return (
-            <CenteredContainer>
-                <NavFrontendSpinner type={'XL'} />
-                <Normaltekst>Laster bruker...</Normaltekst>
-            </CenteredContainer>
-        );
+        return <LoadingPage>Laster bruker...</LoadingPage>;
     }
 
     return props.children;

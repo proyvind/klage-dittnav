@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import queryString from 'query-string';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import InngangInnsendingDigital from './inngang/inngang-innsendingsvalg-digital';
 import { getUser } from '../user/get-user';
-import { CenteredContainer } from '../styled-components/common';
 import { TemaKey } from '../tema/tema';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { AppContext } from '../app-context/app-context';
+import LoadingPage from '../loading-page/loading-page';
 
 const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null = null) => {
     const { user, setUser } = useContext(AppContext);
@@ -22,12 +20,7 @@ const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null 
     }, [user, setUser]);
 
     if (loading) {
-        return (
-            <CenteredContainer>
-                <NavFrontendSpinner type={'XL'} />
-                <Normaltekst>Sjekker bruker...</Normaltekst>
-            </CenteredContainer>
-        );
+        return <LoadingPage>Sjekker bruker...</LoadingPage>;
     }
 
     if (user === null) {

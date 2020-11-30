@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { getKlage, updateKlage } from '../api/api';
-import { CenteredContainer } from '../styled-components/common';
 import { AppContext } from '../app-context/app-context';
 import { Klage } from './klage';
 import klageStore from './klage-store';
+import LoadingPage from '../loading-page/loading-page';
 
 interface Props {
     render: (klage: Klage) => JSX.Element;
@@ -48,12 +46,7 @@ const KlageLoader = (props: Props) => {
     }
 
     if (klage === null) {
-        return (
-            <CenteredContainer>
-                <NavFrontendSpinner type={'XL'} />
-                <Normaltekst>{status}</Normaltekst>
-            </CenteredContainer>
-        );
+        return <LoadingPage>{status}</LoadingPage>;
     }
 
     return props.render(klage);
