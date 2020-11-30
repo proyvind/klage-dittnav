@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -48,4 +49,6 @@ function EnvelopeIcon(props: Props) {
     );
 }
 
-export default EnvelopeIcon;
+export default styled(EnvelopeIcon)`
+    width: 100px;
+`;

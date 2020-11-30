@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -22,4 +23,6 @@ function Success(props: Props) {
     );
 }
 
-export default Success;
+export default styled(Success)`
+    width: 18px;
+`;

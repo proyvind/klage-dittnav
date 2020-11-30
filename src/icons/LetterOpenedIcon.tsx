@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -47,4 +48,6 @@ function LetterOpened(props: Props) {
     );
 }
 
-export default LetterOpened;
+export default styled(LetterOpened)`
+    width: 67px;
+`;

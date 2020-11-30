@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -98,4 +99,6 @@ function VeilederIcon(props: Props) {
     );
 }
 
-export default VeilederIcon;
+export default styled(VeilederIcon)`
+    width: 54px;
+`;

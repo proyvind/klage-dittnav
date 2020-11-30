@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -16,4 +17,6 @@ function BubbleChatInformation(props: Props) {
     );
 }
 
-export default BubbleChatInformation;
+export default styled(BubbleChatInformation)`
+    width: 24px;
+`;

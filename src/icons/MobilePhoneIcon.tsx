@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -32,4 +33,6 @@ function MobilePhone(props: Props) {
     );
 }
 
-export default MobilePhone;
+export default styled(MobilePhone)`
+    width: 29px;
+`;

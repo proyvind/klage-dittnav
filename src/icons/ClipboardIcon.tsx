@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 interface Props {
     className?: string;
@@ -43,4 +44,6 @@ function Clipboard(props: Props) {
     );
 }
 
-export default Clipboard;
+export default styled(Clipboard)`
+    width: 100px;
+`;
