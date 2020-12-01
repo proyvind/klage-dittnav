@@ -16,7 +16,7 @@ import { ContentContainer } from '../../styled-components/content-container';
 import { PageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
-import { usePageInit } from '../../page-title/page-title';
+import { usePageInit } from '../../page-init/page-init';
 
 interface Props {
     temaKey: TemaKey;

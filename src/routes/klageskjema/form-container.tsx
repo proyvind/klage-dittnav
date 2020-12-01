@@ -8,7 +8,7 @@ import LogoutWarning from '../../logout-warning/logout-warning';
 import FormTitle from '../form-title';
 import { FormMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { usePageInit } from '../../page-title/page-title';
+import { usePageInit } from '../../page-init/page-init';
 
 interface Props {
     activeStep: number;

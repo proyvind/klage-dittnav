@@ -18,7 +18,7 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
 import { InlineRow } from '../../styled-components/row';
-import { usePageInit } from '../../page-title/page-title';
+import { usePageInit } from '../../page-init/page-init';
 
 interface Props {
     temaKey: TemaKey;
