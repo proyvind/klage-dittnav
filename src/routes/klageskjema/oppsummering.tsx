@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -36,7 +36,6 @@ const Oppsummering = ({ klage }: Props) => {
     const [loading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => window.scrollTo(0, 0), []);
     useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
     const submitForm = async (event: React.MouseEvent) => {

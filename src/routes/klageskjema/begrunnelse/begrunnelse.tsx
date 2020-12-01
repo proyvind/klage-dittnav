@@ -59,8 +59,6 @@ const Begrunnelse = ({ klage }: Props) => {
         }
     }, [klage, history]);
 
-    useEffect(() => window.scrollTo(0, 0), []);
-
     const performKlageUpdate = useCallback(async () => {
         const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
         try {

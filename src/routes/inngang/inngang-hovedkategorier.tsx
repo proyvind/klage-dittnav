@@ -13,13 +13,17 @@ import { PageTitle } from '../../styled-components/page-title';
 import { InlineRow } from '../../styled-components/row';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
+import { usePageInit } from '../../page-init/page-init';
 
 const InngangHovedkategorier = () => {
+    const title = 'Klage eller anke på vedtak';
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
+    usePageInit(title);
+
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>Klage eller anke på vedtak</PageTitle>
+                <PageTitle>{title}</PageTitle>
                 <InlineRow>
                     <Veilederpanel type={'plakat'} kompakt svg={<VeilederIcon />}>
                         <Normaltekst>

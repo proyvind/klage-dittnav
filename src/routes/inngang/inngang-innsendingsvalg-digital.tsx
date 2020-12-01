@@ -16,6 +16,7 @@ import { ContentContainer } from '../../styled-components/content-container';
 import { PageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
+import { usePageInit } from '../../page-init/page-init';
 
 interface Props {
     temaKey: TemaKey;
@@ -25,6 +26,8 @@ interface Props {
 
 const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer = null }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
+    usePageInit(`${title} \u2013 klage eller anke`);
+
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

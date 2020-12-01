@@ -18,6 +18,7 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
 import { InlineRow } from '../../styled-components/row';
+import { usePageInit } from '../../page-init/page-init';
 
 interface Props {
     temaKey: TemaKey;
@@ -26,6 +27,7 @@ interface Props {
 
 const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
+    usePageInit(`${title} \u2013 klage eller anke`);
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
