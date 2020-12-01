@@ -24,9 +24,9 @@ function VeilederIcon(props: Props) {
                 />
                 <path
                     fill="#59514B"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M42.89 39.95c-1.3.1-1.67-1.97-1.27-3.32.07-.26.5-1.43 1.26-1.43s1.1.64 1.14.75c.56 1.32.28 3.88-1.13 4zM57.93 39.95c1.3.1 1.66-1.97 1.27-3.32-.07-.26-.5-1.43-1.26-1.43s-1.1.64-1.14.75c-.56 1.32-.29 3.88 1.13 4z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                 />
                 <path
                     fill="#59514B"
@@ -43,7 +43,7 @@ function VeilederIcon(props: Props) {
                         fill="#D8A25D"
                         d="M40.74 59.12v-.08c0 4.5 4.15 9.18 9.26 9.18 5.06 0 9.17-4.58 9.26-9.04a23.9 23.9 0 019.86 5.96C72.39 68.41 75 73.31 75 77.12V100H25V77.12c0-3.8 2.56-8.7 5.77-11.96 3.32-3.36 7.34-5.38 9.97-6.04z"
                     />
-                    <path fill="#0C5472" fill-rule="evenodd" d="M-8.33 125.7h117v-93h-117v93z" clip-rule="evenodd" />
+                    <path fill="#0C5472" fillRule="evenodd" d="M-8.33 125.7h117v-93h-117v93z" clipRule="evenodd" />
                 </g>
                 <mask id="c" width="64" height="58" x="18" y="8" maskUnits="userSpaceOnUse">
                     <path
@@ -60,15 +60,15 @@ function VeilederIcon(props: Props) {
                 </g>
                 <path
                     fill="#fff"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M66.75 91h-15.5c-.69 0-1.25-.57-1.25-1.27v-8.46c0-.7.56-1.27 1.25-1.27h15.5c.69 0 1.25.57 1.25 1.27v8.46c0 .7-.56 1.27-1.25 1.27z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                 />
                 <path
                     fill="#C30000"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M59.12 90a3.48 3.48 0 01-3.45-3.5c0-1.93 1.55-3.5 3.45-3.5 1.91 0 3.46 1.57 3.46 3.5S61.03 90 59.12 90zM54 88.03l.7-1.77h.68l-.7 1.77H54zM62.71 88.03l.7-1.77h.37l-.7 1.77h-.37z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                 />
                 <mask id="d" width="1" height="3" x="64" y="86" maskUnits="userSpaceOnUse">
                     <path fill="#fff" d="M64.98 88.03v-1.77h-.9v1.77h.9z" />
@@ -76,24 +76,24 @@ function VeilederIcon(props: Props) {
                 <g mask="url(#d)">
                     <path
                         fill="#C30000"
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M64.08 88.03l.7-1.77h.2l-.7 1.77h-.2z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                     />
                 </g>
                 <path
                     fill="#FEFEFE"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M62.07 86.26h-.61s-.05 0-.06.03l-.34 1.06-.34-1.06c-.02-.03-.06-.03-.06-.03h-1.18a.05.05 0 00-.05.04v.36c0-.28-.3-.4-.47-.4-.39 0-.65.26-.73.65 0-.26-.03-.35-.1-.45a.45.45 0 00-.13-.12c-.1-.06-.2-.08-.4-.08h-.23s-.04 0-.06.03l-.21.54v-.53a.05.05 0 00-.05-.04h-.55s-.04 0-.06.03l-.22.57s-.02.05.03.05h.21v1.07c0 .03.02.05.05.05h.54c.02 0 .05-.02.05-.05V86.9h.2c.13 0 .15 0 .2.03.03 0 .05.03.07.05.03.06.03.12.03.32v.67c0 .03.02.05.05.05h.52s.06 0 .08-.06l.12-.29c.15.22.4.35.71.35h.07s.06 0 .08-.06l.2-.5v.5c0 .04.03.06.05.06h.53s.06 0 .08-.06l.22-.54c0-.04-.05-.04-.05-.04h-.19v-.92l.6 1.5c.02.06.08.06.08.06h.62s.06 0 .08-.06l.66-1.66c.03-.05-.04-.05-.04-.05zm-2.64 1.13h-.35a.26.26 0 01-.26-.26c0-.15.12-.26.26-.26h.1c.14 0 .25.11.25.26v.26z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                 />
                 <path
                     fill="#5A1F57"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M59.93 81.75h-1.6a.21.21 0 01-.22-.22v-.27c0-.11.1-.21.22-.21h1.6c.12 0 .22.1.22.21v.27c0 .12-.1.22-.22.22z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                 />
-                <path fill="#C2B5CF" fill-rule="evenodd" d="M58.66 81.5h.93V79h-.93v2.5z" clip-rule="evenodd" />
+                <path fill="#C2B5CF" fillRule="evenodd" d="M58.66 81.5h.93V79h-.93v2.5z" clipRule="evenodd" />
             </g>
         </svg>
     );
