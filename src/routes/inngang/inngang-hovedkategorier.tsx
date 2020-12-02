@@ -25,7 +25,7 @@ const InngangHovedkategorier = () => {
             <ContentContainer>
                 <PageTitle>{title}</PageTitle>
                 <InlineRow>
-                    <Veilederpanel type={'plakat'} kompakt svg={<VeilederIcon />}>
+                    <Veilederpanel type={'plakat'} fargetema={'info'} kompakt svg={<VeilederIcon />}>
                         <Normaltekst>
                             Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start
                             med å velge hvilket tema saken gjelder.

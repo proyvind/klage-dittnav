@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
-import Lenke from 'nav-frontend-lenker';
 import Envelope from '../../../icons/EnvelopeIcon';
 import { environment } from '../../../environment/environment';
 import { ISODate, isoDateToPretty } from '../../../date/date';
@@ -21,9 +20,7 @@ const Kvittering = (props: Props) => (
         <Icon />
         <CenteredPageSubTitle tag={'h2'}>Kvittering for innsendt klage</CenteredPageSubTitle>
         <CenteredPageParagraph>
-            <Lenke target="_blank" rel="noopener noreferrer" href={environment.klagePdfUrl(props.klageId)}>
-                Se og last ned søknaden din
-            </Lenke>
+            <ExternalLink href={environment.klagePdfUrl(props.klageId)}>Se og last ned søknaden din</ExternalLink>
         </CenteredPageParagraph>
         <CenteredPageParagraph>Sendt inn: {isoDateToPretty(props.finalizedDate)}</CenteredPageParagraph>
 
@@ -40,7 +37,11 @@ const Kvittering = (props: Props) => (
             <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                 tema-sider om klage og anke
             </ExternalLink>
-            .
+            . Du kan se{' '}
+            <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                forventet saksbehandlingstid for klage og anke
+            </ExternalLink>{' '}
+            i egen oversikt.
         </CenteredPageParagraph>
         <CenteredContainer>
             <ExternalLink href="https://tjenester.nav.no/saksoversikt/tema/FOR" className="knapp">

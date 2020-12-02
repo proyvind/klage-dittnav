@@ -58,7 +58,11 @@ const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer =
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                         dine klagerettigheter på våre tema-sider
                     </ExternalLink>
-                    .
+                    . Du kan se{' '}
+                    <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                        forventet saksbehandlingstid for klage og anke
+                    </ExternalLink>{' '}
+                    i egen oversikt.
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>
@@ -103,7 +107,9 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
                     </div>
                 </LenkePanelContentWithImage>
             </KlageLinkPanel>
-            <ExternalLink href="https://www.norge.no/elektronisk-id">Slik skaffer du deg elektronisk ID</ExternalLink>
+            <ExternalLink href="https://www.norge.no/elektronisk-id" showIcon>
+                Slik skaffer du deg elektronisk ID
+            </ExternalLink>
         </InlineRow>
     );
 };

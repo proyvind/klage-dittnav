@@ -21,25 +21,58 @@ export const KlageLinkPanel = (props: KlageLinkProps) => (
 export const KlageFlexLinkPanel = styled(KlageLinkPanel)`
     flex-basis: 320px;
     flex-grow: 1;
+    color: #3e3832;
     @media ${device.tablet} {
         flex-basis: 48%;
         flex-grow: 0;
     }
 `;
 
-const RouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <Link {...props} to={props.href ?? ''}>
-        {props.children}
-    </Link>
-);
+export const BaseRouterLink = styled(Link)`
+    color: #0067c5;
+
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+        color: white;
+        background-color: #254b6d;
+    }
+`;
+
+export const BaseLink = styled.a`
+    color: #0067c5;
+
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+        color: white;
+        background-color: #254b6d;
+        > ${ExternalLinkIcon} {
+            fill: white;
+        }
+    }
+`;
 
 interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+    href: string;
     showIcon?: boolean;
 }
 
 export const ExternalLink = (props: ExternalLinkProps) => (
-    <a {...props} target="_blank" rel="noopener noreferrer">
+    <BaseLink {...props} target="_blank" rel="noopener noreferrer">
         {props.children}
         {props.showIcon ? <ExternalLinkIcon /> : null}
-    </a>
+    </BaseLink>
+);
+
+const RouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <Link {...props} to={props.href ?? ''}>
+        {props.children}
+    </Link>
 );
