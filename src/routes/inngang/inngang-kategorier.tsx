@@ -4,7 +4,7 @@ import { InngangKategori } from '../../kategorier/kategorier';
 import { PointsFlexListContainer } from '../../styled-components/common';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { KlageFlexLinkPanel } from '../../link/link';
+import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { PageTitle } from '../../styled-components/page-title';
@@ -34,13 +34,24 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
 };
 
 const getLinks = ({ kategorier, path }: InngangKategori) =>
-    kategorier.map(kategori => (
-        <KlageFlexLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} border>
-            <div>
-                <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
-            </div>
-        </KlageFlexLinkPanel>
-    ));
+    kategorier.map(kategori => {
+        if (!kategori.redirectUrl) {
+            return (
+                <KlageFlexLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} border>
+                    <div>
+                        <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
+                    </div>
+                </KlageFlexLinkPanel>
+            );
+        }
+        return (
+            <ExternalKlageFlexLinkPanel key={kategori.title} href={kategori.redirectUrl} border>
+                <div>
+                    <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
+                </div>
+            </ExternalKlageFlexLinkPanel>
+        );
+    });
 
 const arePropsEqual = (prevProps: Props, nextProps: Props) => prevProps.inngangkategori === nextProps.inngangkategori;
 

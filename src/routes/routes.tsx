@@ -61,7 +61,7 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
     })
 );
 
-function getInngangInnsendingComponent({ digital, title, temaKey }: Kategori) {
+function getInngangInnsendingComponent({ digitalKlage: digital, title, temaKey }: Kategori) {
     if (digital) {
         return <InngangInnsendingDigital temaKey={temaKey} title={title} />;
     }
