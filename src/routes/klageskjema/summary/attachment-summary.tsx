@@ -1,56 +1,42 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import Lenke from 'nav-frontend-lenker';
 import { AttachmentFile } from '../../../klage/attachment';
 import { environment } from '../../../environment/environment';
 import { Klage, KlageStatus } from '../../../klage/klage';
+import { ExternalLink } from '../../../link/link';
 
 interface Props {
     klage: Klage;
     attachments: AttachmentFile[];
 }
 
-const AttachmentSummary = (props: Props) => (
-    <div>
-        {props.attachments.map(attachment => (
-            <div key={attachment.id}>{getContent(props.klage, attachment)}</div>
-        ))}
-    </div>
-);
-
-const getContent = (klage: Klage, attachment: AttachmentFile) => {
-    if (klage.status !== KlageStatus.DRAFT) {
-        return <AttachmentText>{attachment.name}</AttachmentText>;
+const AttachmentSummary = (props: Props) => {
+    if (props.klage.status !== KlageStatus.DRAFT) {
+        return (
+            <AttachmentList>
+                {props.attachments.map(attachment => (
+                    <li key={attachment.id}>{attachment.name}</li>
+                ))}
+            </AttachmentList>
+        );
     }
-
     return (
-        <NoBackgroundLink
-            href={environment.attachmentUrl(klage.id, attachment.id)}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            <AttachmentLinkText>{attachment.name}</AttachmentLinkText>
-        </NoBackgroundLink>
+        <AttachmentList>
+            {props.attachments.map(attachment => (
+                <li key={attachment.id}>
+                    <ExternalLink href={environment.attachmentUrl(props.klage.id, attachment.id)}>
+                        {attachment.name}
+                    </ExternalLink>
+                </li>
+            ))}
+        </AttachmentList>
     );
 };
 
-const AttachmentText = styled.span`
-    font-size: 16px;
-    line-height: 22px;
-`;
-
-const AttachmentLinkText = styled.span`
-    font-size: 16px;
-    line-height: 22px;
-    color: #3385d1;
-`;
-
-const NoBackgroundLink = styled(Lenke)`
-    background: none;
-    &:focus {
-        box-shadow: none;
-        color: #0067c5;
-    }
+const AttachmentList = styled.ul`
+    list-style: none;
+    margin: 0;
+    padding: 0;
 `;
 
 export default AttachmentSummary;

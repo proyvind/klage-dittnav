@@ -7,12 +7,7 @@ import { Undertittel, Undertekst, Normaltekst } from 'nav-frontend-typografi';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import PersonligeOpplysningerSummary from './summary/personlige-opplysninger-summary';
 import VedtakSummary from './summary/vedtak-summary';
-import {
-    MarginContainer,
-    CenteredContainer,
-    FlexColumnWithSpacingContainer,
-    WrapNormaltekst
-} from '../../styled-components/common';
+import { MarginContainer, CenteredContainer, WrapNormaltekst } from '../../styled-components/common';
 import AttachmentSummary from './summary/attachment-summary';
 import { finalizeKlage } from '../../api/api';
 import Clipboard from '../../icons/ClipboardIcon';
@@ -25,6 +20,7 @@ import { device } from '../../styled-components/media-queries';
 import { Klage, KlageStatus } from '../../klage/klage';
 import { ExternalLink } from '../../link/link';
 import { CenteredPageSubTitle } from '../../styled-components/page-title';
+import { CustomMarginRow } from '../../styled-components/row';
 
 interface Props {
     klage: Klage;
@@ -82,14 +78,16 @@ const Oppsummering = ({ klage }: Props) => {
                 >
                     <Text>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Text>
                     <PersonligeOpplysningerSummary user={user} />
-                    <FlexColumnWithSpacingContainer>
+                    <CustomMarginRow margin={8}>
                         <ExternalLink showIcon href="https://www.skatteetaten.no/person/folkeregister/">
                             Endre navn eller adresse (Folkeregisteret)
                         </ExternalLink>
+                    </CustomMarginRow>
+                    <CustomMarginRow margin={0}>
                         <ExternalLink showIcon href="https://brukerprofil.difi.no/minprofil">
                             Endre telefonnummer (Kontakt- og reservasjonsregisteret)
                         </ExternalLink>
-                    </FlexColumnWithSpacingContainer>
+                    </CustomMarginRow>
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
                 <Ekspanderbartpanel

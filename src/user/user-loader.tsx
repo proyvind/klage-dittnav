@@ -6,6 +6,7 @@ import { AppContext } from '../app-context/app-context';
 import { LoginButton } from '../styled-components/login-button';
 import { NetworkError } from '../api/errors';
 import LoadingPage from '../loading-page/loading-page';
+import { login } from './login';
 
 interface Props {
     children: JSX.Element;
@@ -27,7 +28,7 @@ const UserLoader = (props: Props) => {
                 <AlertStripeFeil>
                     <Normaltekst>{`Kunne ikke laste brukeren, fordi nettleseren din ikke kan nå NAV. Har du fortsatt internett?`}</Normaltekst>
                     <Normaltekst>{`Feilmelding: "${error.message}"`}</Normaltekst>
-                    <LoginButton>Logg inn</LoginButton>
+                    <LoginButton onClick={login}>Logg inn</LoginButton>
                 </AlertStripeFeil>
             );
         }
@@ -35,7 +36,7 @@ const UserLoader = (props: Props) => {
             <AlertStripeFeil>
                 <Normaltekst>{`Kunne ikke laste brukeren, vennligst prøv igjen senere.`}</Normaltekst>
                 <Normaltekst>{`Feilmelding: "${error.message}"`}</Normaltekst>
-                <LoginButton>Logg inn</LoginButton>
+                <LoginButton onClick={login}>Logg inn</LoginButton>
             </AlertStripeFeil>
         );
     }

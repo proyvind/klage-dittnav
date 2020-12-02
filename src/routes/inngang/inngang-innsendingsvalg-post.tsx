@@ -36,7 +36,7 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
                 <PageTitle>{title}</PageTitle>
                 <WhiteSection>
                     <SectionTitle>Innsending via post</SectionTitle>
-                    <VeilederContainer>
+                    <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>
                     <PageParagraph>
@@ -66,7 +66,11 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                         dine klagerettigheter på våre tema-sider
                     </ExternalLink>
-                    .
+                    . Du kan se{' '}
+                    <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                        forventet saksbehandlingstid for klage og anke
+                    </ExternalLink>{' '}
+                    i egen oversikt.
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>

@@ -207,7 +207,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 </SlimRow>
                 {vedtakType === VedtakType.EARLIER && (
                     <SlimRow>
-                        <Element>Vedtaksdato (valgfritt)</Element>
+                        <Element>Vedtaksdato (valgfri)</Element>
                         <Datepicker
                             onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
                             value={vedtakDate ?? undefined}
@@ -240,13 +240,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 <KlageUndertittel>Vedlegg ({attachments.length})</KlageUndertittel>
                 <AttachmentPreview attachments={toFiles(attachments)} deleteAttachment={deleteAttachmentHandler} />
                 {showAttachmentLoader(attachmentsLoading)}
-                <Normaltekst>
-                    Om du har ny eller oppdatert informasjon du ønsker å legge ved kan det lastes opp her.
-                </Normaltekst>
-                <Normaltekst>
-                    All informasjon du har sendt inn tidligere i denne saken vil følge med klagen din og trenger ikke
-                    lastes opp på nytt.
-                </Normaltekst>
+                <Normaltekst>Har du informasjon du ønsker å legge ved, laster du det opp her.</Normaltekst>
                 {getAttachmentError(attachmentError)}
             </Section>
 
@@ -366,7 +360,7 @@ function notNull<T>(v: T | null): v is T {
 }
 
 const INPUTDESCRIPTION =
-    'Skriv inn hvilke endringer du ønsker i vedtaket, og beskriv hva du begrunner klagen med. Legg ved dokumenter som du mener kan være til støtte for klagen.';
+    'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.';
 
 const KlageAlertStripeFeil = styled(AlertStripeFeil)`
     && {
