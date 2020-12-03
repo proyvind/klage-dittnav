@@ -141,7 +141,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 path: 'foreldrepenger'
             },
             {
-                temaKey: TemaKey.ENS,
+                temaKey: TemaKey.ENF,
                 title: 'Enslig mor eller far',
                 anke: true,
                 digitalKlage: false,
