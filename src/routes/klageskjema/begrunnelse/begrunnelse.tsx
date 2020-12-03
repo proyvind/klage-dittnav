@@ -332,7 +332,7 @@ const getError = (error: Error | null, logIn: () => void) => {
             <MarginContainer>
                 <AlertStripeFeil>
                     <Normaltekst>
-                        Du har blitt logget ut. Vi har lagret klagen du jobbet med. Logg inn for å fortsette der du var.
+                        Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.
                     </Normaltekst>
                     <LoginButton onClick={logIn}>Logg inn</LoginButton>
                 </AlertStripeFeil>
