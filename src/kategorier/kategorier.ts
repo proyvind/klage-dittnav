@@ -14,7 +14,7 @@ export interface Kategori {
     digitalKlage: boolean;
     digitalAnke: boolean;
     path: string;
-    redirectUrl?: string;
+    externalUrl?: string;
 }
 
 export const INNGANG_KATEGORIER: InngangKategori[] = [
@@ -319,7 +319,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 digitalKlage: false,
                 digitalAnke: false,
                 path: 'sosiale-tjenester',
-                redirectUrl: 'https://www.nav.no/sosialhjelp/artikkel/124875'
+                externalUrl: 'https://www.nav.no/sosialhjelp/artikkel/124875'
             }
         ]
     }

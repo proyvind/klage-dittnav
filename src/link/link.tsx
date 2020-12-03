@@ -19,12 +19,7 @@ export const KlageLinkPanel = (props: KlageLinkProps) => (
 );
 
 export const ExternalKlageLinkPanel = (props: KlageLinkProps) => (
-    <LenkepanelBase
-        href={props.href}
-        className={props.className}
-        border={props.border}
-        linkCreator={ExternalRouterLink}
-    >
+    <LenkepanelBase href={props.href} className={props.className} border={props.border} linkCreator={ExternalAnchor}>
         {props.children}
     </LenkepanelBase>
 );
@@ -95,7 +90,7 @@ const RouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     </Link>
 );
 
-export const ExternalRouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+export const ExternalAnchor = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <a {...props} target="_blank" rel="noopener noreferrer">
         {props.children}
     </a>

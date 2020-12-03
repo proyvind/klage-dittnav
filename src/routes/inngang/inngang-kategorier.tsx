@@ -35,7 +35,7 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
 
 const getLinks = ({ kategorier, path }: InngangKategori) =>
     kategorier.map(kategori => {
-        if (!kategori.redirectUrl) {
+        if (!kategori.externalUrl) {
             return (
                 <KlageFlexLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} border>
                     <div>
@@ -45,7 +45,7 @@ const getLinks = ({ kategorier, path }: InngangKategori) =>
             );
         }
         return (
-            <ExternalKlageFlexLinkPanel key={kategori.title} href={kategori.redirectUrl} border>
+            <ExternalKlageFlexLinkPanel key={kategori.title} href={kategori.externalUrl} border>
                 <div>
                     <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
                 </div>
