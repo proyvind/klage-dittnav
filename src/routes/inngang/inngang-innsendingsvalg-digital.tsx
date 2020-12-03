@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
@@ -17,16 +17,26 @@ import { PageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
+import { InngangKategori } from '../../kategorier/kategorier';
+import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 
 interface Props {
     temaKey: TemaKey;
     title?: string;
     saksnummer?: string | null;
+    inngangkategori?: InngangKategori | null;
 }
 
-const InngangInnsendingDigital = ({ temaKey, title = Tema[temaKey], saksnummer = null }: Props) => {
+const InngangInnsendingDigital = ({
+    temaKey,
+    title = Tema[temaKey],
+    saksnummer = null,
+    inngangkategori = null
+}: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
+    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori), [inngangkategori]);
+    useBreadcrumbs(breadcrumbs, title);
 
     const paperUrl = getUrlToPaperForm(temaKey);
 
@@ -113,6 +123,20 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
         </InlineRow>
     );
 };
+
+function getBreadcrumbs(inngangkategori: InngangKategori | null): Breadcrumb[] {
+    if (inngangkategori === null) {
+        return [];
+    }
+
+    return [
+        {
+            title: inngangkategori.title,
+            url: `/${inngangkategori.path}`,
+            handleInApp: true
+        }
+    ];
+}
 
 function getQueryValue(queryValue: string | string[] | null | undefined) {
     if (typeof queryValue === 'string' && queryValue.length !== 0) {

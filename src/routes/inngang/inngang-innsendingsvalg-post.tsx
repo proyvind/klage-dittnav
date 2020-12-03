@@ -19,15 +19,27 @@ import { SectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
+import { InngangKategori } from '../../kategorier/kategorier';
+import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 
 interface Props {
     temaKey: TemaKey;
     title?: string;
+    inngangkategori: InngangKategori;
 }
 
-const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey] }: Props) => {
+const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
+    const breadcrumbs: Breadcrumb[] = [
+        {
+            title: inngangkategori.title,
+            url: `/${inngangkategori.path}`,
+            handleInApp: true
+        }
+    ];
+    useBreadcrumbs(breadcrumbs, title);
+
     const paperUrl = getUrlToPaperForm(temaKey);
 
     return (

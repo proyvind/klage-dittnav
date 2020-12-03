@@ -9,6 +9,7 @@ import FormTitle from '../form-title';
 import { FormMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { usePageInit } from '../../page-init/page-init';
+import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 
 interface Props {
     activeStep: number;
@@ -18,6 +19,7 @@ interface Props {
 
 const FormContainer = (props: Props) => {
     usePageInit(`${stepLabels[props.activeStep]} \u2013 klage`);
+    useBreadcrumbs(null, null);
 
     return (
         <FormMainContainer>

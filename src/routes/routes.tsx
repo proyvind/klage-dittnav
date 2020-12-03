@@ -9,7 +9,7 @@ import FormContainer from './klageskjema/form-container';
 import KlageLoader from '../klage/klage-loader';
 import Oppsummering from './klageskjema/oppsummering';
 import KvitteringPage from './klageskjema/kvittering/kvittering-page';
-import { INNGANG_KATEGORIER, Kategori } from '../kategorier/kategorier';
+import { InngangKategori, INNGANG_KATEGORIER, Kategori } from '../kategorier/kategorier';
 import AppContextComponenet from '../app-context/app-context';
 import { Klage } from '../klage/klage';
 import { loggedInRedirect } from './loggedin-redirect';
@@ -57,15 +57,23 @@ const kategoriRoutes = INNGANG_KATEGORIER.map(inngangkategori => (
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
     inngangkategori.kategorier.map(kategori => {
         const path = `/${inngangkategori.path}/${kategori.path}`;
-        return <Route key={path} path={path} render={() => getInngangInnsendingComponent(kategori)} exact />;
+        return (
+            <Route
+                key={path}
+                path={path}
+                render={() => getInngangInnsendingComponent(inngangkategori, kategori)}
+                exact
+            />
+        );
     })
 );
 
-function getInngangInnsendingComponent({ digitalKlage, title, temaKey }: Kategori) {
+function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
+    const { digitalKlage, title, temaKey } = kategori;
     if (digitalKlage) {
-        return <InngangInnsendingDigital temaKey={temaKey} title={title} />;
+        return <InngangInnsendingDigital temaKey={temaKey} title={title} inngangkategori={inngangkategori} />;
     }
-    return <InngangInnsendingPost temaKey={temaKey} title={title} />;
+    return <InngangInnsendingPost temaKey={temaKey} title={title} inngangkategori={inngangkategori} />;
 }
 
 const renderBegrunnelse = (klage: Klage) => <FormContainer klage={klage} activeStep={0} render={Begrunnelse} />;

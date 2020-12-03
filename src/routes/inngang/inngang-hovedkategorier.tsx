@@ -14,11 +14,14 @@ import { InlineRow } from '../../styled-components/row';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
+import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+
+export const title = 'Klage eller anke på vedtak';
 
 const InngangHovedkategorier = () => {
-    const title = 'Klage eller anke på vedtak';
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
     usePageInit(title);
+    useBreadcrumbs([], null);
 
     return (
         <InngangMainContainer>

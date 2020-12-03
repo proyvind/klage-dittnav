@@ -11,6 +11,7 @@ import { PageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
+import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -19,6 +20,7 @@ interface Props {
 const InngangKategorier = ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
     usePageInit(`${inngangkategori.title} \u2013 klage eller anke`);
+    useBreadcrumbs([], inngangkategori.title);
 
     return (
         <InngangMainContainer>
