@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import { device } from '../styled-components/media-queries';
 import ExternalLinkIcon from '../icons/ExternalLinkIcon';
@@ -18,7 +18,13 @@ export const KlageLinkPanel = (props: KlageLinkProps) => (
     </LenkepanelBase>
 );
 
-export const KlageFlexLinkPanel = styled(KlageLinkPanel)`
+export const ExternalKlageLinkPanel = (props: KlageLinkProps) => (
+    <LenkepanelBase href={props.href} className={props.className} border={props.border} linkCreator={ExternalAnchor}>
+        {props.children}
+    </LenkepanelBase>
+);
+
+const LinkPanelStyle = css`
     flex-basis: 320px;
     flex-grow: 1;
     color: #3e3832;
@@ -58,6 +64,13 @@ export const BaseLink = styled.a`
         }
     }
 `;
+export const KlageFlexLinkPanel = styled(KlageLinkPanel)`
+    ${LinkPanelStyle}
+`;
+
+export const ExternalKlageFlexLinkPanel = styled(ExternalKlageLinkPanel)`
+    ${LinkPanelStyle}
+`;
 
 interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     href: string;
@@ -75,4 +88,10 @@ const RouterLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <Link {...props} to={props.href ?? ''}>
         {props.children}
     </Link>
+);
+
+export const ExternalAnchor = (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a {...props} target="_blank" rel="noopener noreferrer">
+        {props.children}
+    </a>
 );
