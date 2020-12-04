@@ -6,7 +6,7 @@ import { INNGANG_KATEGORIER } from '../../kategorier/kategorier';
 import { KlageFlexLinkPanel } from '../../link/link';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { PointsFlexListContainer } from '../../styled-components/common';
+import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { PageTitle } from '../../styled-components/page-title';
@@ -38,7 +38,7 @@ const InngangHovedkategorier = () => {
 
                 <WhiteSection>
                     <SectionTitle>Hvilket område gjelder det?</SectionTitle>
-                    <PointsFlexListContainer>{getLinks()}</PointsFlexListContainer>
+                    <SpaceBetweenFlexListContainer>{getLinks()}</SpaceBetweenFlexListContainer>
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>

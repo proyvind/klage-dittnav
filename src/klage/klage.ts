@@ -1,4 +1,4 @@
-import { ISODate, ISODateTime, isoDateToPretty } from '../date/date';
+import { ISODate, ISODateTime } from '../date/date';
 import { TemaKey } from '../tema/tema';
 import { Attachment } from './attachment';
 
@@ -8,9 +8,11 @@ export enum KlageStatus {
     DELETED = 'DELETED'
 }
 
-export enum VedtakType {
-    EARLIER = 'EARLIER',
-    LATEST = 'LATEST'
+export enum Reason {
+    AVSLAG_PAA_SOKNAD = 'AVSLAG_PAA_SOKNAD',
+    UENIG_I_VEDTAK_OM_TILBAKEBETALING = 'UENIG_I_VEDTAK_OM_TILBAKEBETALING',
+    FOR_LITE_UTBETALT = 'FOR_LITE_UTBETALT',
+    UENIG_I_NOE_ANNET = 'UENIG_I_NOE_ANNET'
 }
 
 export interface FinalizedKlage {
@@ -19,12 +21,12 @@ export interface FinalizedKlage {
 }
 
 export interface NewKlage {
+    readonly checkboxesSelected: Reason[];
     readonly fritekst: string;
-    readonly tema: TemaKey;
-    readonly ytelse: string;
-    readonly vedtakType: VedtakType | null;
-    readonly vedtakDate: ISODate | null;
     readonly saksnummer: string | null;
+    readonly tema: TemaKey;
+    readonly vedtakDate: ISODate | null;
+    readonly ytelse: string;
 }
 
 export interface UpdateKlage extends NewKlage {
@@ -39,23 +41,10 @@ export interface Klage extends UpdateKlage {
     readonly vedlegg: Attachment[];
 }
 
-export const TIDLIGERE_VEDTAK = 'Tidligere vedtak';
-export const SISTE_VEDTAK = 'Siste vedtak';
-
-export const dateToVedtakText = (vedtakType: VedtakType | null, isoDate: ISODate | null): string => {
-    if (vedtakType === null) {
-        return '';
-    }
-    if (vedtakType === VedtakType.LATEST) {
-        return SISTE_VEDTAK;
-    }
-    if (vedtakType === VedtakType.EARLIER) {
-        const prettyDate = isoDateToPretty(isoDate);
-        if (prettyDate === null) {
-            return `${TIDLIGERE_VEDTAK} - Ingen dato satt`;
-        }
-        return `${TIDLIGERE_VEDTAK} - ${prettyDate}`;
+export function reasonsMatch<Reasons>(a1: Reasons[], a2: Reasons[]): boolean {
+    if (a1.length !== a2.length) {
+        return false;
     }
 
-    throw new Error(`Unknown date choice state: ${vedtakType}`);
-};
+    return a1.every(v => a2.includes(v));
+}

@@ -33,10 +33,10 @@ const CreateKlage = () => {
         const saksnummer = getQueryValue(query.saksnummer);
         const newKlage: NewKlage = {
             fritekst: '',
+            checkboxesSelected: [],
             tema: temaKey,
             ytelse: title,
             vedtakDate: null,
-            vedtakType: null,
             saksnummer
         };
 

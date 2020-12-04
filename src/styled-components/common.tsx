@@ -19,23 +19,20 @@ export const MarginContainer = styled.div`
     width: 100%;
 `;
 
-export const FlexContainer = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-`;
-
-export const FlexColumnContainer = styled.div`
+export const SpaceBetweenFlexListContainer = styled.div`
     display: flex;
     flex-flow: column wrap;
-`;
+    justify-content: space-between;
 
-export const FlexColumnWithSpacingContainer = styled(FlexColumnContainer)`
-    > * {
-        margin-bottom: 10px;
+    @media ${device.mobileL} {
+        flex-flow: row wrap;
     }
 `;
 
-export const FlexWithSpacingContainer = styled(FlexContainer)`
+export const FlexWithSpacingContainer = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+
     > * {
         margin-right: 10px;
     }
@@ -83,15 +80,6 @@ export const FileFlexItem = styled(FileFC)`
                 stroke: #ba3a26;
             }
         }
-    }
-`;
-
-export const PointsFlexListContainer = styled(FlexContainer)`
-    justify-content: space-between;
-    > div {
-        flex-basis: 40%;
-        flex-grow: 1;
-        margin-bottom: 24px;
     }
 `;
 

@@ -1,5 +1,5 @@
 import { TemaKey } from '../tema/tema';
-import { Klage, KlageStatus, VedtakType } from './klage';
+import { Klage, KlageStatus, Reason } from './klage';
 import { KlageStorage, KLAGE_STORAGE_KEYS } from './klage-store';
 
 describe('Klage store', () => {
@@ -8,14 +8,14 @@ describe('Klage store', () => {
         finalizedDate: null,
         journalpostId: null,
         modifiedByUser: '2020-12-31T15:45:59.123',
-        saksnummer: null,
         tema: TemaKey.FOR,
         vedlegg: [],
         ytelse: 'En ytelse',
         status: KlageStatus.DRAFT,
-        fritekst: '',
-        vedtakType: null,
-        vedtakDate: null
+        checkboxesSelected: [],
+        saksnummer: null,
+        vedtakDate: null,
+        fritekst: ''
     };
 
     it('Should store klage values', () => {
@@ -23,16 +23,16 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
-        klageStore.store(expectedFritekst, expectedVedtakType, expectedVedtakDate);
+        klageStore.store(expectedFritekst, expectedReasons, expectedVedtakDate);
 
-        const fritekst = storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_FRITEKST);
-        const dateOption = storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_TYPE);
-        const isoDate = storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_DATE);
+        const fritekst = klageStore.getFritekst();
+        const reasons = klageStore.getReasons();
+        const isoDate = klageStore.getVedtakDate();
 
         expect(fritekst).toBe(expectedFritekst);
-        expect(dateOption).toBe(expectedVedtakType);
+        expect(reasons).toStrictEqual(expectedReasons);
         expect(isoDate).toBe(expectedVedtakDate);
     });
 
@@ -41,21 +41,21 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'a new and better fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
-        klageStore.store(expectedFritekst, expectedVedtakType, expectedVedtakDate);
+        klageStore.store(expectedFritekst, expectedReasons, expectedVedtakDate);
 
         const klage: Klage = {
             ...BASE_KLAGE,
             status: KlageStatus.DRAFT,
             fritekst: 'old and poor fritekst',
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const expectedKlage: Klage = {
             ...klage,
             fritekst: expectedFritekst,
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const restoredKlage = klageStore.restore(klage);
@@ -69,21 +69,21 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
-        klageStore.store(expectedFritekst, expectedVedtakType, expectedVedtakDate);
+        klageStore.store(expectedFritekst, expectedReasons, expectedVedtakDate);
 
         const klage: Klage = {
             ...BASE_KLAGE,
             status: KlageStatus.DRAFT,
             fritekst: expectedFritekst,
-            vedtakType: VedtakType.LATEST,
+            checkboxesSelected: [],
             vedtakDate: null
         };
         const expectedKlage: Klage = {
             ...klage,
             fritekst: expectedFritekst,
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const restoredKlage = klageStore.restore(klage);
@@ -97,13 +97,13 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
         const expectedKlage: Klage = {
             ...BASE_KLAGE,
             status: KlageStatus.DRAFT,
             fritekst: expectedFritekst,
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const restoredKlage = klageStore.restore(expectedKlage);
@@ -116,15 +116,15 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
-        klageStore.store(expectedFritekst, expectedVedtakType, expectedVedtakDate);
+        klageStore.store(expectedFritekst, expectedReasons, expectedVedtakDate);
 
         const expectedKlage: Klage = {
             ...BASE_KLAGE,
             status: KlageStatus.DRAFT,
             fritekst: expectedFritekst,
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const restoredKlage = klageStore.restore(expectedKlage);
@@ -137,15 +137,15 @@ describe('Klage store', () => {
         const klageStore = new KlageStorage(storage);
         const expectedFritekst = 'fritekst';
         const expectedVedtakDate = '2020-12-31';
-        const expectedVedtakType = VedtakType.EARLIER;
+        const expectedReasons = [Reason.AVSLAG_PAA_SOKNAD];
 
-        klageStore.store(expectedFritekst, expectedVedtakType, expectedVedtakDate);
+        klageStore.store(expectedFritekst, expectedReasons, expectedVedtakDate);
 
         const expectedKlage: Klage = {
             ...BASE_KLAGE,
             status: KlageStatus.DONE,
             fritekst: 'outdated',
-            vedtakType: expectedVedtakType,
+            checkboxesSelected: expectedReasons,
             vedtakDate: expectedVedtakDate
         };
         const restoredKlage = klageStore.restore(expectedKlage);
@@ -158,7 +158,7 @@ describe('Klage store', () => {
             shouldBe: 'still here',
             shouldStill: 'be here',
             [KLAGE_STORAGE_KEYS.KLAGE_FRITEKST]: 'not here',
-            [KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_TYPE]: 'not here',
+            [KLAGE_STORAGE_KEYS.KLAGE_REASONS]: 'not here',
             [KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_DATE]: 'not here'
         });
         const klageStore = new KlageStorage(storage);
@@ -167,7 +167,7 @@ describe('Klage store', () => {
         expect(storage.getItem('shouldBe')).toBe('still here');
         expect(storage.getItem('shouldStill')).toBe('be here');
         expect(storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_FRITEKST)).toBeNull();
-        expect(storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_TYPE)).toBeNull();
+        expect(storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_REASONS)).toBeNull();
         expect(storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_DATE)).toBeNull();
     });
 });

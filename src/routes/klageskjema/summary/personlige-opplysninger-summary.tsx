@@ -2,7 +2,7 @@ import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { User, Address, displayAddress, displayPoststed } from '../../../user/user';
 import InformationPointBox from './information-point-box';
-import { PointsFlexListContainer } from '../../../styled-components/common';
+import { SpaceBetweenFlexListContainer } from '../../../styled-components/common';
 import { foedselsnrFormat } from './text-formatting';
 
 const PERSONLIGE_OPPLYSNINGER_POINTS = [
@@ -46,19 +46,15 @@ interface Props {
 
 const PersonligeOpplysningerSummary = (props: Props) => {
     return (
-        <>
-            <PointsFlexListContainer>
-                {PERSONLIGE_OPPLYSNINGER_POINTS.map(point => {
-                    return (
-                        <InformationPointBox
-                            key={point.displayName}
-                            header={point.displayName}
-                            info={point.content(props.user)}
-                        />
-                    );
-                })}
-            </PointsFlexListContainer>
-        </>
+        <SpaceBetweenFlexListContainer>
+            {PERSONLIGE_OPPLYSNINGER_POINTS.map(point => {
+                return (
+                    <InformationPointBox key={point.displayName} header={point.displayName}>
+                        {point.content(props.user)}
+                    </InformationPointBox>
+                );
+            })}
+        </SpaceBetweenFlexListContainer>
     );
 };
 

@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { RadioPanelGruppe, Textarea } from 'nav-frontend-skjema';
+import { Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel, Element, Undertekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Datepicker } from 'nav-datovelger';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -11,10 +11,9 @@ import { CenteredContainer, MarginContainer } from '../../../styled-components/c
 import { getAttachmentErrorMessage, Attachment, AttachmentFile, toFiles } from '../../../klage/attachment';
 import AttachmentPreview from './attachment-preview';
 import { updateKlage, addAttachment, deleteAttachment } from '../../../api/api';
-import { datoValg } from './date-option';
 import { AppContext } from '../../../app-context/app-context';
 import { ISODate, ISODateTime } from '../../../date/date';
-import { Klage, KlageStatus, UpdateKlage, VedtakType } from '../../../klage/klage';
+import { Klage, KlageStatus, Reason, UpdateKlage } from '../../../klage/klage';
 import { ApiError, NotLoggedInError } from '../../../api/errors';
 import klageStore from '../../../klage/klage-store';
 import { login } from '../../../user/login';
@@ -22,8 +21,10 @@ import { LoginButton } from '../../../styled-components/login-button';
 import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
 import { useLogPageView } from '../../../logging/use-log-page-view';
 import { PageIdentifier } from '../../../logging/amplitude';
-import { Row, SlimRow } from '../../../styled-components/row';
+import { Row } from '../../../styled-components/row';
 import { Section } from '../../../styled-components/section';
+import { KlageUndertittel } from './undertittel';
+import Reasons from './reasons';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -42,11 +43,12 @@ const Begrunnelse = ({ klage }: Props) => {
     const { setKlage } = useContext(AppContext);
     useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
 
-    const [loading, setIsLoading] = useState<boolean>(false);
-    const [fritekst, setFritekst] = useState<string>(klage.fritekst);
+    const [reasons, setReasons] = useState<Reason[]>(klage.checkboxesSelected);
     const [vedtakDate, setVedtakDate] = useState<string | null>(klage.vedtakDate);
-    const [vedtakType, setVedtakType] = useState<VedtakType | null>(klage.vedtakType);
+    const [fritekst, setFritekst] = useState<string>(klage.fritekst);
     const [attachments, setAttachments] = useState<Attachment[]>(klage.vedlegg);
+
+    const [loading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
@@ -60,7 +62,7 @@ const Begrunnelse = ({ klage }: Props) => {
     }, [klage, history]);
 
     const performKlageUpdate = useCallback(async () => {
-        const klageUpdate = createKlageUpdate(klage, fritekst, vedtakType, vedtakDate);
+        const klageUpdate = createKlageUpdate(klage, reasons, fritekst, vedtakDate);
         try {
             await updateKlage(klageUpdate);
             setKlage({
@@ -73,21 +75,21 @@ const Begrunnelse = ({ klage }: Props) => {
             return true;
         } catch (error) {
             setAutosaveStatus(AutosaveStatus.FAILED);
-            klageStore.store(fritekst, vedtakType, vedtakDate);
+            klageStore.store(fritekst, reasons, vedtakDate);
             setError(error);
             return false;
         }
-    }, [fritekst, vedtakDate, vedtakType, attachments, klage, setKlage]);
+    }, [fritekst, vedtakDate, reasons, attachments, klage, setKlage]);
 
     useEffect(() => {
-        if (klage.vedtakType === vedtakType && klage.vedtakDate === vedtakDate && klage.fritekst === fritekst) {
+        if (klage.vedtakDate === vedtakDate && klage.checkboxesSelected === reasons && klage.fritekst === fritekst) {
             setAutosaveStatus(AutosaveStatus.SAVED);
             return;
         }
         setAutosaveStatus(AutosaveStatus.SAVING);
         const timeout = setTimeout(performKlageUpdate, 1000);
         return () => clearTimeout(timeout); // Clear existing timer every time it runs.
-    }, [fritekst, vedtakDate, vedtakType, klage, performKlageUpdate]);
+    }, [fritekst, vedtakDate, reasons, klage, performKlageUpdate]);
 
     const fileInput = useRef<HTMLInputElement>(null);
 
@@ -165,23 +167,18 @@ const Begrunnelse = ({ klage }: Props) => {
     };
 
     const storeKlageAndLogIn = () => {
-        klageStore.store(fritekst, vedtakType, vedtakDate);
+        klageStore.store(fritekst, reasons, vedtakDate);
         login();
     };
 
-    const validForm = () => validBegrunnelse() && validDatoalternativ();
     const validBegrunnelse = () => fritekst.length !== 0;
-    const validDatoalternativ = () => vedtakType !== null;
+    const validForm = validBegrunnelse;
 
     const getFeilmeldinger = () => {
-        const feilmeldinger: string[] = [];
-        if (!validDatoalternativ()) {
-            feilmeldinger.push('Du må velge hvilket vedtak du ønsker å klage på før du går videre.');
-        }
         if (!validBegrunnelse()) {
-            feilmeldinger.push('Du må skrive en begrunnelse før du går videre.');
+            return ['Du må skrive en begrunnelse før du går videre.'];
         }
-        return feilmeldinger;
+        return [];
     };
 
     return (
@@ -194,31 +191,20 @@ const Begrunnelse = ({ klage }: Props) => {
                 </KlageAlertStripeFeil>
             )}
 
+            <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
+
             <Section>
-                <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
-                <SlimRow>
-                    <RadioPanelGruppe
-                        name="datoValg"
-                        radios={datoValg}
-                        checked={vedtakType ?? undefined}
-                        onChange={(_, value: VedtakType) => setVedtakType(value)}
-                        feil={submitted && !validDatoalternativ() && 'Du må velge hvilket vedtak du ønsker å klage på.'}
-                    />
-                </SlimRow>
-                {vedtakType === VedtakType.EARLIER && (
-                    <SlimRow>
-                        <Element>Vedtaksdato (valgfri)</Element>
-                        <Datepicker
-                            onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
-                            value={vedtakDate ?? undefined}
-                            showYearSelector
-                            limitations={{
-                                maxDate: new Date().toISOString().substring(0, 10)
-                            }}
-                        />
-                    </SlimRow>
-                )}
+                <KlageUndertittel>Vedtaksdato (valgfri)</KlageUndertittel>
+                <Datepicker
+                    onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
+                    value={vedtakDate ?? undefined}
+                    showYearSelector
+                    limitations={{
+                        maxDate: new Date().toISOString().substring(0, 10)
+                    }}
+                />
             </Section>
+
             <Section>
                 <KlageUndertittel>Hvorfor er du uenig?</KlageUndertittel>
                 <Textarea
@@ -284,16 +270,16 @@ const Begrunnelse = ({ klage }: Props) => {
 
 const createKlageUpdate = (
     klage: Klage,
+    checkboxesSelected: Reason[],
     fritekst: string,
-    vedtakType: VedtakType | null,
     vedtakDate: ISODate | null
 ): UpdateKlage => ({
     id: klage.id,
     tema: klage.tema,
     ytelse: klage.ytelse,
+    checkboxesSelected,
     saksnummer: klage.saksnummer,
     fritekst,
-    vedtakType,
     vedtakDate
 });
 
@@ -363,12 +349,6 @@ const INPUTDESCRIPTION =
     'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.';
 
 const KlageAlertStripeFeil = styled(AlertStripeFeil)`
-    && {
-        margin-bottom: 16px;
-    }
-`;
-
-const KlageUndertittel = styled(Undertittel)`
     && {
         margin-bottom: 16px;
     }

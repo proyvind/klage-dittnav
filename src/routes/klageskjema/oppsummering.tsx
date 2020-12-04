@@ -21,6 +21,9 @@ import { Klage, KlageStatus } from '../../klage/klage';
 import { ExternalLink } from '../../link/link';
 import { CenteredPageSubTitle } from '../../styled-components/page-title';
 import { CustomMarginRow } from '../../styled-components/row';
+import InformationPointBox from './summary/information-point-box';
+import { reasonTexts } from './begrunnelse/reasons';
+import { KlageUndertittel } from './begrunnelse/undertittel';
 
 interface Props {
     klage: Klage;
@@ -100,8 +103,17 @@ const Oppsummering = ({ klage }: Props) => {
                 <ColoredLine color="#a2a1a1" />
 
                 <SummarySection>
-                    <Undertittel>Begrunnelse i din klage</Undertittel>
-                    <WrapNormaltekst>{klage.fritekst}</WrapNormaltekst>
+                    <KlageUndertittel>Begrunnelse i din klage</KlageUndertittel>
+                    <InformationPointBox header={'Hva er du uenig i?'}>
+                        <CheckboxList>
+                            {klage.checkboxesSelected.map(c => (
+                                <CheckboxListItem key={c}>{reasonTexts[c]}</CheckboxListItem>
+                            ))}
+                        </CheckboxList>
+                    </InformationPointBox>
+                    <InformationPointBox header={'Hvorfor er du uenig?'}>
+                        <WrapNormaltekst>{klage.fritekst}</WrapNormaltekst>
+                    </InformationPointBox>
                 </SummarySection>
 
                 <SummarySection>
@@ -182,6 +194,18 @@ const Icon = styled(Clipboard)`
         margin-right: auto;
         margin-bottom: 16px;
         width: 100px;
+    }
+`;
+
+const CheckboxList = styled.ul`
+    margin: 0;
+    padding: 0;
+    list-style: none;
+`;
+
+const CheckboxListItem = styled.li`
+    :not(:last-child) {
+        margin-bottom: 4px;
     }
 `;
 
