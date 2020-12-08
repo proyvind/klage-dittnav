@@ -23,7 +23,7 @@ import { CenteredPageSubTitle } from '../../styled-components/page-title';
 import { CustomMarginRow } from '../../styled-components/row';
 import InformationPointBox from './summary/information-point-box';
 import { reasonTexts } from './begrunnelse/reasons';
-import { KlageUndertittel } from './begrunnelse/undertittel';
+import { KlageUndertittel } from '../../styled-components/undertittel';
 
 interface Props {
     klage: Klage;

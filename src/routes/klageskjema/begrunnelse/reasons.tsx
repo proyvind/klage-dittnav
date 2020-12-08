@@ -1,14 +1,17 @@
 import React, { useMemo } from 'react';
 import { CheckboksPanelGruppe, CheckboksPanelProps } from 'nav-frontend-skjema';
 import { Reason } from '../../../klage/klage';
+import styled from 'styled-components/macro';
 
 interface Props {
     checkedReasons: Reason[];
     setCheckedReasons: (reasons: Reason[]) => void;
+    className?: string;
 }
 
-const Reasons = ({ checkedReasons, setCheckedReasons }: Props) => (
+const Reasons = ({ checkedReasons, setCheckedReasons, className }: Props) => (
     <CheckboksPanelGruppe
+        className={className}
         checkboxes={useCheckboxes(checkedReasons)}
         onChange={(_, clickedReason: Reason) => {
             if (checkedReasons.includes(clickedReason)) {
@@ -58,4 +61,8 @@ export const reasonTexts: { [key in Reason]: string } = {
     [Reason.UENIG_I_VEDTAK_OM_TILBAKEBETALING]: 'Jeg er uenig i vedtaket om tilbakebetaling'
 };
 
-export default Reasons;
+export default styled(Reasons)`
+    && {
+        margin-bottom: 32px;
+    }
+`;

@@ -25,7 +25,7 @@ export enum ATTACHMENT_STATUS {
 
 export const toFiles = (attachment: Attachment[]) => attachment.map(toFile);
 
-export const toFile = (attachment: Attachment) => ({
+export const toFile = (attachment: Attachment): AttachmentFile => ({
     content: { base64: attachment.content },
     id: attachment.id.toString(),
     mimetype: 'application/pdf',
