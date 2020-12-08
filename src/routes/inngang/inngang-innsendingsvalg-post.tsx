@@ -8,7 +8,6 @@ import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '.
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { TemaKey, Tema } from '../../tema/tema';
-import { getUrlToPaperForm } from '../../tema/ytelse';
 import VeilederIcon from '../../icons/VeilederIcon';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
@@ -21,14 +20,24 @@ import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+import LawBook from '../../icons/LawBook';
+import { klageFormUrl } from '../../kategorier/kategorier';
 
 interface Props {
     temaKey: TemaKey;
     title?: string;
+    kategoriMailKlageUrl?: string;
+    kategoriMailAnkeUrl?: string;
     inngangkategori: InngangKategori;
 }
 
-const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori }: Props) => {
+const InngangInnsendingPost = ({
+    temaKey,
+    title = Tema[temaKey],
+    inngangkategori,
+    kategoriMailKlageUrl,
+    kategoriMailAnkeUrl
+}: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
     const breadcrumbs: Breadcrumb[] = [
@@ -39,8 +48,6 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
         }
     ];
     useBreadcrumbs(breadcrumbs, title);
-
-    const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
         <InngangMainContainer>
@@ -58,7 +65,7 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
                         kvitteringer.
                     </PageParagraph>
                     <InlineRow>
-                        <LenkepanelBase href={paperUrl} border>
+                        <LenkepanelBase href={kategoriMailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -68,6 +75,24 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
                                     <MarginTopContainer>
                                         <Normaltekst>
                                             Dette velger du når du skal klage på et vedtak du har fått fra NAV.
+                                        </Normaltekst>
+                                    </MarginTopContainer>
+                                </div>
+                            </LenkePanelContentWithImage>
+                        </LenkepanelBase>
+                    </InlineRow>
+                    <InlineRow>
+                        <LenkepanelBase href={kategoriMailAnkeUrl ?? klageFormUrl} target="_blank" border>
+                            <LenkePanelContentWithImage>
+                                <IconContainer>
+                                    <LawBook />
+                                </IconContainer>
+                                <div>
+                                    <Systemtittel className="lenkepanel__heading">Skjema for anke</Systemtittel>
+                                    <MarginTopContainer>
+                                        <Normaltekst>
+                                            Dette velger du hvis du tidligere har sendt inn en klage og ønsker å anke
+                                            til Trygderetten.
                                         </Normaltekst>
                                     </MarginTopContainer>
                                 </div>
