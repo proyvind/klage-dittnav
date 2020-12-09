@@ -200,7 +200,9 @@ const Begrunnelse = ({ klage }: Props) => {
                     <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
                 </Row>
                 <Row>
-                    <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
+                    <label htmlFor="inputId">
+                        <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
+                    </label>
                     <Datepicker
                         onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
                         value={vedtakDate ?? undefined}
@@ -208,6 +210,7 @@ const Begrunnelse = ({ klage }: Props) => {
                         limitations={{
                             maxDate: new Date().toISOString().substring(0, 10)
                         }}
+                        inputId="vedtaksdato"
                     />
                 </Row>
 
