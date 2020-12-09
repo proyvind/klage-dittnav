@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { CheckboksPanelGruppe, CheckboksPanelProps } from 'nav-frontend-skjema';
 import { Reason } from '../../../klage/klage';
-import { Section } from '../../../styled-components/section';
-import { KlageUndertittel } from './undertittel';
 
 interface Props {
     checkedReasons: Reason[];
@@ -10,19 +8,16 @@ interface Props {
 }
 
 const Reasons = ({ checkedReasons, setCheckedReasons }: Props) => (
-    <Section>
-        <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
-        <CheckboksPanelGruppe
-            checkboxes={useCheckboxes(checkedReasons)}
-            onChange={(_, clickedReason: Reason) => {
-                if (checkedReasons.includes(clickedReason)) {
-                    setCheckedReasons(checkedReasons.filter(reason => reason !== clickedReason));
-                } else {
-                    setCheckedReasons(checkedReasons.concat(clickedReason));
-                }
-            }}
-        />
-    </Section>
+    <CheckboksPanelGruppe
+        checkboxes={useCheckboxes(checkedReasons)}
+        onChange={(_, clickedReason: Reason) => {
+            if (checkedReasons.includes(clickedReason)) {
+                setCheckedReasons(checkedReasons.filter(reason => reason !== clickedReason));
+            } else {
+                setCheckedReasons(checkedReasons.concat(clickedReason));
+            }
+        }}
+    />
 );
 
 const useCheckboxes = (checked: Reason[]) =>

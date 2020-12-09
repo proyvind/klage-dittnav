@@ -193,21 +193,24 @@ const Begrunnelse = ({ klage }: Props) => {
                 </KlageAlertStripeFeil>
             )}
 
-            <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
-
             <Section>
-                <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
-                <Datepicker
-                    onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
-                    value={vedtakDate ?? undefined}
-                    showYearSelector
-                    limitations={{
-                        maxDate: new Date().toISOString().substring(0, 10)
-                    }}
-                />
-            </Section>
+                <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
 
-            <Section>
+                <Row>
+                    <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
+                </Row>
+                <Row>
+                    <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
+                    <Datepicker
+                        onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
+                        value={vedtakDate ?? undefined}
+                        showYearSelector
+                        limitations={{
+                            maxDate: new Date().toISOString().substring(0, 10)
+                        }}
+                    />
+                </Row>
+
                 <Input
                     label="Saksnummer (valgfri)"
                     bredde="L"
