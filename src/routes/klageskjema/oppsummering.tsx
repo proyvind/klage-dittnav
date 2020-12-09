@@ -68,7 +68,7 @@ const Oppsummering = ({ klage }: Props) => {
     return (
         <>
             <Icon />
-            <CenteredPageSubTitle tag={'h2'}>Oppsummering</CenteredPageSubTitle>
+            <CenteredPageSubTitle tag={'h2'}>Se over før du sender inn</CenteredPageSubTitle>
             <Frame>
                 <Ekspanderbartpanel
                     border={false}

@@ -20,7 +20,7 @@ const Kvittering = (props: Props) => (
         <Icon />
         <CenteredPageSubTitle tag={'h2'}>Kvittering for innsendt klage</CenteredPageSubTitle>
         <CenteredPageParagraph>
-            <ExternalLink href={environment.klagePdfUrl(props.klageId)}>Se og last ned søknaden din</ExternalLink>
+            <ExternalLink href={environment.klagePdfUrl(props.klageId)}>Se og last ned klagen din</ExternalLink>
         </CenteredPageParagraph>
         <CenteredPageParagraph>Sendt inn: {isoDateToPretty(props.finalizedDate)}</CenteredPageParagraph>
 

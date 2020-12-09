@@ -195,7 +195,7 @@ const Begrunnelse = ({ klage }: Props) => {
             )}
 
             <Section>
-                <KlageUndertittel>Hvilket vedtak gjelder klagen?</KlageUndertittel>
+                <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
                 <SlimRow>
                     <RadioPanelGruppe
                         name="datoValg"
@@ -220,7 +220,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 )}
             </Section>
             <Section>
-                <KlageUndertittel>Begrunn klagen din</KlageUndertittel>
+                <KlageUndertittel>Hvorfor er du uenig?</KlageUndertittel>
                 <Textarea
                     name="begrunnelse"
                     value={fritekst}
