@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { Input, Textarea } from 'nav-frontend-skjema';
+import { Input, Label, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -25,7 +25,6 @@ import { Row } from '../../../styled-components/row';
 import { Section } from '../../../styled-components/section';
 import { KlageUndertittel } from './undertittel';
 import Reasons from './reasons';
-import { FieldLabel } from '../../../styled-components/field-label';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -200,9 +199,7 @@ const Begrunnelse = ({ klage }: Props) => {
                     <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
                 </Row>
                 <Row>
-                    <label htmlFor="vedtaksdato">
-                        <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
-                    </label>
+                    <Label htmlFor="vedtaksdato">Vedtaksdato (valgfri)</Label>
                     <Datepicker
                         onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
                         value={vedtakDate ?? undefined}
