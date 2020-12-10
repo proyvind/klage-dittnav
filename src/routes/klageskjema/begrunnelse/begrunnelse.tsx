@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { Textarea } from 'nav-frontend-skjema';
+import { Input, Label, Textarea } from 'nav-frontend-skjema';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import AlertStripe, { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -45,6 +45,7 @@ const Begrunnelse = ({ klage }: Props) => {
 
     const [reasons, setReasons] = useState<Reason[]>(klage.checkboxesSelected);
     const [vedtakDate, setVedtakDate] = useState<string | null>(klage.vedtakDate);
+    const [saksnummer, setSaksnummer] = useState<string | null>(klage.saksnummer);
     const [fritekst, setFritekst] = useState<string>(klage.fritekst);
     const [attachments, setAttachments] = useState<Attachment[]>(klage.vedlegg);
 
@@ -62,7 +63,7 @@ const Begrunnelse = ({ klage }: Props) => {
     }, [klage, history]);
 
     const performKlageUpdate = useCallback(async () => {
-        const klageUpdate = createKlageUpdate(klage, reasons, fritekst, vedtakDate);
+        const klageUpdate = createKlageUpdate(klage, reasons, fritekst, saksnummer, vedtakDate);
         try {
             await updateKlage(klageUpdate);
             setKlage({
@@ -79,7 +80,7 @@ const Begrunnelse = ({ klage }: Props) => {
             setError(error);
             return false;
         }
-    }, [fritekst, vedtakDate, reasons, attachments, klage, setKlage]);
+    }, [fritekst, saksnummer, vedtakDate, reasons, attachments, klage, setKlage]);
 
     useEffect(() => {
         if (klage.vedtakDate === vedtakDate && klage.checkboxesSelected === reasons && klage.fritekst === fritekst) {
@@ -191,17 +192,32 @@ const Begrunnelse = ({ klage }: Props) => {
                 </KlageAlertStripeFeil>
             )}
 
-            <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
-
             <Section>
-                <KlageUndertittel>Vedtaksdato (valgfri)</KlageUndertittel>
-                <Datepicker
-                    onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
-                    value={vedtakDate ?? undefined}
-                    showYearSelector
-                    limitations={{
-                        maxDate: new Date().toISOString().substring(0, 10)
-                    }}
+                <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
+
+                <Row>
+                    <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
+                </Row>
+                <Row>
+                    <Label htmlFor="vedtaksdato">Vedtaksdato (valgfri)</Label>
+                    <Datepicker
+                        onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
+                        value={vedtakDate ?? undefined}
+                        showYearSelector
+                        limitations={{
+                            maxDate: new Date().toISOString().substring(0, 10)
+                        }}
+                        inputId="vedtaksdato"
+                    />
+                </Row>
+
+                <Input
+                    label="Saksnummer (valgfri)"
+                    bredde="L"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={saksnummer ?? ''}
+                    onChange={e => setSaksnummer(e.target.value)}
                 />
             </Section>
 
@@ -272,13 +288,14 @@ const createKlageUpdate = (
     klage: Klage,
     checkboxesSelected: Reason[],
     fritekst: string,
+    saksnummer: string | null,
     vedtakDate: ISODate | null
 ): UpdateKlage => ({
     id: klage.id,
     tema: klage.tema,
     ytelse: klage.ytelse,
     checkboxesSelected,
-    saksnummer: klage.saksnummer,
+    saksnummer: saksnummer,
     fritekst,
     vedtakDate
 });
