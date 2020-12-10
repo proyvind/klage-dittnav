@@ -200,7 +200,7 @@ const Begrunnelse = ({ klage }: Props) => {
                     <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
                 </Row>
                 <Row>
-                    <label htmlFor="inputId">
+                    <label htmlFor="vedtaksdato">
                         <FieldLabel>Vedtaksdato (valgfri)</FieldLabel>
                     </label>
                     <Datepicker
