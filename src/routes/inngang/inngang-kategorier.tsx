@@ -1,7 +1,7 @@
 import React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
 import { InngangKategori } from '../../kategorier/kategorier';
-import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
+import { FlexCenteredOnMobile, SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
@@ -25,7 +25,10 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{inngangkategori.title}</PageTitle>
+                <FlexCenteredOnMobile>
+                    <PageTitle>{inngangkategori.title}</PageTitle>
+                </FlexCenteredOnMobile>
+
                 <WhiteSection>
                     <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
                     <SpaceBetweenFlexListContainer>{getLinks(inngangkategori)}</SpaceBetweenFlexListContainer>

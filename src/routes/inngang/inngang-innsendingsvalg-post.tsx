@@ -4,7 +4,12 @@ import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Veileder from 'nav-frontend-veileder';
 import LetterOpened from '../../icons/LetterOpenedIcon';
-import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
+import {
+    CenteredOnMobile,
+    IconContainer,
+    LenkePanelContentWithImage,
+    MarginTopContainer
+} from '../../styled-components/common';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { TemaKey, Tema } from '../../tema/tema';
@@ -45,9 +50,13 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{title}</PageTitle>
+                <CenteredOnMobile>
+                    <PageTitle>{title}</PageTitle>
+                </CenteredOnMobile>
                 <WhiteSection>
-                    <SectionTitle>Innsending via post</SectionTitle>
+                    <CenteredOnMobile>
+                        <SectionTitle>Innsending via post</SectionTitle>
+                    </CenteredOnMobile>
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>

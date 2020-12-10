@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { deleteAttachment } from '../../../../api/api';
 import { Attachment, AttachmentFile, toFiles } from '../../../../klage/attachment';
-import { FileFlexItem, CenterOnMobile } from '../../../../styled-components/common';
+import { FileFlexItem, FlexCenteredOnMobile } from '../../../../styled-components/common';
 import { matchMediaQueries } from '../../../../styled-components/media-queries';
 
 interface Props {
@@ -58,7 +58,7 @@ const AttachmentPreview = ({ attachments, setAttachments, setLoading, setError }
     );
 };
 
-const AttachmentPreviewContainer = styled(CenterOnMobile)`
+const AttachmentPreviewContainer = styled(FlexCenteredOnMobile)`
     margin-bottom: 32px;
 `;
 

@@ -21,12 +21,8 @@ export const MarginContainer = styled.div`
 
 export const SpaceBetweenFlexListContainer = styled.div`
     display: flex;
-    flex-flow: column wrap;
     justify-content: space-between;
-
-    @media ${device.mobileL} {
-        flex-flow: row wrap;
-    }
+    flex-flow: row wrap;
 `;
 
 export const FlexWithSpacingContainer = styled.div`
@@ -49,12 +45,21 @@ export const FlexWithSpacingContainer = styled.div`
     }
 `;
 
-export const CenterOnMobile = styled(FlexWithSpacingContainer)`
+export const FlexCenteredOnMobile = styled(FlexWithSpacingContainer)`
     @media ${device.mobileS} {
         justify-content: center;
     }
     @media ${device.mobileL} {
         justify-content: flex-start;
+    }
+`;
+
+export const CenteredOnMobile = styled.div`
+    @media ${device.mobileS} {
+        text-align: center;
+    }
+    @media ${device.mobileL} {
+        text-align: initial;
     }
 `;
 

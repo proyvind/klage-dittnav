@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Innholdstittel } from 'nav-frontend-typografi';
 
-export const SectionTitle = styled(Undertittel)`
+export const SectionTitle = styled(Innholdstittel)`
     && {
         margin-top: 0;
         margin-bottom: 32px;
