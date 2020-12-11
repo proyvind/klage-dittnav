@@ -6,7 +6,7 @@ export const ContentContainer = styled.div`
     min-width: 320px;
 
     @media ${device.mobileS} {
-        max-width: 85%;
+        max-width: 92%;
     }
     @media ${device.laptop} {
         max-width: 800px;

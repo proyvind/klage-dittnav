@@ -6,7 +6,7 @@ import { INNGANG_KATEGORIER } from '../../kategorier/kategorier';
 import { KlageFlexLinkPanel } from '../../link/link';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { CenteredOnMobile, SpaceBetweenFlexListContainer } from '../../styled-components/common';
+import { CenteredContainer, SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { PageTitle } from '../../styled-components/page-title';
@@ -26,9 +26,9 @@ const InngangHovedkategorier = () => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredOnMobile>
+                <CenteredContainer>
                     <PageTitle>{title}</PageTitle>
-                </CenteredOnMobile>
+                </CenteredContainer>
                 <InlineRow>
                     <Veilederpanel type={'plakat'} fargetema={'info'} kompakt svg={<VeilederIcon />}>
                         <Normaltekst>

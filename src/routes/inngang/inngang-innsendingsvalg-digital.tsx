@@ -5,7 +5,7 @@ import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import LetterOpened from '../../icons/LetterOpenedIcon';
 import {
-    CenteredOnMobile,
+    CenteredContainer,
     IconContainer,
     LenkePanelContentWithImage,
     MarginTopContainer
@@ -48,9 +48,9 @@ const InngangInnsendingDigital = ({
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredOnMobile>
+                <CenteredContainer>
                     <PageTitle>{title}</PageTitle>
-                </CenteredOnMobile>
+                </CenteredContainer>
 
                 <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />

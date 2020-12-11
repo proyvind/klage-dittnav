@@ -5,7 +5,7 @@ import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Veileder from 'nav-frontend-veileder';
 import LetterOpened from '../../icons/LetterOpenedIcon';
 import {
-    CenteredOnMobile,
+    CenteredContainer,
     IconContainer,
     LenkePanelContentWithImage,
     MarginTopContainer
@@ -50,13 +50,13 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredOnMobile>
+                <CenteredContainer>
                     <PageTitle>{title}</PageTitle>
-                </CenteredOnMobile>
+                </CenteredContainer>
                 <WhiteSection>
-                    <CenteredOnMobile>
+                    <CenteredContainer>
                         <SectionTitle>Innsending via post</SectionTitle>
-                    </CenteredOnMobile>
+                    </CenteredContainer>
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>
