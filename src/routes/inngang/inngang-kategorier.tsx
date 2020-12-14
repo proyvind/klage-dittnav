@@ -7,7 +7,7 @@ import { useLogPageView } from '../../logging/use-log-page-view';
 import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
@@ -25,7 +25,8 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{inngangkategori.title}</PageTitle>
+                <CenteredPageTitle>{inngangkategori.title}</CenteredPageTitle>
+
                 <WhiteSection>
                     <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
                     <SpaceBetweenFlexListContainer>{getLinks(inngangkategori)}</SpaceBetweenFlexListContainer>

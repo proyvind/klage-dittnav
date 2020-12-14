@@ -8,15 +8,15 @@ export const PageTitle = styled(Sidetittel)`
     }
 `;
 
-export const CenteredPageTitle = styled(PageTitle)`
+export const CenteredPageSubTitle = styled(Innholdstittel)`
     && {
+        margin-bottom: 32px;
         text-align: center;
     }
 `;
 
-export const CenteredPageSubTitle = styled(Innholdstittel)`
+export const CenteredPageTitle = styled(PageTitle)`
     && {
-        margin-bottom: 32px;
         text-align: center;
     }
 `;

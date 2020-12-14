@@ -13,7 +13,7 @@ import { TemaKey, Tema } from '../../tema/tema';
 import { getUrlToPaperForm } from '../../tema/ytelse';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
@@ -43,7 +43,8 @@ const InngangInnsendingDigital = ({
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{title}</PageTitle>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
+
                 <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
                     <InlineRow>

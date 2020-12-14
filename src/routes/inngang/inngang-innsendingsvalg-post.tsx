@@ -13,9 +13,9 @@ import VeilederIcon from '../../icons/VeilederIcon';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { ExternalLink } from '../../link/link';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
-import { SectionTitle } from '../../styled-components/section-title';
+import { CenteredSectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
@@ -45,9 +45,9 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{title}</PageTitle>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
                 <WhiteSection>
-                    <SectionTitle>Innsending via post</SectionTitle>
+                    <CenteredSectionTitle>Innsending via post</CenteredSectionTitle>
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>

@@ -9,7 +9,7 @@ import { useLogPageView } from '../../logging/use-log-page-view';
 import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { InlineRow } from '../../styled-components/row';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
@@ -26,7 +26,7 @@ const InngangHovedkategorier = () => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <PageTitle>{title}</PageTitle>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
                 <InlineRow>
                     <Veilederpanel type={'plakat'} fargetema={'info'} kompakt svg={<VeilederIcon />}>
                         <Normaltekst>
