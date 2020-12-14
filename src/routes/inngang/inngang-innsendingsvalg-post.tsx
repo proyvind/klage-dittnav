@@ -4,12 +4,7 @@ import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import Veileder from 'nav-frontend-veileder';
 import LetterOpened from '../../icons/LetterOpenedIcon';
-import {
-    CenteredContainer,
-    IconContainer,
-    LenkePanelContentWithImage,
-    MarginTopContainer
-} from '../../styled-components/common';
+import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { TemaKey, Tema } from '../../tema/tema';
@@ -18,9 +13,9 @@ import VeilederIcon from '../../icons/VeilederIcon';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { ExternalLink } from '../../link/link';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
-import { SectionTitle } from '../../styled-components/section-title';
+import { CenteredSectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
@@ -50,13 +45,9 @@ const InngangInnsendingPost = ({ temaKey, title = Tema[temaKey], inngangkategori
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredContainer>
-                    <PageTitle>{title}</PageTitle>
-                </CenteredContainer>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
                 <WhiteSection>
-                    <CenteredContainer>
-                        <SectionTitle>Innsending via post</SectionTitle>
-                    </CenteredContainer>
+                    <CenteredSectionTitle>Innsending via post</CenteredSectionTitle>
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>

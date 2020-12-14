@@ -7,3 +7,9 @@ export const SectionTitle = styled(Systemtittel)`
         margin-bottom: 32px;
     }
 `;
+
+export const CenteredSectionTitle = styled(SectionTitle)`
+    && {
+        text-align: center;
+    }
+`;

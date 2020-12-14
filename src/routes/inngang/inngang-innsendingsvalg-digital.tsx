@@ -4,12 +4,7 @@ import queryString from 'query-string';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import LetterOpened from '../../icons/LetterOpenedIcon';
-import {
-    CenteredContainer,
-    IconContainer,
-    LenkePanelContentWithImage,
-    MarginTopContainer
-} from '../../styled-components/common';
+import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
 import MobilePhone from '../../icons/MobilePhoneIcon';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
@@ -18,7 +13,7 @@ import { TemaKey, Tema } from '../../tema/tema';
 import { getUrlToPaperForm } from '../../tema/ytelse';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
@@ -48,9 +43,7 @@ const InngangInnsendingDigital = ({
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredContainer>
-                    <PageTitle>{title}</PageTitle>
-                </CenteredContainer>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />

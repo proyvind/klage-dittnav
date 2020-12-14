@@ -14,3 +14,9 @@ export const CenteredPageSubTitle = styled(Innholdstittel)`
         text-align: center;
     }
 `;
+
+export const CenteredPageTitle = styled(PageTitle)`
+    && {
+        text-align: center;
+    }
+`;

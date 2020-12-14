@@ -1,13 +1,13 @@
 import React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
 import { InngangKategori } from '../../kategorier/kategorier';
-import { CenteredContainer, SpaceBetweenFlexListContainer } from '../../styled-components/common';
+import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
-import { PageTitle } from '../../styled-components/page-title';
+import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
@@ -25,9 +25,7 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredContainer>
-                    <PageTitle>{inngangkategori.title}</PageTitle>
-                </CenteredContainer>
+                <CenteredPageTitle>{inngangkategori.title}</CenteredPageTitle>
 
                 <WhiteSection>
                     <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
