@@ -4,28 +4,7 @@ import { User, Address, displayAddress, displayPoststed } from '../../../user/us
 import InformationPointBox from './information-point-box';
 import { SpaceBetweenFlexListContainer } from '../../../styled-components/common';
 import { foedselsnrFormat } from './text-formatting';
-
-const PERSONLIGE_OPPLYSNINGER_POINTS = [
-    {
-        displayName: 'For- og mellomnavn',
-        content: (user: User) => <Normaltekst>{combineFirstMiddleName(user)}</Normaltekst>
-    },
-    { displayName: 'Etternavn', content: (user: User) => <Normaltekst>{user.navn.etternavn ?? ''}</Normaltekst> },
-    {
-        displayName: 'Fødselsnummer',
-        content: (user: User) => (
-            <Normaltekst>{foedselsnrFormat(user.folkeregisteridentifikator?.identifikasjonsnummer ?? '')}</Normaltekst>
-        )
-    },
-    {
-        displayName: 'Telefonnummer',
-        content: (user: User) => <Normaltekst>{user.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
-    },
-    {
-        displayName: 'Adresse',
-        content: (user: User) => (user.adresse ? <AddressPointBox adress={user.adresse} /> : '')
-    }
-];
+import { useTranslation } from '../../../language/use-translation';
 
 const combineFirstMiddleName = (user: User): string => {
     let name = user.navn.fornavn ?? '';
@@ -40,27 +19,44 @@ export const getFullName = (user: User): string => {
     return name;
 };
 
-const AddressPointBox = ({ adress }: { adress: Address }) => (
-    <div>
-        <Normaltekst>{displayAddress(adress)}</Normaltekst>
-        <Normaltekst>{displayPoststed(adress)}</Normaltekst>
-    </div>
-);
+const AddressPointBox = ({ adress: address }: { adress?: Address }) => {
+    if (!address) {
+        return null;
+    }
+    return (
+        <div>
+            <Normaltekst>{displayAddress(address)}</Normaltekst>
+            <Normaltekst>{displayPoststed(address)}</Normaltekst>
+        </div>
+    );
+};
 
 interface Props {
     user: User;
 }
 
-const PersonligeOpplysningerSummary = (props: Props) => {
+const PersonligeOpplysningerSummary = ({ user }: Props) => {
+    const { klageskjema } = useTranslation();
+
     return (
         <SpaceBetweenFlexListContainer>
-            {PERSONLIGE_OPPLYSNINGER_POINTS.map(point => {
-                return (
-                    <InformationPointBox key={point.displayName} header={point.displayName}>
-                        {point.content(props.user)}
-                    </InformationPointBox>
-                );
-            })}
+            <InformationPointBox header={klageskjema.summary.sections.person.given_name}>
+                <Normaltekst>{combineFirstMiddleName(user)}</Normaltekst>
+            </InformationPointBox>
+            <InformationPointBox header={klageskjema.summary.sections.person.surname}>
+                <Normaltekst>{user.navn.etternavn ?? ''}</Normaltekst>
+            </InformationPointBox>
+            <InformationPointBox header={klageskjema.summary.sections.person.nin}>
+                <Normaltekst>
+                    {foedselsnrFormat(user.folkeregisteridentifikator?.identifikasjonsnummer ?? '')}
+                </Normaltekst>
+            </InformationPointBox>
+            <InformationPointBox header={klageskjema.summary.sections.person.phone}>
+                <Normaltekst>{user.kontaktinformasjon?.telefonnummer ?? ''}</Normaltekst>
+            </InformationPointBox>
+            <InformationPointBox header={klageskjema.summary.sections.person.address}>
+                <AddressPointBox adress={user.adresse} />
+            </InformationPointBox>
         </SpaceBetweenFlexListContainer>
     );
 };

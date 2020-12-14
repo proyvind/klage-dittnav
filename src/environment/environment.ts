@@ -160,4 +160,4 @@ export class Environment implements EnvironmentVariables {
     fullmaktsgiverUrl = (tema: string, fnr: string) => `${this.apiUrl}/bruker/${tema}/${fnr}`;
 }
 
-export const environment = new Environment();
+export const ENVIRONMENT = new Environment();

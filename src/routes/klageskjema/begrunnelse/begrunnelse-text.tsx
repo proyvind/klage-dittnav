@@ -6,17 +6,20 @@ interface Props {
     setFritekst: (fritekst: string) => void;
     showErrors: boolean;
     id: string;
+    placeholder: string;
+    description: string;
+    errorText: string;
 }
 
-const BegrunnelseText = ({ id, fritekst, setFritekst, showErrors }: Props) => {
+const BegrunnelseText = ({ id, fritekst, setFritekst, showErrors, placeholder, description, errorText }: Props) => {
     const [isValid, setIsValid] = useState<boolean>(fritekst.length !== 0);
 
     return (
         <Textarea
             id={id}
             value={fritekst}
-            description={INPUTDESCRIPTION}
-            placeholder="Skriv inn din begrunnelse her."
+            description={description}
+            placeholder={placeholder}
             maxLength={0}
             minLength={1}
             onChange={e => {
@@ -27,19 +30,16 @@ const BegrunnelseText = ({ id, fritekst, setFritekst, showErrors }: Props) => {
             style={{
                 minHeight: '180px'
             }}
-            feil={getError(showErrors, isValid)}
+            feil={getError(showErrors, isValid, errorText)}
         />
     );
 };
 
-function getError(showErrors: boolean, isValid: boolean) {
+function getError(showErrors: boolean, isValid: boolean, message: string) {
     if (showErrors && !isValid) {
-        return 'Du må skrive en begrunnelse før du går videre.';
+        return message;
     }
     return null;
 }
-
-const INPUTDESCRIPTION =
-    'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.';
 
 export default BegrunnelseText;

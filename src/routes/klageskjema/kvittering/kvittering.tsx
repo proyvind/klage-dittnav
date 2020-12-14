@@ -3,55 +3,52 @@ import styled from 'styled-components/macro';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import { AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import Envelope from '../../../icons/EnvelopeIcon';
-import { environment } from '../../../environment/environment';
+import { ENVIRONMENT } from '../../../environment/environment';
 import { ISODate, isoDateToPretty } from '../../../date/date';
 import { ExternalLink } from '../../../link/link';
 import { CenteredContainer } from '../../../styled-components/common';
 import { CenteredPageSubTitle } from '../../../styled-components/page-title';
 import { CenteredPageParagraph } from '../../../styled-components/page-paragraph';
 import FullmaktInfo from '../begrunnelse/fullmakt-info';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
     klageId: string | number;
     journalPostId: string;
     finalizedDate: ISODate;
 }
-const Kvittering = (props: Props) => (
-    <>
-        <Icon />
-        <CenteredPageSubTitle tag={'h2'}>Kvittering for innsendt klage</CenteredPageSubTitle>
-        <FullmaktInfo />
-        <CenteredPageParagraph>
-            <ExternalLink href={environment.klagePdfUrl(props.klageId)}>Se og last ned klagen din</ExternalLink>
-        </CenteredPageParagraph>
-        <CenteredPageParagraph>Sendt inn: {isoDateToPretty(props.finalizedDate)}</CenteredPageParagraph>
+const Kvittering = (props: Props) => {
+    const { klageskjema } = useTranslation();
+    return (
+        <>
+            <Icon />
+            <CenteredPageSubTitle tag={'h2'}>{klageskjema.kvittering.title}</CenteredPageSubTitle>
+            <FullmaktInfo />
+            <CenteredPageParagraph>
+                <ExternalLink href={ENVIRONMENT.klagePdfUrl(props.klageId)}>
+                    {klageskjema.kvittering.download}
+                </ExternalLink>
+            </CenteredPageParagraph>
+            <CenteredPageParagraph>
+                {klageskjema.kvittering.sent}: {isoDateToPretty(props.finalizedDate)}
+            </CenteredPageParagraph>
 
-        <FitContentAlertStripeSuksess>
-            <Element>Nå er resten vårt ansvar</Element>
-            <Normaltekst>
-                Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger
-                flere opplysninger fra deg.
-            </Normaltekst>
-        </FitContentAlertStripeSuksess>
+            <FitContentAlertStripeSuksess>
+                <Element>{klageskjema.kvittering.general_info.title}</Element>
+                <Normaltekst>{klageskjema.kvittering.general_info.description}</Normaltekst>
+            </FitContentAlertStripeSuksess>
 
-        <CenteredPageParagraph>
-            Du kan lese mer om hvordan vi behandler klagen din videre på våre{' '}
-            <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
-                tema-sider om klage og anke
-            </ExternalLink>
-            . Du kan se{' '}
-            <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
-                forventet saksbehandlingstid for klage og anke
-            </ExternalLink>{' '}
-            i egen oversikt.
-        </CenteredPageParagraph>
-        <CenteredContainer>
-            <ExternalLink href="https://tjenester.nav.no/saksoversikt/tema/FOR" className="knapp">
-                Se dine saker på DITT NAV
-            </ExternalLink>
-        </CenteredContainer>
-    </>
-);
+            <CenteredPageParagraph>
+                {klageskjema.kvittering.read_more} {klageskjema.kvittering.see_estimate}
+            </CenteredPageParagraph>
+            <CenteredContainer>
+                <ExternalLink href="https://tjenester.nav.no/saksoversikt/tema/FOR" className="knapp">
+                    {klageskjema.kvittering.dine_saker}
+                </ExternalLink>
+            </CenteredContainer>
+        </>
+    );
+};
 
 const Icon = styled(Envelope)`
     display: block;

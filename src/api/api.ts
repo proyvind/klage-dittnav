@@ -2,14 +2,14 @@ import { del, getJSON, getText, postFormData, postJSON, putJSON } from './fetch'
 import { logError } from '../logging/frontendLogger';
 import { User } from '../user/user';
 import { Attachment } from '../klage/attachment';
-import { environment } from '../environment/environment';
+import { ENVIRONMENT } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
 import { TemaKey } from '../tema/tema';
 import { foedselsnrFormat } from '../routes/klageskjema/summary/text-formatting';
 import { TITLES } from '../language/titles';
 
 export async function getUser() {
-    const url = environment.userUrl;
+    const url = ENVIRONMENT.userUrl;
     try {
         return await getJSON<User>(url, 'Fant ikke endepunkt for å hente bruker.');
     } catch (error) {
@@ -25,7 +25,7 @@ export async function getDraftKlage(
     internalSaksnummer: string | null,
     fullmaktsgiver: string | null
 ) {
-    const url = environment.draftKlageUrl(temaKey, titleKey, ytelse, internalSaksnummer, fullmaktsgiver);
+    const url = ENVIRONMENT.draftKlageUrl(temaKey, titleKey, ytelse, internalSaksnummer, fullmaktsgiver);
     try {
         return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
     } catch {
@@ -34,7 +34,7 @@ export async function getDraftKlage(
 }
 
 export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
-    const url = environment.hasFullmaktForUrl(tema, fnr);
+    const url = ENVIRONMENT.hasFullmaktForUrl(tema, fnr);
     try {
         const ffnr = foedselsnrFormat(fnr);
         return await getJSON<User>(
@@ -48,7 +48,7 @@ export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
 }
 
 export async function getFullmaktsgiver(tema: string, fnr: string) {
-    const url = environment.hasFullmaktForUrl(tema, fnr);
+    const url = ENVIRONMENT.hasFullmaktForUrl(tema, fnr);
     try {
         return await getJSON<User>(url, `Finner ikke fullmaktsgiver med personnummer ${foedselsnrFormat('' + fnr)}`);
     } catch (error) {
@@ -58,7 +58,7 @@ export async function getFullmaktsgiver(tema: string, fnr: string) {
 }
 
 export async function createKlage(klage: NewKlage) {
-    const url = environment.klagerUrl;
+    const url = ENVIRONMENT.klagerUrl;
     try {
         return await postJSON<NewKlage, Klage>(url, 'Fant ikke endepunkt for å opprette klage.', klage);
     } catch (error) {
@@ -68,7 +68,7 @@ export async function createKlage(klage: NewKlage) {
 }
 
 export async function getKlage(klageId: string | number) {
-    const url = environment.klageUrl(klageId);
+    const url = ENVIRONMENT.klageUrl(klageId);
     try {
         return await getJSON<Klage>(url, klageNotFoundMessage(klageId));
     } catch (error) {
@@ -78,7 +78,7 @@ export async function getKlage(klageId: string | number) {
 }
 
 export async function updateKlage(klage: UpdateKlage) {
-    const url = environment.klageUrl(klage.id);
+    const url = ENVIRONMENT.klageUrl(klage.id);
     try {
         return await putJSON<UpdateKlage, never>(url, klageNotFoundMessage(klage.id), klage, false);
     } catch (error) {
@@ -88,7 +88,7 @@ export async function updateKlage(klage: UpdateKlage) {
 }
 
 export async function finalizeKlage(klageId: string | number) {
-    const url = environment.finalizeKlageUrl(klageId);
+    const url = ENVIRONMENT.finalizeKlageUrl(klageId);
     try {
         return await postJSON<never, FinalizedKlage>(url, klageNotFoundMessage(klageId));
     } catch (error) {
@@ -98,7 +98,7 @@ export async function finalizeKlage(klageId: string | number) {
 }
 
 export async function getJournalpostId(klageId: string | number) {
-    const url = environment.klageJournalpostIdUrl(klageId);
+    const url = ENVIRONMENT.klageJournalpostIdUrl(klageId);
     try {
         return await getText(url, klageNotFoundMessage(klageId));
     } catch (error) {
@@ -108,7 +108,7 @@ export async function getJournalpostId(klageId: string | number) {
 }
 
 export async function addAttachment(klageId: string | number, attachment: File) {
-    const url = environment.attachmentsUrl(klageId);
+    const url = ENVIRONMENT.attachmentsUrl(klageId);
     try {
         const formData = new FormData();
         formData.append('vedlegg', attachment, attachment.name);
@@ -120,7 +120,7 @@ export async function addAttachment(klageId: string | number, attachment: File) 
 }
 
 export async function deleteAttachment(klageId: string | number, attachmentId: number | string): Promise<void> {
-    const url = environment.attachmentUrl(klageId, attachmentId);
+    const url = ENVIRONMENT.attachmentUrl(klageId, attachmentId);
     try {
         await del(url, klageOrAttachmentNotFoundMessage(klageId, attachmentId));
         return;

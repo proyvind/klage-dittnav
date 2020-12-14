@@ -17,11 +17,14 @@ import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
-import { InngangKategori } from '../../kategorier/kategorier';
+import { InngangKategori, StringValue } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import LawBook from '../../icons/LawBook';
 import { klageFormUrl } from '../../kategorier/kategorier';
 import { useTitleOrYtelse } from '../../language/titles';
+import { Languages } from '../../language/language';
+import { useLanguage } from '../../language/use-language';
+import { useTranslation } from '../../language/use-translation';
 
 interface Props {
     temaKey: TemaKey;
@@ -31,8 +34,8 @@ interface Props {
     inngangkategori?: InngangKategori | null;
     digitalKlageFullmakt?: boolean;
     allowsAnke?: boolean;
-    mailKlageUrl?: string;
-    mailAnkeUrl?: string;
+    mailKlageUrl?: StringValue;
+    mailAnkeUrl?: StringValue;
 }
 
 const InngangInnsendingDigital = ({
@@ -41,15 +44,17 @@ const InngangInnsendingDigital = ({
     ytelse,
     internalSaksnummer = null,
     inngangkategori = null,
-    digitalKlageFullmakt,
+    digitalKlageFullmakt = false,
     allowsAnke,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, titleKey ?? ytelse ?? temaKey);
     const title = useTitleOrYtelse(temaKey, titleKey, ytelse);
-    usePageInit(`${title} \u2013 klage eller anke`);
-    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori), [inngangkategori]);
+    const lang = useLanguage();
+    const { inngang } = useTranslation();
+    usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
+    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, lang), [inngangkategori, lang]);
     useBreadcrumbs(breadcrumbs, title);
 
     return (
@@ -63,20 +68,22 @@ const InngangInnsendingDigital = ({
                         titleKey={titleKey}
                         ytelse={ytelse}
                         saksnummer={internalSaksnummer}
-                        digitalKlageFullmakt={digitalKlageFullmakt ?? false}
+                        digitalKlageFullmakt={digitalKlageFullmakt}
+                        lang={lang}
                     />
                     <InlineRow>
-                        <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
+                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} target="_blank" border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
                                 </IconContainer>
                                 <div>
-                                    <Systemtittel className="lenkepanel__heading">Klage via post</Systemtittel>
+                                    <Systemtittel className="lenkepanel__heading">
+                                        {inngang.innsendingsvalg.digital.cards.post.title}
+                                    </Systemtittel>
                                     <MarginTopContainer>
                                         <Normaltekst>
-                                            Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av
-                                            andre.
+                                            {inngang.innsendingsvalg.digital.cards.post.description}
                                         </Normaltekst>
                                     </MarginTopContainer>
                                 </div>
@@ -85,16 +92,18 @@ const InngangInnsendingDigital = ({
                     </InlineRow>
                     {allowsAnke && (
                         <InlineRow>
-                            <LenkepanelBase href={mailAnkeUrl ?? klageFormUrl} target="_blank" border>
+                            <LenkepanelBase href={(mailAnkeUrl ?? klageFormUrl)[lang]} target="_blank" border>
                                 <LenkePanelContentWithImage>
                                     <IconContainer>
                                         <LawBook />
                                     </IconContainer>
                                     <div>
-                                        <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
+                                        <Systemtittel className="lenkepanel__heading">
+                                            {inngang.innsendingsvalg.digital.cards.anke.title}
+                                        </Systemtittel>
                                         <MarginTopContainer>
                                             <Normaltekst>
-                                                For å sende inn en anke fyller du ut et skjema som sendes via post.
+                                                {inngang.innsendingsvalg.digital.cards.anke.description}
                                             </Normaltekst>
                                         </MarginTopContainer>
                                     </div>
@@ -102,15 +111,7 @@ const InngangInnsendingDigital = ({
                             </LenkepanelBase>
                         </InlineRow>
                     )}
-                    Les mer om{' '}
-                    <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
-                        dine klagerettigheter på våre tema-sider
-                    </ExternalLink>
-                    . Du kan se{' '}
-                    <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
-                        forventet saksbehandlingstid for klage og anke
-                    </ExternalLink>{' '}
-                    i egen oversikt.
+                    {inngang.innsendingsvalg.common.read_more} {inngang.innsendingsvalg.common.estimate}
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>
@@ -123,44 +124,54 @@ interface DigitalContentProps {
     ytelse: string | null;
     saksnummer: string | null;
     digitalKlageFullmakt: boolean;
+    lang: Languages;
 }
 
-const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFullmakt }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFullmakt, lang }: DigitalContentProps) => {
     const { search } = useLocation();
+    const { inngang } = useTranslation();
     if (saksnummer === null) {
         const query = queryString.parse(search);
         saksnummer = getQueryValue(query.saksnummer);
     }
-    const query = queryString.stringify(
-        {
-            tema: temaKey,
-            tittel: titleKey,
-            ytelse,
-            saksnummer
-        },
-        {
-            skipNull: true
-        }
+    const query = useMemo(
+        () =>
+            queryString.stringify(
+                {
+                    tema: temaKey,
+                    tittel: titleKey,
+                    ytelse,
+                    saksnummer
+                },
+                {
+                    skipNull: true,
+                    skipEmptyString: true,
+                    sort: false
+                }
+            ),
+        [temaKey, titleKey, ytelse, saksnummer]
     );
 
     return (
         <>
             <InlineRow>
-                <KlageLinkPanel href={`/ny?${query}`} border>
+                <KlageLinkPanel href={`/${lang}/ny?${query}`} border>
                     <LenkePanelContentWithImage>
                         <IconContainer>
                             <MobilePhone />
                         </IconContainer>
                         <div>
-                            <Systemtittel className="lenkepanel__heading">Klage digitalt</Systemtittel>
+                            <Systemtittel className="lenkepanel__heading">
+                                {inngang.innsendingsvalg.digital.cards.digital.title}
+                            </Systemtittel>
                             <MarginTopContainer>
-                                <Normaltekst>For å sende inn digitalt må du logge inn med elektronisk ID.</Normaltekst>
+                                <Normaltekst>{inngang.innsendingsvalg.digital.cards.digital.description}</Normaltekst>
                             </MarginTopContainer>
                         </div>
                     </LenkePanelContentWithImage>
                 </KlageLinkPanel>
-                <ExternalLink href="https://www.norge.no/elektronisk-id" showIcon>
-                    Slik skaffer du deg elektronisk ID
+                <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url} showIcon>
+                    {inngang.innsendingsvalg.digital.elektronisk_id.text}
                 </ExternalLink>
             </InlineRow>
             {digitalKlageFullmakt && (
@@ -171,17 +182,19 @@ const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFul
                                 <MobilePhoneIdCard />
                             </IconContainer>
                             <div>
-                                <Systemtittel className="lenkepanel__heading">Klage på vegne av andre</Systemtittel>
+                                <Systemtittel className="lenkepanel__heading">
+                                    {inngang.innsendingsvalg.digital.cards.fullmakt.title}
+                                </Systemtittel>
                                 <MarginTopContainer>
                                     <Normaltekst>
-                                        Digital innsending av klage når du har fullmakt på vegne av andre.
+                                        {inngang.innsendingsvalg.digital.cards.fullmakt.description}
                                     </Normaltekst>
                                 </MarginTopContainer>
                             </div>
                         </LenkePanelContentWithImage>
                     </KlageLinkPanel>
-                    <ExternalLink href="https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema" showIcon>
-                        Slik gir du fullmakt til andre
+                    <ExternalLink href={inngang.innsendingsvalg.digital.fullmakt_help.url} showIcon>
+                        {inngang.innsendingsvalg.digital.fullmakt_help.text}
                     </ExternalLink>
                 </InlineRow>
             )}
@@ -189,15 +202,15 @@ const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFul
     );
 };
 
-function getBreadcrumbs(inngangkategori: InngangKategori | null): Breadcrumb[] {
+function getBreadcrumbs(inngangkategori: InngangKategori | null, lang: Languages): Breadcrumb[] {
     if (inngangkategori === null) {
         return [];
     }
 
     return [
         {
-            title: inngangkategori.title,
-            url: `/${inngangkategori.path}`,
+            title: inngangkategori.title[lang],
+            url: `/${lang}/${inngangkategori.path}`,
             handleInApp: true
         }
     ];

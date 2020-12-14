@@ -24,6 +24,9 @@ import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 import Saksnummer from './saksnummer';
 import { FatRow, Row } from '../../../styled-components/row';
 import FullmaktInfo from './fullmakt-info';
+import { useLanguage } from '../../../language/use-language';
+import { useTranslation } from '../../../language/use-translation';
+import { Languages } from '../../../language/language';
 
 interface Props {
     klage: Klage;
@@ -32,7 +35,9 @@ interface Props {
 const Begrunnelse = ({ klage }: Props) => {
     const history = useHistory();
     const { setKlage } = useContext(AppContext);
+    const language = useLanguage();
     useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
+    const { klageskjema } = useTranslation();
 
     const [reasons, setReasons] = useState<Reason[]>(klage.checkboxesSelected);
     const [vedtakDate, setVedtakDate] = useState<string | null>(klage.vedtakDate);
@@ -47,12 +52,12 @@ const Begrunnelse = ({ klage }: Props) => {
 
     useEffect(() => {
         if (klage.status !== KlageStatus.DRAFT) {
-            history.replace(`/${klage.id}/oppsummering`);
+            history.replace(`/${language}/${klage.id}/oppsummering`);
         }
-    }, [klage, history]);
+    }, [klage, history, language]);
 
     const performKlageUpdate = useCallback(async () => {
-        const klageUpdate = createKlageUpdate(klage, reasons, fritekst, userSaksnummer, vedtakDate);
+        const klageUpdate = createKlageUpdate(klage, reasons, fritekst, userSaksnummer, vedtakDate, language);
         try {
             await updateKlage(klageUpdate);
             setKlage({
@@ -69,7 +74,7 @@ const Begrunnelse = ({ klage }: Props) => {
             setError(error);
             return false;
         }
-    }, [fritekst, userSaksnummer, vedtakDate, reasons, attachments, klage, setKlage]);
+    }, [fritekst, userSaksnummer, vedtakDate, reasons, attachments, klage, setKlage, language]);
 
     useEffect(() => {
         if (
@@ -97,7 +102,7 @@ const Begrunnelse = ({ klage }: Props) => {
 
         const klageUpdated = await performKlageUpdate();
         if (klageUpdated) {
-            history.push(`/${klage.id}/oppsummering`);
+            history.push(`/${language}/${klage.id}/oppsummering`);
             return;
         }
 
@@ -114,7 +119,7 @@ const Begrunnelse = ({ klage }: Props) => {
 
     const getFeilmeldinger = () => {
         if (!validBegrunnelse()) {
-            return ['Du må skrive en begrunnelse før du går videre.'];
+            return [klageskjema.begrunnelse.begrunnelse_text.begrunnelse_mangler];
         }
         return [];
     };
@@ -130,17 +135,35 @@ const Begrunnelse = ({ klage }: Props) => {
             )}
 
             <FullmaktInfo />
-            <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
-            <VedtakDate vedtakDate={vedtakDate} setVedtakDate={setVedtakDate} />
-            {!klage.internalSaksnummer && <Saksnummer saksnummer={userSaksnummer} setSaksnummer={setUserSaksnummer} />}
+            <Reasons
+                title={klageskjema.begrunnelse.reasons.title}
+                checkedReasons={reasons}
+                setCheckedReasons={setReasons}
+            />
+            <VedtakDate
+                title={klageskjema.begrunnelse.vedtak_date.title}
+                vedtakDate={vedtakDate}
+                setVedtakDate={setVedtakDate}
+                lang={language}
+            />
+            {!klage.internalSaksnummer && (
+                <Saksnummer
+                    title={klageskjema.begrunnelse.saksnummer.title}
+                    saksnummer={userSaksnummer}
+                    setSaksnummer={setUserSaksnummer}
+                />
+            )}
 
             <Row>
-                <Label htmlFor={'begrunnelse-text'}>Hvorfor er du uenig?</Label>
+                <Label htmlFor={'begrunnelse-text'}>{klageskjema.begrunnelse.begrunnelse_text.title}</Label>
                 <BegrunnelseText
                     id="begrunnelse-text"
                     fritekst={fritekst}
                     setFritekst={setFritekst}
                     showErrors={submitted}
+                    placeholder={klageskjema.begrunnelse.begrunnelse_text.placeholder}
+                    description={klageskjema.begrunnelse.begrunnelse_text.description}
+                    errorText={klageskjema.begrunnelse.begrunnelse_text.error_empty}
                 />
                 <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
             </Row>
@@ -154,11 +177,11 @@ const Begrunnelse = ({ klage }: Props) => {
                 />
             </FatRow>
 
-            {getError(error, storeKlageAndLogIn)}
+            <Errors error={error} logIn={storeKlageAndLogIn} />
 
             <CenteredContainer>
                 <Hovedknapp onClick={submitKlage} disabled={loading} spinner={loading}>
-                    Gå videre
+                    {klageskjema.begrunnelse.next_button}
                 </Hovedknapp>
             </CenteredContainer>
         </>
@@ -170,7 +193,8 @@ const createKlageUpdate = (
     checkboxesSelected: Reason[],
     fritekst: string,
     userSaksnummer: string | null,
-    vedtakDate: ISODate | null
+    vedtakDate: ISODate | null,
+    language: Languages
 ): UpdateKlage => ({
     id: klage.id,
     tema: klage.tema,
@@ -178,14 +202,20 @@ const createKlageUpdate = (
     ytelse: klage.ytelse,
     fullmaktsgiver: klage.fullmaktsgiver,
     internalSaksnummer: klage.internalSaksnummer,
-    language: klage.language,
+    language,
     checkboxesSelected,
     userSaksnummer,
     fritekst,
     vedtakDate
 });
 
-const getError = (error: Error | null, logIn: () => void) => {
+interface ErrorProps {
+    error: Error | null;
+    logIn: () => void;
+}
+
+const Errors = ({ error, logIn }: ErrorProps) => {
+    const { klageskjema } = useTranslation();
     if (error === null) {
         return null;
     }
@@ -193,8 +223,8 @@ const getError = (error: Error | null, logIn: () => void) => {
     if (error instanceof NotLoggedInError) {
         return (
             <KlageAlertStripeFeil>
-                <Normaltekst>Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.</Normaltekst>
-                <LoginButton onClick={logIn}>Logg inn</LoginButton>
+                <Normaltekst>{klageskjema.common.logged_out.text}</Normaltekst>
+                <LoginButton onClick={logIn}>{klageskjema.common.logged_out.log_in}</LoginButton>
             </KlageAlertStripeFeil>
         );
     }

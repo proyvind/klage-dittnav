@@ -8,11 +8,15 @@ import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import LoadingPage from '../loading-page/loading-page';
 import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
-import { Language } from '../klage/klage';
 import { TITLES } from '../language/titles';
+import { useLanguage } from '../language/use-language';
+import { useTranslation } from '../language/use-translation';
+import { Languages } from '../language/language';
 
 const CreateKlage = () => {
     const { search } = useLocation();
+    const lang = useLanguage();
+    const { create } = useTranslation();
     const history = useHistory();
     const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
@@ -23,7 +27,7 @@ const CreateKlage = () => {
 
         const temaKey = ensureStringIsTema(getQueryValue(query.tema));
         if (temaKey === null) {
-            setError(`Ugyldig tema "${query.tema}".`);
+            setError(create.invalid_tema(query.tema?.toString()));
             return;
         }
 
@@ -44,51 +48,50 @@ const CreateKlage = () => {
         }
 
         if (fullmaktsgiver === null) {
-            resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
+            resumeOrCreateKlage(lang, temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
                 .then(k => {
                     setKlage(k);
                     setReadyToRedirect(true);
                 })
-                .catch(() => setError(oppretteKlageError()));
+                .catch(() => setError(create.create_error));
             return;
         }
 
         getFullmaktsgiver(temaKey, fullmaktsgiver)
             .then(setFullmaktsgiver)
             .then(() =>
-                resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
+                resumeOrCreateKlage(lang, temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
                     .then(k => {
                         setKlage(k);
                         setReadyToRedirect(true);
                     })
-                    .catch(() => setError(oppretteKlageError()))
+                    .catch(() => setError(create.create_error))
             )
-            .catch(() => setError(finneFullmaktsgiverError(fullmaktsgiver)));
-    }, [search, klage, setKlage, history, setFullmaktsgiver]);
+            .catch(() => setError(create.finne_fullmaktsgiver_error(foedselsnrFormat(fullmaktsgiver))));
+    }, [search, klage, setKlage, create, lang, history, setFullmaktsgiver]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;
     }
 
     if (klage === null) {
-        return <LoadingPage>Oppretter klage...</LoadingPage>;
+        return <LoadingPage>{create.creating}</LoadingPage>;
     }
 
     if (readyToRedirect) {
-        return <Redirect to={`/${klage.id}/begrunnelse`} />;
+        return <Redirect to={`/${lang}/${klage.id}/begrunnelse`} />;
     }
     return null;
 };
 
 async function resumeOrCreateKlage(
+    language: Languages,
     temaKey: TemaKey,
     titleKey: string | null,
     ytelse: string | null,
     saksnummer: string | null,
     fullmaktsgiver: string | null
 ) {
-    const language = getLanguage();
-
     const draftKlage = await getDraftKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver);
     if (draftKlage !== null) {
         return draftKlage;
@@ -102,17 +105,9 @@ async function resumeOrCreateKlage(
         vedtakDate: null,
         userSaksnummer: null,
         internalSaksnummer: saksnummer,
-        fullmaktsgiver: fullmaktsgiver,
+        fullmaktsgiver,
         language
     });
-}
-
-const finneFullmaktsgiverError = (fnr: string) =>
-    `Klarte ikke finne fullmaktsgiver med personnummer ${foedselsnrFormat(fnr)}.`;
-const oppretteKlageError = () => 'Klarte ikke opprette klage';
-
-export function getLanguage(): Language {
-    return Language.nb;
 }
 
 export default CreateKlage;

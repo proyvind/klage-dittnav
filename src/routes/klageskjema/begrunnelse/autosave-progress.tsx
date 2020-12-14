@@ -4,6 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Ellipsis } from '../../../styled-components/ellipsis';
 import Success from '../../../icons/SuccessIcon';
+import { useTranslation } from '../../../language/use-translation';
 
 export enum AutosaveStatus {
     NONE,
@@ -35,6 +36,8 @@ const AutosaveContent = styled.div`
 `;
 
 const AutosaveProgressIndicator = (props: Props) => {
+    const { klageskjema } = useTranslation();
+    const { popover, saving, saved, failed } = klageskjema.begrunnelse.autosave;
     const [anker, setAnker] = useState<(EventTarget & HTMLDivElement) | undefined>(undefined);
 
     const togglePopover = (ankerEl: EventTarget & HTMLDivElement): void => setAnker(anker ? undefined : ankerEl);
@@ -46,23 +49,23 @@ const AutosaveProgressIndicator = (props: Props) => {
                 onRequestClose={() => setAnker(undefined)}
                 orientering={PopoverOrientering.OverHoyre}
             >
-                <p style={{ padding: '16px' }}>Vi lagrer endringene dine automatisk.</p>
+                <p style={{ padding: '16px' }}>{popover}</p>
             </Popover>
 
             <AutosaveContainer>
                 <AutosaveContent onClick={e => togglePopover(e.currentTarget)}>
-                    {getContent(props.autosaveStatus)}
+                    {getContent(props.autosaveStatus, saving, saved, failed)}
                 </AutosaveContent>
             </AutosaveContainer>
         </>
     );
 };
 
-const getContent = (status: AutosaveStatus) => {
+const getContent = (status: AutosaveStatus, saving: string, saved: string, failed: string) => {
     if (status === AutosaveStatus.SAVING) {
         return (
             <Element>
-                <Ellipsis>Lagrer</Ellipsis>
+                <Ellipsis>{saving}</Ellipsis>
             </Element>
         );
     }
@@ -70,12 +73,12 @@ const getContent = (status: AutosaveStatus) => {
         return (
             <>
                 <Success />
-                <Element>Lagret</Element>
+                <Element>{saved}</Element>
             </>
         );
     }
     if (status === AutosaveStatus.FAILED) {
-        return <Element>Klarte ikke lagre</Element>;
+        return <Element>{failed}</Element>;
     }
     return null;
 };

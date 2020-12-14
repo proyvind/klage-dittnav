@@ -19,6 +19,9 @@ import { getFullName } from '../klageskjema/summary/personlige-opplysninger-summ
 import { foedselsnrFormat } from '../klageskjema/summary/text-formatting';
 import { hasFullmaktFor } from '../../api/api';
 import { TITLES, useTitleOrYtelse } from '../../language/titles';
+import { Languages } from '../../language/language';
+import { useLanguage } from '../../language/use-language';
+import { useTranslation } from '../../language/use-translation';
 
 interface Props {
     kategori: Kategori;
@@ -39,9 +42,15 @@ const FieldWithButton = styled.div`
 const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     const { titleKey, temaKey } = kategori;
     const title = useTitleOrYtelse(temaKey, titleKey);
-    usePageInit(`${title} \u2013 klage på vegne av andre`);
-    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, kategori), [inngangkategori, kategori]);
-    useBreadcrumbs(breadcrumbs, 'Klage på vegne av andre');
+    const lang = useLanguage();
+    const { inngang } = useTranslation();
+    usePageInit(`${title} \u2013 ${inngang.innsendingsvalg.fullmakt.title_postfix}`);
+    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, kategori, lang), [
+        inngangkategori,
+        kategori,
+        lang
+    ]);
+    useBreadcrumbs(breadcrumbs, inngang.innsendingsvalg.fullmakt.title);
 
     const [fodselsnummer, setFodselsnummer] = useState<string>('');
     const [valid, setValid] = useState<boolean>(false);
@@ -92,8 +101,8 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
                 <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
-                    <SectionTitle>Hvem klager du på vegne av?</SectionTitle>
-                    <Label htmlFor={'fodselsnummer-text'}>Personnummer for den du har fullmakt til (11 siffer)</Label>
+                    <SectionTitle>{inngang.innsendingsvalg.fullmakt.who}</SectionTitle>
+                    <Label htmlFor={'fodselsnummer-text'}>{inngang.innsendingsvalg.fullmakt.nin}</Label>
                     <FieldWithButton>
                         <div>
                             <FnrInput
@@ -103,12 +112,12 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
                                 value={fodselsnummer ?? ''}
                                 onChange={e => setFodselsnummer(e.target.value)}
                                 onValidate={val => setValid(val)}
-                                feil={submit && !valid ? 'Ugyldig personnummer' : undefined}
+                                feil={submit && !valid ? inngang.innsendingsvalg.fullmakt.invalid_nin : undefined}
                             />
                         </div>
                         <div>
                             <Hovedknapp onClick={handleSubmit} spinner={loading} disabled={!valid}>
-                                Søk
+                                {inngang.innsendingsvalg.fullmakt.search}
                             </Hovedknapp>
                         </div>
                     </FieldWithButton>
@@ -134,15 +143,15 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     );
 };
 
-const getBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori): Breadcrumb[] => [
+const getBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori, lang: Languages): Breadcrumb[] => [
     {
-        title: inngangkategori.title,
-        url: `/${inngangkategori.path}`,
+        title: inngangkategori.title[lang],
+        url: `/${lang}/${inngangkategori.path}`,
         handleInApp: true
     },
     {
-        title: TITLES.getTitle(kategori.titleKey) ?? 'Tittel mangler',
-        url: `/${inngangkategori.path}/${kategori.path}`,
+        title: TITLES.getTitle(kategori.titleKey, lang),
+        url: `/${lang}/${inngangkategori.path}/${kategori.path}`,
         handleInApp: true
     }
 ];

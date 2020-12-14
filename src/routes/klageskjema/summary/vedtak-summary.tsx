@@ -4,45 +4,56 @@ import InformationPointBox from './information-point-box';
 import { SpaceBetweenFlexListContainer } from '../../../styled-components/common';
 import { UpdateKlage } from '../../../klage/klage';
 import { ISODate, isoDateToPretty } from '../../../date/date';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
     klage: UpdateKlage;
 }
 
-const VedtakSummary = ({ klage }: Props) => (
-    <SpaceBetweenFlexListContainer>
-        {getSaksnummer(klage)}
-        <InformationPointBox header={'Vedtak'}>
-            <Normaltekst>{useDateToVedtakText(klage.vedtakDate)}</Normaltekst>
-        </InformationPointBox>
-    </SpaceBetweenFlexListContainer>
-);
+const VedtakSummary = ({ klage }: Props) => {
+    const { klageskjema } = useTranslation();
 
-const getSaksnummerText = (klage: UpdateKlage) => {
-    if (klage.userSaksnummer) {
-        return `${klage.userSaksnummer} \u2013 Oppgitt av bruker`;
-    }
-    if (klage.internalSaksnummer) {
-        return `${klage.internalSaksnummer} \u2013 Hentet fra internt system`;
-    }
-    return 'Ikke angitt';
+    return (
+        <SpaceBetweenFlexListContainer>
+            <Saksnummer klage={klage} header={klageskjema.summary.sections.case.saksnummer} />
+            <InformationPointBox header={klageskjema.summary.sections.case.vedtak}>
+                <Normaltekst>
+                    {useDateToVedtakText(klage.vedtakDate, klageskjema.summary.sections.case.no_date)}
+                </Normaltekst>
+            </InformationPointBox>
+        </SpaceBetweenFlexListContainer>
+    );
 };
 
-function getSaksnummer(klage: UpdateKlage) {
-    return (
-        <InformationPointBox header={'Saksnummer'}>
-            <Normaltekst>{getSaksnummerText(klage)}</Normaltekst>
-        </InformationPointBox>
-    );
-}
+const SaksnummerText = ({ klage }: { klage: UpdateKlage }) => {
+    const { klageskjema } = useTranslation();
 
-const useDateToVedtakText = (isoDate: ISODate | null): string =>
+    if (klage.userSaksnummer) {
+        return (
+            <Normaltekst>{`${klage.userSaksnummer} \u2013 ${klageskjema.summary.sections.case.given_by_user}`}</Normaltekst>
+        );
+    }
+    if (klage.internalSaksnummer) {
+        return (
+            <Normaltekst>{`${klage.internalSaksnummer} \u2013 ${klageskjema.summary.sections.case.from_system}`}</Normaltekst>
+        );
+    }
+    return <Normaltekst>{klageskjema.summary.sections.case.not_specified}</Normaltekst>;
+};
+
+const Saksnummer = ({ klage, header }: { klage: UpdateKlage; header: string }) => (
+    <InformationPointBox header={header}>
+        <SaksnummerText klage={klage} />
+    </InformationPointBox>
+);
+
+const useDateToVedtakText = (isoDate: ISODate | null, noDateText: string): string =>
     useMemo(() => {
         const prettyDate = isoDateToPretty(isoDate);
         if (prettyDate === null) {
-            return 'Ingen dato satt';
+            return noDateText;
         }
         return prettyDate;
-    }, [isoDate]);
+    }, [isoDate, noDateText]);
 
 export default VedtakSummary;

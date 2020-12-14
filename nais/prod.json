@@ -1,6 +1,6 @@
 {
     "ingresses": ["https://klage-dittnav.nav.no", "https://klage.nav.no"],
-    "externals": ["www.nav.no"],
+    "externals": ["www.nav.no", "klage-dittnav-api.nav.no"],
     "env": {
         "REACT_APP_URL": "https://klage.nav.no",
         "REACT_APP_API_URL": "https://klage-dittnav-api.nav.no",

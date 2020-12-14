@@ -6,6 +6,7 @@ import { Attachment, getAttachmentErrorMessage } from '../../../../klage/attachm
 import { ApiError } from '../../../../api/errors';
 import { addAttachment } from '../../../../api/api';
 import { Klage } from '../../../../klage/klage';
+import { useTranslation } from '../../../../language/use-translation';
 
 interface UploadError {
     timestamp: ISODateTime;
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading, setError }: Props) => {
+    const { klageskjema } = useTranslation();
+    const { upload_button_text, upload_error } = klageskjema.begrunnelse.attachments;
     const fileInput = useRef<HTMLInputElement>(null);
 
     const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -49,11 +52,11 @@ const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading,
                 if (err instanceof ApiError) {
                     const errorBody: UploadError = await err.response.json();
                     const errorMessage = getAttachmentErrorMessage(errorBody.detail);
-                    setError(getUploadAttachmentErrorMessage(file, errorMessage));
+                    setError(upload_error(file, errorMessage));
                 } else if (err instanceof Error) {
-                    setError(getUploadAttachmentErrorMessage(file, err.message));
+                    setError(upload_error(file, err.message));
                 } else {
-                    setError(getUploadAttachmentErrorMessage(file));
+                    setError(upload_error(file));
                 }
                 return null;
             }
@@ -68,7 +71,7 @@ const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading,
 
     return (
         <Row>
-            <Knapp onClick={handleAttachmentClick}>Last opp nytt vedlegg</Knapp>
+            <Knapp onClick={handleAttachmentClick}>{upload_button_text}</Knapp>
             <input
                 id={inputId}
                 type="file"
@@ -88,8 +91,5 @@ const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading,
 function notNull<T>(v: T | null): v is T {
     return v !== null;
 }
-
-const getUploadAttachmentErrorMessage = ({ name, type, size }: File, reason: string = 'Ukjent årsak.') =>
-    `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${size} bytes. ${reason}`;
 
 export default UploadButton;

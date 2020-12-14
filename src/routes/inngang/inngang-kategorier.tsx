@@ -13,6 +13,8 @@ import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { useTitle } from '../../language/titles';
+import { useLanguage } from '../../language/use-language';
+import { useTranslation } from '../../language/use-translation';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -20,16 +22,19 @@ interface Props {
 
 const InngangKategorier = ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
-    usePageInit(`${inngangkategori.title} \u2013 klage eller anke`);
-    useBreadcrumbs([], inngangkategori.title);
+    const lang = useLanguage();
+    const title = inngangkategori.title[lang];
+    const { inngang } = useTranslation();
+    usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
+    useBreadcrumbs([], title);
 
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredPageTitle>{inngangkategori.title}</CenteredPageTitle>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
-                    <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
+                    <SectionTitle>{inngang.kategorier.title}</SectionTitle>
                     <KategoriLenker {...inngangkategori} />
                 </WhiteSection>
             </ContentContainer>
@@ -37,25 +42,32 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
     );
 };
 
-const KategoriLenker = ({ kategorier, path }: InngangKategori) => (
-    <SpaceBetweenFlexListContainer>
-        {kategorier.map(kategori => {
-            if (typeof kategori.externalUrl === 'string') {
+const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
+    const lang = useLanguage();
+    return (
+        <SpaceBetweenFlexListContainer>
+            {kategorier.map(kategori => {
+                if (typeof kategori.externalUrl === 'string') {
+                    return (
+                        <ExternalKategoriLink
+                            key={kategori.externalUrl}
+                            titleKey={kategori.titleKey}
+                            externalUrl={kategori.externalUrl}
+                        />
+                    );
+                }
+
                 return (
-                    <ExternalKategoriLink
-                        key={kategori.externalUrl}
+                    <KategoriLink
+                        key={kategori.titleKey}
                         titleKey={kategori.titleKey}
-                        externalUrl={kategori.externalUrl}
+                        path={`/${lang}/${path}/${kategori.path}`}
                     />
                 );
-            }
-
-            return (
-                <KategoriLink key={kategori.titleKey} titleKey={kategori.titleKey} path={`/${path}/${kategori.path}`} />
-            );
-        })}
-    </SpaceBetweenFlexListContainer>
-);
+            })}
+        </SpaceBetweenFlexListContainer>
+    );
+};
 
 interface KategoriLinkProps {
     titleKey: string;

@@ -7,12 +7,14 @@ import { LoginButton } from '../styled-components/login-button';
 import { NetworkError } from '../api/errors';
 import LoadingPage from '../loading-page/loading-page';
 import { login } from './login';
+import { useTranslation } from '../language/use-translation';
 
 interface Props {
     children: JSX.Element;
 }
 
 const UserLoader = (props: Props) => {
+    const { user_loader } = useTranslation();
     const { user, setUser } = useContext(AppContext);
     const [error, setError] = useState<Error | null>(null);
 
@@ -26,23 +28,23 @@ const UserLoader = (props: Props) => {
         if (error instanceof NetworkError) {
             return (
                 <AlertStripeFeil>
-                    <Normaltekst>{`Kunne ikke laste brukeren, fordi nettleseren din ikke kan nå NAV. Har du fortsatt internett?`}</Normaltekst>
-                    <Normaltekst>{`Feilmelding: "${error.message}"`}</Normaltekst>
-                    <LoginButton onClick={login}>Logg inn</LoginButton>
+                    <Normaltekst>{user_loader.network_error}</Normaltekst>
+                    <Normaltekst>{user_loader.error_message(error.message)}</Normaltekst>
+                    <LoginButton onClick={login}>{user_loader.log_in}</LoginButton>
                 </AlertStripeFeil>
             );
         }
         return (
             <AlertStripeFeil>
-                <Normaltekst>{`Kunne ikke laste brukeren, vennligst prøv igjen senere.`}</Normaltekst>
-                <Normaltekst>{`Feilmelding: "${error.message}"`}</Normaltekst>
-                <LoginButton onClick={login}>Logg inn</LoginButton>
+                <Normaltekst>{user_loader.other_error}</Normaltekst>
+                <Normaltekst>{user_loader.error_message(error.message)}</Normaltekst>
+                <LoginButton onClick={login}>{user_loader.log_in}</LoginButton>
             </AlertStripeFeil>
         );
     }
 
     if (user === null) {
-        return <LoadingPage>Laster bruker...</LoadingPage>;
+        return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
     }
 
     return props.children;

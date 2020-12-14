@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { deleteAttachment } from '../../../../api/api';
 import { Attachment, AttachmentFile, toFiles } from '../../../../klage/attachment';
+import { useTranslation } from '../../../../language/use-translation';
 import { FileFlexItem, FlexCenteredOnMobile } from '../../../../styled-components/file-preview';
 import { matchMediaQueries } from '../../../../styled-components/media-queries';
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const AttachmentPreview = ({ attachments, setAttachments, setLoading, setError }: Props) => {
+    const { klageskjema } = useTranslation();
     const [isSmall, setIsSmall] = useState<boolean>(matchMediaQueries.mobileS.matches);
     const attachmentFiles = useMemo(() => toFiles(attachments), [attachments]);
 
@@ -32,9 +34,17 @@ const AttachmentPreview = ({ attachments, setAttachments, setLoading, setError }
             setLoading(false);
         } catch (err) {
             if (err instanceof Error) {
-                setError(getDeleteAttachmentErrorMessage(attachmentFile, err.message));
+                setError(
+                    klageskjema.begrunnelse.attachments_preview.delete_error(
+                        attachmentFile.name,
+                        attachmentFile.id,
+                        err.message
+                    )
+                );
             } else {
-                setError(getDeleteAttachmentErrorMessage(attachmentFile));
+                setError(
+                    klageskjema.begrunnelse.attachments_preview.delete_error(attachmentFile.name, attachmentFile.id)
+                );
             }
             setLoading(false);
         }
@@ -61,8 +71,5 @@ const AttachmentPreview = ({ attachments, setAttachments, setLoading, setError }
 const AttachmentPreviewContainer = styled(FlexCenteredOnMobile)`
     margin-bottom: 32px;
 `;
-
-const getDeleteAttachmentErrorMessage = ({ name, id }: AttachmentFile, reason: string = 'Ukjent årsak.') =>
-    `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`;
 
 export default AttachmentPreview;

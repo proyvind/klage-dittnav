@@ -5,6 +5,7 @@ import { Input } from 'nav-frontend-skjema';
 interface Props {
     saksnummer: string | null;
     setSaksnummer: (saksnummer: string) => void;
+    title: string;
 }
 
 const MarginInput = styled(Input)`
@@ -13,13 +14,8 @@ const MarginInput = styled(Input)`
     }
 `;
 
-const Saksnummer = ({ saksnummer, setSaksnummer }: Props) => (
-    <MarginInput
-        label="Saksnummer (valgfri)"
-        bredde="L"
-        value={saksnummer ?? ''}
-        onChange={e => setSaksnummer(e.target.value)}
-    />
+const Saksnummer = ({ title, saksnummer, setSaksnummer }: Props) => (
+    <MarginInput label={title} bredde="L" value={saksnummer ?? ''} onChange={e => setSaksnummer(e.target.value)} />
 );
 
 export default Saksnummer;

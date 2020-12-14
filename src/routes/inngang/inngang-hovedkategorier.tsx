@@ -15,13 +15,17 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-
-export const title = 'Klage eller anke på vedtak';
+import { useTranslation } from '../../language/use-translation';
+import { useLanguage } from '../../language/use-language';
+import { Languages } from '../../language/language';
 
 const InngangHovedkategorier = () => {
     useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
+    const { inngang } = useTranslation();
+    const title = inngang.hovedkategorier.title;
     usePageInit(title);
     useBreadcrumbs([], null);
+    const language = useLanguage();
 
     return (
         <InngangMainContainer>
@@ -29,28 +33,25 @@ const InngangHovedkategorier = () => {
                 <CenteredPageTitle>{title}</CenteredPageTitle>
                 <InlineRow>
                     <Veilederpanel type={'plakat'} fargetema={'info'} kompakt svg={<VeilederIcon />}>
-                        <Normaltekst>
-                            Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start
-                            med å velge hvilket tema saken gjelder.
-                        </Normaltekst>
+                        <Normaltekst>{inngang.hovedkategorier.description}</Normaltekst>
                     </Veilederpanel>
                 </InlineRow>
 
                 <WhiteSection>
-                    <SectionTitle>Velg tema</SectionTitle>
-                    <SpaceBetweenFlexListContainer>{getLinks()}</SpaceBetweenFlexListContainer>
+                    <SectionTitle>{inngang.hovedkategorier.chooseTema}</SectionTitle>
+                    <SpaceBetweenFlexListContainer>{getLinks(language)}</SpaceBetweenFlexListContainer>
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>
     );
 };
 
-const getLinks = () =>
+const getLinks = (lang: Languages) =>
     INNGANG_KATEGORIER.map(({ title, path, beskrivelse }) => (
-        <KlageFlexLinkPanel key={title} href={`/${path}`} border>
+        <KlageFlexLinkPanel key={title[lang]} href={`/${lang}/${path}`} border>
             <div>
-                <Undertittel className="lenkepanel__heading">{title}</Undertittel>
-                <Normaltekst>{beskrivelse}</Normaltekst>
+                <Undertittel className="lenkepanel__heading">{title[lang]}</Undertittel>
+                <Normaltekst>{beskrivelse[lang]}</Normaltekst>
             </div>
         </KlageFlexLinkPanel>
     ));

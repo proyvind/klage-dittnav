@@ -2,15 +2,17 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Reason } from '../../../klage/klage';
-import { reasonTexts } from '../begrunnelse/reasons';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
     checkboxesSelected: Reason[];
 }
 
 const Checkboxes = ({ checkboxesSelected }: Props) => {
+    const { klageskjema } = useTranslation();
+    const reasonTexts = klageskjema.begrunnelse.reasons.texts;
     if (checkboxesSelected.length === 0) {
-        return <Normaltekst>Ikke spesifisert.</Normaltekst>;
+        return <Normaltekst>{klageskjema.begrunnelse.reasons.not_specified}</Normaltekst>;
     }
 
     return (
