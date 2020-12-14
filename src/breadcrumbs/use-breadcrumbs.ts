@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { setBreadcrumbs, onBreadcrumbClick } from '@navikt/nav-dekoratoren-moduler';
 import { title } from '../routes/inngang/inngang-hovedkategorier';
-import { useHistory } from 'react-router-dom';
+import { currentPath } from '../routes/current-path';
 
 export interface Breadcrumb {
     url: string;
@@ -29,7 +30,7 @@ export const useBreadcrumbs = (breadcrumbs: Breadcrumb[] | null, currentTitle: s
         }
         const currentPageBreadcrumb: Breadcrumb = {
             title: currentTitle,
-            url: 'current',
+            url: currentPath(window.location),
             handleInApp: true
         };
         setBreadcrumbs([hovedkategorierBreadcrumb, ...breadcrumbs, currentPageBreadcrumb]);
