@@ -10,8 +10,6 @@ const Saksnummer = ({ saksnummer, setSaksnummer }: Props) => (
     <Input
         label="Saksnummer (valgfri)"
         bredde="L"
-        inputMode="numeric"
-        pattern="[0-9]*"
         value={saksnummer ?? ''}
         onChange={e => setSaksnummer(e.target.value)}
     />
