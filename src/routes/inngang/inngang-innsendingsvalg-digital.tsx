@@ -25,6 +25,7 @@ interface Props {
     title?: string;
     saksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
+    allowsAnke?: boolean;
     kategoriMailKlageUrl?: string;
     kategoriMailAnkeUrl?: string;
 }
@@ -34,6 +35,7 @@ const InngangInnsendingDigital = ({
     title = Tema[temaKey],
     saksnummer = null,
     inngangkategori = null,
+    allowsAnke,
     kategoriMailKlageUrl,
     kategoriMailAnkeUrl
 }: Props) => {
@@ -67,23 +69,25 @@ const InngangInnsendingDigital = ({
                             </LenkePanelContentWithImage>
                         </LenkepanelBase>
                     </InlineRow>
-                    <InlineRow>
-                        <LenkepanelBase href={kategoriMailAnkeUrl ?? klageFormUrl} target="_blank" border>
-                            <LenkePanelContentWithImage>
-                                <IconContainer>
-                                    <LawBook />
-                                </IconContainer>
-                                <div>
-                                    <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
-                                    <MarginTopContainer>
-                                        <Normaltekst>
-                                            For å sende inn en anke fyller du et skjema som sendes via post.
-                                        </Normaltekst>
-                                    </MarginTopContainer>
-                                </div>
-                            </LenkePanelContentWithImage>
-                        </LenkepanelBase>
-                    </InlineRow>
+                    {allowsAnke && (
+                        <InlineRow>
+                            <LenkepanelBase href={kategoriMailAnkeUrl ?? klageFormUrl} target="_blank" border>
+                                <LenkePanelContentWithImage>
+                                    <IconContainer>
+                                        <LawBook />
+                                    </IconContainer>
+                                    <div>
+                                        <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
+                                        <MarginTopContainer>
+                                            <Normaltekst>
+                                                For å sende inn en anke fyller du et skjema som sendes via post.
+                                            </Normaltekst>
+                                        </MarginTopContainer>
+                                    </div>
+                                </LenkePanelContentWithImage>
+                            </LenkepanelBase>
+                        </InlineRow>
+                    )}
                     Les mer om{' '}
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                         dine klagerettigheter på våre tema-sider

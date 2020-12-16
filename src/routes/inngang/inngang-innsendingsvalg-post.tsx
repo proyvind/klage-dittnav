@@ -26,6 +26,7 @@ import { klageFormUrl } from '../../kategorier/kategorier';
 interface Props {
     temaKey: TemaKey;
     title?: string;
+    allowsAnke: boolean;
     kategoriMailKlageUrl?: string;
     kategoriMailAnkeUrl?: string;
     inngangkategori: InngangKategori;
@@ -35,6 +36,7 @@ const InngangInnsendingPost = ({
     temaKey,
     title = Tema[temaKey],
     inngangkategori,
+    allowsAnke,
     kategoriMailKlageUrl,
     kategoriMailAnkeUrl
 }: Props) => {
@@ -81,24 +83,26 @@ const InngangInnsendingPost = ({
                             </LenkePanelContentWithImage>
                         </LenkepanelBase>
                     </InlineRow>
-                    <InlineRow>
-                        <LenkepanelBase href={kategoriMailAnkeUrl ?? klageFormUrl} target="_blank" border>
-                            <LenkePanelContentWithImage>
-                                <IconContainer>
-                                    <LawBook />
-                                </IconContainer>
-                                <div>
-                                    <Systemtittel className="lenkepanel__heading">Skjema for anke</Systemtittel>
-                                    <MarginTopContainer>
-                                        <Normaltekst>
-                                            Dette velger du hvis du tidligere har sendt inn en klage og ønsker å anke
-                                            til Trygderetten.
-                                        </Normaltekst>
-                                    </MarginTopContainer>
-                                </div>
-                            </LenkePanelContentWithImage>
-                        </LenkepanelBase>
-                    </InlineRow>
+                    {allowsAnke && (
+                        <InlineRow>
+                            <LenkepanelBase href={kategoriMailAnkeUrl} target="_blank" border>
+                                <LenkePanelContentWithImage>
+                                    <IconContainer>
+                                        <LawBook />
+                                    </IconContainer>
+                                    <div>
+                                        <Systemtittel className="lenkepanel__heading">Skjema for anke</Systemtittel>
+                                        <MarginTopContainer>
+                                            <Normaltekst>
+                                                Dette velger du hvis du tidligere har sendt inn en klage og ønsker å
+                                                anke til Trygderetten.
+                                            </Normaltekst>
+                                        </MarginTopContainer>
+                                    </div>
+                                </LenkePanelContentWithImage>
+                            </LenkepanelBase>
+                        </InlineRow>
+                    )}
                     Les mer om{' '}
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                         dine klagerettigheter på våre tema-sider
