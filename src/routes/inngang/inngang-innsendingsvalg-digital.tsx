@@ -26,8 +26,8 @@ interface Props {
     saksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
     allowsAnke?: boolean;
-    kategoriMailKlageUrl?: string;
-    kategoriMailAnkeUrl?: string;
+    mailKlageUrl?: string;
+    mailAnkeUrl?: string;
 }
 
 const InngangInnsendingDigital = ({
@@ -36,8 +36,8 @@ const InngangInnsendingDigital = ({
     saksnummer = null,
     inngangkategori = null,
     allowsAnke,
-    kategoriMailKlageUrl,
-    kategoriMailAnkeUrl
+    mailKlageUrl,
+    mailAnkeUrl
 }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
@@ -52,7 +52,7 @@ const InngangInnsendingDigital = ({
                 <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
                     <InlineRow>
-                        <LenkepanelBase href={kategoriMailKlageUrl ?? klageFormUrl} target="_blank" border>
+                        <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -71,7 +71,7 @@ const InngangInnsendingDigital = ({
                     </InlineRow>
                     {allowsAnke && (
                         <InlineRow>
-                            <LenkepanelBase href={kategoriMailAnkeUrl ?? klageFormUrl} target="_blank" border>
+                            <LenkepanelBase href={mailAnkeUrl ?? klageFormUrl} target="_blank" border>
                                 <LenkePanelContentWithImage>
                                     <IconContainer>
                                         <LawBook />

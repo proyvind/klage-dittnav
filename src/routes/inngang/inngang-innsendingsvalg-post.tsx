@@ -27,8 +27,8 @@ interface Props {
     temaKey: TemaKey;
     title?: string;
     allowsAnke: boolean;
-    kategoriMailKlageUrl?: string;
-    kategoriMailAnkeUrl?: string;
+    mailKlageUrl?: string;
+    mailAnkeUrl?: string;
     inngangkategori: InngangKategori;
 }
 
@@ -37,8 +37,8 @@ const InngangInnsendingPost = ({
     title = Tema[temaKey],
     inngangkategori,
     allowsAnke,
-    kategoriMailKlageUrl,
-    kategoriMailAnkeUrl
+    mailKlageUrl,
+    mailAnkeUrl
 }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
@@ -67,7 +67,7 @@ const InngangInnsendingPost = ({
                         kvitteringer.
                     </PageParagraph>
                     <InlineRow>
-                        <LenkepanelBase href={kategoriMailKlageUrl ?? klageFormUrl} target="_blank" border>
+                        <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -85,7 +85,7 @@ const InngangInnsendingPost = ({
                     </InlineRow>
                     {allowsAnke && (
                         <InlineRow>
-                            <LenkepanelBase href={kategoriMailAnkeUrl} target="_blank" border>
+                            <LenkepanelBase href={mailAnkeUrl} target="_blank" border>
                                 <LenkePanelContentWithImage>
                                     <IconContainer>
                                         <LawBook />

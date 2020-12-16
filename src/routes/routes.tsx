@@ -69,7 +69,7 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 );
 
 function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
-    const { digitalKlage, title, temaKey, allowsAnke, kategoriMailKlageUrl, kategoriMailAnkeUrl } = kategori;
+    const { digitalKlage, title, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
     if (digitalKlage) {
         return (
             <InngangInnsendingDigital
@@ -77,8 +77,8 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
                 title={title}
                 inngangkategori={inngangkategori}
                 allowsAnke={allowsAnke}
-                kategoriMailKlageUrl={kategoriMailKlageUrl}
-                kategoriMailAnkeUrl={kategoriMailAnkeUrl}
+                mailKlageUrl={mailKlageUrl}
+                mailAnkeUrl={mailAnkeUrl}
             />
         );
     }
@@ -88,8 +88,8 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
             title={title}
             inngangkategori={inngangkategori}
             allowsAnke={allowsAnke}
-            kategoriMailKlageUrl={kategoriMailKlageUrl}
-            kategoriMailAnkeUrl={kategoriMailAnkeUrl}
+            mailKlageUrl={mailKlageUrl}
+            mailAnkeUrl={mailAnkeUrl}
         />
     );
 }
