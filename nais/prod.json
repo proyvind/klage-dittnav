@@ -2,7 +2,7 @@
     "ingresses": ["https://klage-dittnav.nav.no", "https://klage.nav.no"],
     "externals": ["www.nav.no"],
     "env": {
-        "REACT_APP_URL": "https://klage.nav.no",
+        "REACT_APP_URL": "https://klage-dittnav.nav.no",
         "REACT_APP_API_URL": "https://klage-dittnav-api.nav.no",
         "REACT_APP_LOGINSERVICE_URL": "https://loginservice.nav.no/login",
         "FRONTENDLOGGER_BASE_URL": "https://www.nav.no/frontendlogger"
