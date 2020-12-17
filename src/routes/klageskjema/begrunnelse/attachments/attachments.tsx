@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
+import { Label } from 'nav-frontend-skjema';
 import AttachmentPreview from './preview';
 import UploadButton from './upload-button';
 import { Attachment } from '../../../../klage/attachment';
-import { Section } from '../../../../styled-components/section';
-import { KlageUndertittel } from '../../../../styled-components/undertittel';
 import { CenteredContainer } from '../../../../styled-components/common';
 import { Klage } from '../../../../klage/klage';
 import { PageParagraph } from '../../../../styled-components/page-paragraph';
 import { KlageAlertStripe, KlageAlertStripeFeil } from '../../../../styled-components/alert';
+import { Row } from '../../../../styled-components/row';
 
 interface Props {
     attachments: Attachment[];
@@ -18,13 +18,15 @@ interface Props {
     setIsLoadig: (loading: boolean) => void;
 }
 
+const FILE_INPUT_ID = 'file-upload-input';
+
 const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }: Props) => {
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
 
     return (
-        <Section>
-            <KlageUndertittel>Vedlegg ({attachments.length})</KlageUndertittel>
+        <Row>
+            <Label htmlFor={FILE_INPUT_ID}>Vedlegg ({attachments.length})</Label>
             <AttachmentPreview
                 attachments={attachments}
                 setAttachments={setAttachments}
@@ -36,6 +38,7 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
             {getAttachmentError(attachmentError)}
 
             <UploadButton
+                inputId={FILE_INPUT_ID}
                 attachments={attachments}
                 setAttachments={setAttachments}
                 setLoading={setAttachmentsLoading}
@@ -52,7 +55,7 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
                     enn 32 MB.
                 </Undertekst>
             </KlageAlertStripe>
-        </Section>
+        </Row>
     );
 };
 

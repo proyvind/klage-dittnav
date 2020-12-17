@@ -18,12 +18,13 @@ interface UploadError {
 interface Props {
     klage: Klage;
     attachments: Attachment[];
+    inputId: string;
     setAttachments: (attachments: Attachment[]) => void;
     setLoading: (loading: boolean) => void;
     setError: (error: string) => void;
 }
 
-const UploadButton = ({ klage, attachments, setAttachments, setLoading, setError }: Props) => {
+const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading, setError }: Props) => {
     const fileInput = useRef<HTMLInputElement>(null);
 
     const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -69,6 +70,7 @@ const UploadButton = ({ klage, attachments, setAttachments, setLoading, setError
         <Row>
             <Knapp onClick={handleAttachmentClick}>Last opp nytt vedlegg</Knapp>
             <input
+                id={inputId}
                 type="file"
                 multiple
                 accept="image/png, image/jpeg, image/jpg, .pdf"

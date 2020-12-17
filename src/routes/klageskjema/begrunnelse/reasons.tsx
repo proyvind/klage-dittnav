@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
+import styled from 'styled-components/macro';
 import { CheckboksPanelGruppe, CheckboksPanelProps } from 'nav-frontend-skjema';
 import { Reason } from '../../../klage/klage';
-import styled from 'styled-components/macro';
 
 interface Props {
     checkedReasons: Reason[];
@@ -11,6 +11,7 @@ interface Props {
 
 const Reasons = ({ checkedReasons, setCheckedReasons, className }: Props) => (
     <CheckboksPanelGruppe
+        legend={'Hva er du uenig i? (valgfri)'}
         className={className}
         checkboxes={useCheckboxes(checkedReasons)}
         onChange={(_, clickedReason: Reason) => {

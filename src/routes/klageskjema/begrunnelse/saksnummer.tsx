@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 import { Input } from 'nav-frontend-skjema';
 
 interface Props {
@@ -6,8 +7,14 @@ interface Props {
     setSaksnummer: (saksnummer: string) => void;
 }
 
+const MarginInput = styled(Input)`
+    && {
+        margin-bottom: 32px;
+    }
+`;
+
 const Saksnummer = ({ saksnummer, setSaksnummer }: Props) => (
-    <Input
+    <MarginInput
         label="Saksnummer (valgfri)"
         bredde="L"
         value={saksnummer ?? ''}

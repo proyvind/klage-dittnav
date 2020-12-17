@@ -5,13 +5,15 @@ interface Props {
     fritekst: string;
     setFritekst: (fritekst: string) => void;
     showErrors: boolean;
+    id: string;
 }
 
-const BegrunnelseText = ({ fritekst, setFritekst, showErrors }: Props) => {
+const BegrunnelseText = ({ id, fritekst, setFritekst, showErrors }: Props) => {
     const [isValid, setIsValid] = useState<boolean>(fritekst.length !== 0);
 
     return (
         <Textarea
+            id={id}
             value={fritekst}
             description={INPUTDESCRIPTION}
             placeholder="Skriv inn din begrunnelse her."

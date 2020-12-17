@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { Label } from 'nav-frontend-skjema';
 import { updateKlage } from '../../../api/api';
 import { CenteredContainer } from '../../../styled-components/common';
 import { Attachment } from '../../../klage/attachment';
@@ -20,9 +21,8 @@ import BegrunnelseText from './begrunnelse-text';
 import AttachmentsSection from './attachments/attachments';
 import VedtakDate from './vedtak-date';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
-import { Section } from '../../../styled-components/section';
-import { KlageUndertittel } from '../../../styled-components/undertittel';
 import Saksnummer from './saksnummer';
+import { Row } from '../../../styled-components/row';
 
 interface Props {
     klage: Klage;
@@ -123,18 +123,20 @@ const Begrunnelse = ({ klage }: Props) => {
                 </KlageAlertStripeFeil>
             )}
 
-            <Section>
-                <KlageUndertittel>Hva er du uenig i?</KlageUndertittel>
-                <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
-                <VedtakDate vedtakDate={vedtakDate} setVedtakDate={setVedtakDate} />
-                <Saksnummer saksnummer={saksnummer} setSaksnummer={setSaksnummer} />
-            </Section>
+            <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
+            <VedtakDate vedtakDate={vedtakDate} setVedtakDate={setVedtakDate} />
+            <Saksnummer saksnummer={saksnummer} setSaksnummer={setSaksnummer} />
 
-            <Section>
-                <KlageUndertittel>Hvorfor er du uenig?</KlageUndertittel>
-                <BegrunnelseText fritekst={fritekst} setFritekst={setFritekst} showErrors={submitted} />
+            <Row>
+                <Label htmlFor={'begrunnelse-text'}>Hvorfor er du uenig?</Label>
+                <BegrunnelseText
+                    id="begrunnelse-text"
+                    fritekst={fritekst}
+                    setFritekst={setFritekst}
+                    showErrors={submitted}
+                />
                 <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
-            </Section>
+            </Row>
 
             <AttachmentsSection
                 attachments={attachments}
