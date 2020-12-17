@@ -1,5 +1,7 @@
 import { TemaKey } from '../tema/tema';
 
+export const klageFormUrl = 'https://www.nav.no/soknader/nb/klage/person';
+
 export interface InngangKategori {
     title: string;
     path: string;
@@ -10,10 +12,11 @@ export interface InngangKategori {
 export interface Kategori {
     temaKey: TemaKey;
     title: string;
-    anke: boolean;
+    allowsAnke: boolean;
     digitalKlage: boolean;
-    digitalAnke: boolean;
     path: string;
+    mailKlageUrl: string;
+    mailAnkeUrl?: string;
     externalUrl?: string;
 }
 
@@ -26,18 +29,19 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.PER,
                 title: 'Lønnskompensasjon for permitterte',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'lonnskompensasjon'
+                path: 'lonnskompensasjon',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/korona/lonskompensasjon-permitterte/NAV%2004-07.01/klage/brev'
             },
             {
                 temaKey: TemaKey.GEN,
                 title: 'Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'midlertidig-kompensasjon'
+                path: 'midlertidig-kompensasjon',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/korona/kompensasjon/NAV%2000-03.00/klage/brev'
             }
         ]
     },
@@ -49,42 +53,48 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.AAP,
                 title: 'Arbeidsavklaringspenger (AAP)',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'arbeidsavklaringspenger'
+                path: 'arbeidsavklaringspenger',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/arbeid/arbeidsavklaringspenger/NAV%2011-13.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/arbeid/arbeidsavklaringspenger/NAV%2011-13.05/anke/brev'
             },
             {
                 temaKey: TemaKey.DAG,
                 title: 'Dagpenger',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'dagpenger'
+                path: 'dagpenger',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
             },
             {
                 temaKey: TemaKey.GEN,
                 title: 'Lønnsgaranti ved konkurs hos arbeidsgiver',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'lonnsgaranti'
+                path: 'lonnsgaranti',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/arbeid/lonnsgaranti-arbeidsgiver-betaler-ikke-ut-lonn/NAV%2067-01.01/klage/brev'
             },
             {
                 temaKey: TemaKey.OPP,
                 title: 'Vurdering av behov for bistand etter NAV loven § 14 a',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'nav-loven-14a'
+                path: 'nav-loven-14a',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/arbeid/Bistand-fra-NAV-for-a-komme-i-arbeid/NAV%2000-01.00/klage/brev'
             },
             {
                 temaKey: TemaKey.TIL,
                 title: 'Tiltakspenger for arbeidsrettet tiltak',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'tiltakspenger'
+                path: 'tiltakspenger',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/tiltakspenger/NAV%2076-13.45/klage/brev'
             }
         ]
     },
@@ -96,34 +106,40 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.GRU,
                 title: 'Grunnstønad og hjelpestønad',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'grunn-og-hjelpestonad'
+                path: 'grunn-og-hjelpestonad',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/helse/grunn-og-hjelpestonad/NAV%2006-03.04/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/helse/grunn-og-hjelpestonad/NAV%2006-03.04/anke/brev'
             },
             {
                 temaKey: TemaKey.SYK,
                 title: 'Sykepenger',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'sykepenger'
+                path: 'sykepenger',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/sykepenger/NAV%2000-03.00/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/sykepenger/NAV%2000-03.00/anke/brev'
             },
             {
                 temaKey: TemaKey.UFO,
                 title: 'Uføretrygd',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'uforetrygd'
+                path: 'uforetrygd',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/uforetrygd/NAV%2012-06.05/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/uforetrygd/NAV%2012-06.05/anke/brev'
             },
             {
                 temaKey: TemaKey.YRK,
                 title: 'Yrkesskade og yrkesskadetrygd',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'yrkesskadetrygd'
+                path: 'yrkesskadetrygd',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/anke/brev'
             }
         ]
     },
@@ -135,74 +151,89 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.FOR,
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: true,
-                digitalAnke: false,
-                path: 'foreldrepenger'
+                path: 'foreldrepenger',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/anke/brev'
             },
             {
                 temaKey: TemaKey.ENF,
                 title: 'Enslig mor eller far',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'enslig-mor-eller-far'
+                path: 'enslig-mor-eller-far',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/enslig-mor-eller-far/NAV%2015-00.01/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/enslig-mor-eller-far/NAV%2015-00.01/anke/brev'
             },
             {
                 temaKey: TemaKey.BID,
                 title: 'Barnebidrag og bidragsforskudd',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'barnebidrag-og-bidragsforskudd'
+                path: 'barnebidrag-og-bidragsforskudd',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/barnebidrag-og-bidragsforskudd/NAV%2055-00.60/klage/brev'
             },
             {
                 temaKey: TemaKey.BAR,
                 title: 'Barnetrygd',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'barnetrygd'
+                path: 'barnetrygd',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/barnetrygd/NAV%2033-00.07/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/barnetrygd/NAV%2033-00.07/anke/brev'
             },
             {
                 temaKey: TemaKey.KON,
                 title: 'Kontantstøtte',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'kontantstotte'
+                path: 'kontantstotte',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/kontantstotte/NAV%2034-00.08/klage/brev'
             },
             {
                 temaKey: TemaKey.BID,
                 title: 'Ektefellebidrag',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'ektefellebidrag'
+                path: 'ektefellebidrag',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/ektefellebidrag/NAV%2053-00.05/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/ektefellebidrag/NAV%2053-00.05/anke/brev'
             },
             {
                 temaKey: TemaKey.BID,
                 title: 'Oppfostringsbidrag',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'oppfostringsbidrag'
+                path: 'oppfostringsbidrag',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/familie/oppfostringsbidrag/NAV%2057-00.08/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/oppfostringsbidrag/NAV%2057-00.08/anke/brev'
             },
             {
                 temaKey: TemaKey.OMS,
                 title: 'Omsorgspenger, opplæringspenger, pleiepenger',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'sykdom-i-familien'
+                path: 'sykdom-i-familien',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-06.07/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-06.07/anke/brev'
             },
             {
                 temaKey: TemaKey.GRA,
                 title: 'Gravferdsstønad',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'gravferdsstonad'
+                path: 'gravferdsstonad',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/gravferdsstonad-og-baretransport/NAV%2007-02.08/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/gravferdsstonad-og-baretransport/NAV%2007-02.08/anke/brev'
             }
         ]
     },
@@ -214,58 +245,77 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.PEN,
                 title: 'Ytelser til tidligere familiepleier',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'tidligere-familiepleier'
+                path: 'tidligere-familiepleier',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/familiepleier/NAV%2016-01.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/familiepleier/NAV%2016-01.05/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
                 title: 'Pensjon til gjenlevende ektefelle eller samboer',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'gjenlevende'
+                path: 'gjenlevende',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/gjenlevende-ektefelle-partner-eller-samboer/NAV%2017-01.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/gjenlevende-ektefelle-partner-eller-samboer/NAV%2017-01.05/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
                 title: 'Barnepensjon',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'barnepensjon'
+                path: 'barnepensjon',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/barn-som-har-mistet-en-eller-flere-av-foreldrene/NAV%2018-04.01/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/barn-som-har-mistet-en-eller-flere-av-foreldrene/NAV%2018-04.01/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
                 title: 'Alderspensjon',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'alderspensjon'
+                path: 'alderspensjon',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/alderspensjon-og-avtalefestet-pensjon/NAV%2019-01.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/alderspensjon-og-avtalefestet-pensjon/NAV%2019-01.05/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
                 title: 'Krigspensjon',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'krigspensjon'
+                path: 'krigspensjon',
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/pensjon/krigspensjon/NAV%2031-00.02/klage/brev',
+                mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/pensjon/krigspensjon/NAV%2031-00.02/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
                 title: 'Avtalefestet pensjon (AFP)',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'avtalefestet-pensjon'
+                path: 'avtalefestet-pensjon',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/avtalefestet-pensjon-fra-statens-pensjonskasse/NAV%2062-00.16/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/avtalefestet-pensjon-fra-statens-pensjonskasse/NAV%2062-00.16/anke/brev'
             },
             {
                 temaKey: TemaKey.SUP,
                 title: 'Supplerende stønad til pensjon ved kort botid i Norge',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'supplerende-stonad'
+                path: 'supplerende-stonad',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-med-kort-botid-i-norge/NAV%2064-21.00/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-med-kort-botid-i-norge/NAV%2064-21.00/anke/brev'
             }
         ]
     },
@@ -276,11 +326,25 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.MED,
-                title: 'Medlemskap i folketrygdloven',
-                anke: true,
+                title: 'Opphold eller arbeid i Norge',
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'medlemskap'
+                path: 'opphold-eller-arbeid-i-norge',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-i-norge/NAV%2002-07.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-i-norge/NAV%2002-07.05/anke/brev'
+            },
+            {
+                temaKey: TemaKey.MED,
+                title: 'Opphold eller arbeid utenfor Norge',
+                allowsAnke: true,
+                digitalKlage: false,
+                path: 'opphold-eller-arbeid-utenfor-norge',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-utenfor-norge/NAV%2002-08.05/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-utenfor-norge/NAV%2002-08.05/anke/brev'
             }
         ]
     },
@@ -292,18 +356,24 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.HJE,
                 title: 'Hjelpemidler og tilrettelegging ved nedsatt funksjonsevne',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'hjelpemidler'
+                path: 'hjelpemidler',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/diverse/NAV%2010-07.23/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/diverse/NAV%2010-07.23/anke/brev'
             },
             {
                 temaKey: TemaKey.BIL,
                 title: 'Stønad til bil og spesialutstyr til kjøretøy',
-                anke: true,
+                allowsAnke: true,
                 digitalKlage: false,
-                digitalAnke: false,
-                path: 'bil'
+                path: 'bil',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/bil/NAV%2010-07.40/klage/brev',
+                mailAnkeUrl:
+                    'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/bil/NAV%2010-07.40/anke/brev'
             }
         ]
     },
@@ -315,10 +385,10 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.UKJ,
                 title: 'Midlertidig økonomisk sosialhjelp',
-                anke: false,
+                allowsAnke: false,
                 digitalKlage: false,
-                digitalAnke: false,
                 path: 'sosiale-tjenester',
+                mailKlageUrl: klageFormUrl,
                 externalUrl: 'https://www.nav.no/sosialhjelp/artikkel/124875'
             }
         ]

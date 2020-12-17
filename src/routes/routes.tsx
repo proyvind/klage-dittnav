@@ -69,11 +69,29 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 );
 
 function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
-    const { digitalKlage, title, temaKey } = kategori;
+    const { digitalKlage, title, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
     if (digitalKlage) {
-        return <InngangInnsendingDigital temaKey={temaKey} title={title} inngangkategori={inngangkategori} />;
+        return (
+            <InngangInnsendingDigital
+                temaKey={temaKey}
+                title={title}
+                inngangkategori={inngangkategori}
+                allowsAnke={allowsAnke}
+                mailKlageUrl={mailKlageUrl}
+                mailAnkeUrl={mailAnkeUrl}
+            />
+        );
     }
-    return <InngangInnsendingPost temaKey={temaKey} title={title} inngangkategori={inngangkategori} />;
+    return (
+        <InngangInnsendingPost
+            temaKey={temaKey}
+            title={title}
+            inngangkategori={inngangkategori}
+            allowsAnke={allowsAnke}
+            mailKlageUrl={mailKlageUrl}
+            mailAnkeUrl={mailAnkeUrl}
+        />
+    );
 }
 
 const renderBegrunnelse = (klage: Klage) => <FormContainer klage={klage} activeStep={0} render={Begrunnelse} />;

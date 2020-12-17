@@ -10,7 +10,6 @@ import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { ExternalLink, KlageLinkPanel } from '../../link/link';
 import { TemaKey, Tema } from '../../tema/tema';
-import { getUrlToPaperForm } from '../../tema/ytelse';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { CenteredPageTitle } from '../../styled-components/page-title';
@@ -19,26 +18,31 @@ import { InlineRow } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-
+import LawBook from '../../icons/LawBook';
+import { klageFormUrl } from '../../kategorier/kategorier';
 interface Props {
     temaKey: TemaKey;
     title?: string;
     saksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
+    allowsAnke?: boolean;
+    mailKlageUrl?: string;
+    mailAnkeUrl?: string;
 }
 
 const InngangInnsendingDigital = ({
     temaKey,
     title = Tema[temaKey],
     saksnummer = null,
-    inngangkategori = null
+    inngangkategori = null,
+    allowsAnke,
+    mailKlageUrl,
+    mailAnkeUrl
 }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
     usePageInit(`${title} \u2013 klage eller anke`);
     const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori), [inngangkategori]);
     useBreadcrumbs(breadcrumbs, title);
-
-    const paperUrl = getUrlToPaperForm(temaKey);
 
     return (
         <InngangMainContainer>
@@ -48,7 +52,7 @@ const InngangInnsendingDigital = ({
                 <WhiteSection>
                     <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
                     <InlineRow>
-                        <LenkepanelBase href={paperUrl} border>
+                        <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -65,6 +69,25 @@ const InngangInnsendingDigital = ({
                             </LenkePanelContentWithImage>
                         </LenkepanelBase>
                     </InlineRow>
+                    {allowsAnke && (
+                        <InlineRow>
+                            <LenkepanelBase href={mailAnkeUrl ?? klageFormUrl} target="_blank" border>
+                                <LenkePanelContentWithImage>
+                                    <IconContainer>
+                                        <LawBook />
+                                    </IconContainer>
+                                    <div>
+                                        <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
+                                        <MarginTopContainer>
+                                            <Normaltekst>
+                                                For å sende inn en anke fyller du et skjema som sendes via post.
+                                            </Normaltekst>
+                                        </MarginTopContainer>
+                                    </div>
+                                </LenkePanelContentWithImage>
+                            </LenkepanelBase>
+                        </InlineRow>
+                    )}
                     Les mer om{' '}
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
                         dine klagerettigheter på våre tema-sider
