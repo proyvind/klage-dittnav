@@ -22,7 +22,7 @@ spec:
     path: /internal/isReady
     initialDelay: 10
   idporten:
-    enabled: true
+    enabled: false
   envFrom:
     - secret: amplitude
   env:

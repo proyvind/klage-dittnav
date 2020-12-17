@@ -32,5 +32,5 @@ men det er ønskelig at det sendes med følgende felter:
 
 ## URL
 
--   preprod: https://klage-dittnav.dev.nav.no
--   prod: https://klage-dittnav.nav.no
+-   preprod: https://klage.dev.nav.no
+-   prod: https://klage.nav.no
