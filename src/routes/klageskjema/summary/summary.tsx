@@ -2,28 +2,29 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Undertittel, Undertekst, Normaltekst } from 'nav-frontend-typografi';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import PersonligeOpplysningerSummary from './summary/personlige-opplysninger-summary';
-import VedtakSummary from './summary/vedtak-summary';
-import { MarginContainer, CenteredContainer, WrapNormaltekst } from '../../styled-components/common';
-import AttachmentSummary from './summary/attachment-summary';
-import { finalizeKlage } from '../../api/api';
-import Clipboard from '../../icons/ClipboardIcon';
-import { ColoredLine } from '../../styled-components/colored-line';
-import { toFiles } from '../../klage/attachment';
-import { PageIdentifier } from '../../logging/amplitude';
-import { useLogPageView } from '../../logging/use-log-page-view';
-import { AppContext } from '../../app-context/app-context';
-import { device } from '../../styled-components/media-queries';
-import { Klage, KlageStatus } from '../../klage/klage';
-import { ExternalLink } from '../../link/link';
-import { CenteredPageSubTitle } from '../../styled-components/page-title';
-import { CustomMarginRow } from '../../styled-components/row';
-import InformationPointBox from './summary/information-point-box';
-import { reasonTexts } from './begrunnelse/reasons';
-import { KlageUndertittel } from '../../styled-components/undertittel';
+import PersonligeOpplysningerSummary from './personlige-opplysninger-summary';
+import VedtakSummary from './vedtak-summary';
+import { CenteredContainer, WrapNormaltekst } from '../../../styled-components/common';
+import AttachmentSummary from './attachment-summary';
+import { finalizeKlage } from '../../../api/api';
+import Clipboard from '../../../icons/ClipboardIcon';
+import { ColoredLine } from '../../../styled-components/colored-line';
+import { toFiles } from '../../../klage/attachment';
+import { PageIdentifier } from '../../../logging/amplitude';
+import { useLogPageView } from '../../../logging/use-log-page-view';
+import { AppContext } from '../../../app-context/app-context';
+import { device } from '../../../styled-components/media-queries';
+import { Klage, KlageStatus } from '../../../klage/klage';
+import { ExternalLink } from '../../../link/link';
+import { CenteredPageSubTitle } from '../../../styled-components/page-title';
+import { CustomMarginRow } from '../../../styled-components/row';
+import InformationPointBox from './information-point-box';
+
+import { KlageUndertittel } from '../../../styled-components/undertittel';
+import Checkboxes from './checkboxes';
+import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 
 interface Props {
     klage: Klage;
@@ -105,11 +106,7 @@ const Oppsummering = ({ klage }: Props) => {
                 <SummarySection>
                     <KlageUndertittel>Begrunnelse i din klage</KlageUndertittel>
                     <InformationPointBox header={'Hva er du uenig i?'}>
-                        <CheckboxList>
-                            {klage.checkboxesSelected.map(c => (
-                                <CheckboxListItem key={c}>{reasonTexts[c]}</CheckboxListItem>
-                            ))}
-                        </CheckboxList>
+                        <Checkboxes checkboxesSelected={klage.checkboxesSelected} />
                     </InformationPointBox>
                     <InformationPointBox header={'Hvorfor er du uenig?'}>
                         <WrapNormaltekst>{klage.fritekst}</WrapNormaltekst>
@@ -121,6 +118,7 @@ const Oppsummering = ({ klage }: Props) => {
                     <AttachmentSummary klage={klage} attachments={toFiles(klage.vedlegg)} />
                 </SummarySection>
             </Frame>
+
             {getError(error)}
 
             <CenteredContainer>
@@ -144,11 +142,9 @@ const getError = (error: string | null) => {
     }
 
     return (
-        <MarginContainer>
-            <AlertStripeFeil>
-                <Normaltekst>{error}</Normaltekst>
-            </AlertStripeFeil>
-        </MarginContainer>
+        <KlageAlertStripeFeil>
+            <Normaltekst>{error}</Normaltekst>
+        </KlageAlertStripeFeil>
     );
 };
 
@@ -194,18 +190,6 @@ const Icon = styled(Clipboard)`
         margin-right: auto;
         margin-bottom: 16px;
         width: 100px;
-    }
-`;
-
-const CheckboxList = styled.ul`
-    margin: 0;
-    padding: 0;
-    list-style: none;
-`;
-
-const CheckboxListItem = styled.li`
-    :not(:last-child) {
-        margin-bottom: 4px;
     }
 `;
 

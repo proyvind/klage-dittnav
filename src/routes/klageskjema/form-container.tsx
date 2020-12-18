@@ -1,6 +1,6 @@
 import React from 'react';
 import KvitteringPage from './kvittering/kvittering-page';
-import Oppsummering from './oppsummering';
+import Oppsummering from './summary/summary';
 import Begrunnelse from './begrunnelse/begrunnelse';
 import Steps, { stepLabels } from './steps';
 import { Klage } from '../../klage/klage';

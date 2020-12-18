@@ -7,7 +7,7 @@ import { LOGGED_IN_PATH } from '../environment/environment';
 import Begrunnelse from './klageskjema/begrunnelse/begrunnelse';
 import FormContainer from './klageskjema/form-container';
 import KlageLoader from '../klage/klage-loader';
-import Oppsummering from './klageskjema/oppsummering';
+import Oppsummering from './klageskjema/summary/summary';
 import KvitteringPage from './klageskjema/kvittering/kvittering-page';
 import { InngangKategori, INNGANG_KATEGORIER, Kategori } from '../kategorier/kategorier';
 import AppContextComponenet from '../app-context/app-context';
