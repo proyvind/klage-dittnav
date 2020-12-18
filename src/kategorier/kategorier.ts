@@ -313,9 +313,9 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 digitalKlage: false,
                 path: 'supplerende-stonad',
                 mailKlageUrl:
-                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-med-kort-botid-i-norge/NAV%2064-21.00/klage/brev',
+                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-over-sekstisyv-ar/NAV%2064-21.00/klage/brev',
                 mailAnkeUrl:
-                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-med-kort-botid-i-norge/NAV%2064-21.00/anke/brev'
+                    'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-over-sekstisyv-ar/NAV%2064-21.00/anke/brev'
             },
             {
                 temaKey: TemaKey.PEN,
