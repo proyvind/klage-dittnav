@@ -13,7 +13,8 @@ describe('Klage store', () => {
         ytelse: 'En ytelse',
         status: KlageStatus.DRAFT,
         checkboxesSelected: [],
-        saksnummer: null,
+        userSaksnummer: null,
+        internalSaksnummer: null,
         vedtakDate: null,
         fritekst: ''
     };

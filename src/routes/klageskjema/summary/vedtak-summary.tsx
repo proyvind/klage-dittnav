@@ -11,20 +11,27 @@ interface Props {
 
 const VedtakSummary = ({ klage }: Props) => (
     <SpaceBetweenFlexListContainer>
-        {getSaksnummer(klage.saksnummer)}
+        {getSaksnummer(klage)}
         <InformationPointBox header={'Vedtak'}>
             <Normaltekst>{useDateToVedtakText(klage.vedtakDate)}</Normaltekst>
         </InformationPointBox>
     </SpaceBetweenFlexListContainer>
 );
 
-function getSaksnummer(saksnummer: string | null) {
-    if (saksnummer === null) {
-        return null;
+const getSaksnummerText = (klage: UpdateKlage) => {
+    if (klage.userSaksnummer) {
+        return `${klage.userSaksnummer} \u2013 Oppgitt av bruker`;
     }
+    if (klage.internalSaksnummer) {
+        return `${klage.internalSaksnummer} \u2013 Hentet fra internt system`;
+    }
+    return 'Ikke angitt';
+};
+
+function getSaksnummer(klage: UpdateKlage) {
     return (
         <InformationPointBox header={'Saksnummer'}>
-            <Normaltekst>{saksnummer}</Normaltekst>
+            <Normaltekst>{getSaksnummerText(klage)}</Normaltekst>
         </InformationPointBox>
     );
 }

@@ -37,7 +37,8 @@ const CreateKlage = () => {
             tema: temaKey,
             ytelse: title,
             vedtakDate: null,
-            saksnummer
+            userSaksnummer: null,
+            internalSaksnummer: saksnummer
         };
 
         createKlage(newKlage)
@@ -56,12 +57,12 @@ const CreateKlage = () => {
     return <Redirect to={`/${klage.id}/begrunnelse`} />;
 };
 
-function formatError({ tema, ytelse, saksnummer }: NewKlage): string {
+function formatError({ tema, ytelse, internalSaksnummer }: NewKlage): string {
     let error = `Klarte ikke opprette klage med tema "${tema}"`;
-    if (saksnummer === null) {
+    if (internalSaksnummer === null) {
         error += ` og tittel "${ytelse}".`;
     } else {
-        error += `, tittel "${ytelse}" og saksnummer "${saksnummer}".`;
+        error += `, tittel "${ytelse}" og saksnummer "${internalSaksnummer}".`;
     }
 
     return error;
