@@ -23,7 +23,7 @@ import { klageFormUrl } from '../../kategorier/kategorier';
 interface Props {
     temaKey: TemaKey;
     title?: string;
-    saksnummer?: string | null;
+    internalSaksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
     allowsAnke?: boolean;
     mailKlageUrl?: string;
@@ -33,7 +33,7 @@ interface Props {
 const InngangInnsendingDigital = ({
     temaKey,
     title = Tema[temaKey],
-    saksnummer = null,
+    internalSaksnummer = null,
     inngangkategori = null,
     allowsAnke,
     mailKlageUrl,
@@ -50,7 +50,7 @@ const InngangInnsendingDigital = ({
                 <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
-                    <DigitalContent temaKey={temaKey} title={title} saksnummer={saksnummer} />
+                    <DigitalContent temaKey={temaKey} title={title} saksnummer={internalSaksnummer} />
                     <InlineRow>
                         <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
@@ -171,7 +171,7 @@ function getQueryValue(queryValue: string | string[] | null | undefined) {
 
 const arePropsEqual = (prevProps: Props, nextProps: Props) =>
     prevProps.temaKey === nextProps.temaKey &&
-    prevProps.saksnummer === nextProps.saksnummer &&
+    prevProps.internalSaksnummer === nextProps.internalSaksnummer &&
     prevProps.title === nextProps.title;
 
 export default React.memo(InngangInnsendingDigital, arePropsEqual);

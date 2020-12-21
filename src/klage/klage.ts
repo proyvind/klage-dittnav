@@ -23,7 +23,8 @@ export interface FinalizedKlage {
 export interface NewKlage {
     readonly checkboxesSelected: Reason[];
     readonly fritekst: string;
-    readonly saksnummer: string | null;
+    readonly userSaksnummer: string | null;
+    readonly internalSaksnummer: string | null;
     readonly tema: TemaKey;
     readonly vedtakDate: ISODate | null;
     readonly ytelse: string;
