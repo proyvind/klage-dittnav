@@ -155,8 +155,8 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         ]
     },
     {
-        title: 'Familie og barn',
-        path: 'familie-og-barn',
+        title: 'Familie',
+        path: 'familie',
         beskrivelse: 'Foreldrepenger, omsorg og pleie',
         kategorier: [
             {
