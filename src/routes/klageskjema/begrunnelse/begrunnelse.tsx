@@ -71,14 +71,19 @@ const Begrunnelse = ({ klage }: Props) => {
     }, [fritekst, userSaksnummer, vedtakDate, reasons, attachments, klage, setKlage]);
 
     useEffect(() => {
-        if (klage.vedtakDate === vedtakDate && klage.checkboxesSelected === reasons && klage.fritekst === fritekst) {
+        if (
+            klage.vedtakDate === vedtakDate &&
+            klage.checkboxesSelected === reasons &&
+            klage.userSaksnummer === userSaksnummer &&
+            klage.fritekst === fritekst
+        ) {
             setAutosaveStatus(AutosaveStatus.SAVED);
             return;
         }
         setAutosaveStatus(AutosaveStatus.SAVING);
         const timeout = setTimeout(performKlageUpdate, 1000);
         return () => clearTimeout(timeout); // Clear existing timer every time it runs.
-    }, [fritekst, vedtakDate, reasons, klage, performKlageUpdate]);
+    }, [fritekst, vedtakDate, reasons, userSaksnummer, klage, performKlageUpdate]);
 
     const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
