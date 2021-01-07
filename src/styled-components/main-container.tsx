@@ -1,12 +1,24 @@
 import styled from 'styled-components/macro';
+import { desktopHeight } from './media-queries';
 
-export const InngangMainContainer = styled.main`
+const MainContainer = styled.main`
     padding-bottom: 128px;
+    min-height: 75vh;
+
+    @media ${desktopHeight.desktopL} {
+        min-height: 80vh;
+    }
+    @media ${desktopHeight.desktop4K} {
+        min-height: 85vh;
+    }
+`;
+
+export const InngangMainContainer = styled(MainContainer)`
     padding-top: 64px;
     background-color: #e7e9e9;
 `;
 
-export const FormMainContainer = styled.main`
+export const FormMainContainer = styled(MainContainer)`
     padding-bottom: 128px;
     background-color: #fff;
 `;
