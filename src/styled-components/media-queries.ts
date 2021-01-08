@@ -8,6 +8,11 @@ const size = {
     desktop: '2560px'
 };
 
+export const desktopHeight = {
+    desktopL: '(min-height: 1440px)',
+    desktop4K: '(min-height: 2160px)'
+};
+
 export const device = {
     mobileS: `(min-width: ${size.mobileS})`,
     mobileM: `(min-width: ${size.mobileM})`,
