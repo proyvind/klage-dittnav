@@ -6,6 +6,7 @@ import { LenkepanelBase } from 'nav-frontend-lenkepanel';
 import LetterOpened from '../../icons/LetterOpenedIcon';
 import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
 import MobilePhone from '../../icons/MobilePhoneIcon';
+import MobilePhoneIdCard from '../../icons/MobilePhoneIdCardIcon';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { ExternalLink, KlageLinkPanel } from '../../link/link';
@@ -127,24 +128,43 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
     );
 
     return (
-        <InlineRow>
-            <KlageLinkPanel href={`/ny?${query}`} border>
-                <LenkePanelContentWithImage>
-                    <IconContainer>
-                        <MobilePhone />
-                    </IconContainer>
-                    <div>
-                        <Systemtittel className="lenkepanel__heading">Klage digitalt</Systemtittel>
-                        <MarginTopContainer>
-                            <Normaltekst>For å sende inn digitalt må du logge inn med elektronisk ID.</Normaltekst>
-                        </MarginTopContainer>
-                    </div>
-                </LenkePanelContentWithImage>
-            </KlageLinkPanel>
-            <ExternalLink href="https://www.norge.no/elektronisk-id" showIcon>
-                Slik skaffer du deg elektronisk ID
-            </ExternalLink>
-        </InlineRow>
+        <>
+            <InlineRow>
+                <KlageLinkPanel href={`/ny?${query}`} border>
+                    <LenkePanelContentWithImage>
+                        <IconContainer>
+                            <MobilePhone />
+                        </IconContainer>
+                        <div>
+                            <Systemtittel className="lenkepanel__heading">Klage digitalt</Systemtittel>
+                            <MarginTopContainer>
+                                <Normaltekst>For å sende inn digitalt må du logge inn med elektronisk ID.</Normaltekst>
+                            </MarginTopContainer>
+                        </div>
+                    </LenkePanelContentWithImage>
+                </KlageLinkPanel>
+                <ExternalLink href="https://www.norge.no/elektronisk-id" showIcon>
+                    Slik skaffer du deg elektronisk ID
+                </ExternalLink>
+            </InlineRow>
+            <InlineRow>
+                <KlageLinkPanel href={`${window.location.pathname}/fullmakt`} border>
+                    <LenkePanelContentWithImage>
+                        <IconContainer>
+                            <MobilePhoneIdCard />
+                        </IconContainer>
+                        <div>
+                            <Systemtittel className="lenkepanel__heading">Klage på vegne av andre</Systemtittel>
+                            <MarginTopContainer>
+                                <Normaltekst>
+                                    Digital innsending av klage når du har fullmakt på vegne av andre.
+                                </Normaltekst>
+                            </MarginTopContainer>
+                        </div>
+                    </LenkePanelContentWithImage>
+                </KlageLinkPanel>
+            </InlineRow>
+        </>
     );
 };
 

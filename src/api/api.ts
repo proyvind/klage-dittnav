@@ -5,6 +5,7 @@ import { Attachment } from '../klage/attachment';
 import { environment } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
 import { TemaKey } from '../tema/tema';
+import { foedselsnrFormat } from '../routes/klageskjema/summary/text-formatting';
 
 export async function getUser() {
     const url = environment.userUrl;
@@ -16,9 +17,27 @@ export async function getUser() {
     }
 }
 
-export async function getDraftKlage(temaKey: TemaKey, ytelse: string, internalSaksnummer: string | null) {
-    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer);
+export async function getDraftKlage(
+    temaKey: TemaKey,
+    ytelse: string,
+    internalSaksnummer: string | null,
+    fullmaktsgiver: string | null
+) {
+    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer, fullmaktsgiver);
     return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
+}
+
+export async function hasFullmaktFor(tema: string, fnr: number) {
+    const url = environment.hasFullmaktForUrl(tema, fnr);
+    try {
+        return await getJSON<User>(
+            url,
+            'Du har ikke fullmakt for person med personnummer ' + foedselsnrFormat('' + fnr)
+        );
+    } catch (error) {
+        logError(error, 'Get fullmakt user error.', { resource: url });
+        throw error;
+    }
 }
 
 export async function createKlage(klage: NewKlage) {

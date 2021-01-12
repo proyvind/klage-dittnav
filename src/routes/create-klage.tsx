@@ -30,8 +30,9 @@ const CreateKlage = () => {
 
         const title = getTitle(query, temaKey);
         const saksnummer = getQueryValue(query.saksnummer);
+        const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
 
-        getDraftKlage(temaKey, title, saksnummer)
+        getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver)
             .catch(() =>
                 createKlage({
                     fritekst: '',
@@ -40,11 +41,12 @@ const CreateKlage = () => {
                     ytelse: title,
                     vedtakDate: null,
                     userSaksnummer: null,
-                    internalSaksnummer: saksnummer
+                    internalSaksnummer: saksnummer,
+                    fullmaktsgiver: fullmaktsgiver
                 })
             )
             .then(setKlage)
-            .catch(() => setError(formatError(temaKey, title, saksnummer)));
+            .catch(() => setError(formatError(temaKey, title, saksnummer, fullmaktsgiver)));
     }, [search, klage, setKlage, history]);
 
     if (error !== null) {
@@ -58,12 +60,25 @@ const CreateKlage = () => {
     return <Redirect to={`/${klage.id}/begrunnelse`} />;
 };
 
-function formatError(tema: TemaKey, ytelse: string, internalSaksnummer: string | null): string {
+function formatError(
+    tema: TemaKey,
+    ytelse: string,
+    internalSaksnummer: string | null,
+    fullmaktsgiver: string | null
+): string {
     let error = `Klarte ikke opprette klage med tema "${tema}"`;
     if (internalSaksnummer === null) {
-        error += ` og tittel "${ytelse}".`;
+        if (fullmaktsgiver === null) {
+            error += ` og tittel "${ytelse}".`;
+        } else {
+            error += `, tittel "${ytelse}" og fullmaktsgiver "${fullmaktsgiver}".`;
+        }
     } else {
-        error += `, tittel "${ytelse}" og saksnummer "${internalSaksnummer}".`;
+        if (fullmaktsgiver === null) {
+            error += `, tittel "${ytelse}" og saksnummer "${internalSaksnummer}".`;
+        } else {
+            error += `, tittel "${ytelse}", saksnummer "${internalSaksnummer}" og fullmaktsgiver "${fullmaktsgiver}".`;
+        }
     }
 
     return error;

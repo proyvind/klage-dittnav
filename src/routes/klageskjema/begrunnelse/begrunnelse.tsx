@@ -171,6 +171,7 @@ const createKlageUpdate = (
     id: klage.id,
     tema: klage.tema,
     ytelse: klage.ytelse,
+    fullmaktsgiver: klage.fullmaktsgiver,
     checkboxesSelected,
     userSaksnummer,
     internalSaksnummer: klage.internalSaksnummer,
