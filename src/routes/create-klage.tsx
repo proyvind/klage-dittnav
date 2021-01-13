@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { ensureStringIsTema, TemaKey } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
-import { createKlage, getDraftKlage } from '../api/api';
+import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
 import LoadingPage from '../loading-page/loading-page';
@@ -12,7 +12,7 @@ import LoadingPage from '../loading-page/loading-page';
 const CreateKlage = () => {
     const { search } = useLocation();
     const history = useHistory();
-    const { klage, setKlage } = useContext(AppContext);
+    const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -32,6 +32,10 @@ const CreateKlage = () => {
         const saksnummer = getQueryValue(query.saksnummer);
         const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
 
+        if (fullmaktsgiver) {
+            getFullmaktsgiver(temaKey, fullmaktsgiver).then(setFullmaktsgiver).catch(setError);
+        }
+
         getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver)
             .catch(() =>
                 createKlage({
@@ -47,7 +51,7 @@ const CreateKlage = () => {
             )
             .then(setKlage)
             .catch(() => setError(formatError(temaKey, title, saksnummer, fullmaktsgiver)));
-    }, [search, klage, setKlage, history]);
+    }, [search, klage, setKlage, history, setFullmaktsgiver]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;

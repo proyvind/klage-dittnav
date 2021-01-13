@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { getKlage, updateKlage } from '../api/api';
+import { getFullmaktsgiver, getKlage, updateKlage } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import { Klage } from './klage';
 import klageStore from './klage-store';
@@ -16,7 +16,7 @@ interface Match {
 }
 
 const KlageLoader = (props: Props) => {
-    const { klage, setKlage } = useContext(AppContext);
+    const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const { klageId } = useParams<Match>();
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState('Laster klage...');
@@ -26,6 +26,7 @@ const KlageLoader = (props: Props) => {
             getKlage(klageId)
                 .then(klage => {
                     setStatus('Gjenoppretter klage...');
+
                     const restoredKlage = klageStore.restore(klage);
                     if (restoredKlage !== klage) {
                         return updateKlage(restoredKlage).then(() => {
@@ -34,12 +35,19 @@ const KlageLoader = (props: Props) => {
                         });
                     }
                     klageStore.clear();
+
+                    return klage;
+                })
+                .then(klage => {
+                    if (klage.fullmaktsgiver) {
+                        getFullmaktsgiver(klage.tema, klage.fullmaktsgiver).then(setFullmaktsgiver);
+                    }
                     return klage;
                 })
                 .then(setKlage)
                 .catch((error: Error) => setError(formatError(klageId, error)));
         }
-    }, [klageId, klage, setKlage]);
+    }, [klageId, klage, setKlage, setFullmaktsgiver]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;

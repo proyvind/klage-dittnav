@@ -110,8 +110,8 @@ export class Environment {
     attachmentsUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/vedlegg`;
     attachmentUrl = (klageId: KlageId, attachmentId: string | number) =>
         `${this.apiUrl}/klager/${klageId}/vedlegg/${attachmentId}`;
-    hasFullmaktForUrl = (tema: string, fnr: number) => `${this.apiUrl}/fullmaktsgiver/${tema}/${fnr}`;
-    fullmaktsgiverUrl = (tema: string, fnr: number) => `${this.apiUrl}/bruker/${tema}/${fnr}`;
+    hasFullmaktForUrl = (tema: string, fnr: string) => `${this.apiUrl}/fullmaktsgiver/${tema}/${fnr}`;
+    fullmaktsgiverUrl = (tema: string, fnr: string) => `${this.apiUrl}/bruker/${tema}/${fnr}`;
 }
 
 export const environment = new Environment();

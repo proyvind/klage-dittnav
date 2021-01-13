@@ -27,7 +27,7 @@ export async function getDraftKlage(
     return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
 }
 
-export async function hasFullmaktFor(tema: string, fnr: number) {
+export async function hasFullmaktFor(tema: string, fnr: string) {
     const url = environment.hasFullmaktForUrl(tema, fnr);
     try {
         return await getJSON<User>(
@@ -36,6 +36,16 @@ export async function hasFullmaktFor(tema: string, fnr: number) {
         );
     } catch (error) {
         logError(error, 'Get fullmakt user error.', { resource: url });
+        throw error;
+    }
+}
+
+export async function getFullmaktsgiver(tema: string, fnr: string) {
+    const url = environment.hasFullmaktForUrl(tema, fnr);
+    try {
+        return await getJSON<User>(url, 'Finner ikke fullmaktsgiver med personnummer ' + foedselsnrFormat('' + fnr));
+    } catch (error) {
+        logError(error, 'Get fullmaktsgiver user error.', { resource: url });
         throw error;
     }
 }

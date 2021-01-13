@@ -47,8 +47,6 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
     const [feilmelding, setFeilmelding] = useState<string>('');
     const [selectedFullmaktsgiver, setSelectedFullmaktsgiver] = useState<User | null>(null);
 
-    // const temaKey = ensureStringIsTema(getTemaKeyFromPath(window.location.pathname.split('/')[2]));
-
     const query = queryString.stringify(
         {
             tema: temaKey,
@@ -68,7 +66,7 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
         setSelectedFullmaktsgiver(null);
         if (temaKey !== null && personnummer) {
             try {
-                await hasFullmaktFor(temaKey, +personnummer).then(user => {
+                await hasFullmaktFor(temaKey, personnummer.toString()).then(user => {
                     setSelectedFullmaktsgiver(user);
                     setLoading(false);
                 });

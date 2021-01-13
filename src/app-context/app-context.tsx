@@ -5,15 +5,19 @@ import { User } from '../user/user';
 export interface AppContextType {
     user: User | null;
     klage: Klage | null;
+    fullmaktsgiver: User | null;
     setKlage: (klage: Klage | null) => void;
     setUser: (user: User | null) => void;
+    setFullmaktsgiver: (fullmaktsgiver: User | null) => void;
 }
 
 export const AppContext = React.createContext<AppContextType>({
     user: null,
     klage: null,
+    fullmaktsgiver: null,
     setKlage: () => {},
-    setUser: () => {}
+    setUser: () => {},
+    setFullmaktsgiver: () => {}
 });
 
 interface Props {
@@ -23,7 +27,8 @@ interface Props {
 const AppContextComponenet = (props: Props) => {
     const [klage, setKlage] = useState<Klage | null>(null);
     const [user, setUser] = useState<User | null>(null);
-    const state: AppContextType = { klage, user, setKlage, setUser };
+    const [fullmaktsgiver, setFullmaktsgiver] = useState<User | null>(null);
+    const state: AppContextType = { klage, user, fullmaktsgiver, setKlage, setUser, setFullmaktsgiver };
     return <AppContext.Provider value={state}>{props.children}</AppContext.Provider>;
 };
 
