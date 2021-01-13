@@ -62,7 +62,7 @@ const InngangInnsendingPost = ({
                     </VeilederContainer>
                     <PageParagraph>
                         Klage eller anke på denne tjenesten krever at du må du sende inn via post. Veiviseren hjelper
-                        deg med utfylling av en førsteside og klageskjema. Dette må du skrive ut ut og sende inn til den
+                        deg med utfylling av en førsteside og klageskjema. Dette må du skrive ut og sende inn til den
                         adressen som står på førstesiden, sammen med kopi av eventuelle andre dokumenter eller
                         kvitteringer.
                     </PageParagraph>
