@@ -37,7 +37,7 @@ const InngangHovedkategorier = () => {
                 </InlineRow>
 
                 <WhiteSection>
-                    <SectionTitle>Hvilket område gjelder det?</SectionTitle>
+                    <SectionTitle>Velg tema</SectionTitle>
                     <SpaceBetweenFlexListContainer>{getLinks()}</SpaceBetweenFlexListContainer>
                 </WhiteSection>
             </ContentContainer>
