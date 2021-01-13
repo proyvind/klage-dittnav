@@ -80,7 +80,7 @@ const InngangInnsendingDigital = ({
                                         <Systemtittel className="lenkepanel__heading">Innsending av anke</Systemtittel>
                                         <MarginTopContainer>
                                             <Normaltekst>
-                                                For å sende inn en anke fyller du et skjema som sendes via post.
+                                                For å sende inn en anke fyller du ut et skjema som sendes via post.
                                             </Normaltekst>
                                         </MarginTopContainer>
                                     </div>
