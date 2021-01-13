@@ -43,7 +43,7 @@ const ATTACHMENT_ERROR_MESSAGES = {
     EMPTY: 'Du kan ikke sende med en tom fil.',
     VIRUS: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med i din klage.',
     FILE_COULD_NOT_BE_CONVERTED:
-        'Du har prøvd å legge til et vedlegg med feil format. Vedlegg er begrenset til PNG, JPEG, og PDF.'
+        'Du har prøvd å legge til et vedlegg med et format vi ikke støtter. Vedlegg er begrenset til PNG, JPEG, og PDF.'
 };
 
 type AttachmentErrorKey = keyof typeof ATTACHMENT_ERROR_MESSAGES;
