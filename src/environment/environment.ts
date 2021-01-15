@@ -1,4 +1,6 @@
+import queryString from 'query-string';
 import { logError } from '../logging/frontendLogger';
+import { TemaKey } from '../tema/tema';
 
 type KlageId = string | number;
 
@@ -80,6 +82,22 @@ export class Environment {
         return `${this.apiUrl}/klager`;
     }
     klageUrl = (klageId: KlageId): string => `${this.klagerUrl}/${klageId}`;
+    draftKlageUrl = (temaKey: TemaKey, ytelse: string, internalSaksnummer: string | null) => {
+        const query = queryString.stringify(
+            {
+                tema: temaKey,
+                ytelse,
+                internalSaksnummer
+            },
+            {
+                skipNull: true,
+                skipEmptyString: true,
+                sort: false,
+                encode: true
+            }
+        );
+        return `${this.klagerUrl}/draft?${query}`;
+    };
     finalizeKlageUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/finalize`;
     klageJournalpostIdUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/journalpostid`;
     klagePdfUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/pdf`;

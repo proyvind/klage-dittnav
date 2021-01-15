@@ -4,6 +4,7 @@ import { User } from '../user/user';
 import { Attachment } from '../klage/attachment';
 import { environment } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
+import { TemaKey } from '../tema/tema';
 
 export async function getUser() {
     const url = environment.userUrl;
@@ -13,6 +14,11 @@ export async function getUser() {
         logError(error, 'Get user error.', { resource: url });
         throw error;
     }
+}
+
+export async function getDraftKlage(temaKey: TemaKey, ytelse: string, internalSaksnummer: string | null) {
+    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer);
+    return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
 }
 
 export async function createKlage(klage: NewKlage) {
