@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { ensureStringIsTema } from '../tema/tema';
+import { ensureStringIsTema, TemaKey } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
-import { createKlage } from '../api/api';
+import { createKlage, getDraftKlage } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
-import { NewKlage } from '../klage/klage';
 import LoadingPage from '../loading-page/loading-page';
 
 const CreateKlage = () => {
@@ -31,19 +30,21 @@ const CreateKlage = () => {
 
         const title = getTitle(query, temaKey);
         const saksnummer = getQueryValue(query.saksnummer);
-        const newKlage: NewKlage = {
-            fritekst: '',
-            checkboxesSelected: [],
-            tema: temaKey,
-            ytelse: title,
-            vedtakDate: null,
-            userSaksnummer: null,
-            internalSaksnummer: saksnummer
-        };
 
-        createKlage(newKlage)
+        getDraftKlage(temaKey, title, saksnummer)
+            .catch(() =>
+                createKlage({
+                    fritekst: '',
+                    checkboxesSelected: [],
+                    tema: temaKey,
+                    ytelse: title,
+                    vedtakDate: null,
+                    userSaksnummer: null,
+                    internalSaksnummer: saksnummer
+                })
+            )
             .then(setKlage)
-            .catch(() => setError(formatError(newKlage)));
+            .catch(() => setError(formatError(temaKey, title, saksnummer)));
     }, [search, klage, setKlage, history]);
 
     if (error !== null) {
@@ -57,7 +58,7 @@ const CreateKlage = () => {
     return <Redirect to={`/${klage.id}/begrunnelse`} />;
 };
 
-function formatError({ tema, ytelse, internalSaksnummer }: NewKlage): string {
+function formatError(tema: TemaKey, ytelse: string, internalSaksnummer: string | null): string {
     let error = `Klarte ikke opprette klage med tema "${tema}"`;
     if (internalSaksnummer === null) {
         error += ` og tittel "${ytelse}".`;
