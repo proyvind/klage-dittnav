@@ -32,7 +32,7 @@ export async function hasFullmaktFor(tema: string, fnr: string) {
     try {
         return await getJSON<User>(
             url,
-            'Du har ikke fullmakt for person med personnummer ' + foedselsnrFormat('' + fnr)
+            `Du har ikke fullmakt for person med personnummer ${foedselsnrFormat('' + fnr)}`
         );
     } catch (error) {
         logError(error, 'Get fullmakt user error.', { resource: url });
@@ -43,7 +43,7 @@ export async function hasFullmaktFor(tema: string, fnr: string) {
 export async function getFullmaktsgiver(tema: string, fnr: string) {
     const url = environment.hasFullmaktForUrl(tema, fnr);
     try {
-        return await getJSON<User>(url, 'Finner ikke fullmaktsgiver med personnummer ' + foedselsnrFormat('' + fnr));
+        return await getJSON<User>(url, `Finner ikke fullmaktsgiver med personnummer ${foedselsnrFormat('' + fnr)}`);
     } catch (error) {
         logError(error, 'Get fullmaktsgiver user error.', { resource: url });
         throw error;

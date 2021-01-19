@@ -40,7 +40,7 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
     usePageInit(`${title} \u2013 klage på vegne av andre`);
     useBreadcrumbs([], 'Klage på vegne av andre');
 
-    const [personnummer, setPersonnummer] = useState<string | number | readonly string[] | undefined>('');
+    const [fodselsnummer, setFodselsnummer] = useState<string | number | readonly string[] | undefined>('');
     const [valid, setValid] = useState<boolean>(false);
     const [submit, setSubmit] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -51,7 +51,7 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
         {
             tema: temaKey,
             tittel: title,
-            fullmaktsgiver: personnummer
+            fullmaktsgiver: fodselsnummer
         },
         {
             skipNull: true
@@ -64,9 +64,9 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
         setLoading(true);
         setFeilmelding('');
         setSelectedFullmaktsgiver(null);
-        if (temaKey !== null && personnummer) {
+        if (temaKey !== null && fodselsnummer) {
             try {
-                await hasFullmaktFor(temaKey, personnummer.toString()).then(user => {
+                await hasFullmaktFor(temaKey, fodselsnummer.toString()).then(user => {
                     setSelectedFullmaktsgiver(user);
                     setLoading(false);
                 });
@@ -88,15 +88,15 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
 
                 <WhiteSection>
                     <SectionTitle>Hvem klager du på vegne av?</SectionTitle>
-                    <Label htmlFor={'personnummer-text'}>Personnummer for den du har fullmakt til (11 siffer)</Label>
+                    <Label htmlFor={'fodselsnummer-text'}>Personnummer for den du har fullmakt til (11 siffer)</Label>
                     <FieldWithButton>
                         <div>
                             <FnrInput
-                                id="personnummer-text"
+                                id="fodselsnummer-text"
                                 autoComplete="off"
                                 bredde="S"
-                                value={personnummer}
-                                onChange={e => setPersonnummer(e.target.value)}
+                                value={fodselsnummer}
+                                onChange={e => setFodselsnummer(e.target.value)}
                                 onValidate={val => setValid(val)}
                                 feil={submit && !valid ? 'Ugyldig personnummer' : undefined}
                             />
