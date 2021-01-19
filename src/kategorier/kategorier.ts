@@ -27,15 +27,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         beskrivelse: 'Midlertidige ordninger',
         kategorier: [
             {
-                temaKey: TemaKey.PER,
-                title: 'Lønnskompensasjon for permitterte',
-                allowsAnke: false,
-                digitalKlage: false,
-                path: 'lonnskompensasjon',
-                mailKlageUrl:
-                    'https://www.nav.no/soknader/nb/bedrift/covid-19/lonnskompensasjon-og-refusjon-ved-permittering-endring'
-            },
-            {
                 temaKey: TemaKey.GEN,
                 title: 'Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere',
                 allowsAnke: false,
