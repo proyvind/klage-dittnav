@@ -40,7 +40,7 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
     usePageInit(`${title} \u2013 klage på vegne av andre`);
     useBreadcrumbs([], 'Klage på vegne av andre');
 
-    const [fodselsnummer, setFodselsnummer] = useState<string | number | readonly string[] | undefined>('');
+    const [fodselsnummer, setFodselsnummer] = useState<string | null>('');
     const [valid, setValid] = useState<boolean>(false);
     const [submit, setSubmit] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -58,21 +58,22 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
         }
     );
 
-    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log(e);
-        setSubmit(true);
-        setLoading(true);
-        setFeilmelding('');
-        setSelectedFullmaktsgiver(null);
-        if (temaKey !== null && fodselsnummer) {
-            try {
-                await hasFullmaktFor(temaKey, fodselsnummer.toString()).then(user => {
-                    setSelectedFullmaktsgiver(user);
+    const handleSubmit = async () => {
+        if (valid) {
+            setSubmit(true);
+            setLoading(true);
+            setFeilmelding('');
+            setSelectedFullmaktsgiver(null);
+            if (temaKey !== null && fodselsnummer !== null) {
+                try {
+                    await hasFullmaktFor(temaKey, fodselsnummer).then(user => {
+                        setSelectedFullmaktsgiver(user);
+                        setLoading(false);
+                    });
+                } catch (error) {
+                    setFeilmelding(error.message);
                     setLoading(false);
-                });
-            } catch (error) {
-                setFeilmelding(error.message);
-                setLoading(false);
+                }
             }
         }
     };
@@ -95,20 +96,14 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
                                 id="fodselsnummer-text"
                                 autoComplete="off"
                                 bredde="S"
-                                value={fodselsnummer}
+                                value={fodselsnummer ?? ''}
                                 onChange={e => setFodselsnummer(e.target.value)}
                                 onValidate={val => setValid(val)}
                                 feil={submit && !valid ? 'Ugyldig personnummer' : undefined}
                             />
                         </div>
                         <div>
-                            <Hovedknapp
-                                onClick={e => {
-                                    valid && handleSubmit(e);
-                                }}
-                                spinner={loading}
-                                disabled={!valid}
-                            >
+                            <Hovedknapp onClick={handleSubmit} spinner={loading} disabled={!valid}>
                                 Søk
                             </Hovedknapp>
                         </div>
