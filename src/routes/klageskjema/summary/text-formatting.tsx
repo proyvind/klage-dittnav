@@ -6,5 +6,3 @@ export const foedselsnrFormat = (fnr: string): string => {
     }
     return fnr;
 };
-
-export const navnFormat = (navn: string): string => navn.toLowerCase().replace(/(^|\s)\S/g, l => l.toUpperCase());

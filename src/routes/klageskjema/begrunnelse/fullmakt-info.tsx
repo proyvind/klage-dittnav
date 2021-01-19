@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../../app-context/app-context';
 import { Row } from '../../../styled-components/row';
 import { getFullName } from '../summary/personlige-opplysninger-summary';
-import { foedselsnrFormat, navnFormat } from '../summary/text-formatting';
+import { foedselsnrFormat } from '../summary/text-formatting';
 import styled from 'styled-components/macro';
 
 const PaddedPanel = styled(Panel)`
@@ -27,9 +27,9 @@ const FullmaktInfo = () => {
                 <PaddedPanel border>
                     <AlertStripe type="info" form="inline">
                         <Element>Klage på vegne av:</Element>
-                        <Normaltekst>{`${navnFormat(getFullName(fullmaktsgiver))}, fnr ${foedselsnrFormat(
+                        <Normaltekst>{`${getFullName(fullmaktsgiver)} (${foedselsnrFormat(
                             klage.fullmaktsgiver
-                        )}`}</Normaltekst>
+                        )})`}</Normaltekst>
                     </AlertStripe>
                 </PaddedPanel>
             </Row>

@@ -123,9 +123,9 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
                     {selectedFullmaktsgiver && selectedFullmaktsgiver.folkeregisteridentifikator && (
                         <MarginTopContainer>
                             <Lenkepanel href={`/ny?${query}`} tittelProps="normaltekst" border>
-                                {`${getFullName(selectedFullmaktsgiver)} \u2013 f. nr ${foedselsnrFormat(
+                                {`${getFullName(selectedFullmaktsgiver)} (${foedselsnrFormat(
                                     selectedFullmaktsgiver.folkeregisteridentifikator.identifikasjonsnummer
-                                )}`}
+                                )})`}
                             </Lenkepanel>
                         </MarginTopContainer>
                     )}

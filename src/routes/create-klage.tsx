@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { ensureStringIsTema, TemaKey } from '../tema/tema';
+import { ensureStringIsTema } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
 import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
 import LoadingPage from '../loading-page/loading-page';
+import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
 
 const CreateKlage = () => {
     const { search } = useLocation();
@@ -33,7 +34,11 @@ const CreateKlage = () => {
         const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
 
         if (fullmaktsgiver) {
-            getFullmaktsgiver(temaKey, fullmaktsgiver).then(setFullmaktsgiver).catch(setError);
+            getFullmaktsgiver(temaKey, fullmaktsgiver)
+                .then(setFullmaktsgiver)
+                .catch(() => {
+                    setError(finneFullmaktsgiverError(fullmaktsgiver));
+                });
         }
 
         getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver)
@@ -50,7 +55,7 @@ const CreateKlage = () => {
                 })
             )
             .then(setKlage)
-            .catch(() => setError(formatError(temaKey, title, saksnummer, fullmaktsgiver)));
+            .catch(() => setError(oppretteKlageError()));
     }, [search, klage, setKlage, history, setFullmaktsgiver]);
 
     if (error !== null) {
@@ -64,28 +69,8 @@ const CreateKlage = () => {
     return <Redirect to={`/${klage.id}/begrunnelse`} />;
 };
 
-function formatError(
-    tema: TemaKey,
-    ytelse: string,
-    internalSaksnummer: string | null,
-    fullmaktsgiver: string | null
-): string {
-    let error = `Klarte ikke opprette klage med tema "${tema}"`;
-    if (internalSaksnummer === null) {
-        if (fullmaktsgiver === null) {
-            error += ` og tittel "${ytelse}".`;
-        } else {
-            error += `, tittel "${ytelse}" og fullmaktsgiver "${fullmaktsgiver}".`;
-        }
-    } else {
-        if (fullmaktsgiver === null) {
-            error += `, tittel "${ytelse}" og saksnummer "${internalSaksnummer}".`;
-        } else {
-            error += `, tittel "${ytelse}", saksnummer "${internalSaksnummer}" og fullmaktsgiver "${fullmaktsgiver}".`;
-        }
-    }
-
-    return error;
-}
+const finneFullmaktsgiverError = (fnr: string) =>
+    `Klarte ikke finne fullmaktsgiver med personnummer ${foedselsnrFormat(fnr)}.`;
+const oppretteKlageError = () => 'Klarte ikke opprette klage';
 
 export default CreateKlage;
