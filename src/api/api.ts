@@ -24,7 +24,11 @@ export async function getDraftKlage(
     fullmaktsgiver: string | null
 ) {
     const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer, fullmaktsgiver);
-    return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
+    try {
+        return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
+    } catch {
+        return null;
+    }
 }
 
 export async function hasFullmaktFor(tema: string, fnr: string) {
