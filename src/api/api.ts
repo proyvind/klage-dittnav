@@ -4,7 +4,7 @@ import { User } from '../user/user';
 import { Attachment } from '../klage/attachment';
 import { environment } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
-import { TemaKey } from '../tema/tema';
+import { Tema, TemaKey } from '../tema/tema';
 import { foedselsnrFormat } from '../routes/klageskjema/summary/text-formatting';
 
 export async function getUser() {
@@ -31,12 +31,12 @@ export async function getDraftKlage(
     }
 }
 
-export async function hasFullmaktFor(tema: string, fnr: string) {
+export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
     const url = environment.hasFullmaktForUrl(tema, fnr);
     try {
         return await getJSON<User>(
             url,
-            `Du har ikke fullmakt for person med personnummer ${foedselsnrFormat('' + fnr)}`
+            `Du har ikke fullmakt for person med personnummer ${foedselsnrFormat('' + fnr)} for området ${Tema[tema]}.`
         );
     } catch (error) {
         logError(error, 'Get fullmakt user error.', { resource: url });

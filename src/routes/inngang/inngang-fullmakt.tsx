@@ -6,7 +6,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import { FnrInput, Label } from 'nav-frontend-skjema';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-import { InngangKategori, Kategori } from '../../kategorier/kategorier';
+import { Kategori } from '../../kategorier/kategorier';
 import { usePageInit } from '../../page-init/page-init';
 import { MarginTopContainer } from '../../styled-components/common';
 import { ContentContainer } from '../../styled-components/content-container';
@@ -18,9 +18,9 @@ import { User } from '../../user/user';
 import { getFullName } from '../klageskjema/summary/personlige-opplysninger-summary';
 import { foedselsnrFormat } from '../klageskjema/summary/text-formatting';
 import { hasFullmaktFor } from '../../api/api';
+import { Tema } from '../../tema/tema';
 
 interface Props {
-    inngangkategori: InngangKategori;
     kategori: Kategori;
 }
 
@@ -35,7 +35,7 @@ const FieldWithButton = styled.div`
     justify-content: flex-start;
 `;
 
-const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
+const InngangFullmakt = ({ kategori }: Props) => {
     const { title, temaKey } = kategori;
     usePageInit(`${title} \u2013 klage på vegne av andre`);
     useBreadcrumbs([], 'Klage på vegne av andre');
@@ -86,7 +86,7 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredPageTitle>{inngangkategori.title}</CenteredPageTitle>
+                <CenteredPageTitle>{Tema[temaKey]}</CenteredPageTitle>
 
                 <WhiteSection>
                     <SectionTitle>Hvem klager du på vegne av?</SectionTitle>

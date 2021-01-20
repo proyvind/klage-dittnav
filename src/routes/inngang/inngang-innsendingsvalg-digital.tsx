@@ -163,6 +163,9 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
                         </div>
                     </LenkePanelContentWithImage>
                 </KlageLinkPanel>
+                <ExternalLink href="https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema" showIcon>
+                    Slik gir du fullmakt til andre
+                </ExternalLink>
             </InlineRow>
         </>
     );

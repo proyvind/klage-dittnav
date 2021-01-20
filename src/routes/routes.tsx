@@ -79,7 +79,7 @@ const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
                 path={path}
                 render={() => (
                     <UserLoader>
-                        <InngangFullmakt inngangkategori={inngangkategori} kategori={kategori} />
+                        <InngangFullmakt kategori={kategori} />
                     </UserLoader>
                 )}
                 exact
