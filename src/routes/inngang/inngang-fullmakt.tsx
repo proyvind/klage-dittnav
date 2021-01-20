@@ -1,9 +1,10 @@
+import React, { useMemo, useState } from 'react';
+import queryString from 'query-string';
+import styled from 'styled-components/macro';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import { FnrInput, Label } from 'nav-frontend-skjema';
-import React, { useState } from 'react';
-import styled from 'styled-components/macro';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { InngangKategori, Kategori } from '../../kategorier/kategorier';
 import { usePageInit } from '../../page-init/page-init';
@@ -16,7 +17,6 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { User } from '../../user/user';
 import { getFullName } from '../klageskjema/summary/personlige-opplysninger-summary';
 import { foedselsnrFormat } from '../klageskjema/summary/text-formatting';
-import queryString from 'query-string';
 import { hasFullmaktFor } from '../../api/api';
 
 interface Props {
@@ -40,47 +40,48 @@ const InngangFullmakt = ({ inngangkategori, kategori }: Props) => {
     usePageInit(`${title} \u2013 klage på vegne av andre`);
     useBreadcrumbs([], 'Klage på vegne av andre');
 
-    const [fodselsnummer, setFodselsnummer] = useState<string | null>('');
+    const [fodselsnummer, setFodselsnummer] = useState<string>('');
     const [valid, setValid] = useState<boolean>(false);
     const [submit, setSubmit] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [feilmelding, setFeilmelding] = useState<string>('');
     const [selectedFullmaktsgiver, setSelectedFullmaktsgiver] = useState<User | null>(null);
 
-    const query = queryString.stringify(
-        {
-            tema: temaKey,
-            tittel: title,
-            fullmaktsgiver: fodselsnummer
-        },
-        {
-            skipNull: true
-        }
+    const query = useMemo(
+        () =>
+            queryString.stringify(
+                {
+                    tema: temaKey,
+                    tittel: title,
+                    fullmaktsgiver: fodselsnummer
+                },
+                {
+                    skipNull: true,
+                    skipEmptyString: true,
+                    encode: true,
+                    sort: false
+                }
+            ),
+        [temaKey, title, fodselsnummer]
     );
 
     const handleSubmit = async () => {
-        if (valid) {
-            setSubmit(true);
-            setLoading(true);
-            setFeilmelding('');
-            setSelectedFullmaktsgiver(null);
-            if (temaKey !== null && fodselsnummer !== null) {
-                try {
-                    await hasFullmaktFor(temaKey, fodselsnummer).then(user => {
-                        setSelectedFullmaktsgiver(user);
-                        setLoading(false);
-                    });
-                } catch (error) {
-                    setFeilmelding(error.message);
-                    setLoading(false);
-                }
-            }
+        if (!valid) {
+            return;
+        }
+        setSubmit(true);
+        setLoading(true);
+        setFeilmelding('');
+        setSelectedFullmaktsgiver(null);
+        try {
+            const user = await hasFullmaktFor(temaKey, fodselsnummer);
+            setSelectedFullmaktsgiver(user);
+            setLoading(false);
+        } catch (error) {
+            setFeilmelding(error.message);
+            setLoading(false);
         }
     };
-
-    if (!temaKey) {
-        <AlertStripeFeil>Ikke gyldig URL</AlertStripeFeil>;
-    }
 
     return (
         <InngangMainContainer>
