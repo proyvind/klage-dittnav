@@ -5,8 +5,8 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenkepanel from 'nav-frontend-lenkepanel';
 import { FnrInput, Label } from 'nav-frontend-skjema';
-import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-import { Kategori } from '../../kategorier/kategorier';
+import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+import { InngangKategori, Kategori } from '../../kategorier/kategorier';
 import { usePageInit } from '../../page-init/page-init';
 import { MarginTopContainer } from '../../styled-components/common';
 import { ContentContainer } from '../../styled-components/content-container';
@@ -22,6 +22,7 @@ import { Tema } from '../../tema/tema';
 
 interface Props {
     kategori: Kategori;
+    inngangkategori: InngangKategori;
 }
 
 const FieldWithButton = styled.div`
@@ -35,10 +36,11 @@ const FieldWithButton = styled.div`
     justify-content: flex-start;
 `;
 
-const InngangFullmakt = ({ kategori }: Props) => {
+const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     const { title, temaKey } = kategori;
     usePageInit(`${title} \u2013 klage på vegne av andre`);
-    useBreadcrumbs([], 'Klage på vegne av andre');
+    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, kategori), [inngangkategori, kategori]);
+    useBreadcrumbs(breadcrumbs, 'Klage på vegne av andre');
 
     const [fodselsnummer, setFodselsnummer] = useState<string>('');
     const [valid, setValid] = useState<boolean>(false);
@@ -130,5 +132,18 @@ const InngangFullmakt = ({ kategori }: Props) => {
         </InngangMainContainer>
     );
 };
+
+const getBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori): Breadcrumb[] => [
+    {
+        title: inngangkategori.title,
+        url: `/${inngangkategori.path}`,
+        handleInApp: true
+    },
+    {
+        title: kategori.title,
+        url: `/${inngangkategori.path}/${kategori.path}`,
+        handleInApp: true
+    }
+];
 
 export default InngangFullmakt;
