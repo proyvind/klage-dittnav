@@ -14,6 +14,7 @@ export interface Kategori {
     title: string;
     allowsAnke: boolean;
     digitalKlage: boolean;
+    digitalKlageFullmakt: boolean;
     path: string;
     mailKlageUrl: string;
     mailAnkeUrl?: string;
@@ -27,10 +28,21 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         beskrivelse: 'Midlertidige ordninger',
         kategorier: [
             {
+                temaKey: TemaKey.PER,
+                title: 'Lønnskompensasjon for permitterte',
+                allowsAnke: false,
+                digitalKlage: false,
+                digitalKlageFullmakt: false,
+                path: 'lonnskompensasjon',
+                mailKlageUrl:
+                    'https://www.nav.no/soknader/nb/bedrift/covid-19/lonnskompensasjon-og-refusjon-ved-permittering-endring'
+            },
+            {
                 temaKey: TemaKey.GEN,
                 title: 'Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'midlertidig-kompensasjon',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/korona/kompensasjon/NAV%2000-03.00/klage/brev'
             }
@@ -46,6 +58,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Dagpenger',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'dagpenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
@@ -55,6 +68,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Arbeidsavklaringspenger (AAP)',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/arbeid/arbeidsavklaringspenger/NAV%2011-13.05/klage/brev',
@@ -66,6 +80,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Lønnsgaranti ved konkurs hos arbeidsgiver',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'lonnsgaranti',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/arbeid/lonnsgaranti-arbeidsgiver-betaler-ikke-ut-lonn/NAV%2067-01.01/klage/brev'
@@ -75,6 +90,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Tiltakspenger for arbeidsrettet tiltak',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'tiltakspenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/tiltakspenger/NAV%2076-13.45/klage/brev'
             },
@@ -83,6 +99,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Vurdering av behov for bistand etter NAV loven § 14 a',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'nav-loven-14a',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/arbeid/Bistand-fra-NAV-for-a-komme-i-arbeid/NAV%2000-01.00/klage/brev'
@@ -99,6 +116,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Sykepenger',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'sykepenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/sykepenger/NAV%2000-03.00/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/sykepenger/NAV%2000-03.00/anke/brev'
@@ -108,6 +126,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Arbeidsavklaringspenger (AAP)',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/arbeid/arbeidsavklaringspenger/NAV%2011-13.05/klage/brev',
@@ -119,6 +138,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Uføretrygd',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'uforetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/uforetrygd/NAV%2012-06.05/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/uforetrygd/NAV%2012-06.05/anke/brev'
@@ -128,6 +148,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Grunnstønad og hjelpestønad',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'grunn-og-hjelpestonad',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/helse/grunn-og-hjelpestonad/NAV%2006-03.04/klage/brev',
@@ -139,6 +160,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Yrkesskade og yrkesskadetrygd',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'yrkesskadetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/anke/brev'
@@ -155,6 +177,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
                 allowsAnke: true,
                 digitalKlage: true,
+                digitalKlageFullmakt: true,
                 path: 'foreldrepenger',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
@@ -166,6 +189,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Kontantstøtte',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'kontantstotte',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/kontantstotte/NAV%2034-00.08/klage/brev'
             },
@@ -174,6 +198,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Barnetrygd',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'barnetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/barnetrygd/NAV%2033-00.07/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/barnetrygd/NAV%2033-00.07/anke/brev'
@@ -183,6 +208,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Barnebidrag og bidragsforskudd',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'barnebidrag-og-bidragsforskudd',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/familie/barnebidrag-og-bidragsforskudd/NAV%2055-00.60/klage/brev'
@@ -192,6 +218,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Ektefellebidrag',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'ektefellebidrag',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/ektefellebidrag/NAV%2053-00.05/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/ektefellebidrag/NAV%2053-00.05/anke/brev'
@@ -201,6 +228,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Enslig mor eller far',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'enslig-mor-eller-far',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/familie/enslig-mor-eller-far/NAV%2015-00.01/klage/brev',
@@ -212,6 +240,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Gravferdsstønad',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'gravferdsstonad',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/gravferdsstonad-og-baretransport/NAV%2007-02.08/klage/brev',
@@ -223,6 +252,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Omsorgspenger, opplæringspenger, pleiepenger',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'sykdom-i-familien',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-06.07/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-06.07/anke/brev'
@@ -232,6 +262,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Oppfostringsbidrag',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'oppfostringsbidrag',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/familie/oppfostringsbidrag/NAV%2057-00.08/klage/brev',
@@ -249,6 +280,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Alderspensjon',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'alderspensjon',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/pensjon/alderspensjon-og-avtalefestet-pensjon/NAV%2019-01.05/klage/brev',
@@ -260,6 +292,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Avtalefestet pensjon (AFP)',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'avtalefestet-pensjon',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/pensjon/avtalefestet-pensjon-fra-statens-pensjonskasse/NAV%2062-00.16/klage/brev',
@@ -271,6 +304,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Barnepensjon',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'barnepensjon',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/pensjon/barn-som-har-mistet-en-eller-flere-av-foreldrene/NAV%2018-04.01/klage/brev',
@@ -282,6 +316,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Krigspensjon',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'krigspensjon',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/pensjon/krigspensjon/NAV%2031-00.02/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/pensjon/krigspensjon/NAV%2031-00.02/anke/brev'
@@ -291,6 +326,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Pensjon til gjenlevende ektefelle eller samboer',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'gjenlevende',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/pensjon/gjenlevende-ektefelle-partner-eller-samboer/NAV%2017-01.05/klage/brev',
@@ -302,6 +338,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Supplerende stønad til pensjon ved kort botid i Norge',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'supplerende-stonad',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-personer-over-sekstisyv-ar/NAV%2064-21.00/klage/brev',
@@ -313,6 +350,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Ytelser til tidligere familiepleier',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'tidligere-familiepleier',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/stonader-ved-dodsfall/familiepleier/NAV%2016-01.05/klage/brev',
@@ -331,6 +369,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Opphold eller arbeid i Norge',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'opphold-eller-arbeid-i-norge',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-i-norge/NAV%2002-07.05/klage/brev',
@@ -342,6 +381,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Opphold eller arbeid utenfor Norge',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'opphold-eller-arbeid-utenfor-norge',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/til-eller-fra-norge/opphold-eller-arbeid-utenfor-norge/NAV%2002-08.05/klage/brev',
@@ -360,6 +400,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Hjelpemidler og tilrettelegging ved nedsatt funksjonsevne',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'hjelpemidler',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/diverse/NAV%2010-07.23/klage/brev',
@@ -371,6 +412,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Stønad til bil og spesialutstyr til kjøretøy',
                 allowsAnke: true,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'bil',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/hjelpemidler-og-tilrettelegging/bil/NAV%2010-07.40/klage/brev',
@@ -389,6 +431,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Midlertidig økonomisk sosialhjelp',
                 allowsAnke: false,
                 digitalKlage: false,
+                digitalKlageFullmakt: false,
                 path: 'sosiale-tjenester',
                 mailKlageUrl: klageFormUrl,
                 externalUrl: 'https://www.nav.no/sosialhjelp/artikkel/124875'

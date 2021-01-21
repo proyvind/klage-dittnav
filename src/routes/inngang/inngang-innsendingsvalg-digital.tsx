@@ -26,6 +26,7 @@ interface Props {
     title?: string;
     internalSaksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
+    digitalKlageFullmakt?: boolean;
     allowsAnke?: boolean;
     mailKlageUrl?: string;
     mailAnkeUrl?: string;
@@ -36,6 +37,7 @@ const InngangInnsendingDigital = ({
     title = Tema[temaKey],
     internalSaksnummer = null,
     inngangkategori = null,
+    digitalKlageFullmakt,
     allowsAnke,
     mailKlageUrl,
     mailAnkeUrl
@@ -51,7 +53,12 @@ const InngangInnsendingDigital = ({
                 <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
-                    <DigitalContent temaKey={temaKey} title={title} saksnummer={internalSaksnummer} />
+                    <DigitalContent
+                        temaKey={temaKey}
+                        title={title}
+                        saksnummer={internalSaksnummer}
+                        digitalKlageFullmakt={digitalKlageFullmakt ?? false}
+                    />
                     <InlineRow>
                         <LenkepanelBase href={mailKlageUrl ?? klageFormUrl} target="_blank" border>
                             <LenkePanelContentWithImage>
@@ -108,9 +115,10 @@ interface DigitalContentProps {
     temaKey: TemaKey;
     title: string;
     saksnummer: string | null;
+    digitalKlageFullmakt: boolean;
 }
 
-const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, title, saksnummer, digitalKlageFullmakt }: DigitalContentProps) => {
     const { search } = useLocation();
     if (saksnummer === null) {
         const query = queryString.parse(search);
@@ -147,26 +155,28 @@ const DigitalContent = ({ temaKey, title, saksnummer }: DigitalContentProps) => 
                     Slik skaffer du deg elektronisk ID
                 </ExternalLink>
             </InlineRow>
-            <InlineRow>
-                <KlageLinkPanel href={`${window.location.pathname}/fullmakt`} border>
-                    <LenkePanelContentWithImage>
-                        <IconContainer>
-                            <MobilePhoneIdCard />
-                        </IconContainer>
-                        <div>
-                            <Systemtittel className="lenkepanel__heading">Klage på vegne av andre</Systemtittel>
-                            <MarginTopContainer>
-                                <Normaltekst>
-                                    Digital innsending av klage når du har fullmakt på vegne av andre.
-                                </Normaltekst>
-                            </MarginTopContainer>
-                        </div>
-                    </LenkePanelContentWithImage>
-                </KlageLinkPanel>
-                <ExternalLink href="https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema" showIcon>
-                    Slik gir du fullmakt til andre
-                </ExternalLink>
-            </InlineRow>
+            {digitalKlageFullmakt && (
+                <InlineRow>
+                    <KlageLinkPanel href={`${window.location.pathname}/fullmakt`} border>
+                        <LenkePanelContentWithImage>
+                            <IconContainer>
+                                <MobilePhoneIdCard />
+                            </IconContainer>
+                            <div>
+                                <Systemtittel className="lenkepanel__heading">Klage på vegne av andre</Systemtittel>
+                                <MarginTopContainer>
+                                    <Normaltekst>
+                                        Digital innsending av klage når du har fullmakt på vegne av andre.
+                                    </Normaltekst>
+                                </MarginTopContainer>
+                            </div>
+                        </LenkePanelContentWithImage>
+                    </KlageLinkPanel>
+                    <ExternalLink href="https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema" showIcon>
+                        Slik gir du fullmakt til andre
+                    </ExternalLink>
+                </InlineRow>
+            )}
         </>
     );
 };
