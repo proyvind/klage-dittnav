@@ -64,7 +64,7 @@ const Begrunnelse = ({ klage }: Props) => {
             return true;
         } catch (error) {
             setAutosaveStatus(AutosaveStatus.FAILED);
-            klageStore.store(fritekst, reasons, vedtakDate);
+            klageStore.store(fritekst, reasons, vedtakDate, userSaksnummer);
             setError(error);
             return false;
         }
@@ -104,7 +104,7 @@ const Begrunnelse = ({ klage }: Props) => {
     };
 
     const storeKlageAndLogIn = () => {
-        klageStore.store(fritekst, reasons, vedtakDate);
+        klageStore.store(fritekst, reasons, vedtakDate, userSaksnummer);
         login();
     };
 

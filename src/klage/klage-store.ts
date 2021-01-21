@@ -4,7 +4,8 @@ import { Klage, KlageStatus, Reason, reasonsMatch } from './klage';
 export enum KLAGE_STORAGE_KEYS {
     KLAGE_FRITEKST = 'KLAGE_FRITEKST',
     KLAGE_VEDTAK_DATE = 'KLAGE_ISO_DATE',
-    KLAGE_REASONS = 'KLAGE_DATE_OPTION'
+    KLAGE_REASONS = 'KLAGE_DATE_OPTION',
+    KLAGE_USER_SAKSNUMMER = 'KLAGE_USER_SAKSNUMMER'
 }
 
 export class KlageStorage {
@@ -38,11 +39,13 @@ export class KlageStorage {
     public getReasons = () => this.getSerializedValue<Reason[]>(KLAGE_STORAGE_KEYS.KLAGE_REASONS);
     public getVedtakDate = () => this.storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_DATE);
     public getFritekst = () => this.storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_FRITEKST);
+    public getUserSaksnummer = () => this.storage.getItem(KLAGE_STORAGE_KEYS.KLAGE_USER_SAKSNUMMER);
 
-    public store(fritekst: string, reasons: Reason[], vedtakDate: ISODate | null) {
+    public store(fritekst: string, reasons: Reason[], vedtakDate: ISODate | null, userSaksnummer: string | null) {
         this.setValue(KLAGE_STORAGE_KEYS.KLAGE_FRITEKST, fritekst);
         this.setValue(KLAGE_STORAGE_KEYS.KLAGE_REASONS, JSON.stringify(reasons));
         this.setValue(KLAGE_STORAGE_KEYS.KLAGE_VEDTAK_DATE, vedtakDate);
+        this.setValue(KLAGE_STORAGE_KEYS.KLAGE_USER_SAKSNUMMER, userSaksnummer);
     }
 
     public restore(klage: Klage): Klage {
@@ -52,10 +55,12 @@ export class KlageStorage {
         const fritekst = this.getFritekst();
         const reasons = this.getReasons();
         const vedtakDate = this.getVedtakDate();
+        const userSaksnummer = this.getUserSaksnummer();
 
         if (
             (reasons === null || reasonsMatch(reasons, klage.checkboxesSelected)) &&
             (vedtakDate === null || vedtakDate === klage.vedtakDate) &&
+            (userSaksnummer === null || userSaksnummer === klage.userSaksnummer) &&
             (fritekst === null || fritekst === klage.fritekst)
         ) {
             return klage;
@@ -65,7 +70,8 @@ export class KlageStorage {
             ...klage,
             fritekst: fritekst ?? klage.fritekst,
             checkboxesSelected: reasons ?? klage.checkboxesSelected,
-            vedtakDate: vedtakDate ?? klage.vedtakDate
+            vedtakDate: vedtakDate ?? klage.vedtakDate,
+            userSaksnummer: userSaksnummer ?? klage.userSaksnummer
         };
     }
 
