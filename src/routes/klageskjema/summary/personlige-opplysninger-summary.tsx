@@ -33,6 +33,13 @@ const combineFirstMiddleName = (user: User): string => {
     return name;
 };
 
+export const getFullName = (user: User): string => {
+    let name = user.navn.fornavn ?? '';
+    name += user.navn.mellomnavn ? ' ' + user.navn.mellomnavn : '';
+    name += user.navn.etternavn ? ' ' + user.navn.etternavn : '';
+    return name;
+};
+
 const AddressPointBox = ({ adress }: { adress: Address }) => (
     <div>
         <Normaltekst>{displayAddress(adress)}</Normaltekst>

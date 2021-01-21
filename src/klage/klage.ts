@@ -28,6 +28,7 @@ export interface NewKlage {
     readonly tema: TemaKey;
     readonly vedtakDate: ISODate | null;
     readonly ytelse: string;
+    readonly fullmaktsgiver: string | null;
 }
 
 export interface UpdateKlage extends NewKlage {

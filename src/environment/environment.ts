@@ -82,12 +82,18 @@ export class Environment {
         return `${this.apiUrl}/klager`;
     }
     klageUrl = (klageId: KlageId): string => `${this.klagerUrl}/${klageId}`;
-    draftKlageUrl = (temaKey: TemaKey, ytelse: string, internalSaksnummer: string | null) => {
+    draftKlageUrl = (
+        temaKey: TemaKey,
+        ytelse: string,
+        internalSaksnummer: string | null,
+        fullmaktsgiver: string | null
+    ) => {
         const query = queryString.stringify(
             {
                 tema: temaKey,
                 ytelse,
-                internalSaksnummer
+                internalSaksnummer,
+                fullmaktsgiver
             },
             {
                 skipNull: true,
@@ -104,6 +110,8 @@ export class Environment {
     attachmentsUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/vedlegg`;
     attachmentUrl = (klageId: KlageId, attachmentId: string | number) =>
         `${this.apiUrl}/klager/${klageId}/vedlegg/${attachmentId}`;
+    hasFullmaktForUrl = (tema: string, fnr: string) => `${this.apiUrl}/fullmaktsgiver/${tema}/${fnr}`;
+    fullmaktsgiverUrl = (tema: string, fnr: string) => `${this.apiUrl}/bruker/${tema}/${fnr}`;
 }
 
 export const environment = new Environment();

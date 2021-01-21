@@ -18,6 +18,7 @@ import RootWithQuery from './root-with-query';
 import InngangKategorier from './inngang/inngang-kategorier';
 import InngangInnsendingDigital from './inngang/inngang-innsendingsvalg-digital';
 import InngangInnsendingPost from './inngang/inngang-innsendingsvalg-post';
+import InngangFullmakt from './inngang/inngang-fullmakt';
 
 const App = () => (
     <React.StrictMode>
@@ -27,6 +28,7 @@ const App = () => (
                     <Switch>
                         {innsendingsRoutes}
                         {kategoriRoutes}
+                        {fullmaktRoutes}
                         <Route path={'/ny'} exact>
                             <UserLoader>
                                 <CreateKlage />
@@ -62,6 +64,24 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
                 key={path}
                 path={path}
                 render={() => getInngangInnsendingComponent(inngangkategori, kategori)}
+                exact
+            />
+        );
+    })
+);
+
+const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
+    inngangkategori.kategorier.map(kategori => {
+        const path = `/${inngangkategori.path}/${kategori.path}/fullmakt`;
+        return (
+            <Route
+                key={path}
+                path={path}
+                render={() => (
+                    <UserLoader>
+                        <InngangFullmakt inngangkategori={inngangkategori} kategori={kategori} />
+                    </UserLoader>
+                )}
                 exact
             />
         );

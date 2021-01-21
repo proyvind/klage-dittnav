@@ -4,7 +4,8 @@ import { User } from '../user/user';
 import { Attachment } from '../klage/attachment';
 import { environment } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
-import { TemaKey } from '../tema/tema';
+import { Tema, TemaKey } from '../tema/tema';
+import { foedselsnrFormat } from '../routes/klageskjema/summary/text-formatting';
 
 export async function getUser() {
     const url = environment.userUrl;
@@ -16,9 +17,41 @@ export async function getUser() {
     }
 }
 
-export async function getDraftKlage(temaKey: TemaKey, ytelse: string, internalSaksnummer: string | null) {
-    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer);
-    return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
+export async function getDraftKlage(
+    temaKey: TemaKey,
+    ytelse: string,
+    internalSaksnummer: string | null,
+    fullmaktsgiver: string | null
+) {
+    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer, fullmaktsgiver);
+    try {
+        return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
+    } catch {
+        return null;
+    }
+}
+
+export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
+    const url = environment.hasFullmaktForUrl(tema, fnr);
+    try {
+        return await getJSON<User>(
+            url,
+            `Du har ikke fullmakt for person med personnummer ${foedselsnrFormat('' + fnr)} for området ${Tema[tema]}.`
+        );
+    } catch (error) {
+        logError(error, 'Get fullmakt user error.', { resource: url });
+        throw error;
+    }
+}
+
+export async function getFullmaktsgiver(tema: string, fnr: string) {
+    const url = environment.hasFullmaktForUrl(tema, fnr);
+    try {
+        return await getJSON<User>(url, `Finner ikke fullmaktsgiver med personnummer ${foedselsnrFormat('' + fnr)}`);
+    } catch (error) {
+        logError(error, 'Get fullmaktsgiver user error.', { resource: url });
+        throw error;
+    }
 }
 
 export async function createKlage(klage: NewKlage) {

@@ -9,6 +9,7 @@ import { ExternalLink } from '../../../link/link';
 import { CenteredContainer } from '../../../styled-components/common';
 import { CenteredPageSubTitle } from '../../../styled-components/page-title';
 import { CenteredPageParagraph } from '../../../styled-components/page-paragraph';
+import FullmaktInfo from '../begrunnelse/fullmakt-info';
 
 interface Props {
     klageId: string | number;
@@ -19,6 +20,7 @@ const Kvittering = (props: Props) => (
     <>
         <Icon />
         <CenteredPageSubTitle tag={'h2'}>Kvittering for innsendt klage</CenteredPageSubTitle>
+        <FullmaktInfo />
         <CenteredPageParagraph>
             <ExternalLink href={environment.klagePdfUrl(props.klageId)}>Se og last ned klagen din</ExternalLink>
         </CenteredPageParagraph>

@@ -23,6 +23,7 @@ import VedtakDate from './vedtak-date';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 import Saksnummer from './saksnummer';
 import { Row } from '../../../styled-components/row';
+import FullmaktInfo from './fullmakt-info';
 
 interface Props {
     klage: Klage;
@@ -128,6 +129,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 </KlageAlertStripeFeil>
             )}
 
+            <FullmaktInfo />
             <Reasons checkedReasons={reasons} setCheckedReasons={setReasons} />
             <VedtakDate vedtakDate={vedtakDate} setVedtakDate={setVedtakDate} />
             {!klage.internalSaksnummer && <Saksnummer saksnummer={userSaksnummer} setSaksnummer={setUserSaksnummer} />}
@@ -171,6 +173,7 @@ const createKlageUpdate = (
     id: klage.id,
     tema: klage.tema,
     ytelse: klage.ytelse,
+    fullmaktsgiver: klage.fullmaktsgiver,
     checkboxesSelected,
     userSaksnummer,
     internalSaksnummer: klage.internalSaksnummer,

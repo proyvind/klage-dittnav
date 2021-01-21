@@ -4,15 +4,16 @@ import queryString from 'query-string';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { ensureStringIsTema, TemaKey } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
-import { createKlage, getDraftKlage } from '../api/api';
+import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
 import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
 import LoadingPage from '../loading-page/loading-page';
+import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
 
 const CreateKlage = () => {
     const { search } = useLocation();
     const history = useHistory();
-    const { klage, setKlage } = useContext(AppContext);
+    const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -28,24 +29,23 @@ const CreateKlage = () => {
             return;
         }
 
-        const title = getTitle(query, temaKey);
-        const saksnummer = getQueryValue(query.saksnummer);
+        const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
 
-        getDraftKlage(temaKey, title, saksnummer)
-            .catch(() =>
-                createKlage({
-                    fritekst: '',
-                    checkboxesSelected: [],
-                    tema: temaKey,
-                    ytelse: title,
-                    vedtakDate: null,
-                    userSaksnummer: null,
-                    internalSaksnummer: saksnummer
-                })
+        if (fullmaktsgiver === null) {
+            resumeOrCreateKlage(temaKey, fullmaktsgiver, query)
+                .then(setKlage)
+                .catch(() => setError(oppretteKlageError()));
+            return;
+        }
+        getFullmaktsgiver(temaKey, fullmaktsgiver)
+            .then(setFullmaktsgiver)
+            .then(() =>
+                resumeOrCreateKlage(temaKey, fullmaktsgiver, query)
+                    .then(setKlage)
+                    .catch(() => setError(oppretteKlageError()))
             )
-            .then(setKlage)
-            .catch(() => setError(formatError(temaKey, title, saksnummer)));
-    }, [search, klage, setKlage, history]);
+            .catch(() => setError(finneFullmaktsgiverError(fullmaktsgiver)));
+    }, [search, klage, setKlage, history, setFullmaktsgiver]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;
@@ -58,15 +58,31 @@ const CreateKlage = () => {
     return <Redirect to={`/${klage.id}/begrunnelse`} />;
 };
 
-function formatError(tema: TemaKey, ytelse: string, internalSaksnummer: string | null): string {
-    let error = `Klarte ikke opprette klage med tema "${tema}"`;
-    if (internalSaksnummer === null) {
-        error += ` og tittel "${ytelse}".`;
-    } else {
-        error += `, tittel "${ytelse}" og saksnummer "${internalSaksnummer}".`;
+async function resumeOrCreateKlage(
+    temaKey: TemaKey,
+    fullmaktsgiver: string | null,
+    query: queryString.ParsedQuery<string>
+) {
+    const title = getTitle(query, temaKey);
+    const saksnummer = getQueryValue(query.saksnummer);
+    const draftKlage = await getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver);
+    if (draftKlage !== null) {
+        return draftKlage;
     }
-
-    return error;
+    return await createKlage({
+        fritekst: '',
+        checkboxesSelected: [],
+        tema: temaKey,
+        ytelse: title,
+        vedtakDate: null,
+        userSaksnummer: null,
+        internalSaksnummer: saksnummer,
+        fullmaktsgiver: fullmaktsgiver
+    });
 }
+
+const finneFullmaktsgiverError = (fnr: string) =>
+    `Klarte ikke finne fullmaktsgiver med personnummer ${foedselsnrFormat(fnr)}.`;
+const oppretteKlageError = () => 'Klarte ikke opprette klage';
 
 export default CreateKlage;

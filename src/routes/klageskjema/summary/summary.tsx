@@ -25,6 +25,7 @@ import InformationPointBox from './information-point-box';
 import { KlageUndertittel } from '../../../styled-components/undertittel';
 import Checkboxes from './checkboxes';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
+import FullmaktInfo from '../begrunnelse/fullmakt-info';
 
 interface Props {
     klage: Klage;
@@ -73,6 +74,7 @@ const Oppsummering = ({ klage }: Props) => {
         <>
             <Icon />
             <CenteredPageSubTitle tag={'h2'}>Se over før du sender inn</CenteredPageSubTitle>
+            <FullmaktInfo />
             <Frame>
                 <Ekspanderbartpanel
                     border={false}
