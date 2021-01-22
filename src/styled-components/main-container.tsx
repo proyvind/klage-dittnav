@@ -15,7 +15,7 @@ const MainContainer = styled.main`
 
 export const InngangMainContainer = styled(MainContainer)`
     padding-top: 64px;
-    background-color: #e7e9e9;
+    background-color: #f1f1f1;
 `;
 
 export const FormMainContainer = styled(MainContainer)`
