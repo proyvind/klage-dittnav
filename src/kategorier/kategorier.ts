@@ -177,7 +177,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
                 allowsAnke: true,
                 digitalKlage: true,
-                digitalKlageFullmakt: true,
+                digitalKlageFullmakt: false,
                 path: 'foreldrepenger',
                 mailKlageUrl:
                     'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
