@@ -1,3 +1,4 @@
+import { EnvString } from '../environment/environment';
 import { TemaKey } from '../tema/tema';
 
 export const klageFormUrl = 'https://www.nav.no/soknader/nb/klage/person';
@@ -13,7 +14,7 @@ export interface Kategori {
     temaKey: TemaKey;
     title: string;
     allowsAnke: boolean;
-    digitalKlage: boolean;
+    digitalKlage: EnvString[];
     digitalKlageFullmakt: boolean;
     path: string;
     mailKlageUrl: string;
@@ -31,7 +32,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PER,
                 title: 'Lønnskompensasjon for permitterte',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'lonnskompensasjon',
                 mailKlageUrl:
@@ -41,7 +42,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.GEN,
                 title: 'Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'midlertidig-kompensasjon',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/korona/kompensasjon/NAV%2000-03.00/klage/brev'
@@ -57,7 +58,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.DAG,
                 title: 'Dagpenger',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'dagpenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
@@ -67,7 +68,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.AAP,
                 title: 'Arbeidsavklaringspenger (AAP)',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl:
@@ -79,7 +80,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.GEN,
                 title: 'Lønnsgaranti ved konkurs hos arbeidsgiver',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'lonnsgaranti',
                 mailKlageUrl:
@@ -89,7 +90,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.TIL,
                 title: 'Tiltakspenger for arbeidsrettet tiltak',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'tiltakspenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/tiltakspenger/NAV%2076-13.45/klage/brev'
@@ -98,7 +99,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.OPP,
                 title: 'Vurdering av behov for bistand etter NAV loven § 14 a',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'nav-loven-14a',
                 mailKlageUrl:
@@ -115,7 +116,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.SYK,
                 title: 'Sykepenger',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'sykepenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/sykepenger/NAV%2000-03.00/klage/brev',
@@ -125,7 +126,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.AAP,
                 title: 'Arbeidsavklaringspenger (AAP)',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl:
@@ -137,7 +138,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.UFO,
                 title: 'Uføretrygd',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'uforetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/uforetrygd/NAV%2012-06.05/klage/brev',
@@ -147,7 +148,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.GRU,
                 title: 'Grunnstønad og hjelpestønad',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'grunn-og-hjelpestonad',
                 mailKlageUrl:
@@ -159,7 +160,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.YRK,
                 title: 'Yrkesskade og yrkesskadetrygd',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'yrkesskadetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/klage/brev',
@@ -176,7 +177,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.FOR,
                 title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
                 allowsAnke: true,
-                digitalKlage: true,
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'foreldrepenger',
                 mailKlageUrl:
@@ -188,7 +189,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.KON,
                 title: 'Kontantstøtte',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'kontantstotte',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/kontantstotte/NAV%2034-00.08/klage/brev'
@@ -197,7 +198,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.BAR,
                 title: 'Barnetrygd',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'barnetrygd',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/barnetrygd/NAV%2033-00.07/klage/brev',
@@ -207,7 +208,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.BID,
                 title: 'Barnebidrag og bidragsforskudd',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'barnebidrag-og-bidragsforskudd',
                 mailKlageUrl:
@@ -217,7 +218,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.BID,
                 title: 'Ektefellebidrag',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'ektefellebidrag',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/ektefellebidrag/NAV%2053-00.05/klage/brev',
@@ -227,7 +228,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.ENF,
                 title: 'Enslig mor eller far',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'enslig-mor-eller-far',
                 mailKlageUrl:
@@ -239,7 +240,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.GRA,
                 title: 'Gravferdsstønad',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'gravferdsstonad',
                 mailKlageUrl:
@@ -251,7 +252,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.OMS,
                 title: 'Omsorgspenger, opplæringspenger, pleiepenger',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'sykdom-i-familien',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-06.07/klage/brev',
@@ -261,7 +262,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.BID,
                 title: 'Oppfostringsbidrag',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'oppfostringsbidrag',
                 mailKlageUrl:
@@ -279,7 +280,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Alderspensjon',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'alderspensjon',
                 mailKlageUrl:
@@ -291,7 +292,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Avtalefestet pensjon (AFP)',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'avtalefestet-pensjon',
                 mailKlageUrl:
@@ -303,7 +304,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Barnepensjon',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'barnepensjon',
                 mailKlageUrl:
@@ -315,7 +316,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Krigspensjon',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'krigspensjon',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/pensjon/krigspensjon/NAV%2031-00.02/klage/brev',
@@ -325,7 +326,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Pensjon til gjenlevende ektefelle eller samboer',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'gjenlevende',
                 mailKlageUrl:
@@ -337,7 +338,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.SUP,
                 title: 'Supplerende stønad til pensjon ved kort botid i Norge',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'supplerende-stonad',
                 mailKlageUrl:
@@ -349,7 +350,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.PEN,
                 title: 'Ytelser til tidligere familiepleier',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'tidligere-familiepleier',
                 mailKlageUrl:
@@ -368,7 +369,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.MED,
                 title: 'Opphold eller arbeid i Norge',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'opphold-eller-arbeid-i-norge',
                 mailKlageUrl:
@@ -380,7 +381,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.MED,
                 title: 'Opphold eller arbeid utenfor Norge',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'opphold-eller-arbeid-utenfor-norge',
                 mailKlageUrl:
@@ -399,7 +400,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.HJE,
                 title: 'Hjelpemidler og tilrettelegging ved nedsatt funksjonsevne',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'hjelpemidler',
                 mailKlageUrl:
@@ -411,7 +412,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.BIL,
                 title: 'Stønad til bil og spesialutstyr til kjøretøy',
                 allowsAnke: true,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'bil',
                 mailKlageUrl:
@@ -430,7 +431,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.UKJ,
                 title: 'Midlertidig økonomisk sosialhjelp',
                 allowsAnke: false,
-                digitalKlage: false,
+                digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'sosiale-tjenester',
                 mailKlageUrl: klageFormUrl,

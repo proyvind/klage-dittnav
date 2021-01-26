@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import ErrorBoundary from '../error-boundry/ErrorBoundary';
 import UserLoader from '../user/user-loader';
 import CreateKlage from './create-klage';
-import { LOGGED_IN_PATH } from '../environment/environment';
+import { environment, LOGGED_IN_PATH } from '../environment/environment';
 import Begrunnelse from './klageskjema/begrunnelse/begrunnelse';
 import FormContainer from './klageskjema/form-container';
 import KlageLoader from '../klage/klage-loader';
@@ -90,7 +90,7 @@ const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 
 function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
     const { digitalKlage, digitalKlageFullmakt, title, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
-    if (digitalKlage) {
+    if (digitalKlage.includes(environment.environment)) {
         return (
             <InngangInnsendingDigital
                 temaKey={temaKey}
