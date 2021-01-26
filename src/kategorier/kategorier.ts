@@ -58,7 +58,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.DAG,
                 title: 'Dagpenger',
                 allowsAnke: true,
-                digitalKlage: [],
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'dagpenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',

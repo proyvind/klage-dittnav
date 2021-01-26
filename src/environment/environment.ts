@@ -50,8 +50,15 @@ export class Environment {
 
         const jsonText = environmentElement.textContent;
         const variables = this.parseJsonEnvironment(jsonText);
+        if (variables === null) {
+            throw new EnvironmentInitError(environment, jsonText);
+        }
+
+        if (environment === EnvString.LOCAL) {
+            variables.REACT_APP_URL = `${window.location.protocol}//${window.location.host}`;
+        }
+
         if (
-            variables === null ||
             typeof variables.REACT_APP_URL !== 'string' ||
             typeof variables.REACT_APP_API_URL !== 'string' ||
             typeof variables.REACT_APP_LOGINSERVICE_URL !== 'string'
