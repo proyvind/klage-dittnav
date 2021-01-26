@@ -7,9 +7,15 @@ type KlageId = string | number;
 export const LOGGED_IN_PATH = '/loggedin-redirect';
 
 export class EnvironmentInitError extends Error {
-    constructor(appUrl?: string, apiUrl?: string, loginUrl?: string) {
-        super(`Environment failed to initialize. App URL: "${appUrl}", API URL: "${apiUrl}", login URL: "${loginUrl}"`);
+    constructor(env: string | null = null, variabels: string | null = null) {
+        super(`Environment failed to initialize for environment "${env}". Variables: "${variabels}"`);
     }
+}
+
+export enum EnvString {
+    PROD = 'prod-gcp',
+    DEV = 'dev-gcp',
+    LOCAL = 'local'
 }
 
 interface Env {
@@ -22,54 +28,61 @@ export class Environment {
     public appUrl: string;
     public apiUrl: string;
     public loginServiceUrl: string;
+    public environment: EnvString;
 
     constructor() {
-        const { appUrl, apiUrl, loginUrl } = this.getEnvironment();
-        this.appUrl = appUrl;
-        this.apiUrl = apiUrl;
-        this.loginServiceUrl = loginUrl;
-    }
-
-    private getEnvironment() {
-        const realEnv = this.parseJsonEnvironment();
-        if (realEnv !== null) {
-            return realEnv;
-        }
-        const appUrl = `${window.location.protocol}//${window.location.host}`;
-        const devEnv = this.ensureEnvironment(
-            appUrl,
-            process.env.REACT_APP_API_URL,
-            process.env.REACT_APP_LOGINSERVICE_URL
-        );
-        if (devEnv !== null) {
-            return devEnv;
-        }
-        throw new EnvironmentInitError(appUrl, process.env.REACT_APP_API_URL, process.env.REACT_APP_LOGINSERVICE_URL);
-    }
-
-    private parseJsonEnvironment() {
         const environmentElement = document.getElementById('environment');
         if (environmentElement === null) {
-            return null;
+            if (
+                typeof process.env.REACT_APP_API_URL !== 'string' ||
+                typeof process.env.REACT_APP_LOGINSERVICE_URL !== 'string'
+            ) {
+                throw new EnvironmentInitError();
+            }
+            this.appUrl = `${window.location.protocol}//${window.location.host}`;
+            this.apiUrl = process.env.REACT_APP_API_URL;
+            this.loginServiceUrl = process.env.REACT_APP_LOGINSERVICE_URL;
+            this.environment = EnvString.LOCAL;
+            return;
         }
+
+        const environment = this.getEnvironment(environmentElement);
+
         const jsonText = environmentElement.textContent;
+        const variables = this.parseJsonEnvironment(jsonText);
+        if (
+            variables === null ||
+            typeof variables.REACT_APP_URL !== 'string' ||
+            typeof variables.REACT_APP_API_URL !== 'string' ||
+            typeof variables.REACT_APP_LOGINSERVICE_URL !== 'string'
+        ) {
+            throw new EnvironmentInitError(environment, jsonText);
+        }
+        this.appUrl = variables.REACT_APP_URL;
+        this.apiUrl = variables.REACT_APP_API_URL;
+        this.loginServiceUrl = variables.REACT_APP_LOGINSERVICE_URL;
+        this.environment = environment;
+    }
+
+    private getEnvironment(environmentElement: HTMLElement) {
+        const env = environmentElement.getAttribute('data-environment');
+        if (env === EnvString.PROD || env === EnvString.DEV || env === EnvString.LOCAL) {
+            return env;
+        }
+        return EnvString.LOCAL;
+    }
+
+    private parseJsonEnvironment(jsonText: string | null) {
         if (jsonText === null || jsonText.length <= 10) {
             return null;
         }
         try {
             const json: Env = JSON.parse(jsonText);
-            return this.ensureEnvironment(json.REACT_APP_URL, json.REACT_APP_API_URL, json.REACT_APP_LOGINSERVICE_URL);
+            return json;
         } catch (err) {
             logError(err, `Failed to parse environment JSON: ${jsonText}`);
             return null;
         }
-    }
-
-    private ensureEnvironment(appUrl?: string, apiUrl?: string, loginUrl?: string) {
-        if (typeof appUrl === 'undefined' || typeof apiUrl === 'undefined' || typeof loginUrl === 'undefined') {
-            return null;
-        }
-        return { appUrl, apiUrl, loginUrl };
     }
 
     get loginUrl() {

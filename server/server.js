@@ -43,7 +43,7 @@ server.get(`/internal/isReady`, (req, res) => res.sendStatus(200));
 
 server.get(`/internal/isAlive`, (req, res) => res.sendStatus(200));
 
-const { REACT_APP_URL, REACT_APP_API_URL, REACT_APP_LOGINSERVICE_URL } = process.env;
+const { REACT_APP_URL, REACT_APP_API_URL, REACT_APP_LOGINSERVICE_URL, NAIS_CLUSTER_NAME } = process.env;
 
 // Match everything except internal og static
 server.use(/^(?!.*\/(internal|static)\/).*$/, securityHeadersMiddleware, (req, res) =>
@@ -52,6 +52,7 @@ server.use(/^(?!.*\/(internal|static)\/).*$/, securityHeadersMiddleware, (req, r
             res.render('index.html', {
                 ...fragments,
                 FRONTEND_LOGGER_SCRIPT: frontendloggerScript(),
+                NAIS_CLUSTER_NAME,
                 ENV: JSON.stringify({
                     REACT_APP_URL,
                     REACT_APP_API_URL,
