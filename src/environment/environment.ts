@@ -24,33 +24,40 @@ interface Env {
     REACT_APP_LOGINSERVICE_URL?: string;
 }
 
-export class Environment {
+interface EnvironmentVariables {
+    appUrl: string;
+    apiUrl: string;
+    loginServiceUrl: string;
+    environment: EnvString;
+}
+
+export class Environment implements EnvironmentVariables {
     public appUrl: string;
     public apiUrl: string;
     public loginServiceUrl: string;
     public environment: EnvString;
 
     constructor() {
+        const { apiUrl, appUrl, loginServiceUrl, environment } = this.init();
+        this.apiUrl = apiUrl;
+        this.appUrl = appUrl;
+        this.loginServiceUrl = loginServiceUrl;
+        this.environment = environment;
+    }
+
+    private init(): EnvironmentVariables {
         const environmentElement = document.getElementById('environment');
         if (environmentElement === null) {
-            if (
-                typeof process.env.REACT_APP_API_URL !== 'string' ||
-                typeof process.env.REACT_APP_LOGINSERVICE_URL !== 'string'
-            ) {
-                throw new EnvironmentInitError();
-            }
-            this.appUrl = `${window.location.protocol}//${window.location.host}`;
-            this.apiUrl = process.env.REACT_APP_API_URL;
-            this.loginServiceUrl = process.env.REACT_APP_LOGINSERVICE_URL;
-            this.environment = EnvString.LOCAL;
-            return;
+            return this.getDevServerEnvironment();
         }
 
         const environment = this.getEnvironment(environmentElement);
-
         const jsonText = environmentElement.textContent;
         const variables = this.parseJsonEnvironment(jsonText);
         if (variables === null) {
+            if (environment === EnvString.LOCAL) {
+                return this.getDevServerEnvironment();
+            }
             throw new EnvironmentInitError(environment, jsonText);
         }
 
@@ -65,10 +72,12 @@ export class Environment {
         ) {
             throw new EnvironmentInitError(environment, jsonText);
         }
-        this.appUrl = variables.REACT_APP_URL;
-        this.apiUrl = variables.REACT_APP_API_URL;
-        this.loginServiceUrl = variables.REACT_APP_LOGINSERVICE_URL;
-        this.environment = environment;
+        return {
+            appUrl: variables.REACT_APP_URL,
+            apiUrl: variables.REACT_APP_API_URL,
+            loginServiceUrl: variables.REACT_APP_LOGINSERVICE_URL,
+            environment: environment
+        };
     }
 
     private getEnvironment(environmentElement: HTMLElement) {
@@ -90,6 +99,21 @@ export class Environment {
             logError(err, `Failed to parse environment JSON: ${jsonText}`);
             return null;
         }
+    }
+
+    private getDevServerEnvironment(): EnvironmentVariables {
+        if (
+            typeof process.env.REACT_APP_API_URL !== 'string' ||
+            typeof process.env.REACT_APP_LOGINSERVICE_URL !== 'string'
+        ) {
+            throw new EnvironmentInitError();
+        }
+        return {
+            appUrl: `${window.location.protocol}//${window.location.host}`,
+            apiUrl: process.env.REACT_APP_API_URL,
+            loginServiceUrl: process.env.REACT_APP_LOGINSERVICE_URL,
+            environment: EnvString.LOCAL
+        };
     }
 
     get loginUrl() {
