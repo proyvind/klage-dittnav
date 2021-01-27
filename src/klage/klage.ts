@@ -15,6 +15,11 @@ export enum Reason {
     UENIG_I_NOE_ANNET = 'UENIG_I_NOE_ANNET'
 }
 
+export enum Language {
+    nb = 'nb',
+    en = 'en'
+}
+
 export interface FinalizedKlage {
     finalizedDate: ISODate;
     modifiedByUser: ISODateTime;
@@ -29,6 +34,7 @@ export interface NewKlage {
     readonly vedtakDate: ISODate | null;
     readonly ytelse: string;
     readonly fullmaktsgiver: string | null;
+    readonly language: Language;
 }
 
 export interface UpdateKlage extends NewKlage {

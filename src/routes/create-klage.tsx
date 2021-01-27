@@ -9,6 +9,7 @@ import { AppContext } from '../app-context/app-context';
 import { getTitle } from '../query/get-title';
 import LoadingPage from '../loading-page/loading-page';
 import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
+import { Language } from '../klage/klage';
 
 const CreateKlage = () => {
     const { search } = useLocation();
@@ -65,6 +66,8 @@ async function resumeOrCreateKlage(
 ) {
     const title = getTitle(query, temaKey);
     const saksnummer = getQueryValue(query.saksnummer);
+    const language = getLanguage(query);
+
     const draftKlage = await getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver);
     if (draftKlage !== null) {
         return draftKlage;
@@ -77,12 +80,21 @@ async function resumeOrCreateKlage(
         vedtakDate: null,
         userSaksnummer: null,
         internalSaksnummer: saksnummer,
-        fullmaktsgiver: fullmaktsgiver
+        fullmaktsgiver: fullmaktsgiver,
+        language: language
     });
 }
 
 const finneFullmaktsgiverError = (fnr: string) =>
     `Klarte ikke finne fullmaktsgiver med personnummer ${foedselsnrFormat(fnr)}.`;
 const oppretteKlageError = () => 'Klarte ikke opprette klage';
+
+export function getLanguage(query: queryString.ParsedQuery): Language {
+    const language = getQueryValue(query.language);
+    if (language === null) {
+        return Language.nb;
+    }
+    return language as Language;
+}
 
 export default CreateKlage;
