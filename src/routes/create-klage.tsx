@@ -66,7 +66,7 @@ async function resumeOrCreateKlage(
 ) {
     const title = getTitle(query, temaKey);
     const saksnummer = getQueryValue(query.saksnummer);
-    const language = getLanguage(query);
+    const language = getLanguage();
 
     const draftKlage = await getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver);
     if (draftKlage !== null) {
@@ -89,12 +89,8 @@ const finneFullmaktsgiverError = (fnr: string) =>
     `Klarte ikke finne fullmaktsgiver med personnummer ${foedselsnrFormat(fnr)}.`;
 const oppretteKlageError = () => 'Klarte ikke opprette klage';
 
-export function getLanguage(query: queryString.ParsedQuery): Language {
-    const language = getQueryValue(query.language);
-    if (language === null) {
-        return Language.nb;
-    }
-    return language as Language;
+export function getLanguage(): Language {
+    return Language.nb;
 }
 
 export default CreateKlage;

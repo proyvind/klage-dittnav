@@ -8,7 +8,7 @@ import { CenteredContainer } from '../../../styled-components/common';
 import { Attachment } from '../../../klage/attachment';
 import { AppContext } from '../../../app-context/app-context';
 import { ISODate } from '../../../date/date';
-import { Klage, KlageStatus, Language, Reason, UpdateKlage } from '../../../klage/klage';
+import { Klage, KlageStatus, Reason, UpdateKlage } from '../../../klage/klage';
 import { NotLoggedInError } from '../../../api/errors';
 import klageStore from '../../../klage/klage-store';
 import { login } from '../../../user/login';
@@ -179,7 +179,7 @@ const createKlageUpdate = (
     internalSaksnummer: klage.internalSaksnummer,
     fritekst,
     vedtakDate,
-    language: klage.language ?? Language.nb // temp fix
+    language: klage.language
 });
 
 const getError = (error: Error | null, logIn: () => void) => {
