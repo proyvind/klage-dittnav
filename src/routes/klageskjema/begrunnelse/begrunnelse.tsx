@@ -178,7 +178,8 @@ const createKlageUpdate = (
     userSaksnummer,
     internalSaksnummer: klage.internalSaksnummer,
     fritekst,
-    vedtakDate
+    vedtakDate,
+    language: klage.language
 });
 
 const getError = (error: Error | null, logIn: () => void) => {
