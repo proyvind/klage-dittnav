@@ -7,7 +7,7 @@ import LetterOpened from '../../icons/LetterOpenedIcon';
 import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
-import { TemaKey, Tema } from '../../tema/tema';
+import { TemaKey } from '../../tema/tema';
 import VeilederIcon from '../../icons/VeilederIcon';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
@@ -22,10 +22,11 @@ import { InngangKategori } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import LawBook from '../../icons/LawBook';
 import { klageFormUrl } from '../../kategorier/kategorier';
+import { useTitleOrYtelse } from '../../language/titles';
 
 interface Props {
     temaKey: TemaKey;
-    title?: string;
+    titleKey: string;
     allowsAnke: boolean;
     mailKlageUrl?: string;
     mailAnkeUrl?: string;
@@ -34,13 +35,14 @@ interface Props {
 
 const InngangInnsendingPost = ({
     temaKey,
-    title = Tema[temaKey],
+    titleKey,
     inngangkategori,
     allowsAnke,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
-    useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, title);
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_POST, temaKey, titleKey);
+    const title = useTitleOrYtelse(temaKey, titleKey);
     usePageInit(`${title} \u2013 klage eller anke`);
     const breadcrumbs: Breadcrumb[] = [
         {
@@ -125,6 +127,6 @@ const VeilederContainer = styled(Veileder)`
 `;
 
 const arePropsEqual = (prevProps: Props, nextProps: Props) =>
-    prevProps.temaKey === nextProps.temaKey && prevProps.title === nextProps.title;
+    prevProps.temaKey === nextProps.temaKey && prevProps.titleKey === nextProps.titleKey;
 
 export default React.memo(InngangInnsendingPost, arePropsEqual);

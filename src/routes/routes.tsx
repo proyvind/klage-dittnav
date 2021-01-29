@@ -89,12 +89,13 @@ const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 );
 
 function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
-    const { digitalKlage, digitalKlageFullmakt, title, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
+    const { digitalKlage, digitalKlageFullmakt, titleKey, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
     if (digitalKlage.includes(environment.environment)) {
         return (
             <InngangInnsendingDigital
                 temaKey={temaKey}
-                title={title}
+                titleKey={titleKey}
+                ytelse={null}
                 inngangkategori={inngangkategori}
                 digitalKlageFullmakt={digitalKlageFullmakt}
                 allowsAnke={allowsAnke}
@@ -106,7 +107,7 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
     return (
         <InngangInnsendingPost
             temaKey={temaKey}
-            title={title}
+            titleKey={titleKey}
             inngangkategori={inngangkategori}
             allowsAnke={allowsAnke}
             mailKlageUrl={mailKlageUrl}

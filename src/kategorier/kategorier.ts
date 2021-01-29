@@ -12,7 +12,7 @@ export interface InngangKategori {
 
 export interface Kategori {
     temaKey: TemaKey;
-    title: string;
+    titleKey: string;
     allowsAnke: boolean;
     digitalKlage: EnvString[];
     digitalKlageFullmakt: boolean;
@@ -30,7 +30,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.PER,
-                title: 'Lønnskompensasjon for permitterte',
+                titleKey: 'LONNSKOMPENSASJON',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -40,7 +40,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.GEN,
-                title: 'Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere',
+                titleKey: 'MIDLERTIDIG_KOMPENSASJON',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -56,7 +56,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.DAG,
-                title: 'Dagpenger',
+                titleKey: 'DAGPENGER',
                 allowsAnke: true,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
@@ -66,7 +66,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.AAP,
-                title: 'Arbeidsavklaringspenger (AAP)',
+                titleKey: 'ARBEIDSAVKLARINGSPENGER',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -78,7 +78,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.GEN,
-                title: 'Lønnsgaranti ved konkurs hos arbeidsgiver',
+                titleKey: 'LONNSGARANTI',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -88,7 +88,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.TIL,
-                title: 'Tiltakspenger for arbeidsmarkedstiltak',
+                titleKey: 'TILTAKSPENGER',
                 allowsAnke: false,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
@@ -97,7 +97,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.OPP,
-                title: 'Vurdering av behov for bistand etter NAV loven § 14 a',
+                titleKey: 'NAV_LOVEN_14A',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -114,7 +114,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.SYK,
-                title: 'Sykepenger',
+                titleKey: 'SYKEPENGER',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -124,7 +124,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.AAP,
-                title: 'Arbeidsavklaringspenger (AAP)',
+                titleKey: 'ARBEIDSAVKLARINGSPENGER',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -136,7 +136,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.UFO,
-                title: 'Uføretrygd',
+                titleKey: 'UFORETRYGD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -146,7 +146,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.GRU,
-                title: 'Grunnstønad og hjelpestønad',
+                titleKey: 'GRUNN_OG_HJELPESTONAD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -158,7 +158,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.YRK,
-                title: 'Yrkesskade og yrkesskadetrygd',
+                titleKey: 'YRKESSKADETRYGD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -175,7 +175,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.FOR,
-                title: 'Foreldrepenger, engangsstønad og svangerskapspenger',
+                titleKey: 'FORELDREPENGER_GENERELL',
                 allowsAnke: true,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
@@ -187,7 +187,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.KON,
-                title: 'Kontantstøtte',
+                titleKey: 'KONTANTSTOTTE',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -196,7 +196,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.BAR,
-                title: 'Barnetrygd',
+                titleKey: 'BARNETRYGD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -206,7 +206,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.BID,
-                title: 'Barnebidrag og bidragsforskudd',
+                titleKey: 'BARNEBIDRAG_OG_BIDRAGSFORSKUDD',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -216,7 +216,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.BID,
-                title: 'Ektefellebidrag',
+                titleKey: 'EKTEFELLEBIDRAG',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -226,7 +226,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.ENF,
-                title: 'Enslig mor eller far',
+                titleKey: 'ENSLIG_MOR_ELLER_FAR',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -238,7 +238,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.GRA,
-                title: 'Gravferdsstønad',
+                titleKey: 'GRAVFERDSSTONAD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -250,7 +250,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.OMS,
-                title: 'Omsorgspenger, opplæringspenger, pleiepenger',
+                titleKey: 'SYKDOM_I_FAMILIEN',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -260,7 +260,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.BID,
-                title: 'Oppfostringsbidrag',
+                titleKey: 'OPPFOSTRINGSBIDRAG',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -278,7 +278,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.PEN,
-                title: 'Alderspensjon',
+                titleKey: 'ALDERSPENSJON',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -290,7 +290,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.PEN,
-                title: 'Avtalefestet pensjon (AFP)',
+                titleKey: 'AVTALEFESTET_PENSJON',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -302,7 +302,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.PEN,
-                title: 'Barnepensjon',
+                titleKey: 'BARNEPENSJON',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -314,7 +314,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.PEN,
-                title: 'Krigspensjon',
+                titleKey: 'KRIGSPENSJON',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -324,7 +324,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.PEN,
-                title: 'Pensjon til gjenlevende ektefelle eller samboer',
+                titleKey: 'GJENLEVENDE',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -336,7 +336,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.SUP,
-                title: 'Supplerende stønad til pensjon ved kort botid i Norge',
+                titleKey: 'SUPPLERENDE_STONAD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -348,7 +348,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.PEN,
-                title: 'Ytelser til tidligere familiepleier',
+                titleKey: 'TIDLIGERE_FAMILIEPLEIER',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -367,7 +367,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.MED,
-                title: 'Opphold eller arbeid i Norge',
+                titleKey: 'OPPHOLD_ELLER_ARBEID_I_NORGE',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -379,7 +379,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.MED,
-                title: 'Opphold eller arbeid utenfor Norge',
+                titleKey: 'OPPHOLD_ELLER_ARBEID_UTENFOR_NORGE',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -398,7 +398,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.HJE,
-                title: 'Hjelpemidler og tilrettelegging ved nedsatt funksjonsevne',
+                titleKey: 'HJELPEMIDLER',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -410,7 +410,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.BIL,
-                title: 'Stønad til bil og spesialutstyr til kjøretøy',
+                titleKey: 'BILSTONAD',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
@@ -429,7 +429,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.UKJ,
-                title: 'Midlertidig økonomisk sosialhjelp',
+                titleKey: 'OKONOMISK_SOSIALHJELP',
                 allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,

@@ -31,8 +31,9 @@ export interface NewKlage {
     readonly userSaksnummer: string | null;
     readonly internalSaksnummer: string | null;
     readonly tema: TemaKey;
+    readonly titleKey?: string;
+    readonly ytelse?: string;
     readonly vedtakDate: ISODate | null;
-    readonly ytelse: string;
     readonly fullmaktsgiver: string | null;
     readonly language: Language;
 }

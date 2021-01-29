@@ -18,7 +18,7 @@ import { User } from '../../user/user';
 import { getFullName } from '../klageskjema/summary/personlige-opplysninger-summary';
 import { foedselsnrFormat } from '../klageskjema/summary/text-formatting';
 import { hasFullmaktFor } from '../../api/api';
-import { Tema } from '../../tema/tema';
+import { TITLES, useTitleOrYtelse } from '../../language/titles';
 
 interface Props {
     kategori: Kategori;
@@ -37,7 +37,8 @@ const FieldWithButton = styled.div`
 `;
 
 const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
-    const { title, temaKey } = kategori;
+    const { titleKey, temaKey } = kategori;
+    const title = useTitleOrYtelse(temaKey, titleKey);
     usePageInit(`${title} \u2013 klage på vegne av andre`);
     const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, kategori), [inngangkategori, kategori]);
     useBreadcrumbs(breadcrumbs, 'Klage på vegne av andre');
@@ -54,7 +55,7 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
             queryString.stringify(
                 {
                     tema: temaKey,
-                    tittel: title,
+                    titleKey,
                     fullmaktsgiver: fodselsnummer
                 },
                 {
@@ -64,7 +65,7 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
                     sort: false
                 }
             ),
-        [temaKey, title, fodselsnummer]
+        [temaKey, titleKey, fodselsnummer]
     );
 
     const handleSubmit = async () => {
@@ -88,7 +89,7 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     return (
         <InngangMainContainer>
             <ContentContainer>
-                <CenteredPageTitle>{Tema[temaKey]}</CenteredPageTitle>
+                <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <WhiteSection>
                     <SectionTitle>Hvem klager du på vegne av?</SectionTitle>
@@ -140,7 +141,7 @@ const getBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori): B
         handleInApp: true
     },
     {
-        title: kategori.title,
+        title: TITLES.getTitle(kategori.titleKey) ?? 'Tittel mangler',
         url: `/${inngangkategori.path}/${kategori.path}`,
         handleInApp: true
     }
