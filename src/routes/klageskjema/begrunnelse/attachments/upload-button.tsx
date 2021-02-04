@@ -11,8 +11,8 @@ interface UploadError {
     timestamp: ISODateTime;
     status: number;
     error: string;
-    message: string;
     path: string;
+    detail: string;
 }
 
 interface Props {
@@ -48,7 +48,7 @@ const UploadButton = ({ inputId, klage, attachments, setAttachments, setLoading,
             } catch (err) {
                 if (err instanceof ApiError) {
                     const errorBody: UploadError = await err.response.json();
-                    const errorMessage = getAttachmentErrorMessage(errorBody.message);
+                    const errorMessage = getAttachmentErrorMessage(errorBody.detail);
                     setError(getUploadAttachmentErrorMessage(file, errorMessage));
                 } else if (err instanceof Error) {
                     setError(getUploadAttachmentErrorMessage(file, err.message));
