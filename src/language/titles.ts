@@ -35,7 +35,7 @@ class Titles {
         SYKDOM_I_FAMILIEN: 'Omsorgspenger, opplæringspenger, pleiepenger',
         SYKEPENGER: 'Sykepenger',
         TIDLIGERE_FAMILIEPLEIER: 'Ytelser til tidligere familiepleier',
-        TILTAKSPENGER: 'Tiltakspenger for arbeidsrettet tiltak',
+        TILTAKSPENGER: 'Tiltakspenger for arbeidsmarkedstiltak',
         UFORETRYGD: 'Uføretrygd',
         YRKESSKADETRYGD: 'Yrkesskade og yrkesskadetrygd',
         AAP: 'Arbeidsavklaringspenger',
