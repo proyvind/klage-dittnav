@@ -5,7 +5,6 @@ import { ensureStringIsTema } from '../tema/tema';
 import InngangHovedkategorier from './inngang/inngang-hovedkategorier';
 import LandingPage from './landing-page';
 import { getQueryValue } from '../query/get-query-value';
-import { getTitle } from '../query/get-title';
 
 const RootWithQuery = () => {
     const { search } = useLocation();
@@ -16,9 +15,14 @@ const RootWithQuery = () => {
         return <InngangHovedkategorier />;
     }
 
-    const title = getTitle(query, temaKey);
+    const titleKey = getQueryValue(query.tittel);
+    const ytelse = getQueryValue(query.ytelse);
+    if (titleKey === null && ytelse === null) {
+        return <InngangHovedkategorier />;
+    }
+
     const saksnummer = getQueryValue(query.saksnummer);
-    return LandingPage(temaKey, title, saksnummer);
+    return LandingPage(temaKey, titleKey, ytelse, saksnummer);
 };
 
 export default RootWithQuery;

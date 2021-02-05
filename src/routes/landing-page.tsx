@@ -7,7 +7,12 @@ import { TemaKey } from '../tema/tema';
 import { AppContext } from '../app-context/app-context';
 import LoadingPage from '../loading-page/loading-page';
 
-const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null = null) => {
+const LandingPage = (
+    temaKey: TemaKey,
+    titleKey: string | null,
+    ytelse: string | null,
+    saksnummer: string | null = null
+) => {
     const { user, setUser } = useContext(AppContext);
     const [loading, setLoading] = useState(true);
 
@@ -24,17 +29,27 @@ const LandingPage = (temaKey: TemaKey, title: string, saksnummer: string | null 
     }
 
     if (user === null) {
-        return <InngangInnsendingDigital temaKey={temaKey} title={title} internalSaksnummer={saksnummer} />;
+        return (
+            <InngangInnsendingDigital
+                temaKey={temaKey}
+                ytelse={ytelse}
+                titleKey={titleKey}
+                internalSaksnummer={saksnummer}
+            />
+        );
     }
 
     const query = queryString.stringify(
         {
             tema: temaKey,
-            saksnummer,
-            tittel: title
+            tittel: titleKey,
+            ytelse,
+            saksnummer
         },
         {
-            skipNull: true
+            skipNull: true,
+            sort: false,
+            skipEmptyString: true
         }
     );
     return <Redirect to={`/ny?${query}`} />;

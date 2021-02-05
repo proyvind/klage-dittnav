@@ -12,6 +12,7 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { SectionTitle } from '../../styled-components/section-title';
 import { usePageInit } from '../../page-init/page-init';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+import { useTitle } from '../../language/titles';
 
 interface Props {
     inngangkategori: InngangKategori;
@@ -29,32 +30,64 @@ const InngangKategorier = ({ inngangkategori }: Props) => {
 
                 <WhiteSection>
                     <SectionTitle>Hvilken tjeneste eller ytelse gjelder det?</SectionTitle>
-                    <SpaceBetweenFlexListContainer>{getLinks(inngangkategori)}</SpaceBetweenFlexListContainer>
+                    <KategoriLenker {...inngangkategori} />
                 </WhiteSection>
             </ContentContainer>
         </InngangMainContainer>
     );
 };
 
-const getLinks = ({ kategorier, path }: InngangKategori) =>
-    kategorier.map(kategori => {
-        if (!kategori.externalUrl) {
+const KategoriLenker = ({ kategorier, path }: InngangKategori) => (
+    <SpaceBetweenFlexListContainer>
+        {kategorier.map(kategori => {
+            if (typeof kategori.externalUrl === 'string') {
+                return (
+                    <ExternalKategoriLink
+                        key={kategori.externalUrl}
+                        titleKey={kategori.titleKey}
+                        externalUrl={kategori.externalUrl}
+                    />
+                );
+            }
+
             return (
-                <KlageFlexLinkPanel key={kategori.title} href={`/${path}/${kategori.path}`} border>
-                    <div>
-                        <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
-                    </div>
-                </KlageFlexLinkPanel>
+                <KategoriLink key={kategori.titleKey} titleKey={kategori.titleKey} path={`/${path}/${kategori.path}`} />
             );
-        }
-        return (
-            <ExternalKlageFlexLinkPanel key={kategori.title} href={kategori.externalUrl} border>
-                <div>
-                    <Undertittel className="lenkepanel__heading">{kategori.title}</Undertittel>
-                </div>
-            </ExternalKlageFlexLinkPanel>
-        );
-    });
+        })}
+    </SpaceBetweenFlexListContainer>
+);
+
+interface KategoriLinkProps {
+    titleKey: string;
+    path: string;
+}
+
+const KategoriLink = ({ titleKey, path }: KategoriLinkProps) => {
+    const title = useTitle(titleKey);
+    return (
+        <KlageFlexLinkPanel key={titleKey} href={path} border>
+            <div>
+                <Undertittel className="lenkepanel__heading">{title}</Undertittel>
+            </div>
+        </KlageFlexLinkPanel>
+    );
+};
+
+interface ExternalKategoriProps {
+    titleKey: string;
+    externalUrl: string;
+}
+
+const ExternalKategoriLink = ({ titleKey, externalUrl }: ExternalKategoriProps) => {
+    const title = useTitle(titleKey);
+    return (
+        <ExternalKlageFlexLinkPanel key={titleKey} href={externalUrl} border>
+            <div>
+                <Undertittel className="lenkepanel__heading">{title}</Undertittel>
+            </div>
+        </ExternalKlageFlexLinkPanel>
+    );
+};
 
 const arePropsEqual = (prevProps: Props, nextProps: Props) => prevProps.inngangkategori === nextProps.inngangkategori;
 

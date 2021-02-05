@@ -10,7 +10,7 @@ import MobilePhoneIdCard from '../../icons/MobilePhoneIdCardIcon';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
 import { ExternalLink, KlageLinkPanel } from '../../link/link';
-import { TemaKey, Tema } from '../../tema/tema';
+import { TemaKey } from '../../tema/tema';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { CenteredPageTitle } from '../../styled-components/page-title';
@@ -21,9 +21,12 @@ import { InngangKategori } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import LawBook from '../../icons/LawBook';
 import { klageFormUrl } from '../../kategorier/kategorier';
+import { useTitleOrYtelse } from '../../language/titles';
+
 interface Props {
     temaKey: TemaKey;
-    title?: string;
+    titleKey: string | null;
+    ytelse: string | null;
     internalSaksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
     digitalKlageFullmakt?: boolean;
@@ -34,7 +37,8 @@ interface Props {
 
 const InngangInnsendingDigital = ({
     temaKey,
-    title = Tema[temaKey],
+    titleKey,
+    ytelse,
     internalSaksnummer = null,
     inngangkategori = null,
     digitalKlageFullmakt,
@@ -42,7 +46,8 @@ const InngangInnsendingDigital = ({
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
-    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, title);
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, titleKey ?? ytelse ?? temaKey);
+    const title = useTitleOrYtelse(temaKey, titleKey, ytelse);
     usePageInit(`${title} \u2013 klage eller anke`);
     const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori), [inngangkategori]);
     useBreadcrumbs(breadcrumbs, title);
@@ -55,7 +60,8 @@ const InngangInnsendingDigital = ({
                 <WhiteSection>
                     <DigitalContent
                         temaKey={temaKey}
-                        title={title}
+                        titleKey={titleKey}
+                        ytelse={ytelse}
                         saksnummer={internalSaksnummer}
                         digitalKlageFullmakt={digitalKlageFullmakt ?? false}
                     />
@@ -113,12 +119,13 @@ const InngangInnsendingDigital = ({
 
 interface DigitalContentProps {
     temaKey: TemaKey;
-    title: string;
+    titleKey: string | null;
+    ytelse: string | null;
     saksnummer: string | null;
     digitalKlageFullmakt: boolean;
 }
 
-const DigitalContent = ({ temaKey, title, saksnummer, digitalKlageFullmakt }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFullmakt }: DigitalContentProps) => {
     const { search } = useLocation();
     if (saksnummer === null) {
         const query = queryString.parse(search);
@@ -127,8 +134,9 @@ const DigitalContent = ({ temaKey, title, saksnummer, digitalKlageFullmakt }: Di
     const query = queryString.stringify(
         {
             tema: temaKey,
-            saksnummer,
-            tittel: title
+            tittel: titleKey,
+            ytelse,
+            saksnummer
         },
         {
             skipNull: true
@@ -205,6 +213,7 @@ function getQueryValue(queryValue: string | string[] | null | undefined) {
 const arePropsEqual = (prevProps: Props, nextProps: Props) =>
     prevProps.temaKey === nextProps.temaKey &&
     prevProps.internalSaksnummer === nextProps.internalSaksnummer &&
-    prevProps.title === nextProps.title;
+    prevProps.titleKey === nextProps.titleKey &&
+    prevProps.ytelse === nextProps.ytelse;
 
 export default React.memo(InngangInnsendingDigital, arePropsEqual);

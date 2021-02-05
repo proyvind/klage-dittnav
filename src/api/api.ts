@@ -4,8 +4,9 @@ import { User } from '../user/user';
 import { Attachment } from '../klage/attachment';
 import { environment } from '../environment/environment';
 import { NewKlage, Klage, UpdateKlage, FinalizedKlage } from '../klage/klage';
-import { Tema, TemaKey } from '../tema/tema';
+import { TemaKey } from '../tema/tema';
 import { foedselsnrFormat } from '../routes/klageskjema/summary/text-formatting';
+import { TITLES } from '../language/titles';
 
 export async function getUser() {
     const url = environment.userUrl;
@@ -19,11 +20,12 @@ export async function getUser() {
 
 export async function getDraftKlage(
     temaKey: TemaKey,
-    ytelse: string,
+    titleKey: string | null,
+    ytelse: string | null,
     internalSaksnummer: string | null,
     fullmaktsgiver: string | null
 ) {
-    const url = environment.draftKlageUrl(temaKey, ytelse, internalSaksnummer, fullmaktsgiver);
+    const url = environment.draftKlageUrl(temaKey, titleKey, ytelse, internalSaksnummer, fullmaktsgiver);
     try {
         return await getJSON<Klage>(url, 'Ingen påbegynt klage funnet.');
     } catch {
@@ -34,9 +36,10 @@ export async function getDraftKlage(
 export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
     const url = environment.hasFullmaktForUrl(tema, fnr);
     try {
+        const ffnr = foedselsnrFormat(fnr);
         return await getJSON<User>(
             url,
-            `Du har ikke fullmakt for person med personnummer ${foedselsnrFormat('' + fnr)} for området ${Tema[tema]}.`
+            `Du har ikke fullmakt for person med personnummer ${ffnr} for området ${TITLES.getTemaTitle(tema)}.`
         );
     } catch (error) {
         logError(error, 'Get fullmakt user error.', { resource: url });

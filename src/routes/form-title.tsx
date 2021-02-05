@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Sidetittel, Undertittel } from 'nav-frontend-typografi';
 import { Klage } from '../klage/klage';
+import { useTitleOrYtelse } from '../language/titles';
 
 const TitleContainer = styled.div`
     background-color: #cce1f3;
@@ -22,10 +23,13 @@ interface Props {
     klage: Klage;
 }
 
-const FormTitle = ({ klage }: Props) => (
-    <TitleContainer>
-        <Title>Klage på vedtak</Title>
-        <Undertittel>{klage.ytelse}</Undertittel>
-    </TitleContainer>
-);
+const FormTitle = ({ klage }: Props) => {
+    const title = useTitleOrYtelse(klage.tema, klage.titleKey, klage.ytelse);
+    return (
+        <TitleContainer>
+            <Title>Klage på vedtak</Title>
+            <Undertittel>{title}</Undertittel>
+        </TitleContainer>
+    );
+};
 export default FormTitle;

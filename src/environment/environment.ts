@@ -128,13 +128,15 @@ export class Environment implements EnvironmentVariables {
     klageUrl = (klageId: KlageId): string => `${this.klagerUrl}/${klageId}`;
     draftKlageUrl = (
         temaKey: TemaKey,
-        ytelse: string,
+        titleKey: string | null,
+        ytelse: string | null,
         internalSaksnummer: string | null,
         fullmaktsgiver: string | null
     ) => {
         const query = queryString.stringify(
             {
                 tema: temaKey,
+                titleKey,
                 ytelse,
                 internalSaksnummer,
                 fullmaktsgiver

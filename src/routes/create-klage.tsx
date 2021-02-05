@@ -6,10 +6,10 @@ import { ensureStringIsTema, TemaKey } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
 import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
 import { AppContext } from '../app-context/app-context';
-import { getTitle } from '../query/get-title';
 import LoadingPage from '../loading-page/loading-page';
 import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
 import { Language } from '../klage/klage';
+import { TITLES } from '../language/titles';
 
 const CreateKlage = () => {
     const { search } = useLocation();
@@ -23,21 +23,21 @@ const CreateKlage = () => {
         }
 
         const query = queryString.parse(search);
-        const temaKey = ensureStringIsTema(getQueryValue(query.tema));
 
+        const temaKey = ensureStringIsTema(getQueryValue(query.tema));
         if (temaKey === null) {
             setError(`Ugyldig tema "${query.tema}".`);
             return;
         }
 
         const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
-
         if (fullmaktsgiver === null) {
             resumeOrCreateKlage(temaKey, fullmaktsgiver, query)
                 .then(setKlage)
                 .catch(() => setError(oppretteKlageError()));
             return;
         }
+
         getFullmaktsgiver(temaKey, fullmaktsgiver)
             .then(setFullmaktsgiver)
             .then(() =>
@@ -64,11 +64,12 @@ async function resumeOrCreateKlage(
     fullmaktsgiver: string | null,
     query: queryString.ParsedQuery<string>
 ) {
-    const title = getTitle(query, temaKey);
+    const ytelse = getQueryValue(query.ytelse);
+    const titleKey = TITLES.ensureTitleKey(getQueryValue(query.tittel));
     const saksnummer = getQueryValue(query.saksnummer);
     const language = getLanguage();
 
-    const draftKlage = await getDraftKlage(temaKey, title, saksnummer, fullmaktsgiver);
+    const draftKlage = await getDraftKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver);
     if (draftKlage !== null) {
         return draftKlage;
     }
@@ -76,12 +77,13 @@ async function resumeOrCreateKlage(
         fritekst: '',
         checkboxesSelected: [],
         tema: temaKey,
-        ytelse: title,
+        titleKey: titleKey ?? undefined,
+        ytelse: ytelse ?? undefined,
         vedtakDate: null,
         userSaksnummer: null,
         internalSaksnummer: saksnummer,
         fullmaktsgiver: fullmaktsgiver,
-        language: language
+        language
     });
 }
 

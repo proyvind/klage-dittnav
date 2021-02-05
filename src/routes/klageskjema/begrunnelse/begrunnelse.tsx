@@ -172,14 +172,15 @@ const createKlageUpdate = (
 ): UpdateKlage => ({
     id: klage.id,
     tema: klage.tema,
+    titleKey: klage.titleKey,
     ytelse: klage.ytelse,
     fullmaktsgiver: klage.fullmaktsgiver,
+    internalSaksnummer: klage.internalSaksnummer,
+    language: klage.language,
     checkboxesSelected,
     userSaksnummer,
-    internalSaksnummer: klage.internalSaksnummer,
     fritekst,
-    vedtakDate,
-    language: klage.language
+    vedtakDate
 });
 
 const getError = (error: Error | null, logIn: () => void) => {
