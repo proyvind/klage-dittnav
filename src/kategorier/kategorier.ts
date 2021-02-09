@@ -35,8 +35,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'lonnskompensasjon',
-                mailKlageUrl:
-                    'https://www.nav.no/soknader/nb/bedrift/covid-19/lonnskompensasjon-og-refusjon-ved-permittering-endring'
+                mailKlageUrl: 'https://www.nav.no/soknader/nb/person/korona/lonnskompensasjon-ettersendelse-klage'
             },
             {
                 temaKey: TemaKey.GEN,
