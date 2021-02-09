@@ -35,16 +35,6 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
             />
             {showAttachmentLoader(attachmentsLoading)}
             <PageParagraph>Har du informasjon du ønsker å legge ved, laster du det opp her.</PageParagraph>
-            {getAttachmentError(attachmentError)}
-
-            <UploadButton
-                inputId={FILE_INPUT_ID}
-                attachments={attachments}
-                setAttachments={setAttachments}
-                setLoading={setAttachmentsLoading}
-                klage={klage}
-                setError={setAttachmentError}
-            />
 
             <KlageAlertStripe type="info" form="inline">
                 <Undertekst>
@@ -55,6 +45,17 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
                     enn 32 MB.
                 </Undertekst>
             </KlageAlertStripe>
+
+            {getAttachmentError(attachmentError)}
+
+            <UploadButton
+                inputId={FILE_INPUT_ID}
+                attachments={attachments}
+                setAttachments={setAttachments}
+                setLoading={setAttachmentsLoading}
+                klage={klage}
+                setError={setAttachmentError}
+            />
         </Row>
     );
 };

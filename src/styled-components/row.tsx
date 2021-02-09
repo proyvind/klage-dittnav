@@ -1,5 +1,9 @@
 import styled from 'styled-components/macro';
 
+export const FatRow = styled.div`
+    margin-bottom: 48px;
+`;
+
 export const Row = styled.div`
     margin-bottom: 32px;
 `;
