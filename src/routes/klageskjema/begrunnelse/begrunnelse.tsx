@@ -22,7 +22,7 @@ import AttachmentsSection from './attachments/attachments';
 import VedtakDate from './vedtak-date';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 import Saksnummer from './saksnummer';
-import { Row } from '../../../styled-components/row';
+import { FatRow, Row } from '../../../styled-components/row';
 import FullmaktInfo from './fullmakt-info';
 
 interface Props {
@@ -145,12 +145,14 @@ const Begrunnelse = ({ klage }: Props) => {
                 <AutosaveProgressIndicator autosaveStatus={autosaveStatus} />
             </Row>
 
-            <AttachmentsSection
-                attachments={attachments}
-                setAttachments={setAttachments}
-                setIsLoadig={setIsLoading}
-                klage={klage}
-            />
+            <FatRow>
+                <AttachmentsSection
+                    attachments={attachments}
+                    setAttachments={setAttachments}
+                    setIsLoadig={setIsLoading}
+                    klage={klage}
+                />
+            </FatRow>
 
             {getError(error, storeKlageAndLogIn)}
 
