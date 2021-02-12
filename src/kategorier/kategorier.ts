@@ -89,7 +89,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.TIL,
                 titleKey: 'TILTAKSPENGER',
                 allowsAnke: false,
-                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'tiltakspenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/tiltakspenger/NAV%2076-13.45/klage/brev'
