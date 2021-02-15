@@ -157,11 +157,11 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             },
             {
                 temaKey: TemaKey.YRK,
-                titleKey: 'YRKESSKADETRYGD',
+                titleKey: 'YRKESSKADE',
                 allowsAnke: true,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
-                path: 'yrkesskadetrygd',
+                path: 'yrkesskade',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/klage/brev',
                 mailAnkeUrl: 'https://www.nav.no/soknader/nb/person/helse/yrkesskade/NAV%2013-07.05/anke/brev'
             }

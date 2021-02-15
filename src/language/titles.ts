@@ -37,7 +37,7 @@ class Titles {
         TIDLIGERE_FAMILIEPLEIER: 'Ytelser til tidligere familiepleier',
         TILTAKSPENGER: 'Tiltakspenger for arbeidsmarkedstiltak',
         UFORETRYGD: 'Uføretrygd',
-        YRKESSKADETRYGD: 'Yrkesskade og yrkesskadetrygd',
+        YRKESSKADE: 'Yrkesskade',
         AAP: 'Arbeidsavklaringspenger',
         AAR: 'Aa-registeret',
         AGR: 'Ajourhold - Grunnopplysninger',
