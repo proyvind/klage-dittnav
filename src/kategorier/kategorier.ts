@@ -86,10 +86,10 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                     'https://www.nav.no/soknader/nb/person/arbeid/lonnsgaranti-arbeidsgiver-betaler-ikke-ut-lonn/NAV%2067-01.01/klage/brev'
             },
             {
-                temaKey: TemaKey.TIL,
+                temaKey: TemaKey.IND,
                 titleKey: 'TILTAKSPENGER',
                 allowsAnke: false,
-                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'tiltakspenger',
                 mailKlageUrl: 'https://www.nav.no/soknader/nb/person/arbeid/tiltakspenger/NAV%2076-13.45/klage/brev'
