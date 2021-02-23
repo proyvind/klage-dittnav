@@ -16,6 +16,7 @@ const CreateKlage = () => {
     const history = useHistory();
     const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
+    const [readyToRedirect, setReadyToRedirect] = useState<boolean>(false);
 
     useEffect(() => {
         const query = queryString.parse(search);
@@ -44,7 +45,10 @@ const CreateKlage = () => {
 
         if (fullmaktsgiver === null) {
             resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
-                .then(setKlage)
+                .then(k => {
+                    setKlage(k);
+                    setReadyToRedirect(true);
+                })
                 .catch(() => setError(oppretteKlageError()));
             return;
         }
@@ -53,7 +57,10 @@ const CreateKlage = () => {
             .then(setFullmaktsgiver)
             .then(() =>
                 resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
-                    .then(setKlage)
+                    .then(k => {
+                        setKlage(k);
+                        setReadyToRedirect(true);
+                    })
                     .catch(() => setError(oppretteKlageError()))
             )
             .catch(() => setError(finneFullmaktsgiverError(fullmaktsgiver)));
@@ -67,7 +74,10 @@ const CreateKlage = () => {
         return <LoadingPage>Oppretter klage...</LoadingPage>;
     }
 
-    return <Redirect to={`/${klage.id}/begrunnelse`} />;
+    if (readyToRedirect) {
+        return <Redirect to={`/${klage.id}/begrunnelse`} />;
+    }
+    return null;
 };
 
 async function resumeOrCreateKlage(
