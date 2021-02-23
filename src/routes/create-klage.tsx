@@ -16,12 +16,9 @@ const CreateKlage = () => {
     const history = useHistory();
     const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
+    const [readyToRedirect, setReadyToRedirect] = useState<boolean>(false);
 
     useEffect(() => {
-        if (klage !== null) {
-            return;
-        }
-
         const query = queryString.parse(search);
 
         const temaKey = ensureStringIsTema(getQueryValue(query.tema));
@@ -30,10 +27,28 @@ const CreateKlage = () => {
             return;
         }
 
+        const ytelse = getQueryValue(query.ytelse);
+        const titleKey = TITLES.ensureTitleKey(getQueryValue(query.tittel));
+        const saksnummer = getQueryValue(query.saksnummer);
         const fullmaktsgiver = getQueryValue(query.fullmaktsgiver);
+
+        if (
+            klage !== null &&
+            klage.tema === temaKey &&
+            klage.titleKey === (titleKey ?? undefined) &&
+            klage.internalSaksnummer === saksnummer &&
+            klage.ytelse === (ytelse ?? undefined) &&
+            klage.fullmaktsgiver === fullmaktsgiver
+        ) {
+            return;
+        }
+
         if (fullmaktsgiver === null) {
-            resumeOrCreateKlage(temaKey, fullmaktsgiver, query)
-                .then(setKlage)
+            resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
+                .then(k => {
+                    setKlage(k);
+                    setReadyToRedirect(true);
+                })
                 .catch(() => setError(oppretteKlageError()));
             return;
         }
@@ -41,8 +56,11 @@ const CreateKlage = () => {
         getFullmaktsgiver(temaKey, fullmaktsgiver)
             .then(setFullmaktsgiver)
             .then(() =>
-                resumeOrCreateKlage(temaKey, fullmaktsgiver, query)
-                    .then(setKlage)
+                resumeOrCreateKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver)
+                    .then(k => {
+                        setKlage(k);
+                        setReadyToRedirect(true);
+                    })
                     .catch(() => setError(oppretteKlageError()))
             )
             .catch(() => setError(finneFullmaktsgiverError(fullmaktsgiver)));
@@ -56,17 +74,19 @@ const CreateKlage = () => {
         return <LoadingPage>Oppretter klage...</LoadingPage>;
     }
 
-    return <Redirect to={`/${klage.id}/begrunnelse`} />;
+    if (readyToRedirect) {
+        return <Redirect to={`/${klage.id}/begrunnelse`} />;
+    }
+    return null;
 };
 
 async function resumeOrCreateKlage(
     temaKey: TemaKey,
-    fullmaktsgiver: string | null,
-    query: queryString.ParsedQuery<string>
+    titleKey: string | null,
+    ytelse: string | null,
+    saksnummer: string | null,
+    fullmaktsgiver: string | null
 ) {
-    const ytelse = getQueryValue(query.ytelse);
-    const titleKey = TITLES.ensureTitleKey(getQueryValue(query.tittel));
-    const saksnummer = getQueryValue(query.saksnummer);
     const language = getLanguage();
 
     const draftKlage = await getDraftKlage(temaKey, titleKey, ytelse, saksnummer, fullmaktsgiver);
