@@ -9,7 +9,7 @@ env:
   BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -53,7 +53,7 @@ jobs:
   deploypreprod:
     name: Deploy to dev-gcp
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@master
         name: Checkout code
