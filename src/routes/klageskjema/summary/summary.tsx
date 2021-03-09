@@ -21,11 +21,12 @@ import { ExternalLink } from '../../../link/link';
 import { CenteredPageSubTitle } from '../../../styled-components/page-title';
 import { CustomMarginRow } from '../../../styled-components/row';
 import InformationPointBox from './information-point-box';
-
 import { KlageUndertittel } from '../../../styled-components/undertittel';
 import Checkboxes from './checkboxes';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 import FullmaktInfo from '../begrunnelse/fullmakt-info';
+import { useLanguage } from '../../../language/use-language';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
     klage: Klage;
@@ -33,6 +34,8 @@ interface Props {
 
 const Oppsummering = ({ klage }: Props) => {
     const history = useHistory();
+    const language = useLanguage();
+    const { klageskjema } = useTranslation();
     const { setKlage, user } = useContext(AppContext);
     const [loading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -43,7 +46,7 @@ const Oppsummering = ({ klage }: Props) => {
         event.preventDefault();
 
         if (klage.status === KlageStatus.DONE) {
-            history.push(`/${klage.id}/kvittering`);
+            history.push(`/${language}/${klage.id}/kvittering`);
             return;
         }
 
@@ -55,12 +58,12 @@ const Oppsummering = ({ klage }: Props) => {
                 finalizedDate,
                 status: KlageStatus.DONE
             });
-            history.push(`/${klage.id}/kvittering`);
+            history.push(`/${language}/${klage.id}/kvittering`);
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message);
             } else {
-                setError('Klarte ikke sende inn klagen. Ukjent feil.');
+                setError(klageskjema.summary.submit_error);
             }
         }
         setIsLoading(false);
@@ -73,25 +76,25 @@ const Oppsummering = ({ klage }: Props) => {
     return (
         <>
             <Icon />
-            <CenteredPageSubTitle tag={'h2'}>Se over før du sender inn</CenteredPageSubTitle>
+            <CenteredPageSubTitle tag={'h2'}>{klageskjema.summary.title}</CenteredPageSubTitle>
             <FullmaktInfo />
             <Frame>
                 <Ekspanderbartpanel
                     border={false}
                     apen={false}
                     className="form-expand"
-                    tittel={<BlackUndertittel>Person&shy;opplysninger</BlackUndertittel>}
+                    tittel={<BlackUndertittel>{klageskjema.summary.sections.person.title}</BlackUndertittel>}
                 >
-                    <Text>Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.</Text>
+                    <Text>{klageskjema.summary.sections.person.info_from}</Text>
                     <PersonligeOpplysningerSummary user={user} />
                     <CustomMarginRow margin={8}>
-                        <ExternalLink showIcon href="https://www.skatteetaten.no/person/folkeregister/">
-                            Endre navn eller adresse (Folkeregisteret)
+                        <ExternalLink showIcon href={klageskjema.summary.sections.person.change_name_address.url}>
+                            {klageskjema.summary.sections.person.change_name_address.text}
                         </ExternalLink>
                     </CustomMarginRow>
                     <CustomMarginRow margin={0}>
-                        <ExternalLink showIcon href="https://brukerprofil.difi.no/minprofil">
-                            Endre telefonnummer (Kontakt- og reservasjonsregisteret)
+                        <ExternalLink showIcon href={klageskjema.summary.sections.person.change_phone.url}>
+                            {klageskjema.summary.sections.person.change_phone.text}
                         </ExternalLink>
                     </CustomMarginRow>
                 </Ekspanderbartpanel>
@@ -99,24 +102,26 @@ const Oppsummering = ({ klage }: Props) => {
                 <Ekspanderbartpanel
                     border={false}
                     apen={false}
-                    tittel={<BlackUndertittel>Opplysninger fra saken</BlackUndertittel>}
+                    tittel={<BlackUndertittel>{klageskjema.summary.sections.case.title}</BlackUndertittel>}
                 >
                     <VedtakSummary klage={klage} />
                 </Ekspanderbartpanel>
                 <ColoredLine color="#a2a1a1" />
 
                 <SummarySection>
-                    <KlageUndertittel>Begrunnelse i din klage</KlageUndertittel>
-                    <InformationPointBox header={'Hva er du uenig i?'}>
+                    <KlageUndertittel>{klageskjema.summary.sections.begrunnelse.title}</KlageUndertittel>
+                    <InformationPointBox header={klageskjema.summary.sections.begrunnelse.what}>
                         <Checkboxes checkboxesSelected={klage.checkboxesSelected} />
                     </InformationPointBox>
-                    <InformationPointBox header={'Hvorfor er du uenig?'}>
+                    <InformationPointBox header={klageskjema.summary.sections.begrunnelse.why}>
                         <WrapNormaltekst>{klage.fritekst}</WrapNormaltekst>
                     </InformationPointBox>
                 </SummarySection>
 
                 <SummarySection>
-                    <Undertittel>Vedlagte dokumenter ({klage.vedlegg.length})</Undertittel>
+                    <Undertittel>
+                        {klageskjema.summary.sections.begrunnelse.documents} ({klage.vedlegg.length})
+                    </Undertittel>
                     <AttachmentSummary klage={klage} attachments={toFiles(klage.vedlegg)} />
                 </SummarySection>
             </Frame>
@@ -125,13 +130,13 @@ const Oppsummering = ({ klage }: Props) => {
 
             <CenteredContainer>
                 <RowKnapp
-                    onClick={() => history.push(`/${klage.id}/begrunnelse`)}
+                    onClick={() => history.push(`/${language}/${klage.id}/begrunnelse`)}
                     disabled={klage.status !== KlageStatus.DRAFT}
                 >
-                    Tilbake
+                    {klageskjema.summary.back}
                 </RowKnapp>
                 <Hovedknapp onClick={submitForm} disabled={loading} spinner={loading}>
-                    {getSubmitText(klage.status)}
+                    {klageskjema.summary.next(klage.status)}
                 </Hovedknapp>
             </CenteredContainer>
         </>
@@ -149,8 +154,6 @@ const getError = (error: string | null) => {
         </KlageAlertStripeFeil>
     );
 };
-
-const getSubmitText = (status: KlageStatus) => (status === KlageStatus.DRAFT ? 'Send inn' : 'Se innsendt klage');
 
 const Frame = styled.section`
     margin-bottom: 48px;

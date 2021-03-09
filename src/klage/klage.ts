@@ -1,4 +1,6 @@
 import { ISODate, ISODateTime } from '../date/date';
+import { StringValue } from '../kategorier/kategorier';
+import { Languages } from '../language/language';
 import { TemaKey } from '../tema/tema';
 import { Attachment } from './attachment';
 
@@ -13,11 +15,6 @@ export enum Reason {
     UENIG_I_VEDTAK_OM_TILBAKEBETALING = 'UENIG_I_VEDTAK_OM_TILBAKEBETALING',
     FOR_LITE_UTBETALT = 'FOR_LITE_UTBETALT',
     UENIG_I_NOE_ANNET = 'UENIG_I_NOE_ANNET'
-}
-
-export enum Language {
-    nb = 'nb',
-    en = 'en'
 }
 
 export interface FinalizedKlage {
@@ -35,7 +32,7 @@ export interface NewKlage {
     readonly ytelse?: string;
     readonly vedtakDate: ISODate | null;
     readonly fullmaktsgiver: string | null;
-    readonly language: Language;
+    readonly language: Languages;
 }
 
 export interface UpdateKlage extends NewKlage {
@@ -48,6 +45,7 @@ export interface Klage extends UpdateKlage {
     readonly status: KlageStatus;
     readonly journalpostId: string | null;
     readonly vedlegg: Attachment[];
+    readonly title: StringValue;
 }
 
 export function reasonsMatch<Reasons>(a1: Reasons[], a2: Reasons[]): boolean {

@@ -3,15 +3,18 @@ import { Label } from 'nav-frontend-skjema';
 import { Datepicker } from 'nav-datovelger';
 import { ISODate } from '../../../date/date';
 import { Row } from '../../../styled-components/row';
+import { Languages } from '../../../language/language';
 
 interface Props {
     vedtakDate: ISODate | null;
     setVedtakDate: (date: ISODate | null) => void;
+    title: string;
+    lang: Languages;
 }
 
-const VedtakDate = ({ vedtakDate, setVedtakDate }: Props) => (
+const VedtakDate = ({ title, vedtakDate, setVedtakDate, lang }: Props) => (
     <Row>
-        <Label htmlFor="vedtaksdato">Vedtaksdato (valgfri)</Label>
+        <Label htmlFor="vedtaksdato">{title}</Label>
         <Datepicker
             onChange={(dateISO, isValid) => setVedtakDate(isValid ? dateISO : null)}
             value={vedtakDate ?? undefined}
@@ -20,6 +23,7 @@ const VedtakDate = ({ vedtakDate, setVedtakDate }: Props) => (
                 maxDate: new Date().toISOString().substring(0, 10)
             }}
             inputId="vedtaksdato"
+            locale={lang}
         />
     </Row>
 );

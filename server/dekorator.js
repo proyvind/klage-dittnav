@@ -1,5 +1,5 @@
 const jsdom = require('jsdom');
-const request = require('request');
+const fetch = require('node-fetch');
 const NodeCache = require('node-cache');
 const { JSDOM } = jsdom;
 
@@ -12,38 +12,35 @@ const cache = new NodeCache({
     checkperiod: SECONDS_PER_MINUTE
 });
 
-const decorator_base_url = 'https://www.nav.no/dekoratoren/';
-const decorator_base_url_gcp = 'https://dekoratoren.dev.nav.no/common-html/v4/navno';
+const DECORATOR_BASE_URL = 'https://www.nav.no/dekoratoren/';
+const DECORATOR_BASE_URL_GCP = 'https://dekoratoren.dev.nav.no/common-html/v4/navno';
 
-const baseUrl = process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? decorator_base_url_gcp : decorator_base_url;
-const decoratorUrl = baseUrl + '?simple=true&redirectToApp=true';
+const getDecorator = async naisClusterName => {
+    const decorator = cache.get('main-cache');
+    if (decorator) {
+        return decorator;
+    }
 
-const getDecorator = () =>
-    new Promise((resolve, reject) => {
-        const decorator = cache.get('main-cache');
-        if (decorator) {
-            resolve(decorator);
-        } else {
-            request(decoratorUrl, (error, response, body) => {
-                if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-                    const { document } = new JSDOM(body).window;
-                    const prop = 'innerHTML';
-                    const data = {
-                        NAV_SKIPLINKS: document.getElementById('skiplinks')[prop],
-                        NAV_SCRIPTS: document.getElementById('scripts')[prop],
-                        NAV_STYLES: document.getElementById('styles')[prop],
-                        NAV_HEADING: document.getElementById('header-withmenu')[prop],
-                        NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-                        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop]
-                    };
-                    cache.set('main-cache', data);
-                    console.log(`Creating cache`);
-                    resolve(data);
-                } else {
-                    reject(new Error(error));
-                }
-            });
-        }
-    });
+    const baseUrl = naisClusterName === 'dev-gcp' ? DECORATOR_BASE_URL_GCP : DECORATOR_BASE_URL;
+    const decoratorUrl = baseUrl + '?simple=true&redirectToApp=true';
+
+    const res = await fetch(decoratorUrl);
+    if (!res.ok) {
+        throw new Error(`Failed to get Decorator. HTTP error ${res.statusCode}.`);
+    }
+    const html = await res.text();
+    const { document } = new JSDOM(html).window;
+    const prop = 'innerHTML';
+    const data = {
+        NAV_SKIPLINKS: document.getElementById('skiplinks')[prop],
+        NAV_SCRIPTS: document.getElementById('scripts')[prop],
+        NAV_STYLES: document.getElementById('styles')[prop],
+        NAV_HEADING: document.getElementById('header-withmenu')[prop],
+        NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
+        MEGAMENU_RESOURCES: document.getElementById('megamenu-resources')[prop]
+    };
+    cache.set('main-cache', data);
+    return data;
+};
 
 module.exports = getDecorator;

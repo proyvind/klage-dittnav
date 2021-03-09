@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import ErrorBoundary from '../error-boundry/ErrorBoundary';
 import UserLoader from '../user/user-loader';
 import CreateKlage from './create-klage';
-import { environment, LOGGED_IN_PATH } from '../environment/environment';
+import { ENVIRONMENT, LOGGED_IN_PATH } from '../environment/environment';
 import Begrunnelse from './klageskjema/begrunnelse/begrunnelse';
 import FormContainer from './klageskjema/form-container';
 import KlageLoader from '../klage/klage-loader';
@@ -19,30 +19,37 @@ import InngangKategorier from './inngang/inngang-kategorier';
 import InngangInnsendingDigital from './inngang/inngang-innsendingsvalg-digital';
 import InngangInnsendingPost from './inngang/inngang-innsendingsvalg-post';
 import InngangFullmakt from './inngang/inngang-fullmakt';
+import { Languages, LANGUAGE_KEYS } from '../language/language';
+import LanguageComponenet from '../language/component';
+
+const languagePath = `/:lang(${LANGUAGE_KEYS.join('|')})`;
 
 const App = () => (
     <React.StrictMode>
         <BrowserRouter>
-            <AppContextComponenet>
-                <ErrorBoundary>
-                    <Switch>
-                        {innsendingsRoutes}
-                        {kategoriRoutes}
-                        {fullmaktRoutes}
-                        <Route path={'/ny'} exact>
-                            <UserLoader>
-                                <CreateKlage />
-                            </UserLoader>
-                        </Route>
-                        <Route path={LOGGED_IN_PATH} render={loggedInRedirect} exact />
-                        <Route path={'/:klageId/begrunnelse'} render={begrunnelse} exact />
-                        <Route path={'/:klageId/oppsummering'} render={oppsummering} exact />
-                        <Route path={'/:klageId/kvittering'} render={kvittering} exact />
-                        <Route path={'/'} component={RootWithQuery} exact />
-                        <Route component={NotFoundPage} />
-                    </Switch>
-                </ErrorBoundary>
-            </AppContextComponenet>
+            <LanguageComponenet>
+                <AppContextComponenet>
+                    <ErrorBoundary>
+                        <Switch>
+                            <Route path={`${languagePath}/ny`} exact>
+                                <UserLoader>
+                                    <CreateKlage />
+                                </UserLoader>
+                            </Route>
+                            <Route path={LOGGED_IN_PATH} render={loggedInRedirect} exact />
+                            {innsendingsRoutes}
+                            {kategoriRoutes}
+                            {fullmaktRoutes}
+                            <Route path={`${languagePath}/:klageId/begrunnelse`} render={begrunnelse} exact />
+                            <Route path={`${languagePath}/:klageId/oppsummering`} render={oppsummering} exact />
+                            <Route path={`${languagePath}/:klageId/kvittering`} render={kvittering} exact />
+                            <Route path={languagePath} component={RootWithQuery} exact />
+                            <Redirect path="/" to={`/${Languages.nb}`} />
+                            <Route component={NotFoundPage} />
+                        </Switch>
+                    </ErrorBoundary>
+                </AppContextComponenet>
+            </LanguageComponenet>
         </BrowserRouter>
     </React.StrictMode>
 );
@@ -50,7 +57,7 @@ const App = () => (
 const kategoriRoutes = INNGANG_KATEGORIER.map(inngangkategori => (
     <Route
         key={inngangkategori.path}
-        path={`/${inngangkategori.path}`}
+        path={`${languagePath}/${inngangkategori.path}`}
         render={() => <InngangKategorier inngangkategori={inngangkategori} />}
         exact
     />
@@ -58,7 +65,7 @@ const kategoriRoutes = INNGANG_KATEGORIER.map(inngangkategori => (
 
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
     inngangkategori.kategorier.map(kategori => {
-        const path = `/${inngangkategori.path}/${kategori.path}`;
+        const path = `${languagePath}/${inngangkategori.path}/${kategori.path}`;
         return (
             <Route
                 key={path}
@@ -72,7 +79,7 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 
 const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
     inngangkategori.kategorier.map(kategori => {
-        const path = `/${inngangkategori.path}/${kategori.path}/fullmakt`;
+        const path = `${languagePath}/${inngangkategori.path}/${kategori.path}/fullmakt`;
         return (
             <Route
                 key={path}
@@ -90,7 +97,7 @@ const fullmaktRoutes = INNGANG_KATEGORIER.flatMap(inngangkategori =>
 
 function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategori: Kategori) {
     const { digitalKlage, digitalKlageFullmakt, titleKey, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
-    if (digitalKlage.includes(environment.environment)) {
+    if (digitalKlage.includes(ENVIRONMENT.environment)) {
         return (
             <InngangInnsendingDigital
                 temaKey={temaKey}

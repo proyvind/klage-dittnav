@@ -2,16 +2,18 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { CheckboksPanelGruppe, CheckboksPanelProps } from 'nav-frontend-skjema';
 import { Reason } from '../../../klage/klage';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
+    title: string;
     checkedReasons: Reason[];
     setCheckedReasons: (reasons: Reason[]) => void;
     className?: string;
 }
 
-const Reasons = ({ checkedReasons, setCheckedReasons, className }: Props) => (
+const Reasons = ({ title, checkedReasons, setCheckedReasons, className }: Props) => (
     <CheckboksPanelGruppe
-        legend={'Hva er du uenig i? (valgfri)'}
+        legend={title}
         className={className}
         checkboxes={useCheckboxes(checkedReasons)}
         onChange={(_, clickedReason: Reason) => {
@@ -24,8 +26,10 @@ const Reasons = ({ checkedReasons, setCheckedReasons, className }: Props) => (
     />
 );
 
-const useCheckboxes = (checked: Reason[]) =>
-    useMemo<CheckboksPanelProps[]>(
+const useCheckboxes = (checked: Reason[]) => {
+    const { klageskjema } = useTranslation();
+    const reasonTexts = klageskjema.begrunnelse.reasons.texts;
+    return useMemo<CheckboksPanelProps[]>(
         () => [
             {
                 label: reasonTexts[Reason.AVSLAG_PAA_SOKNAD],
@@ -52,14 +56,8 @@ const useCheckboxes = (checked: Reason[]) =>
                 checked: checked.includes(Reason.UENIG_I_VEDTAK_OM_TILBAKEBETALING)
             }
         ],
-        [checked]
+        [checked, reasonTexts]
     );
-
-export const reasonTexts: { [key in Reason]: string } = {
-    [Reason.AVSLAG_PAA_SOKNAD]: 'Jeg har fått avslag på søknaden min',
-    [Reason.FOR_LITE_UTBETALT]: 'Jeg har fått for lite utbetalt',
-    [Reason.UENIG_I_NOE_ANNET]: 'Jeg er uenig i noe annet i vedtaket mitt',
-    [Reason.UENIG_I_VEDTAK_OM_TILBAKEBETALING]: 'Jeg er uenig i vedtaket om tilbakebetaling'
 };
 
 export default styled(Reasons)`

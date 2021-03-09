@@ -6,6 +6,7 @@ import { AppContext } from '../app-context/app-context';
 import { Klage } from './klage';
 import klageStore from './klage-store';
 import LoadingPage from '../loading-page/loading-page';
+import { useTranslation } from '../language/use-translation';
 
 interface Props {
     render: (klage: Klage) => JSX.Element;
@@ -18,14 +19,15 @@ interface Match {
 const KlageLoader = (props: Props) => {
     const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const { klageId } = useParams<Match>();
+    const { klage_loader } = useTranslation();
     const [error, setError] = useState<string | null>(null);
-    const [status, setStatus] = useState('Laster klage...');
+    const [status, setStatus] = useState(klage_loader.loading_klage);
 
     useEffect(() => {
         if (klage === null || klageId !== klage.id.toString()) {
             getKlage(klageId)
                 .then(klage => {
-                    setStatus('Gjenoppretter klage...');
+                    setStatus(klage_loader.restoring);
 
                     const restoredKlage = klageStore.restore(klage);
                     if (restoredKlage !== klage) {
@@ -45,9 +47,9 @@ const KlageLoader = (props: Props) => {
                     return klage;
                 })
                 .then(setKlage)
-                .catch((error: Error) => setError(formatError(klageId, error)));
+                .catch((error: Error) => setError(klage_loader.format_error(klageId, error)));
         }
-    }, [klageId, klage, setKlage, setFullmaktsgiver]);
+    }, [klageId, klage, setKlage, setFullmaktsgiver, klage_loader]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;
@@ -59,7 +61,5 @@ const KlageLoader = (props: Props) => {
 
     return props.render(klage);
 };
-
-const formatError = (klageId: string, error: Error) => `Klarte ikke hente klage med ID "${klageId}". ${error.message}`;
 
 export default KlageLoader;

@@ -10,6 +10,7 @@ import { Klage } from '../../../../klage/klage';
 import { PageParagraph } from '../../../../styled-components/page-paragraph';
 import { KlageAlertStripe, KlageAlertStripeFeil } from '../../../../styled-components/alert';
 import { Row } from '../../../../styled-components/row';
+import { useTranslation } from '../../../../language/use-translation';
 
 interface Props {
     attachments: Attachment[];
@@ -21,12 +22,15 @@ interface Props {
 const FILE_INPUT_ID = 'file-upload-input';
 
 const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }: Props) => {
+    const { klageskjema } = useTranslation();
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
 
     return (
         <Row>
-            <Label htmlFor={FILE_INPUT_ID}>Vedlegg ({attachments.length})</Label>
+            <Label htmlFor={FILE_INPUT_ID}>
+                {klageskjema.begrunnelse.attachments.title} ({attachments.length})
+            </Label>
             <AttachmentPreview
                 attachments={attachments}
                 setAttachments={setAttachments}
@@ -34,16 +38,11 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
                 setError={setAttachmentError}
             />
             {showAttachmentLoader(attachmentsLoading)}
-            <PageParagraph>Har du informasjon du ønsker å legge ved, laster du det opp her.</PageParagraph>
+            <PageParagraph>{klageskjema.begrunnelse.attachments.description}</PageParagraph>
 
             <KlageAlertStripe type="info" form="inline">
-                <Undertekst>
-                    Filtyper som støttes: <b>PNG</b>, <b>JPEG</b>, og <b>PDF</b>.
-                </Undertekst>
-                <Undertekst>
-                    Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større
-                    enn 32 MB.
-                </Undertekst>
+                <Undertekst>{klageskjema.begrunnelse.attachments.supported_types}</Undertekst>
+                <Undertekst>{klageskjema.begrunnelse.attachments.size_limit}</Undertekst>
             </KlageAlertStripe>
 
             {getAttachmentError(attachmentError)}

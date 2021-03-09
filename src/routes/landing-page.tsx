@@ -6,6 +6,7 @@ import { getUser } from '../user/get-user';
 import { TemaKey } from '../tema/tema';
 import { AppContext } from '../app-context/app-context';
 import LoadingPage from '../loading-page/loading-page';
+import { useTranslation } from '../language/use-translation';
 
 const LandingPage = (
     temaKey: TemaKey,
@@ -14,6 +15,7 @@ const LandingPage = (
     saksnummer: string | null = null
 ) => {
     const { user, setUser } = useContext(AppContext);
+    const { landing_page } = useTranslation();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,10 +24,10 @@ const LandingPage = (
                 .then(setUser)
                 .finally(() => setLoading(false));
         }
-    }, [user, setUser]);
+    }, [titleKey, user, setUser]);
 
     if (loading) {
-        return <LoadingPage>Sjekker bruker...</LoadingPage>;
+        return <LoadingPage>{landing_page.checking_user}</LoadingPage>;
     }
 
     if (user === null) {

@@ -2,18 +2,22 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components/macro';
 import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
 import Envelope from '../../../icons/EnvelopeIcon';
+import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
     informStillWorking: boolean;
 }
 
-const KvitteringLoading = (props: Props) => (
-    <>
-        <BouncingEnvelope />
-        <PageTitle>Sender inn klage...</PageTitle>
-        {props.informStillWorking && <Description>Jobber fortsatt...</Description>}
-    </>
-);
+const KvitteringLoading = (props: Props) => {
+    const { klageskjema } = useTranslation();
+    return (
+        <>
+            <BouncingEnvelope />
+            <PageTitle>{klageskjema.kvittering.loading.title}</PageTitle>
+            {props.informStillWorking && <Description>{klageskjema.kvittering.loading.still_working}</Description>}
+        </>
+    );
+};
 
 const bounce = keyframes`
     0%,100% {

@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 import { Sidetittel, Undertittel } from 'nav-frontend-typografi';
 import { Klage } from '../klage/klage';
 import { useTitleOrYtelse } from '../language/titles';
+import { useTranslation } from '../language/use-translation';
 
 const TitleContainer = styled.div`
     background-color: #cce1f3;
@@ -24,10 +25,11 @@ interface Props {
 }
 
 const FormTitle = ({ klage }: Props) => {
+    const { klageskjema } = useTranslation();
     const title = useTitleOrYtelse(klage.tema, klage.titleKey, klage.ytelse);
     return (
         <TitleContainer>
-            <Title>Klage på vedtak</Title>
+            <Title>{klageskjema.common.page_title}</Title>
             <Undertittel>{title}</Undertittel>
         </TitleContainer>
     );
