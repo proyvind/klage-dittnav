@@ -16,6 +16,7 @@ export interface InngangKategori {
     path: string;
     beskrivelse: StringValue;
     kategorier: Kategori[];
+    externalUrl?: StringValue;
 }
 
 export interface Kategori {
@@ -721,6 +722,10 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         title: { [Languages.nb]: 'Sosiale tjenester', [Languages.en]: 'Social services' },
         path: 'sosiale-tjenester',
         beskrivelse: { [Languages.nb]: 'Økonomisk sosialhjelp', [Languages.en]: 'Financial social assistance' },
+        externalUrl: {
+            [Languages.nb]: 'https://www.nav.no/sosialhjelp/klage',
+            [Languages.en]: 'https://www.nav.no/sosialhjelp/klage?lang=en'
+        },
         kategorier: [
             {
                 temaKey: TemaKey.UKJ,

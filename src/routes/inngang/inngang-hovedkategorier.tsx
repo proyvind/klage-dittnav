@@ -3,7 +3,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import VeilederIcon from '../../icons/VeilederIcon';
 import { INNGANG_KATEGORIER } from '../../kategorier/kategorier';
-import { KlageFlexLinkPanel } from '../../link/link';
+import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
@@ -46,14 +46,44 @@ const InngangHovedkategorier = () => {
     );
 };
 
-const getLinks = (lang: Languages) =>
-    INNGANG_KATEGORIER.map(({ title, path, beskrivelse }) => (
-        <KlageFlexLinkPanel key={title[lang]} href={`/${lang}/${path}`} border>
+const getLinks = (lang: Languages) => {
+    return INNGANG_KATEGORIER.map(({ title, path, beskrivelse, externalUrl }) => {
+        if (externalUrl && typeof externalUrl[lang] === 'string') {
+            return (
+                <ExternalHovedkategoriLink
+                    key={externalUrl[lang]}
+                    title={title[lang]}
+                    beskrivelse={beskrivelse[lang]}
+                    externalUrl={externalUrl[lang]}
+                />
+            );
+        }
+        return (
+            <KlageFlexLinkPanel key={title[lang]} href={`/${lang}/${path}`} border>
+                <div>
+                    <Undertittel className="lenkepanel__heading">{title[lang]}</Undertittel>
+                    <Normaltekst>{beskrivelse[lang]}</Normaltekst>
+                </div>
+            </KlageFlexLinkPanel>
+        );
+    });
+};
+
+interface ExternalKategoriProps {
+    title: string;
+    beskrivelse: string;
+    externalUrl: string;
+}
+
+const ExternalHovedkategoriLink = ({ title, beskrivelse, externalUrl }: ExternalKategoriProps) => {
+    return (
+        <ExternalKlageFlexLinkPanel key={title} href={externalUrl} border>
             <div>
-                <Undertittel className="lenkepanel__heading">{title[lang]}</Undertittel>
-                <Normaltekst>{beskrivelse[lang]}</Normaltekst>
+                <Undertittel className="lenkepanel__heading">{title}</Undertittel>
+                <Normaltekst>{beskrivelse}</Normaltekst>
             </div>
-        </KlageFlexLinkPanel>
-    ));
+        </ExternalKlageFlexLinkPanel>
+    );
+};
 
 export default InngangHovedkategorier;
