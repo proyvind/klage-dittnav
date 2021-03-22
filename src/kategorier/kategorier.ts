@@ -719,27 +719,16 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         ]
     },
     {
-        title: { [Languages.nb]: 'Sosiale tjenester', [Languages.en]: 'Social services' },
+        title: { [Languages.nb]: 'Økonomisk sosialhjelp', [Languages.en]: 'Financial social assistance' },
         path: 'sosiale-tjenester',
-        beskrivelse: { [Languages.nb]: 'Økonomisk sosialhjelp', [Languages.en]: 'Financial social assistance' },
+        beskrivelse: {
+            [Languages.nb]: '',
+            [Languages.en]: ''
+        },
+        kategorier: [],
         externalUrl: {
             [Languages.nb]: 'https://www.nav.no/sosialhjelp/klage',
             [Languages.en]: 'https://www.nav.no/sosialhjelp/klage?lang=en'
-        },
-        kategorier: [
-            {
-                temaKey: TemaKey.UKJ,
-                titleKey: 'OKONOMISK_SOSIALHJELP',
-                allowsAnke: false,
-                digitalKlage: [],
-                digitalKlageFullmakt: false,
-                path: 'sosiale-tjenester',
-                mailKlageUrl: klageFormUrl,
-                externalUrl: {
-                    [Languages.nb]: 'https://www.nav.no/sosialhjelp/artikkel/124875?lang=nb',
-                    [Languages.en]: 'https://www.nav.no/sosialhjelp/artikkel/124875?lang=en'
-                }
-            }
-        ]
+        }
     }
 ];
