@@ -47,12 +47,13 @@ const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
     return (
         <SpaceBetweenFlexListContainer>
             {kategorier.map(kategori => {
-                if (typeof kategori.externalUrl === 'string') {
+                const externalUrl = kategori.externalUrl ? kategori.externalUrl[lang] : null;
+                if (typeof externalUrl === 'string') {
                     return (
                         <ExternalKategoriLink
-                            key={kategori.externalUrl}
+                            key={externalUrl}
                             titleKey={kategori.titleKey}
-                            externalUrl={kategori.externalUrl}
+                            externalUrl={externalUrl}
                         />
                     );
                 }
