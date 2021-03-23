@@ -233,6 +233,27 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 }
             },
             {
+                temaKey: TemaKey.SUP,
+                titleKey: 'SUPPLERENDE_STONAD_UFORE_FLYKTNINGER',
+                allowsAnke: true,
+                digitalKlage: [],
+                digitalKlageFullmakt: false,
+                path: 'supplerende-stonad-ufore-flyktninger',
+                mailKlageUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-ufor-flyktning/NAV%2064-01.00/klage/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/pensjon/supplerende-stonad-til-ufor-flyktning/NAV%2064-01.00/klage/brev'
+                },
+
+                mailAnkeUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/pensjon/supplerende-stonad-til-ufor-flyktning/NAV%2064-01.00/anke/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/pensjon/supplerende-stonad-til-ufor-flyktning/NAV%2064-01.00/anke/brev'
+                }
+            },
+            {
                 temaKey: TemaKey.GRU,
                 titleKey: 'GRUNN_OG_HJELPESTONAD',
                 allowsAnke: true,
