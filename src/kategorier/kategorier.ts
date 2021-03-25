@@ -592,7 +592,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.SUP,
                 titleKey: 'SUPPLERENDE_STONAD',
                 allowsAnke: true,
-                digitalKlage: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'supplerende-stonad',
                 mailKlageUrl: {
