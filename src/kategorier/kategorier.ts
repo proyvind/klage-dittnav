@@ -109,7 +109,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.AAP,
                 titleKey: 'ARBEIDSAVKLARINGSPENGER',
                 allowsAnke: true,
-                digitalKlage: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl: {
@@ -198,7 +198,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.AAP,
                 titleKey: 'ARBEIDSAVKLARINGSPENGER',
                 allowsAnke: true,
-                digitalKlage: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'arbeidsavklaringspenger',
                 mailKlageUrl: {
