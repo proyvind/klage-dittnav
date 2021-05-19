@@ -72,7 +72,7 @@ const InngangInnsendingDigital = ({
                         lang={lang}
                     />
                     <InlineRow>
-                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} target="_blank" border>
+                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -92,7 +92,7 @@ const InngangInnsendingDigital = ({
                     </InlineRow>
                     {allowsAnke && (
                         <InlineRow>
-                            <LenkepanelBase href={(mailAnkeUrl ?? klageFormUrl)[lang]} target="_blank" border>
+                            <LenkepanelBase href={(mailAnkeUrl ?? klageFormUrl)[lang]} border>
                                 <LenkePanelContentWithImage>
                                     <IconContainer>
                                         <LawBook />
@@ -170,7 +170,7 @@ const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFul
                         </div>
                     </LenkePanelContentWithImage>
                 </KlageLinkPanel>
-                <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url} showIcon>
+                <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url}>
                     {inngang.innsendingsvalg.digital.elektronisk_id.text}
                 </ExternalLink>
             </InlineRow>
@@ -193,7 +193,7 @@ const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFul
                             </div>
                         </LenkePanelContentWithImage>
                     </KlageLinkPanel>
-                    <ExternalLink href={inngang.innsendingsvalg.digital.fullmakt_help.url} showIcon>
+                    <ExternalLink href={inngang.innsendingsvalg.digital.fullmakt_help.url}>
                         {inngang.innsendingsvalg.digital.fullmakt_help.text}
                     </ExternalLink>
                 </InlineRow>

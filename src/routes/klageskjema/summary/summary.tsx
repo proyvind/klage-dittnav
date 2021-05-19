@@ -88,12 +88,12 @@ const Oppsummering = ({ klage }: Props) => {
                     <Text>{klageskjema.summary.sections.person.info_from}</Text>
                     <PersonligeOpplysningerSummary user={user} />
                     <CustomMarginRow margin={8}>
-                        <ExternalLink showIcon href={klageskjema.summary.sections.person.change_name_address.url}>
+                        <ExternalLink href={klageskjema.summary.sections.person.change_name_address.url}>
                             {klageskjema.summary.sections.person.change_name_address.text}
                         </ExternalLink>
                     </CustomMarginRow>
                     <CustomMarginRow margin={0}>
-                        <ExternalLink showIcon href={klageskjema.summary.sections.person.change_phone.url}>
+                        <ExternalLink href={klageskjema.summary.sections.person.change_phone.url}>
                             {klageskjema.summary.sections.person.change_phone.text}
                         </ExternalLink>
                     </CustomMarginRow>
