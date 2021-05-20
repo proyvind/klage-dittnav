@@ -67,7 +67,7 @@ const InngangInnsendingPost = ({
                     </VeilederContainer>
                     <PageParagraph>{inngang.innsendingsvalg.post.description}</PageParagraph>
                     <InlineRow>
-                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} target="_blank" border>
+                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} border>
                             <LenkePanelContentWithImage>
                                 <IconContainer>
                                     <LetterOpened />
@@ -85,7 +85,7 @@ const InngangInnsendingPost = ({
                     </InlineRow>
                     {allowsAnke && mailAnkeUrl && (
                         <InlineRow>
-                            <LenkepanelBase href={mailAnkeUrl[lang]} target="_blank" border>
+                            <LenkepanelBase href={mailAnkeUrl[lang]} border>
                                 <LenkePanelContentWithImage>
                                     <IconContainer>
                                         <LawBook />

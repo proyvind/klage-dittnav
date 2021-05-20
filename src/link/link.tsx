@@ -74,13 +74,13 @@ export const ExternalKlageFlexLinkPanel = styled(ExternalKlageLinkPanel)`
 
 interface ExternalLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     href: string;
-    showIcon?: boolean;
+    openInNewWindow?: boolean;
 }
 
 export const ExternalLink = (props: ExternalLinkProps) => (
-    <BaseLink {...props} target="_blank" rel="noopener noreferrer">
+    <BaseLink {...props} target={props.openInNewWindow ? '_blank' : '_self'} rel="noopener noreferrer">
         {props.children}
-        {props.showIcon ? <ExternalLinkIcon /> : null}
+        {props.openInNewWindow ? <ExternalLinkIcon /> : null}
     </BaseLink>
 );
 
