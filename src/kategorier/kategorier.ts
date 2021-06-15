@@ -45,6 +45,38 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.DAG,
+                titleKey: 'DAGPENGER_FERIEPENGER',
+                allowsAnke: false,
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'dagpenger-feriepenger',
+                mailKlageUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev'
+                },
+                mailAnkeUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.DAG,
+                titleKey: 'DAGPENGER_TILBAKEBETALING_FORSKUDD',
+                allowsAnke: false,
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'dagpenger-tilbakebetaling-forskudd',
+                mailKlageUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev'
+                },
+                mailAnkeUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.DAG,
                 titleKey: 'LONNSKOMPENSASJON',
                 allowsAnke: false,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -96,6 +128,38 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'dagpenger',
+                mailKlageUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev'
+                },
+                mailAnkeUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.DAG,
+                titleKey: 'DAGPENGER_FERIEPENGER',
+                allowsAnke: false,
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'dagpenger-feriepenger',
+                mailKlageUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev'
+                },
+                mailAnkeUrl: {
+                    [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev',
+                    [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.DAG,
+                titleKey: 'DAGPENGER_TILBAKEBETALING_FORSKUDD',
+                allowsAnke: false,
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'dagpenger-tilbakebetaling-forskudd',
                 mailKlageUrl: {
                     [Languages.nb]: 'https://www.nav.no/soknader/nb/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev',
                     [Languages.en]: 'https://www.nav.no/soknader/en/person/arbeid/dagpenger/NAV%2004-01.03/klage/brev'
