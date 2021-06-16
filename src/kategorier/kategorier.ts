@@ -193,7 +193,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.GEN,
                 titleKey: 'LONNSGARANTI',
                 allowsAnke: false,
-                digitalKlage: [],
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'lonnsgaranti',
                 mailKlageUrl: {
