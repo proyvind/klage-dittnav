@@ -62,7 +62,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.DAG,
                 titleKey: 'DAGPENGER_TILBAKEBETALING_FORSKUDD',
-                allowsAnke: true,
+                allowsAnke: false,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'dagpenger-tilbakebetaling-forskudd',
@@ -156,7 +156,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.DAG,
                 titleKey: 'DAGPENGER_TILBAKEBETALING_FORSKUDD',
-                allowsAnke: true,
+                allowsAnke: false,
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'dagpenger-tilbakebetaling-forskudd',
@@ -435,7 +435,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.BID,
                 titleKey: 'EKTEFELLEBIDRAG',
-                allowsAnke: true,
+                allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'ektefellebidrag',
@@ -519,7 +519,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
             {
                 temaKey: TemaKey.BID,
                 titleKey: 'OPPFOSTRINGSBIDRAG',
-                allowsAnke: true,
+                allowsAnke: false,
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'oppfostringsbidrag',
