@@ -4,9 +4,9 @@ import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import { Label } from 'nav-frontend-skjema';
 import AttachmentPreview from './preview';
 import UploadButton from './upload-button';
-import { Attachment } from '../../../../klage/attachment';
+import { Attachment } from '../../../../store/klage/attachment';
 import { CenteredContainer } from '../../../../styled-components/common';
-import { Klage } from '../../../../klage/klage';
+import { Klage } from '../../../../store/klage/types/klage';
 import { PageParagraph } from '../../../../styled-components/page-paragraph';
 import { KlageAlertStripe, KlageAlertStripeFeil } from '../../../../styled-components/alert';
 import { Row } from '../../../../styled-components/row';
@@ -16,12 +16,12 @@ interface Props {
     attachments: Attachment[];
     klage: Klage;
     setAttachments: (attachments: Attachment[]) => void;
-    setIsLoadig: (loading: boolean) => void;
+    setIsLoading: (loading: boolean) => void;
 }
 
 const FILE_INPUT_ID = 'file-upload-input';
 
-const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }: Props) => {
+const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoading }: Props) => {
     const { klageskjema } = useTranslation();
     const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
     const [attachmentError, setAttachmentError] = useState<string | null>(null);
@@ -34,7 +34,7 @@ const AttachmentsSection = ({ klage, attachments, setAttachments, setIsLoadig }:
             <AttachmentPreview
                 attachments={attachments}
                 setAttachments={setAttachments}
-                setLoading={setIsLoadig}
+                setLoading={setIsLoading}
                 setError={setAttachmentError}
             />
             {showAttachmentLoader(attachmentsLoading)}

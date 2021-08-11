@@ -1,5 +1,5 @@
-import { ISODate } from '../date/date';
-import { Klage, KlageStatus, Reason, reasonsMatch } from './klage';
+import { ISODate } from '../../date/date';
+import { Klage, KlageStatus, Reason, reasonsMatch } from './types/klage';
 
 export enum KLAGE_STORAGE_KEYS {
     KLAGE_FRITEKST = 'KLAGE_FRITEKST',

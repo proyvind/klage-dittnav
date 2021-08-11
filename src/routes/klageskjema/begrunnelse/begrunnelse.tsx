@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Label } from 'nav-frontend-skjema';
-import { updateKlage } from '../../../api/api';
+import { updateKlage } from '../../../api/klage/api';
 import { CenteredContainer } from '../../../styled-components/common';
-import { Attachment } from '../../../klage/attachment';
+import { Attachment } from '../../../store/klage/attachment';
 import { AppContext } from '../../../app-context/app-context';
 import { ISODate } from '../../../date/date';
-import { Klage, KlageStatus, Reason, UpdateKlage } from '../../../klage/klage';
+import { Klage, KlageStatus, Reason, UpdateKlage } from '../../../store/klage/types/klage';
 import { NotLoggedInError } from '../../../api/errors';
-import klageStore from '../../../klage/klage-store';
+import klageStore from '../../../store/klage/klage-store';
 import { login } from '../../../user/login';
 import { LoginButton } from '../../../styled-components/login-button';
 import AutosaveProgressIndicator, { AutosaveStatus } from './autosave-progress';
@@ -172,7 +172,7 @@ const Begrunnelse = ({ klage }: Props) => {
                 <AttachmentsSection
                     attachments={attachments}
                     setAttachments={setAttachments}
-                    setIsLoadig={setIsLoading}
+                    setIsLoading={setIsLoading}
                     klage={klage}
                 />
             </FatRow>

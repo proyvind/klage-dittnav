@@ -15,7 +15,7 @@ import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
-import { InlineRow } from '../../styled-components/row';
+import { InlineRow, Row } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
 import { InngangKategori, StringValue } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
@@ -25,6 +25,7 @@ import { useTitleOrYtelse } from '../../language/titles';
 import { Languages } from '../../language/language';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
+import { DineAnkemuligheter } from '../skjemahistorikk/dine-ankemuligheter';
 
 interface Props {
     temaKey: TemaKey;
@@ -34,6 +35,7 @@ interface Props {
     inngangkategori?: InngangKategori | null;
     digitalKlageFullmakt?: boolean;
     allowsAnke?: boolean;
+    showAnkeList?: boolean;
     mailKlageUrl?: StringValue;
     mailAnkeUrl?: StringValue;
 }
@@ -46,6 +48,7 @@ const InngangInnsendingDigital = ({
     inngangkategori = null,
     digitalKlageFullmakt = false,
     allowsAnke,
+    showAnkeList = false,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
@@ -61,6 +64,10 @@ const InngangInnsendingDigital = ({
         <InngangMainContainer>
             <ContentContainer>
                 <CenteredPageTitle>{title}</CenteredPageTitle>
+
+                <Row>
+                    <DineAnkemuligheter show={showAnkeList} />
+                </Row>
 
                 <WhiteSection>
                     <DigitalContent

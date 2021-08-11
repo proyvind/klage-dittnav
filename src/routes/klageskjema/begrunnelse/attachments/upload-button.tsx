@@ -2,10 +2,10 @@ import React, { useRef } from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { Row } from '../../../../styled-components/row';
 import { ISODateTime } from '../../../../date/date';
-import { Attachment, getAttachmentErrorMessage } from '../../../../klage/attachment';
+import { Attachment, getAttachmentErrorMessage } from '../../../../store/klage/attachment';
 import { ApiError } from '../../../../api/errors';
-import { addAttachment } from '../../../../api/api';
-import { Klage } from '../../../../klage/klage';
+import { addAttachment } from '../../../../api/klage/api';
+import { Klage } from '../../../../store/klage/types/klage';
 import { useTranslation } from '../../../../language/use-translation';
 
 interface UploadError {

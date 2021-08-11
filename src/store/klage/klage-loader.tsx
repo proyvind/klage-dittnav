@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import { getFullmaktsgiver, getKlage, updateKlage } from '../api/api';
-import { AppContext } from '../app-context/app-context';
-import { Klage } from './klage';
+import { getKlage, updateKlage } from '../../api/klage/api';
+import { AppContext } from '../../app-context/app-context';
+import { Klage } from './types/klage';
 import klageStore from './klage-store';
-import LoadingPage from '../loading-page/loading-page';
-import { useTranslation } from '../language/use-translation';
+import LoadingPage from '../../loading-page/loading-page';
+import { useTranslation } from '../../language/use-translation';
+import { getFullmaktsgiver } from '../../api/api';
 
 interface Props {
     render: (klage: Klage) => JSX.Element;

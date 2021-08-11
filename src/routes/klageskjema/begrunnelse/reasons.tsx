@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { CheckboksPanelGruppe, CheckboksPanelProps } from 'nav-frontend-skjema';
-import { Reason } from '../../../klage/klage';
+import { Reason } from '../../../store/klage/types/klage';
 import { useTranslation } from '../../../language/use-translation';
 
 interface Props {

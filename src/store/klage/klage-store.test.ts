@@ -1,6 +1,7 @@
-import { TemaKey } from '../tema/tema';
-import { Klage, KlageStatus, Reason } from './klage';
+import { TemaKey } from '../../tema/tema';
+import { Klage, KlageStatus, Reason } from './types/klage';
 import { KlageStorage, KLAGE_STORAGE_KEYS } from './klage-store';
+import { Languages } from '../../language/language';
 
 describe('Klage store', () => {
     const BASE_KLAGE: Klage = {
@@ -16,7 +17,10 @@ describe('Klage store', () => {
         userSaksnummer: null,
         internalSaksnummer: null,
         vedtakDate: null,
-        fritekst: ''
+        fritekst: '',
+        fullmaktsgiver: null,
+        language: Languages.nb,
+        title: { nb: '', en: '' }
     };
 
     it('Should store klage values', () => {

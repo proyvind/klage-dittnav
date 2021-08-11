@@ -67,6 +67,11 @@ export const useTitleOrYtelse = (temaKey: TemaKey, titleKey?: string | null, yte
     return TITLES.getTemaTitle(temaKey, lang) ?? titleKey ?? temaKey;
 };
 
+export const useTemaName = (temaKey: TemaKey) => {
+    const lang = useLanguage();
+    return TITLES.getTemaTitle(temaKey, lang) ?? temaKey;
+};
+
 export const useTitle = (titleKey: string): string => {
     const lang = useLanguage();
     return TITLES.getTitle(titleKey, lang) ?? titleKey;

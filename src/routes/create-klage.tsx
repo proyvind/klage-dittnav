@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { ensureStringIsTema, TemaKey } from '../tema/tema';
 import { getQueryValue } from '../query/get-query-value';
-import { createKlage, getDraftKlage, getFullmaktsgiver } from '../api/api';
+import { createKlage, getDraftKlage } from '../api/klage/api';
 import { AppContext } from '../app-context/app-context';
 import LoadingPage from '../loading-page/loading-page';
 import { foedselsnrFormat } from './klageskjema/summary/text-formatting';
@@ -12,12 +12,12 @@ import { TITLES } from '../language/titles';
 import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
 import { Languages } from '../language/language';
+import { getFullmaktsgiver } from '../api/api';
 
 const CreateKlage = () => {
     const { search } = useLocation();
     const lang = useLanguage();
-    const { create } = useTranslation();
-    const history = useHistory();
+    const { klage_create } = useTranslation();
     const { klage, setKlage, setFullmaktsgiver } = useContext(AppContext);
     const [error, setError] = useState<string | null>(null);
     const [readyToRedirect, setReadyToRedirect] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const CreateKlage = () => {
 
         const temaKey = ensureStringIsTema(getQueryValue(query.tema));
         if (temaKey === null) {
-            setError(create.invalid_tema(query.tema?.toString()));
+            setError(klage_create.invalid_tema(query.tema?.toString()));
             return;
         }
 
@@ -39,9 +39,9 @@ const CreateKlage = () => {
         if (
             klage !== null &&
             klage.tema === temaKey &&
-            klage.titleKey === (titleKey ?? undefined) &&
+            (titleKey === null || klage.titleKey === titleKey) &&
+            (ytelse === null || klage.ytelse === ytelse) &&
             klage.internalSaksnummer === saksnummer &&
-            klage.ytelse === (ytelse ?? undefined) &&
             klage.fullmaktsgiver === fullmaktsgiver
         ) {
             return;
@@ -53,7 +53,7 @@ const CreateKlage = () => {
                     setKlage(k);
                     setReadyToRedirect(true);
                 })
-                .catch(() => setError(create.create_error));
+                .catch(() => setError(klage_create.create_error));
             return;
         }
 
@@ -65,17 +65,17 @@ const CreateKlage = () => {
                         setKlage(k);
                         setReadyToRedirect(true);
                     })
-                    .catch(() => setError(create.create_error))
+                    .catch(() => setError(klage_create.create_error))
             )
-            .catch(() => setError(create.finne_fullmaktsgiver_error(foedselsnrFormat(fullmaktsgiver))));
-    }, [search, klage, setKlage, create, lang, history, setFullmaktsgiver]);
+            .catch(() => setError(klage_create.finne_fullmaktsgiver_error(foedselsnrFormat(fullmaktsgiver))));
+    }, [search, klage, setKlage, klage_create, lang, setFullmaktsgiver]);
 
     if (error !== null) {
         return <AlertStripeFeil>{error}</AlertStripeFeil>;
     }
 
     if (klage === null) {
-        return <LoadingPage>{create.creating}</LoadingPage>;
+        return <LoadingPage>{klage_create.creating}</LoadingPage>;
     }
 
     if (readyToRedirect) {

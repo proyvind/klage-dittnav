@@ -6,7 +6,7 @@ import { INNGANG_KATEGORIER } from '../../kategorier/kategorier';
 import { ExternalKlageFlexLinkPanel, KlageFlexLinkPanel } from '../../link/link';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
+import { MarginTopContainer, SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
 import { CenteredPageTitle } from '../../styled-components/page-title';
@@ -36,11 +36,12 @@ const InngangHovedkategorier = () => {
                         <Normaltekst>{inngang.hovedkategorier.description}</Normaltekst>
                     </Veilederpanel>
                 </InlineRow>
-
-                <WhiteSection>
-                    <SectionTitle>{inngang.hovedkategorier.chooseTema}</SectionTitle>
-                    <SpaceBetweenFlexListContainer>{getLinks(language)}</SpaceBetweenFlexListContainer>
-                </WhiteSection>
+                <MarginTopContainer>
+                    <WhiteSection>
+                        <SectionTitle>{inngang.hovedkategorier.chooseTema}</SectionTitle>
+                        <SpaceBetweenFlexListContainer>{getLinks(language)}</SpaceBetweenFlexListContainer>
+                    </WhiteSection>
+                </MarginTopContainer>
             </ContentContainer>
         </InngangMainContainer>
     );

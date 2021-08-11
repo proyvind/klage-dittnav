@@ -8,15 +8,15 @@ import PersonligeOpplysningerSummary from './personlige-opplysninger-summary';
 import VedtakSummary from './vedtak-summary';
 import { CenteredContainer, WrapNormaltekst } from '../../../styled-components/common';
 import AttachmentSummary from './attachment-summary';
-import { finalizeKlage } from '../../../api/api';
+import { finalizeKlage } from '../../../api/klage/api';
 import Clipboard from '../../../icons/ClipboardIcon';
 import { ColoredLine } from '../../../styled-components/colored-line';
-import { toFiles } from '../../../klage/attachment';
+import { toFiles } from '../../../store/klage/attachment';
 import { PageIdentifier } from '../../../logging/amplitude';
 import { useLogPageView } from '../../../logging/use-log-page-view';
 import { AppContext } from '../../../app-context/app-context';
 import { device } from '../../../styled-components/media-queries';
-import { Klage, KlageStatus } from '../../../klage/klage';
+import { Klage, KlageStatus } from '../../../store/klage/types/klage';
 import { ExternalLink } from '../../../link/link';
 import { CenteredPageSubTitle } from '../../../styled-components/page-title';
 import { CustomMarginRow } from '../../../styled-components/row';
@@ -65,8 +65,8 @@ const Oppsummering = ({ klage }: Props) => {
             } else {
                 setError(klageskjema.summary.submit_error);
             }
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     if (user === null) {
