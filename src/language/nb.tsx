@@ -1,7 +1,8 @@
 import React from 'react';
-import { KlageStatus, Reason } from '../klage/klage';
+import { KlageStatus, Reason } from '../store/klage/types/klage';
 import { ExternalLink } from '../link/link';
 import { TemaKey } from '../tema/tema';
+import { AnkeStatus, AnkeInternalSaksnummer } from '../store/anke/types/anke';
 
 export type Language = typeof nb;
 
@@ -13,6 +14,9 @@ export const nb = {
             description:
                 'Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start med å velge hvilket tema saken gjelder.',
             chooseTema: 'Velg tema'
+        },
+        skjemaHistorikk: {
+            ankemuligheterTitle: 'Dine ankemuligheter'
         },
         kategorier: {
             title: 'Hvilken tjeneste eller ytelse gjelder det?'
@@ -141,7 +145,15 @@ export const nb = {
                 upload_error: ({ name, type, size }: File, reason: string = 'Ukjent årsak.') =>
                     `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${size} bytes. ${reason}`,
                 description: 'Har du informasjon du ønsker å legge ved, laster du det opp her.',
-                supported_types: ['Filtyper som støttes: ', <b>PNG</b>, ', ', <b>JPEG</b>, ' og ', <b>PDF</b>, '.'],
+                supported_types: [
+                    'Filtyper som støttes: ',
+                    <b>PNG</b>,
+                    ', ',
+                    <b>JPEG</b>,
+                    ' og ',
+                    <b>PDF</b>,
+                    '.'
+                ].map((c, index) => <span key={index}>{c}</span>),
                 size_limit:
                     'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.'
             },
@@ -213,7 +225,7 @@ export const nb = {
                     forventet saksbehandlingstid for klage og anke
                 </ExternalLink>,
                 ' i egen oversikt.'
-            ],
+            ].map((c, index) => <span key={index}>{c}</span>),
             dine_saker: 'Se dine saker på DITT NAV',
             loading: {
                 title: 'Sender inn klage...',
@@ -221,7 +233,134 @@ export const nb = {
             }
         }
     },
-    create: {
+    ankeskjema: {
+        common: {
+            title_fragment: 'anke',
+            page_title: 'Anke på vedtak',
+            logged_out: {
+                text: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
+                log_in: 'Logg inn'
+            },
+            steps: ['Begrunnelse', 'Oppsummering', 'Kvittering']
+        },
+        begrunnelse: {
+            fullmakt: {
+                label: 'Anke på vegne av:'
+            },
+            vedtak_date: {
+                title: 'Klagens vedtaksdato'
+            },
+            saksnummer: {
+                title: 'Saksnummer (valgfri)'
+            },
+            begrunnelse_text: {
+                title: 'Beskriv din anke',
+                placeholder: 'Skriv inn din begrunnelse her.',
+                description:
+                    'Her kan du skrive inn din anke. Legg ved dokumenter som skal følge saken til Trygderetten.',
+                begrunnelse_mangler: 'Du må skrive en begrunnelse før du går videre.',
+                error_empty: 'Du må skrive en begrunnelse før du går videre.'
+            },
+            autosave: {
+                popover: 'Vi lagrer endringene dine automatisk.',
+                saving: 'Lagrer',
+                saved: 'Lagret',
+                failed: 'Klarte ikke lagre'
+            },
+            attachments: {
+                title: 'Vedlegg',
+                upload_button_text: 'Last opp nytt vedlegg',
+                upload_error: ({ name, type, size }: File, reason: string = 'Ukjent årsak.') =>
+                    `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${size} bytes. ${reason}`,
+                description: 'Har du informasjon du ønsker å legge ved, laster du det opp her.',
+                supported_types: [
+                    'Filtyper som støttes: ',
+                    <b>PNG</b>,
+                    ', ',
+                    <b>JPEG</b>,
+                    ' og ',
+                    <b>PDF</b>,
+                    '.'
+                ].map((c, index) => <span key={index}>{c}</span>),
+                size_limit:
+                    'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.'
+            },
+            attachments_preview: {
+                delete_error: (name: string, id: string, reason: string = 'Ukjent årsak.') =>
+                    `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`
+            },
+            next_button: 'Gå videre'
+        },
+        summary: {
+            title: 'Se over før du sender inn',
+            submit_error: 'Klarte ikke sende inn anken. Ukjent feil.',
+            sections: {
+                person: {
+                    title: <>Person&shy;opplysninger</>,
+                    info_from: 'Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.',
+                    given_name: 'For- og mellomnavn',
+                    surname: 'Etternavn',
+                    nin: 'Fødselsnummer',
+                    phone: 'Telefonnummer',
+                    address: 'Adresse',
+                    change_name_address: {
+                        text: 'Endre navn eller adresse (Folkeregisteret)',
+                        url: 'https://www.skatteetaten.no/person/folkeregister/'
+                    },
+                    change_phone: {
+                        text: 'Endre telefonnummer (Kontakt- og reservasjonsregisteret)',
+                        url: 'https://brukerprofil.difi.no/minprofil'
+                    }
+                },
+                case: {
+                    title: 'Opplysninger fra saken',
+                    vedtak: 'Klagens vedtaksdato',
+                    no_date: 'Ingen dato satt',
+                    saksnummer: 'Saksnummer',
+                    not_specified: 'Ikke angitt',
+                    given_by_user: 'Oppgitt av bruker',
+                    from_system: 'Hentet fra internt system'
+                },
+                begrunnelse: {
+                    title: 'Begrunnelse i din anke',
+                    why: 'Beskrivelse i din anke',
+                    documents: 'Vedlagte dokumenter'
+                }
+            },
+            back: 'Tilbake',
+            next: (status: AnkeStatus): string => (status === AnkeStatus.DRAFT ? 'Send inn' : 'Se innsendt anke')
+        },
+        kvittering: {
+            title: 'Kvittering for innsendt anke',
+            download: 'Se og last ned anken din',
+            sent: 'Sendt inn',
+            general_info: {
+                title: 'Nå er resten vårt ansvar',
+                description:
+                    'Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.'
+            },
+            read_more: [
+                'Du kan lese mer om hvordan vi behandler anken din videre på våre ',
+                <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                    tema-sider om klage og anke
+                </ExternalLink>,
+                '.'
+            ],
+            see_estimate: [
+                'Du kan se ',
+                <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
+                    forventet saksbehandlingstid for klage og anke
+                </ExternalLink>,
+                ' i egen oversikt.'
+            ].map((c, index) => <span key={index}>{c}</span>),
+            dine_saker: 'Se dine saker på DITT NAV',
+            loading: {
+                title: 'Sender inn anke...',
+                still_working: 'Jobber fortsatt...'
+            }
+        }
+    },
+    klage_create: {
         invalid_tema: (tema?: string) => `Ugyldig tema "${tema}".`,
         format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
             if (saksnummer === null) {
@@ -232,6 +371,18 @@ export const nb = {
         create_error: 'Klarte ikke opprette klage',
         finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
         creating: 'Oppretter klage...'
+    },
+    anke_create: {
+        invalid_tema: (tema?: string) => `Ugyldig tema "${tema}".`,
+        format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+            if (saksnummer === null) {
+                return `Klarte ikke opprette anke med tema "${tema}" og tittel "${ytelse}".`;
+            }
+            return `Klarte ikke opprette anke med tema "${tema}", tittel "${ytelse}" og saksnummer "${saksnummer}".`;
+        },
+        create_error: 'Klarte ikke opprette anke',
+        finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
+        creating: 'Oppretter anke...'
     },
     user_loader: {
         loading_user: 'Laster bruker...',
@@ -244,6 +395,12 @@ export const nb = {
         loading_klage: 'Laster klage...',
         restoring: 'Gjenoppretter klage...',
         format_error: (klageId: string, error: Error) => `Klarte ikke hente klage med ID "${klageId}". ${error.message}`
+    },
+    anke_loader: {
+        loading_anke: 'Laster anke...',
+        restoring: 'Gjenoppretter anke...',
+        format_error: (ankeInternalSaksnummer: AnkeInternalSaksnummer, error: Error) =>
+            `Klarte ikke hente anke med ID "${ankeInternalSaksnummer}". ${error.message}`
     },
     landing_page: {
         checking_user: 'Sjekker bruker...'

@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/macro';
-import { deleteAttachment } from '../../../../api/api';
-import { Attachment, AttachmentFile, toFiles } from '../../../../klage/attachment';
+import { deleteAttachment } from '../../../../api/klage/api';
+import { Attachment, AttachmentFile, toFiles } from '../../../../store/klage/attachment';
 import { useTranslation } from '../../../../language/use-translation';
 import { FileFlexItem, FlexCenteredOnMobile } from '../../../../styled-components/file-preview';
-import { matchMediaQueries } from '../../../../styled-components/media-queries';
+import { Size, useMatchMediaQuery } from '../../../../styled-components/media-queries';
 
 interface Props {
     attachments: Attachment[];
@@ -15,12 +15,9 @@ interface Props {
 
 const AttachmentPreview = ({ attachments, setAttachments, setLoading, setError }: Props) => {
     const { klageskjema } = useTranslation();
-    const [isSmall, setIsSmall] = useState<boolean>(matchMediaQueries.mobileS.matches);
     const attachmentFiles = useMemo(() => toFiles(attachments), [attachments]);
 
-    useEffect(() => {
-        matchMediaQueries.mobileS.addListener(width => setIsSmall(width.matches));
-    });
+    const isSmall = useMatchMediaQuery(Size.mobileS);
 
     if (attachments.length === 0) {
         return null;

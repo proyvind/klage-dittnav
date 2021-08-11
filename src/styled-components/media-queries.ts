@@ -1,12 +1,14 @@
-const size = {
-    mobileS: '320px',
-    mobileM: '375px',
-    mobileL: '480px',
-    tablet: '768px',
-    laptop: '1024px',
-    laptopL: '1440px',
-    desktop: '2560px'
-};
+import { useEffect, useState } from 'react';
+
+export enum Size {
+    mobileS = '320px',
+    mobileM = '375px',
+    mobileL = '480px',
+    tablet = '768px',
+    laptop = '1024px',
+    laptopL = '1440px',
+    desktop = '2560px'
+}
 
 export const desktopHeight = {
     desktopL: '(min-height: 1440px)',
@@ -14,22 +16,29 @@ export const desktopHeight = {
 };
 
 export const device = {
-    mobileS: `(min-width: ${size.mobileS})`,
-    mobileM: `(min-width: ${size.mobileM})`,
-    mobileL: `(min-width: ${size.mobileL})`,
-    tablet: `(min-width: ${size.tablet})`,
-    laptop: `(min-width: ${size.laptop})`,
-    laptopL: `(min-width: ${size.laptopL})`,
-    desktop: `(min-width: ${size.desktop})`,
-    desktopL: `(min-width: ${size.desktop})`
+    mobileS: `(min-width: ${Size.mobileS})`,
+    mobileM: `(min-width: ${Size.mobileM})`,
+    mobileL: `(min-width: ${Size.mobileL})`,
+    tablet: `(min-width: ${Size.tablet})`,
+    laptop: `(min-width: ${Size.laptop})`,
+    laptopL: `(min-width: ${Size.laptopL})`,
+    desktop: `(min-width: ${Size.desktop})`,
+    desktopL: `(min-width: ${Size.desktop})`
 };
 
-export const matchMediaQueries = {
-    mobileS: window.matchMedia(`(max-width: ${size.mobileM})`),
-    mobileM: window.matchMedia(`(max-width: ${size.mobileL})`),
-    mobileL: window.matchMedia(`(max-width: ${size.tablet})`),
-    tablet: window.matchMedia(`(max-width: ${size.laptop})`),
-    laptop: window.matchMedia(`(max-width: ${size.laptopL})`),
-    laptopL: window.matchMedia(`(max-width: ${size.desktop})`),
-    desktop: window.matchMedia(`(max-width: ${size.desktop})`)
+const matchMediaQuery = (size: Size) => window.matchMedia(`(max-width: ${size})`);
+
+const type = 'change';
+
+export const useMatchMediaQuery = (size: Size) => {
+    const [isSize, setIsSize] = useState<boolean>(matchMediaQuery(size).matches);
+
+    useEffect(() => {
+        const query = matchMediaQuery(size);
+        const listener = ({ matches }: MediaQueryListEvent) => setIsSize(matches);
+        query.addEventListener(type, listener);
+        return () => query.removeEventListener(type, listener);
+    }, [size]);
+
+    return isSize;
 };

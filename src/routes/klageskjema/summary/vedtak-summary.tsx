@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 import InformationPointBox from './information-point-box';
 import { SpaceBetweenFlexListContainer } from '../../../styled-components/common';
-import { UpdateKlage } from '../../../klage/klage';
+import { UpdateKlage } from '../../../store/klage/types/klage';
 import { ISODate, isoDateToPretty } from '../../../date/date';
 import { useTranslation } from '../../../language/use-translation';
 

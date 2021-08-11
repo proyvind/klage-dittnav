@@ -1,8 +1,8 @@
-import { ISODate, ISODateTime } from '../date/date';
-import { StringValue } from '../kategorier/kategorier';
-import { Languages } from '../language/language';
-import { TemaKey } from '../tema/tema';
-import { Attachment } from './attachment';
+import { ISODate, ISODateTime } from '../../../date/date';
+import { StringValue } from '../../../kategorier/kategorier';
+import { Languages } from '../../../language/language';
+import { TemaKey } from '../../../tema/tema';
+import { Attachment } from '../attachment';
 
 export enum KlageStatus {
     DRAFT = 'DRAFT',

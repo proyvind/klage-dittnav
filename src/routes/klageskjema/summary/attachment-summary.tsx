@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { AttachmentFile } from '../../../klage/attachment';
+import { AttachmentFile } from '../../../store/klage/attachment';
 import { ENVIRONMENT } from '../../../environment/environment';
-import { Klage, KlageStatus } from '../../../klage/klage';
+import { Klage, KlageStatus } from '../../../store/klage/types/klage';
 import { ExternalLink } from '../../../link/link';
 
 interface Props {
@@ -24,7 +24,7 @@ const AttachmentSummary = (props: Props) => {
         <AttachmentList>
             {props.attachments.map(attachment => (
                 <li key={attachment.id}>
-                    <ExternalLink href={ENVIRONMENT.attachmentUrl(props.klage.id, attachment.id)}>
+                    <ExternalLink href={ENVIRONMENT.klageAttachmentUrl(props.klage.id, attachment.id)}>
                         {attachment.name}
                     </ExternalLink>
                 </li>

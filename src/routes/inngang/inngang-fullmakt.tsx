@@ -17,7 +17,7 @@ import { WhiteSection } from '../../styled-components/white-section';
 import { User } from '../../user/user';
 import { getFullName } from '../klageskjema/summary/personlige-opplysninger-summary';
 import { foedselsnrFormat } from '../klageskjema/summary/text-formatting';
-import { hasFullmaktFor } from '../../api/api';
+import { hasFullmaktFor } from '../../api/klage/api';
 import { TITLES, useTitleOrYtelse } from '../../language/titles';
 import { Languages } from '../../language/language';
 import { useLanguage } from '../../language/use-language';

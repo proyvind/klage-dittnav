@@ -1,5 +1,6 @@
 import queryString from 'query-string';
 import { logError } from '../logging/frontendLogger';
+import { AnkeInternalSaksnummer } from '../store/anke/types/anke';
 import { TemaKey } from '../tema/tema';
 
 type KlageId = string | number;
@@ -125,7 +126,9 @@ export class Environment implements EnvironmentVariables {
     get klagerUrl() {
         return `${this.apiUrl}/klager`;
     }
+
     klageUrl = (klageId: KlageId): string => `${this.klagerUrl}/${klageId}`;
+
     draftKlageUrl = (
         temaKey: TemaKey,
         titleKey: string | null,
@@ -152,12 +155,45 @@ export class Environment implements EnvironmentVariables {
     };
     finalizeKlageUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/finalize`;
     klageJournalpostIdUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/journalpostid`;
-    klagePdfUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/pdf`;
-    attachmentsUrl = (klageId: KlageId) => `${this.apiUrl}/klager/${klageId}/vedlegg`;
-    attachmentUrl = (klageId: KlageId, attachmentId: string | number) =>
-        `${this.apiUrl}/klager/${klageId}/vedlegg/${attachmentId}`;
+    klagePdfUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/pdf`;
+    klageAttachmentsUrl = (klageId: KlageId) => `${this.klageUrl(klageId)}/vedlegg`;
+    klageAttachmentUrl = (klageId: KlageId, attachmentId: string | number) =>
+        `${this.klageUrl(klageId)}/vedlegg/${attachmentId}`;
     hasFullmaktForUrl = (tema: string, fnr: string) => `${this.apiUrl}/fullmaktsgiver/${tema}/${fnr}`;
     fullmaktsgiverUrl = (tema: string, fnr: string) => `${this.apiUrl}/bruker/${tema}/${fnr}`;
+
+    get ankerUrl() {
+        return `${this.apiUrl}/anker`;
+    }
+
+    ankeUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer): string => `${this.ankerUrl}/${ankeInternalSaksnummer}`;
+
+    draftAnkeUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer | null, fullmaktsgiver: string | null) => {
+        const query = queryString.stringify(
+            {
+                ankeInternalSaksnummer,
+                fullmaktsgiver
+            },
+            {
+                skipNull: true,
+                skipEmptyString: true,
+                sort: false,
+                encode: true
+            }
+        );
+        return `${this.ankerUrl}/draft?${query}`;
+    };
+
+    finalizeAnkeUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer) =>
+        `${this.ankeUrl(ankeInternalSaksnummer)}/finalize`;
+    ankeJournalpostIdUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer) =>
+        `${this.ankeUrl(ankeInternalSaksnummer)}/journalpostid`;
+    ankePdfUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer) => `${this.ankeUrl(ankeInternalSaksnummer)}/pdf`;
+    ankeAttachmentsUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer) =>
+        `${this.ankeUrl(ankeInternalSaksnummer)}/vedlegg`;
+    ankeAttachmentUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer, attachmentId: string | number) =>
+        `${this.ankeUrl(ankeInternalSaksnummer)}/vedlegg/${attachmentId}`;
+    allAvailableAnkerForUserUrl = () => `${this.ankerUrl}/available`;
 }
 
 export const ENVIRONMENT = new Environment();

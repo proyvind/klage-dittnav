@@ -15,7 +15,7 @@ import { CenteredPageTitle } from '../../styled-components/page-title';
 import { WhiteSection } from '../../styled-components/white-section';
 import { CenteredSectionTitle } from '../../styled-components/section-title';
 import { PageParagraph } from '../../styled-components/page-paragraph';
-import { InlineRow } from '../../styled-components/row';
+import { InlineRow, Row } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
 import { InngangKategori, StringValue } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
@@ -24,11 +24,13 @@ import { klageFormUrl } from '../../kategorier/kategorier';
 import { useTitleOrYtelse } from '../../language/titles';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
+import { DineAnkemuligheter } from '../skjemahistorikk/dine-ankemuligheter';
 
 interface Props {
     temaKey: TemaKey;
     titleKey: string;
     allowsAnke: boolean;
+    showAnkeList?: boolean;
     mailKlageUrl?: StringValue;
     mailAnkeUrl?: StringValue;
     inngangkategori: InngangKategori;
@@ -39,6 +41,7 @@ const InngangInnsendingPost = ({
     titleKey,
     inngangkategori,
     allowsAnke,
+    showAnkeList = false,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
@@ -60,6 +63,11 @@ const InngangInnsendingPost = ({
         <InngangMainContainer>
             <ContentContainer>
                 <CenteredPageTitle>{title}</CenteredPageTitle>
+
+                <Row>
+                    <DineAnkemuligheter show={showAnkeList} />
+                </Row>
+
                 <WhiteSection>
                     <CenteredSectionTitle>{inngang.innsendingsvalg.post.title}</CenteredSectionTitle>
                     <VeilederContainer fargetema={'info'}>

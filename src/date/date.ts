@@ -41,3 +41,11 @@ export function prettyDateToISO(prettyDate: prettyDate | null): ISODate | null {
     }
     return prettyDate.split('.').reverse().join('-');
 }
+
+export const dateDisplayWithFallbackText = (isoDate: ISODate | null, noDateText: string): string => {
+    const prettyDate = isoDateToPretty(isoDate);
+    if (prettyDate === null) {
+        return noDateText;
+    }
+    return prettyDate;
+};

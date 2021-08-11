@@ -1,7 +1,7 @@
 import React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { StegindikatorStegProps } from 'nav-frontend-stegindikator/lib/stegindikator-steg';
-import { KlageStatus } from '../../klage/klage';
+import { KlageStatus } from '../../store/klage/types/klage';
 import { Row } from '../../styled-components/row';
 import { useTranslation } from '../../language/use-translation';
 

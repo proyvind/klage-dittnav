@@ -1,8 +1,9 @@
 import React from 'react';
-import { KlageStatus, Reason } from '../klage/klage';
+import { KlageStatus, Reason } from '../store/klage/types/klage';
 import { ExternalLink } from '../link/link';
 import { TemaKey } from '../tema/tema';
 import { Language } from './nb';
+import { AnkeStatus, AnkeInternalSaksnummer } from '../store/anke/types/anke';
 
 export const en: Language = {
     inngang: {
@@ -13,6 +14,7 @@ export const en: Language = {
                 'You have a right to complain if you have reived a decision from NAV and disagree with the decision. Start by selecting the topic of your case.',
             chooseTema: 'Select topic'
         },
+        skjemaHistorikk: { ankemuligheterTitle: 'Your appeal options' },
         kategorier: {
             title: 'Which service or benefit is applicable?'
         },
@@ -139,7 +141,15 @@ export const en: Language = {
                 upload_error: ({ name, type, size }: File, reason: string = 'Unknown reason.') =>
                     `Could not upload attachment "${name}" of type "${type}" of ${size} bytes. ${reason}`,
                 description: 'If you have information you wish to attach, upload it here.',
-                supported_types: ['Supported file types: ', <b>PNG</b>, ', ', <b>JPEG</b>, ' and ', <b>PDF</b>, '.'],
+                supported_types: [
+                    'Supported file types: ',
+                    <b>PNG</b>,
+                    ', ',
+                    <b>JPEG</b>,
+                    ' and ',
+                    <b>PDF</b>,
+                    '.'
+                ].map((c, index) => <span key={index}>{c}</span>),
                 size_limit:
                     'The file size cannot exceed 8 MB, and the total size of all attachments cannot exceed 32 MB.'
             },
@@ -184,7 +194,7 @@ export const en: Language = {
                     title: 'Reason in your complaint',
                     what: 'What do you disagree with?',
                     why: 'Why do you disagree?',
-                    documents: 'Attched documents'
+                    documents: 'Attached documents'
                 }
             },
             back: 'Back',
@@ -211,7 +221,7 @@ export const en: Language = {
                     the expected case processing time for complaints and appeals
                 </ExternalLink>,
                 ' in a separate overview.'
-            ],
+            ].map((c, index) => <span key={index}>{c}</span>),
             dine_saker: 'See your cases on Your page',
             loading: {
                 title: 'Submitting complaint...',
@@ -219,7 +229,134 @@ export const en: Language = {
             }
         }
     },
-    create: {
+    ankeskjema: {
+        common: {
+            title_fragment: 'complain',
+            page_title: 'Complain against decision',
+            logged_out: {
+                text: 'You have been logged out. To continue, you just need to log in again.',
+                log_in: 'Log in'
+            },
+            steps: ['Reason', 'Summary', 'Receipt']
+        },
+        begrunnelse: {
+            fullmakt: {
+                label: 'Appeal on behalf of:'
+            },
+            vedtak_date: {
+                title: 'Date of decision'
+            },
+            saksnummer: {
+                title: 'Case number (optional)'
+            },
+            begrunnelse_text: {
+                title: 'Describe your appeal',
+                placeholder: 'State your reason here.',
+                description:
+                    'Please state your appeal in your own words. Attach documents that can show NAV why you appeal.',
+                begrunnelse_mangler: 'You must state a reason before continuing.',
+                error_empty: 'You must state a reason before continuing.'
+            },
+            autosave: {
+                popover: 'We are saving your changes automatically.',
+                saving: 'Saving',
+                saved: 'Saved',
+                failed: 'Failed to save'
+            },
+            attachments: {
+                title: 'Attachments',
+                upload_button_text: 'Upload new attachment',
+                upload_error: ({ name, type, size }: File, reason: string = 'Unknown reason.') =>
+                    `Could not upload attachment "${name}" of type "${type}" of ${size} bytes. ${reason}`,
+                description: 'If you have information you wish to attach, upload it here.',
+                supported_types: [
+                    'Supported file types: ',
+                    <b>PNG</b>,
+                    ', ',
+                    <b>JPEG</b>,
+                    ' and ',
+                    <b>PDF</b>,
+                    '.'
+                ].map((c, index) => <span key={index}>{c}</span>),
+                size_limit:
+                    'The file size cannot exceed 8 MB, and the total size of all attachments cannot exceed 32 MB.'
+            },
+            attachments_preview: {
+                delete_error: (name: string, id: string, reason: string = 'Ukjent årsak.') =>
+                    `Could not delete attachment "${name}" with ID "${id}". ${reason}`
+            },
+            next_button: 'Continue'
+        },
+        summary: {
+            title: 'Review before you submit',
+            submit_error: 'Failed to submit appeal. Unknown error.',
+            sections: {
+                person: {
+                    title: <>Personal data</>,
+                    info_from:
+                        'Obtained from the National Registry (Folkeregisteret) and the Common Contact Register (Kontakt- og reserverasjonsregisteret).',
+                    given_name: 'First and middle name(s)',
+                    surname: 'Last name',
+                    nin: 'National identity number',
+                    phone: 'Phone number',
+                    address: 'Address',
+                    change_name_address: {
+                        text: 'Change name or address (National Registry / Folkeregisteret)',
+                        url: 'https://www.skatteetaten.no/person/folkeregister/'
+                    },
+                    change_phone: {
+                        text: 'Change phone number (Common Contact Register / Kontakt- og reservasjonsregisteret)',
+                        url: 'https://brukerprofil.difi.no/minprofil'
+                    }
+                },
+                case: {
+                    title: 'Information from the case',
+                    vedtak: 'Date of decision',
+                    no_date: 'No date entered',
+                    saksnummer: 'Case number',
+                    not_specified: 'Not specified.',
+                    given_by_user: 'Specified by user',
+                    from_system: 'Obtained from internal system'
+                },
+                begrunnelse: {
+                    title: 'Reason in your appeal',
+                    why: 'Description in your appeal',
+                    documents: 'Attached documents'
+                }
+            },
+            back: 'Back',
+            next: (status: AnkeStatus) => (status === AnkeStatus.DRAFT ? 'Submit' : 'See submitted appeal')
+        },
+        kvittering: {
+            title: 'Receipt for submitted complaint',
+            download: 'See and download your complaint',
+            sent: 'Submitted',
+            general_info: {
+                title: 'The rest is now our responsibility',
+                description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you.`
+            },
+            read_more: [
+                'You can read more about the further processing of your complaint on our ',
+                <ExternalLink href="https://www.nav.no/en/home/rules-and-regulations/appeals">
+                    topic pages about complaints and appeals
+                </ExternalLink>,
+                '.'
+            ],
+            see_estimate: [
+                'You can see ',
+                <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
+                    the expected case processing time for complaints and appeals
+                </ExternalLink>,
+                ' in a separate overview.'
+            ].map((c, index) => <span key={index}>{c}</span>),
+            dine_saker: 'See your cases on Your page',
+            loading: {
+                title: 'Submitting complaint...',
+                still_working: 'Still working...'
+            }
+        }
+    },
+    klage_create: {
         invalid_tema: (tema?: string) => `Invalid topic "${tema}".`,
         format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
             if (saksnummer === null) {
@@ -231,6 +368,19 @@ export const en: Language = {
         finne_fullmaktsgiver_error: (nin: string) =>
             `Could not find grantor of power of attorney with national identity number ${nin}.`,
         creating: 'Creating complaint...'
+    },
+    anke_create: {
+        invalid_tema: (tema?: string) => `Invalid topic "${tema}".`,
+        format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+            if (saksnummer === null) {
+                return `Failed to create appeal with topic "${tema}" and title "${ytelse}".`;
+            }
+            return `Failed to create appeal with topic "${tema}", title "${ytelse}" and case number "${saksnummer}".`;
+        },
+        create_error: 'Could not create appeal',
+        finne_fullmaktsgiver_error: (nin: string) =>
+            `Could not find grantor of power of attorney with national identity number ${nin}.`,
+        creating: 'Creating appeal...'
     },
     user_loader: {
         loading_user: 'Loading user...',
@@ -244,6 +394,12 @@ export const en: Language = {
         restoring: 'Restoring complaint...',
         format_error: (klageId: string, error: Error) =>
             `Failed to retrieve complaint with ID "${klageId}". ${error.message}`
+    },
+    anke_loader: {
+        loading_anke: 'Loading complaint...',
+        restoring: 'Restoring complaint...',
+        format_error: (ankeInternalSaksnummer: AnkeInternalSaksnummer, error: Error) =>
+            `Failed to retrieve complaint with ID "${ankeInternalSaksnummer}". ${error.message}`
     },
     landing_page: {
         checking_user: 'Checking user...'
