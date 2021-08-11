@@ -6,14 +6,16 @@ import { AppContext } from '../../app-context/app-context';
 import { useTranslation } from '../../language/use-translation';
 import { SectionTitle } from '../../styled-components/section-title';
 import { WhiteSection } from '../../styled-components/white-section';
+import { TemaKey } from '../../tema/tema';
 import { getUser } from '../../user/get-user';
 import { Ankemulighet } from './ankemulighet';
 
 interface Props {
     show: boolean;
+    temaKey?: TemaKey;
 }
 
-export const DineAnkemuligheter = ({ show }: Props) => {
+export const DineAnkemuligheter = ({ show, temaKey }: Props) => {
     const { inngang } = useTranslation();
     const { user, setUser } = useContext(AppContext);
     const { allAvailableAnkerForUser, setAllAvailableAnkerForUser } = useContext(AppContext);
@@ -34,8 +36,7 @@ export const DineAnkemuligheter = ({ show }: Props) => {
             }
         }
 
-        const anker = await getAllAvailableAnkerForUser().then(anker => {
-            console.debug('DineAnkemuligheter: Anker loaded.', anker);
+        const anker = await getAllAvailableAnkerForUser(temaKey).then(anker => {
             if (!Array.isArray(anker)) {
                 console.error('Anker is not an array.', anker);
                 return [];
@@ -45,7 +46,7 @@ export const DineAnkemuligheter = ({ show }: Props) => {
         setAllAvailableAnkerForUser(anker);
         setLoaded(true);
         setLoading(false);
-    }, [user, setUser, setLoaded, setLoading, setAllAvailableAnkerForUser]);
+    }, [user, setUser, setLoaded, setLoading, setAllAvailableAnkerForUser, temaKey]);
 
     useEffect(() => {
         if (!show) {

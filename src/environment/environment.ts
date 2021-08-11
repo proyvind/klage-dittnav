@@ -194,6 +194,7 @@ export class Environment implements EnvironmentVariables {
     ankeAttachmentUrl = (ankeInternalSaksnummer: AnkeInternalSaksnummer, attachmentId: string | number) =>
         `${this.ankeUrl(ankeInternalSaksnummer)}/vedlegg/${attachmentId}`;
     allAvailableAnkerForUserUrl = () => `${this.ankerUrl}/available`;
+    allAvailableAnkerByTemaForUserUrl = (temaKey: TemaKey) => `${this.ankerUrl}/available?tema=${temaKey}`;
 }
 
 export const ENVIRONMENT = new Environment();
