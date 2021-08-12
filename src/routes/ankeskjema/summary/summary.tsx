@@ -18,7 +18,6 @@ import { device } from '../../../styled-components/media-queries';
 import { ExternalLink } from '../../../link/link';
 import { CenteredPageSubTitle } from '../../../styled-components/page-title';
 import { CustomMarginRow } from '../../../styled-components/row';
-import InformationPointBox from './information-point-box';
 import { KlageUndertittel } from '../../../styled-components/undertittel';
 import { KlageAlertStripeFeil } from '../../../styled-components/alert';
 import { useLanguage } from '../../../language/use-language';
@@ -107,9 +106,7 @@ const Oppsummering = ({ anke }: Props) => {
 
                 <SummarySection>
                     <KlageUndertittel>{ankeskjema.summary.sections.begrunnelse.title}</KlageUndertittel>
-                    <InformationPointBox header={ankeskjema.summary.sections.begrunnelse.why}>
-                        <WrapNormaltekst>{anke.fritekst}</WrapNormaltekst>
-                    </InformationPointBox>
+                    <WrapNormaltekst>{anke.fritekst}</WrapNormaltekst>
                 </SummarySection>
 
                 <SummarySection>
