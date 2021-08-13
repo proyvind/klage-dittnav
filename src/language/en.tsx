@@ -311,7 +311,7 @@ export const en: Language = {
                 },
                 case: {
                     title: 'Information from the case',
-                    vedtak: 'Date of decision',
+                    vedtak: 'Date of decision from NAV Klageinstans',
                     no_date: 'No date entered',
                     saksnummer: 'Case number',
                     not_specified: 'Not specified.',

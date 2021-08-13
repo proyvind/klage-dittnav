@@ -314,7 +314,7 @@ export const nb = {
                 },
                 case: {
                     title: 'Opplysninger fra saken',
-                    vedtak: 'Klagens vedtaksdato',
+                    vedtak: 'Vedtaksdato fra NAV Klageinstans',
                     no_date: 'Ingen dato satt',
                     saksnummer: 'Saksnummer',
                     not_specified: 'Ikke angitt',
