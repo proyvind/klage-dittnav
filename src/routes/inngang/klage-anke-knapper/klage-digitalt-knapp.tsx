@@ -22,10 +22,10 @@ export const KlageDigitaltKnapp = ({ query }: Props) => {
                 </IconContainer>
                 <div>
                     <Systemtittel className="lenkepanel__heading">
-                        {inngang.innsendingsvalg.digital.cards.digital.title}
+                        {inngang.innsendingsvalg.digital.cards.digital_klage.title}
                     </Systemtittel>
                     <MarginTopContainer>
-                        <Normaltekst>{inngang.innsendingsvalg.digital.cards.digital.description}</Normaltekst>
+                        <Normaltekst>{inngang.innsendingsvalg.digital.cards.digital_klage.description}</Normaltekst>
                     </MarginTopContainer>
                 </div>
             </LenkePanelContentWithImage>

@@ -134,13 +134,14 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
         mailKlageUrl,
         mailAnkeUrl
     } = kategori;
-    if (digitalKlage.includes(ENVIRONMENT.environment)) {
+    if (digitalKlage.includes(ENVIRONMENT.environment) || showAnkeList.includes(ENVIRONMENT.environment)) {
         return (
             <InngangInnsendingDigital
                 temaKey={temaKey}
                 titleKey={titleKey}
                 ytelse={null}
                 inngangkategori={inngangkategori}
+                digitalKlage={digitalKlage.includes(ENVIRONMENT.environment)}
                 digitalKlageFullmakt={digitalKlageFullmakt}
                 allowsAnke={allowsAnke}
                 showAnkeList={allowsAnke && showAnkeList.includes(ENVIRONMENT.environment)}
@@ -155,7 +156,7 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
             titleKey={titleKey}
             inngangkategori={inngangkategori}
             allowsAnke={allowsAnke}
-            showAnkeList={allowsAnke && showAnkeList.includes(ENVIRONMENT.environment)}
+            // showAnkeList={allowsAnke && showAnkeList.includes(ENVIRONMENT.environment)}
             mailKlageUrl={mailKlageUrl}
             mailAnkeUrl={mailAnkeUrl}
         />
