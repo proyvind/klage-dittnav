@@ -1,15 +1,9 @@
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { LenkepanelBase } from 'nav-frontend-lenkepanel';
-import LetterOpened from '../../icons/LetterOpenedIcon';
-import { IconContainer, LenkePanelContentWithImage, MarginTopContainer } from '../../styled-components/common';
-import MobilePhone from '../../icons/MobilePhoneIcon';
-import MobilePhoneIdCard from '../../icons/MobilePhoneIdCardIcon';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { PageIdentifier } from '../../logging/amplitude';
-import { ExternalLink, KlageLinkPanel } from '../../link/link';
+import { ExternalLink } from '../../link/link';
 import { TemaKey } from '../../tema/tema';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { ContentContainer } from '../../styled-components/content-container';
@@ -19,13 +13,15 @@ import { InlineRow, Row } from '../../styled-components/row';
 import { usePageInit } from '../../page-init/page-init';
 import { InngangKategori, StringValue } from '../../kategorier/kategorier';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-import LawBook from '../../icons/LawBook';
-import { klageFormUrl } from '../../kategorier/kategorier';
 import { useTitleOrYtelse } from '../../language/titles';
 import { Languages } from '../../language/language';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { DineAnkemuligheter } from '../skjemahistorikk/dine-ankemuligheter';
+import { KlageDigitaltKnapp } from './klage-anke-knapper/klage-digitalt-knapp';
+import { KlageDigitaltFullmaktKnapp } from './klage-anke-knapper/klage-digitalt-fullmakt-knapp';
+import { KlageViaBrevKnapp } from './klage-anke-knapper/klage-via-brev-knapp';
+import { AnkeViaBrevKnapp } from './klage-anke-knapper/anke-via-brev-knapp';
 
 interface Props {
     temaKey: TemaKey;
@@ -76,46 +72,13 @@ const InngangInnsendingDigital = ({
                         ytelse={ytelse}
                         saksnummer={internalSaksnummer}
                         digitalKlageFullmakt={digitalKlageFullmakt}
-                        lang={lang}
                     />
                     <InlineRow>
-                        <LenkepanelBase href={(mailKlageUrl ?? klageFormUrl)[lang]} border>
-                            <LenkePanelContentWithImage>
-                                <IconContainer>
-                                    <LetterOpened />
-                                </IconContainer>
-                                <div>
-                                    <Systemtittel className="lenkepanel__heading">
-                                        {inngang.innsendingsvalg.digital.cards.post.title}
-                                    </Systemtittel>
-                                    <MarginTopContainer>
-                                        <Normaltekst>
-                                            {inngang.innsendingsvalg.digital.cards.post.description}
-                                        </Normaltekst>
-                                    </MarginTopContainer>
-                                </div>
-                            </LenkePanelContentWithImage>
-                        </LenkepanelBase>
+                        <KlageViaBrevKnapp mailKlageUrl={mailKlageUrl} />
                     </InlineRow>
                     {allowsAnke && (
                         <InlineRow>
-                            <LenkepanelBase href={(mailAnkeUrl ?? klageFormUrl)[lang]} border>
-                                <LenkePanelContentWithImage>
-                                    <IconContainer>
-                                        <LawBook />
-                                    </IconContainer>
-                                    <div>
-                                        <Systemtittel className="lenkepanel__heading">
-                                            {inngang.innsendingsvalg.digital.cards.anke.title}
-                                        </Systemtittel>
-                                        <MarginTopContainer>
-                                            <Normaltekst>
-                                                {inngang.innsendingsvalg.digital.cards.anke.description}
-                                            </Normaltekst>
-                                        </MarginTopContainer>
-                                    </div>
-                                </LenkePanelContentWithImage>
-                            </LenkepanelBase>
+                            <AnkeViaBrevKnapp mailAnkeUrl={mailAnkeUrl} />
                         </InlineRow>
                     )}
                     {inngang.innsendingsvalg.common.read_more} {inngang.innsendingsvalg.common.estimate}
@@ -131,10 +94,9 @@ interface DigitalContentProps {
     ytelse: string | null;
     saksnummer: string | null;
     digitalKlageFullmakt: boolean;
-    lang: Languages;
 }
 
-const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFullmakt, lang }: DigitalContentProps) => {
+const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFullmakt }: DigitalContentProps) => {
     const { search } = useLocation();
     const { inngang } = useTranslation();
     if (saksnummer === null) {
@@ -162,44 +124,14 @@ const DigitalContent = ({ temaKey, titleKey, ytelse, saksnummer, digitalKlageFul
     return (
         <>
             <InlineRow>
-                <KlageLinkPanel href={`/${lang}/ny?${query}`} border>
-                    <LenkePanelContentWithImage>
-                        <IconContainer>
-                            <MobilePhone />
-                        </IconContainer>
-                        <div>
-                            <Systemtittel className="lenkepanel__heading">
-                                {inngang.innsendingsvalg.digital.cards.digital.title}
-                            </Systemtittel>
-                            <MarginTopContainer>
-                                <Normaltekst>{inngang.innsendingsvalg.digital.cards.digital.description}</Normaltekst>
-                            </MarginTopContainer>
-                        </div>
-                    </LenkePanelContentWithImage>
-                </KlageLinkPanel>
+                <KlageDigitaltKnapp query={query} />
                 <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url}>
                     {inngang.innsendingsvalg.digital.elektronisk_id.text}
                 </ExternalLink>
             </InlineRow>
             {digitalKlageFullmakt && (
                 <InlineRow>
-                    <KlageLinkPanel href={`${window.location.pathname}/fullmakt`} border>
-                        <LenkePanelContentWithImage>
-                            <IconContainer>
-                                <MobilePhoneIdCard />
-                            </IconContainer>
-                            <div>
-                                <Systemtittel className="lenkepanel__heading">
-                                    {inngang.innsendingsvalg.digital.cards.fullmakt.title}
-                                </Systemtittel>
-                                <MarginTopContainer>
-                                    <Normaltekst>
-                                        {inngang.innsendingsvalg.digital.cards.fullmakt.description}
-                                    </Normaltekst>
-                                </MarginTopContainer>
-                            </div>
-                        </LenkePanelContentWithImage>
-                    </KlageLinkPanel>
+                    <KlageDigitaltFullmaktKnapp />
                     <ExternalLink href={inngang.innsendingsvalg.digital.fullmakt_help.url}>
                         {inngang.innsendingsvalg.digital.fullmakt_help.text}
                     </ExternalLink>
