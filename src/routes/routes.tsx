@@ -141,6 +141,7 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
                 titleKey={titleKey}
                 ytelse={null}
                 inngangkategori={inngangkategori}
+                digitalKlage={digitalKlage.includes(ENVIRONMENT.environment)}
                 digitalKlageFullmakt={digitalKlageFullmakt}
                 allowsAnke={allowsAnke}
                 showAnkeList={allowsAnke && showAnkeList.includes(ENVIRONMENT.environment)}

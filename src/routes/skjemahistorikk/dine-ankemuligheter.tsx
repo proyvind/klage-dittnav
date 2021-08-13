@@ -3,7 +3,6 @@ import { getAllAvailableAnkerForUser } from '../../api/anke/api';
 import { AppContext } from '../../app-context/app-context';
 import { TemaKey } from '../../tema/tema';
 import { Row } from '../../styled-components/row';
-import { TemaKey } from '../../tema/tema';
 import { getUser } from '../../user/get-user';
 import { AnkeDigitaltKnapp } from '../inngang/klage-anke-knapper/anke-digitalt-knapp';
 
