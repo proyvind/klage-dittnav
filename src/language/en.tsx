@@ -46,7 +46,7 @@ export const en: Language = {
                         title: 'Appeal digitally',
                         title_resume: 'Appeal digitally (started)',
                         description: (date: string, utfalltekst: string) =>
-                            `Appeal on the decision made on ${date} with result ${utfalltekst}.`
+                            `Appeal on the decision made on ${date} with result ${utfalltekst.toLowerCase()}.`
                     },
                     post: {
                         title: 'Complaint by post',

@@ -155,7 +155,6 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
             titleKey={titleKey}
             inngangkategori={inngangkategori}
             allowsAnke={allowsAnke}
-            showAnkeList={allowsAnke && showAnkeList.includes(ENVIRONMENT.environment)}
             mailKlageUrl={mailKlageUrl}
             mailAnkeUrl={mailAnkeUrl}
         />

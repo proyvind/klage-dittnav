@@ -49,7 +49,7 @@ export const nb = {
                         title: 'Anke digitalt',
                         title_resume: 'Anke digitalt (påbegynt)',
                         description: (date: string, utfall: string) =>
-                            `Anke på vedtak du fikk den ${date} med utfall ${utfall}.`
+                            `Anke på vedtak av ${date} med utfall ${utfall.toLowerCase()}.`
                     },
                     post: {
                         title: 'Klage via post',
