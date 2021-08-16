@@ -257,7 +257,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 temaKey: TemaKey.SYK,
                 titleKey: 'SYKEPENGER',
                 allowsAnke: true,
-                showAnkeList: [],
+                showAnkeList: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlage: [],
                 digitalKlageFullmakt: false,
                 path: 'sykepenger',

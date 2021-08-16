@@ -1,14 +1,10 @@
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import styled from 'styled-components/macro';
 import { getAllAvailableAnkerForUser } from '../../api/anke/api';
 import { AppContext } from '../../app-context/app-context';
-import { useTranslation } from '../../language/use-translation';
-import { SectionTitle } from '../../styled-components/section-title';
-import { WhiteSection } from '../../styled-components/white-section';
 import { TemaKey } from '../../tema/tema';
+import { Row } from '../../styled-components/row';
 import { getUser } from '../../user/get-user';
-import { Ankemulighet } from './ankemulighet';
+import { AnkeDigitaltKnapp } from '../inngang/klage-anke-knapper/anke-digitalt-knapp';
 
 interface Props {
     show: boolean;
@@ -16,13 +12,10 @@ interface Props {
 }
 
 export const DineAnkemuligheter = ({ show, temaKey }: Props) => {
-    const { inngang } = useTranslation();
     const { user, setUser } = useContext(AppContext);
     const { allAvailableAnkerForUser, setAllAvailableAnkerForUser } = useContext(AppContext);
     const [loaded, setLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const ankemuligheterTitle = inngang.skjemaHistorikk.ankemuligheterTitle;
 
     const load = useCallback(async () => {
         setLoading(true);
@@ -65,26 +58,12 @@ export const DineAnkemuligheter = ({ show, temaKey }: Props) => {
         return null;
     }
     return (
-        <WhiteSection>
-            <SectionTitle>{ankemuligheterTitle}</SectionTitle>
-
-            <AlertStripeInfo>
-                Digital anke er foreløpig kun tilgjengelig for noen få ytelser. Om du ikke finner klagen du vil anke på
-                her kan du anke via post. Se skjema lenger ned på siden.
-            </AlertStripeInfo>
-
-            <List>
-                {allAvailableAnkerForUser.map(anke => (
-                    <Ankemulighet ankemulighet={anke} key={anke.ankeInternalSaksnummer} />
-                ))}
-            </List>
-        </WhiteSection>
+        <Row>
+            {allAvailableAnkerForUser.map(anke => (
+                <Row key={anke.ankeInternalSaksnummer}>
+                    <AnkeDigitaltKnapp ankemulighet={anke} />
+                </Row>
+            ))}
+        </Row>
     );
 };
-
-const List = styled.ul`
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    padding-left: 28px;
-`;

@@ -3,7 +3,7 @@ import { KlageStatus, Reason } from '../store/klage/types/klage';
 import { ExternalLink } from '../link/link';
 import { TemaKey } from '../tema/tema';
 import { Language } from './nb';
-import { AnkeStatus, AnkeInternalSaksnummer } from '../store/anke/types/anke';
+import { AnkeStatus, AnkeInternalSaksnummer, Utfall } from '../store/anke/types/anke';
 
 export const en: Language = {
     inngang: {
@@ -26,20 +26,27 @@ export const en: Language = {
                         your right to complain on our topic pages
                     </ExternalLink>,
                     '.'
-                ],
+                ].map((c, index) => <span key={index}>{c}</span>),
                 estimate: [
                     'You can see ',
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
                         the expected case processing time for complaints and appeals
                     </ExternalLink>,
                     ' in a separate overview.'
-                ]
+                ].map((c, index) => <span key={index}>{c}</span>)
             },
             digital: {
                 cards: {
-                    digital: {
+                    digital_klage: {
                         title: 'Complain digitally',
+                        title_resume: 'Complain digitally (started)',
                         description: 'You must log in with your electronic ID to submit a digital complaint.'
+                    },
+                    digital_anke: {
+                        title: 'Appeal digitally',
+                        title_resume: 'Appeal digitally (started)',
+                        description: (date: string, utfalltekst: string) =>
+                            `Appeal on the decision made on ${date} with result ${utfalltekst}.`
                     },
                     post: {
                         title: 'Complaint by post',
@@ -214,7 +221,7 @@ export const en: Language = {
                     topic pages about complaints and appeals
                 </ExternalLink>,
                 '.'
-            ],
+            ].map((c, index) => <span key={index}>{c}</span>),
             see_estimate: [
                 'You can see ',
                 <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
@@ -406,5 +413,15 @@ export const en: Language = {
     },
     not_found_page: {
         title: '404 Page not found'
+    },
+    utfall: {
+        [Utfall.TRUKKET]: 'Drawn',
+        [Utfall.RETUR]: 'Returned',
+        [Utfall.OPPHEVET]: 'Overturned',
+        [Utfall.MEDHOLD]: 'Reversed',
+        [Utfall.DELVIS_MEDHOLD]: 'Partially reversed',
+        [Utfall.OPPRETTHOLDT]: 'Upheld',
+        [Utfall.UGUNST]: 'Reversed',
+        [Utfall.AVVIST]: 'Rejected'
     }
 };

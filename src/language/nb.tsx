@@ -2,7 +2,7 @@ import React from 'react';
 import { KlageStatus, Reason } from '../store/klage/types/klage';
 import { ExternalLink } from '../link/link';
 import { TemaKey } from '../tema/tema';
-import { AnkeStatus, AnkeInternalSaksnummer } from '../store/anke/types/anke';
+import { AnkeStatus, AnkeInternalSaksnummer, Utfall } from '../store/anke/types/anke';
 
 export type Language = typeof nb;
 
@@ -29,20 +29,27 @@ export const nb = {
                         dine klagerettigheter på våre tema-sider
                     </ExternalLink>,
                     '.'
-                ],
+                ].map((c, index) => <span key={index}>{c}</span>),
                 estimate: [
                     'Du kan se ',
                     <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
                         forventet saksbehandlingstid for klage og anke
                     </ExternalLink>,
                     ' i egen oversikt.'
-                ]
+                ].map((c, index) => <span key={index}>{c}</span>)
             },
             digital: {
                 cards: {
-                    digital: {
+                    digital_klage: {
                         title: 'Klage digitalt',
+                        title_resume: 'Klage digitalt (påbegynt)',
                         description: 'For å sende inn digitalt må du logge inn med elektronisk ID.'
+                    },
+                    digital_anke: {
+                        title: 'Anke digitalt',
+                        title_resume: 'Anke digitalt (påbegynt)',
+                        description: (date: string, utfall: string) =>
+                            `Anke på vedtak du fikk den ${date} med utfall ${utfall}.`
                     },
                     post: {
                         title: 'Klage via post',
@@ -218,7 +225,7 @@ export const nb = {
                     tema-sider om klage og anke
                 </ExternalLink>,
                 '.'
-            ],
+            ].map((c, index) => <span key={index}>{c}</span>),
             see_estimate: [
                 'Du kan se ',
                 <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke">
@@ -407,5 +414,15 @@ export const nb = {
     },
     not_found_page: {
         title: '404 Finner ikke siden'
+    },
+    utfall: {
+        [Utfall.TRUKKET]: 'Trukket',
+        [Utfall.RETUR]: 'Retur',
+        [Utfall.OPPHEVET]: 'Opphevet',
+        [Utfall.MEDHOLD]: 'Omgjort',
+        [Utfall.DELVIS_MEDHOLD]: 'Delvis omgjort',
+        [Utfall.OPPRETTHOLDT]: 'Stadfestet',
+        [Utfall.UGUNST]: 'Omgjort',
+        [Utfall.AVVIST]: 'Avvist'
     }
 };
