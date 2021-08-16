@@ -26,7 +26,7 @@ interface Props {
     temaKey: TemaKey;
     titleKey: string;
     allowsAnke: boolean;
-    showAnkeList: boolean;
+    showAnkeList?: boolean;
     mailKlageUrl?: StringValue;
     mailAnkeUrl?: StringValue;
     inngangkategori: InngangKategori;
@@ -37,7 +37,7 @@ const InngangInnsendingPost = ({
     titleKey,
     inngangkategori,
     allowsAnke,
-    showAnkeList,
+    showAnkeList = false,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
