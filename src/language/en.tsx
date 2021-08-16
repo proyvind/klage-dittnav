@@ -335,8 +335,8 @@ export const en: Language = {
             next: (status: AnkeStatus) => (status === AnkeStatus.DRAFT ? 'Submit' : 'See submitted appeal')
         },
         kvittering: {
-            title: 'Receipt for submitted complaint',
-            download: 'See and download your complaint',
+            title: 'Receipt for submitted appeal',
+            download: 'See and download your appeal',
             sent: 'Submitted',
             general_info: {
                 title: 'The rest is now our responsibility',
@@ -358,7 +358,7 @@ export const en: Language = {
             ].map((c, index) => <span key={index}>{c}</span>),
             dine_saker: 'See your cases on Your page',
             loading: {
-                title: 'Submitting complaint...',
+                title: 'Submitting appeal...',
                 still_working: 'Still working...'
             }
         }
