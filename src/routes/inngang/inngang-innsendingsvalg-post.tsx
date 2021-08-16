@@ -62,7 +62,7 @@ const InngangInnsendingPost = ({
 
                 <WhiteSection>
                     <CenteredSectionTitle>{inngang.innsendingsvalg.post.title}</CenteredSectionTitle>
-                    <DineAnkemuligheter show={showAnkeList} />
+                    <DineAnkemuligheter show={showAnkeList} temaKey={temaKey} />
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>

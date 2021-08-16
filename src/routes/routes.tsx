@@ -134,7 +134,7 @@ function getInngangInnsendingComponent(inngangkategori: InngangKategori, kategor
         mailKlageUrl,
         mailAnkeUrl
     } = kategori;
-    if (digitalKlage.includes(ENVIRONMENT.environment) || showAnkeList.includes(ENVIRONMENT.environment)) {
+    if (digitalKlage.includes(ENVIRONMENT.environment)) {
         return (
             <InngangInnsendingDigital
                 temaKey={temaKey}

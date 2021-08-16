@@ -132,7 +132,7 @@ const DigitalContent = ({
         <>
             <InlineRow>
                 <KlageDigitaltKnapp query={query} />
-                <DineAnkemuligheter show={showAnkeList} />
+                <DineAnkemuligheter show={showAnkeList} temaKey={temaKey} />
                 <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url}>
                     {inngang.innsendingsvalg.digital.elektronisk_id.text}
                 </ExternalLink>
