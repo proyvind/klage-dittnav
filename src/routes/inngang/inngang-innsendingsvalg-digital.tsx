@@ -29,7 +29,6 @@ interface Props {
     ytelse: string | null;
     internalSaksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
-    digitalKlage?: boolean;
     digitalKlageFullmakt?: boolean;
     allowsAnke?: boolean;
     showAnkeList?: boolean;
@@ -43,7 +42,6 @@ const InngangInnsendingDigital = ({
     ytelse,
     internalSaksnummer = null,
     inngangkategori = null,
-    digitalKlage = true,
     digitalKlageFullmakt = false,
     allowsAnke,
     showAnkeList = false,
@@ -69,7 +67,6 @@ const InngangInnsendingDigital = ({
                         titleKey={titleKey}
                         ytelse={ytelse}
                         saksnummer={internalSaksnummer}
-                        digitalKlage={digitalKlage}
                         digitalKlageFullmakt={digitalKlageFullmakt}
                         showAnkeList={showAnkeList}
                     />
@@ -93,7 +90,6 @@ interface DigitalContentProps {
     titleKey: string | null;
     ytelse: string | null;
     saksnummer: string | null;
-    digitalKlage: boolean;
     digitalKlageFullmakt: boolean;
     showAnkeList?: boolean;
 }
