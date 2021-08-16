@@ -10,6 +10,7 @@ import {
     NewAnke,
     AnkeInternalSaksnummer
 } from '../../store/anke/types/anke';
+import { TemaKey } from '../../tema/tema';
 
 export async function getDraftAnke(
     ankeInternalSaksnummer: AnkeInternalSaksnummer | null,
@@ -103,8 +104,10 @@ export async function deleteAttachment(
     }
 }
 
-export async function getAllAvailableAnkerForUser() {
-    const url = ENVIRONMENT.allAvailableAnkerForUserUrl();
+export async function getAllAvailableAnkerForUser(temaKey?: TemaKey) {
+    const url = temaKey
+        ? ENVIRONMENT.allAvailableAnkerByTemaForUserUrl(temaKey)
+        : ENVIRONMENT.allAvailableAnkerForUserUrl();
     try {
         return await getJSON<AvailableAnke[]>(url, availableAnkerNotFoundMessage());
     } catch (error) {

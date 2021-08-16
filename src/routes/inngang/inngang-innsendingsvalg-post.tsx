@@ -65,7 +65,7 @@ const InngangInnsendingPost = ({
                 <CenteredPageTitle>{title}</CenteredPageTitle>
 
                 <Row>
-                    <DineAnkemuligheter show={showAnkeList} />
+                    <DineAnkemuligheter show={showAnkeList} temaKey={temaKey} />
                 </Row>
 
                 <WhiteSection>
