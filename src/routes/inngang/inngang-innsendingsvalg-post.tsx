@@ -20,11 +20,13 @@ import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { KlageViaBrevKnapp } from './klage-anke-knapper/klage-via-brev-knapp';
 import { AnkeViaBrevKnapp } from './klage-anke-knapper/anke-via-brev-knapp';
+import { DineAnkemuligheter } from '../skjemahistorikk/dine-ankemuligheter';
 
 interface Props {
     temaKey: TemaKey;
     titleKey: string;
     allowsAnke: boolean;
+    showAnkeList: boolean;
     mailKlageUrl?: StringValue;
     mailAnkeUrl?: StringValue;
     inngangkategori: InngangKategori;
@@ -35,6 +37,7 @@ const InngangInnsendingPost = ({
     titleKey,
     inngangkategori,
     allowsAnke,
+    showAnkeList,
     mailKlageUrl,
     mailAnkeUrl
 }: Props) => {
@@ -59,6 +62,7 @@ const InngangInnsendingPost = ({
 
                 <WhiteSection>
                     <CenteredSectionTitle>{inngang.innsendingsvalg.post.title}</CenteredSectionTitle>
+                    <DineAnkemuligheter show={showAnkeList} />
                     <VeilederContainer fargetema={'info'}>
                         <VeilederIcon />
                     </VeilederContainer>

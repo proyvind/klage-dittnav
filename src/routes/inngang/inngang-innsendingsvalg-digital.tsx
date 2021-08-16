@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { useLogPageView } from '../../logging/use-log-page-view';
@@ -22,7 +22,6 @@ import { KlageDigitaltKnapp } from './klage-anke-knapper/klage-digitalt-knapp';
 import { KlageDigitaltFullmaktKnapp } from './klage-anke-knapper/klage-digitalt-fullmakt-knapp';
 import { KlageViaBrevKnapp } from './klage-anke-knapper/klage-via-brev-knapp';
 import { AnkeViaBrevKnapp } from './klage-anke-knapper/anke-via-brev-knapp';
-import { AppContext } from '../../app-context/app-context';
 
 interface Props {
     temaKey: TemaKey;
@@ -30,7 +29,6 @@ interface Props {
     ytelse: string | null;
     internalSaksnummer?: string | null;
     inngangkategori?: InngangKategori | null;
-    digitalKlage?: boolean;
     digitalKlageFullmakt?: boolean;
     allowsAnke?: boolean;
     showAnkeList?: boolean;
@@ -44,7 +42,6 @@ const InngangInnsendingDigital = ({
     ytelse,
     internalSaksnummer = null,
     inngangkategori = null,
-    digitalKlage = true,
     digitalKlageFullmakt = false,
     allowsAnke,
     showAnkeList = false,
@@ -70,7 +67,6 @@ const InngangInnsendingDigital = ({
                         titleKey={titleKey}
                         ytelse={ytelse}
                         saksnummer={internalSaksnummer}
-                        digitalKlage={digitalKlage}
                         digitalKlageFullmakt={digitalKlageFullmakt}
                         showAnkeList={showAnkeList}
                     />
@@ -94,7 +90,6 @@ interface DigitalContentProps {
     titleKey: string | null;
     ytelse: string | null;
     saksnummer: string | null;
-    digitalKlage: boolean;
     digitalKlageFullmakt: boolean;
     showAnkeList?: boolean;
 }
@@ -104,20 +99,16 @@ const DigitalContent = ({
     titleKey,
     ytelse,
     saksnummer,
-    digitalKlage,
     digitalKlageFullmakt,
     showAnkeList = false
 }: DigitalContentProps) => {
     const { search } = useLocation();
     const { inngang } = useTranslation();
-    const { user } = useContext(AppContext);
 
     if (saksnummer === null) {
         const query = queryString.parse(search);
         saksnummer = getQueryValue(query.saksnummer);
     }
-
-    const showElektroniskIdHjelp = () => digitalKlage || (showAnkeList && user);
 
     const query = useMemo(
         () =>
@@ -140,13 +131,11 @@ const DigitalContent = ({
     return (
         <>
             <InlineRow>
-                {digitalKlage && <KlageDigitaltKnapp query={query} />}
+                <KlageDigitaltKnapp query={query} />
                 <DineAnkemuligheter show={showAnkeList} />
-                {showElektroniskIdHjelp() && (
-                    <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url}>
-                        {inngang.innsendingsvalg.digital.elektronisk_id.text}
-                    </ExternalLink>
-                )}
+                <ExternalLink href={inngang.innsendingsvalg.digital.elektronisk_id.url}>
+                    {inngang.innsendingsvalg.digital.elektronisk_id.text}
+                </ExternalLink>
             </InlineRow>
             {digitalKlageFullmakt && (
                 <InlineRow>
