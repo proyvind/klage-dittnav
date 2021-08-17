@@ -525,7 +525,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 titleKey: 'SYKDOM_I_FAMILIEN',
                 allowsAnke: true,
                 showAnkeList: [EnvString.DEV, EnvString.LOCAL],
-                digitalKlage: [],
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'sykdom-i-familien',
                 mailKlageUrl: {
