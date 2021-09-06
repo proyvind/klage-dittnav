@@ -385,12 +385,56 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         kategorier: [
             {
                 temaKey: TemaKey.FOR,
-                titleKey: 'FORELDREPENGER_GENERELL',
+                titleKey: 'FORELDREPENGER',
                 allowsAnke: true,
                 showAnkeList: [],
                 digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'foreldrepenger',
+                mailKlageUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev'
+                },
+
+                mailAnkeUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/anke/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.FOR,
+                titleKey: 'ENGANGSSTONAD',
+                allowsAnke: true,
+                showAnkeList: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'engangsstonad',
+                mailKlageUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev'
+                },
+
+                mailAnkeUrl: {
+                    [Languages.nb]:
+                        'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/anke/brev',
+                    [Languages.en]:
+                        'https://www.nav.no/soknader/en/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/anke/brev'
+                }
+            },
+            {
+                temaKey: TemaKey.FOR,
+                titleKey: 'SVANGERSKAPSPENGER',
+                allowsAnke: true,
+                showAnkeList: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+                digitalKlageFullmakt: false,
+                path: 'svangerskapspenger',
                 mailKlageUrl: {
                     [Languages.nb]:
                         'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad/NAV%2014-05.09/klage/brev',
