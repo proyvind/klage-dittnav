@@ -525,7 +525,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 titleKey: 'ENSLIG_MOR_ELLER_FAR',
                 allowsAnke: true,
                 showAnkeList: [],
-                digitalKlage: [],
+                digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
                 digitalKlageFullmakt: false,
                 path: 'enslig-mor-eller-far',
                 mailKlageUrl: {
