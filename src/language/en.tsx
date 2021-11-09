@@ -10,8 +10,13 @@ export const en: Language = {
         title_postfix: 'complain or appeal',
         hovedkategorier: {
             title: 'Complain or appeal against decision',
-            description:
-                'You have a right to complain if you have reived a decision from NAV and disagree with the decision. Start by selecting the topic of your case.',
+            description: [
+                'You have a right to complain if you have received a decision from NAV and disagree with the decision. Start by selecting the topic of your case. Read more about ',
+                <ExternalLink href="https://www.nav.no/en/home/rules-and-regulations/appeals">
+                    your right to complain
+                </ExternalLink>,
+                '.'
+            ].map((c, index) => <span key={index}>{c}</span>),
             chooseTema: 'Select topic'
         },
         skjemaHistorikk: { ankemuligheterTitle: 'Your appeal options' },

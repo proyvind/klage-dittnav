@@ -11,8 +11,13 @@ export const nb = {
         title_postfix: 'klage eller anke',
         hovedkategorier: {
             title: 'Klage eller anke på vedtak',
-            description:
-                'Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start med å velge hvilket tema saken gjelder.',
+            description: [
+                'Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start med å velge hvilket tema saken gjelder. Les mer om ',
+                <ExternalLink href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter">
+                    dine klagerettigheter
+                </ExternalLink>,
+                '.'
+            ].map((c, index) => <span key={index}>{c}</span>),
             chooseTema: 'Velg tema'
         },
         skjemaHistorikk: {
