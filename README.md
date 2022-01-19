@@ -85,8 +85,14 @@ Front end for klageskjema som skal legges ut på DittNAV.
 
 ### Kjøre lokalt
 
+Logg inn på https://klage.dev.nav.no/
+Sett `SameSite: None` på cookien `selvbetjening-idtoken`
+
 ```
 npm install
+```
+```
+npm start
 ```
 
 #### Dev server
