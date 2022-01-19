@@ -47,8 +47,12 @@ export const FileFlexItem = styled(FileFC)`
     }
 
     .deleteLink {
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 1px;
+
         svg {
-            width: 20px;
             > path {
                 stroke: #ba3a26;
             }
