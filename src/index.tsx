@@ -7,5 +7,7 @@ import './index.css';
 try {
     ReactDOM.render(<App />, document.getElementById('root'));
 } catch (e) {
-    logError(e);
+    if (e instanceof Error) {
+        logError(e);
+    }
 }

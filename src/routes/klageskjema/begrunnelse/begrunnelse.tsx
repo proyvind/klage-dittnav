@@ -71,7 +71,9 @@ const Begrunnelse = ({ klage }: Props) => {
         } catch (error) {
             setAutosaveStatus(AutosaveStatus.FAILED);
             klageStore.store(fritekst, reasons, vedtakDate, userSaksnummer);
-            setError(error);
+            if (error instanceof Error) {
+                setError(error);
+            };
             return false;
         }
     }, [fritekst, userSaksnummer, vedtakDate, reasons, attachments, klage, setKlage, language]);

@@ -13,7 +13,11 @@ const LanguageComponenet = (props: Props) => {
     const location = useLocation();
 
     useEffect(() => {
-        onLanguageSelect(language => history.push(language.url));
+        onLanguageSelect(language => {
+            if (typeof language.url === 'string') {
+                history.push(language.url);
+            }
+        });
         const path = currentPath(location);
         const currentLanguage = LANGUAGE_KEYS.find(l => path.startsWith(`/${l}`));
         let languageIndependentPath = path;

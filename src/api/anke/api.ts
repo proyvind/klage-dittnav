@@ -29,7 +29,9 @@ export async function resumeOrCreateAnke(anke: NewAnke) {
     try {
         return await postJSON<NewAnke, Anke>(url, `Fant ikke endepunkt for å opprette anke`, anke);
     } catch (error) {
-        logError(error, 'Resume or create anke error.', { resource: url, anke });
+        if (error instanceof Error) {
+            logError(error, 'Resume or create anke error.', { resource: url, anke });
+        }
         throw error;
     }
 }
@@ -39,7 +41,9 @@ export async function getAnke(ankeInternalSaksnummer: AnkeInternalSaksnummer) {
     try {
         return await getJSON<Anke>(url, ankeNotFoundMessage(ankeInternalSaksnummer));
     } catch (error) {
-        logError(error, 'Get anke error.', { resource: url, ankeInternalSaksnummer });
+        if (error instanceof Error) {
+            logError(error, 'Get anke error.', { resource: url, ankeInternalSaksnummer });
+        }
         throw error;
     }
 }
@@ -49,7 +53,9 @@ export async function updateAnke(anke: UpdateAnke) {
     try {
         return await putJSON<UpdateAnke, never>(url, ankeNotFoundMessage(anke.ankeInternalSaksnummer), anke, false);
     } catch (error) {
-        logError(error, 'Update anke error.', { resource: url, anke });
+        if (error instanceof Error) {
+            logError(error, 'Update anke error.', { resource: url, anke });
+        }
         throw error;
     }
 }
@@ -59,7 +65,9 @@ export async function finalizeAnke(ankeInternalSaksnummer: AnkeInternalSaksnumme
     try {
         return await postJSON<never, FinalizedAnke>(url, ankeNotFoundMessage(ankeInternalSaksnummer));
     } catch (error) {
-        logError(error, 'Finalize anke error.', { resource: url, ankeInternalSaksnummer });
+        if (error instanceof Error) {
+            logError(error, 'Finalize anke error.', { resource: url, ankeInternalSaksnummer });
+        }
         throw error;
     }
 }
@@ -69,7 +77,9 @@ export async function getJournalpostId(ankeInternalSaksnummer: AnkeInternalSaksn
     try {
         return await getText(url, ankeNotFoundMessage(ankeInternalSaksnummer));
     } catch (error) {
-        logError(error, 'Get journalpost ID error.', { resource: url, ankeInternalSaksnummer });
+        if (error instanceof Error) {
+            logError(error, 'Get journalpost ID error.', { resource: url, ankeInternalSaksnummer });
+        }
         throw error;
     }
 }
@@ -81,7 +91,9 @@ export async function addAttachment(ankeInternalSaksnummer: AnkeInternalSaksnumm
         formData.append('vedlegg', attachment, attachment.name);
         return await postFormData<Attachment>(url, ankeNotFoundMessage(ankeInternalSaksnummer), formData);
     } catch (error) {
-        logError(error, 'Add attachment error.', { resource: url, ankeInternalSaksnummer });
+        if (error instanceof Error) {
+            logError(error, 'Add attachment error.', { resource: url, ankeInternalSaksnummer });
+        }
         throw error;
     }
 }
@@ -95,11 +107,13 @@ export async function deleteAttachment(
         await del(url, ankeOrAttachmentNotFoundMessage(ankeInternalSaksnummer, attachmentId));
         return;
     } catch (error) {
-        logError(error, 'Delete attachment error.', {
-            resource: url,
-            ankeInternalSaksnummer,
-            attachmentId
-        });
+        if (error instanceof Error) {
+            logError(error, 'Delete attachment error.', {
+                resource: url,
+                ankeInternalSaksnummer,
+                attachmentId
+            })
+        }
         throw error;
     }
 }
@@ -111,7 +125,9 @@ export async function getAllAvailableAnkerForUser(temaKey?: TemaKey) {
     try {
         return await getJSON<AvailableAnke[]>(url, availableAnkerNotFoundMessage());
     } catch (error) {
-        logError(error, 'Get anke error.', { resource: url });
+        if (error instanceof Error) {
+            logError(error, 'Get anke error.', { resource: url });
+        }
         throw error;
     }
 }

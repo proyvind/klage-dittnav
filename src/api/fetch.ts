@@ -46,7 +46,10 @@ async function text(response: Response) {
     try {
         return await response.text();
     } catch (parseError) {
-        throw new TextParseError(parseError, response);
+        if (parseError instanceof Error) {
+            throw new TextParseError(parseError, response);
+        }
+        throw new TextParseError(new Error('Unknown response.txt() error.'), response);
     }
 }
 
@@ -54,7 +57,10 @@ async function json<T>(response: Response) {
     try {
         return (await response.json()) as Promise<T>;
     } catch (parseError) {
-        throw new JsonParseError(parseError, response);
+        if (parseError instanceof Error) {
+            throw new JsonParseError(parseError, response);
+        }
+        throw new JsonParseError(new Error('Unknown response.json() error.'), response);
     }
 }
 

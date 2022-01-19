@@ -97,7 +97,9 @@ export class Environment implements EnvironmentVariables {
             const json: Env = JSON.parse(jsonText);
             return json;
         } catch (err) {
-            logError(err, `Failed to parse environment JSON: ${jsonText}`);
+            if (err instanceof Error) {
+                logError(err, `Failed to parse environment JSON: ${jsonText}`);
+            }
             return null;
         }
     }

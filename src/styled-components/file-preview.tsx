@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import FileFC from 'forhandsvisningsfil';
 import { device } from './media-queries';
 
-export const FlexWithSpacingContainer = styled.div`
+export const FlexWithSpacingContainer = styled.div` 
     display: flex;
     flex-flow: row wrap;
 

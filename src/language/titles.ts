@@ -18,7 +18,9 @@ class Titles {
                 this.titleKeys = Object.keys(this.titles);
             }
         } catch (e) {
-            logError(e);
+            if (e instanceof Error) {
+                logError(e);
+            }
             fetch(`${ENVIRONMENT.apiUrl}/titles`)
                 .then(res => res.json())
                 .then(json => {

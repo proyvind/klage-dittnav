@@ -64,7 +64,9 @@ const Begrunnelse = ({ anke }: Props) => {
         } catch (error) {
             setAutosaveStatus(AutosaveStatus.FAILED);
             ankeStore.store(fritekst);
-            setError(error);
+            if (error instanceof Error) {
+                setError(error);
+            }
             return false;
         }
     }, [fritekst, attachments, anke, setAnke, language]);

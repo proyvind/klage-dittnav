@@ -9,7 +9,9 @@ export async function getFullmaktsgiver(tema: string, fnr: string) {
     try {
         return await getJSON<User>(url, `Finner ikke fullmaktsgiver med personnummer ${foedselsnrFormat('' + fnr)}`);
     } catch (error) {
-        logError(error, 'Get fullmaktsgiver user error.', { resource: url });
+        if (error instanceof Error) {
+            logError(error, 'Get fullmaktsgiver user error.', { resource: url });
+        }
         throw error;
     }
 }

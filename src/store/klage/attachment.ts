@@ -1,4 +1,4 @@
-import { IFile } from 'forhandsvisningsfil';
+import { File } from 'forhandsvisningsfil';
 
 export interface Attachment {
     readonly content: string;
@@ -10,7 +10,7 @@ export interface Attachment {
     readonly tittel: string;
 }
 
-export interface AttachmentFile extends IFile {
+export interface AttachmentFile extends File {
     readonly id: string;
     readonly content: {
         base64: string;

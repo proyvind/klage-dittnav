@@ -13,7 +13,9 @@ export async function getUser() {
     try {
         return await getJSON<User>(url, 'Fant ikke endepunkt for å hente bruker.');
     } catch (error) {
-        logError(error, 'Get user error.', { resource: url });
+        if (error instanceof Error) {
+            logError(error, 'Get user error.', { resource: url });
+        }
         throw error;
     }
 }
@@ -42,7 +44,9 @@ export async function hasFullmaktFor(tema: TemaKey, fnr: string) {
             `Du har ikke fullmakt for person med personnummer ${ffnr} for området ${TITLES.getTemaTitle(tema)}.`
         );
     } catch (error) {
-        logError(error, 'Get fullmakt user error.', { resource: url });
+        if (error instanceof Error) {
+            logError(error, 'Get fullmakt user error.', { resource: url });
+        }
         throw error;
     }
 }
@@ -52,7 +56,9 @@ export async function createKlage(klage: NewKlage) {
     try {
         return await postJSON<NewKlage, Klage>(url, 'Fant ikke endepunkt for å opprette klage.', klage);
     } catch (error) {
-        logError(error, 'Create klage error.', { resource: url, klage });
+        if (error instanceof Error) {
+            logError(error, 'Create klage error.', { resource: url, klage });
+        }
         throw error;
     }
 }
@@ -62,7 +68,9 @@ export async function getKlage(klageId: string | number) {
     try {
         return await getJSON<Klage>(url, klageNotFoundMessage(klageId));
     } catch (error) {
-        logError(error, 'Get klage error.', { resource: url, klageId });
+        if (error instanceof Error) {
+            logError(error, 'Get klage error.', { resource: url, klageId });
+        }
         throw error;
     }
 }
@@ -72,7 +80,9 @@ export async function updateKlage(klage: UpdateKlage) {
     try {
         return await putJSON<UpdateKlage, never>(url, klageNotFoundMessage(klage.id), klage, false);
     } catch (error) {
-        logError(error, 'Update klage error.', { resource: url, klageId: klage.id, klage });
+        if (error instanceof Error) {
+            logError(error, 'Update klage error.', { resource: url, klageId: klage.id, klage });
+        }
         throw error;
     }
 }
@@ -82,7 +92,9 @@ export async function finalizeKlage(klageId: string | number) {
     try {
         return await postJSON<never, FinalizedKlage>(url, klageNotFoundMessage(klageId));
     } catch (error) {
-        logError(error, 'Finalize klage error.', { resource: url, klageId });
+        if (error instanceof Error) {
+            logError(error, 'Finalize klage error.', { resource: url, klageId });
+        }
         throw error;
     }
 }
@@ -92,7 +104,9 @@ export async function getJournalpostId(klageId: string | number) {
     try {
         return await getText(url, klageNotFoundMessage(klageId));
     } catch (error) {
-        logError(error, 'Get journalpost ID error.', { resource: url, klageId });
+        if (error instanceof Error) {
+            logError(error, 'Get journalpost ID error.', { resource: url, klageId });
+        }
         throw error;
     }
 }
@@ -104,7 +118,9 @@ export async function addAttachment(klageId: string | number, attachment: File) 
         formData.append('vedlegg', attachment, attachment.name);
         return await postFormData<Attachment>(url, klageNotFoundMessage(klageId), formData);
     } catch (error) {
-        logError(error, 'Add attachment error.', { resource: url, klageId });
+        if (error instanceof Error) {
+            logError(error, 'Add attachment error.', { resource: url, klageId });
+        }
         throw error;
     }
 }
@@ -115,7 +131,9 @@ export async function deleteAttachment(klageId: string | number, attachmentId: n
         await del(url, klageOrAttachmentNotFoundMessage(klageId, attachmentId));
         return;
     } catch (error) {
-        logError(error, 'Delete attachment error.', { resource: url, klageId, attachmentId });
+        if (error instanceof Error) {
+            logError(error, 'Delete attachment error.', { resource: url, klageId, attachmentId });
+        }
         throw error;
     }
 }

@@ -90,7 +90,9 @@ const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
             setSelectedFullmaktsgiver(user);
             setLoading(false);
         } catch (error) {
-            setFeilmelding(error.message);
+            if (error instanceof Error) {
+                setFeilmelding(error.message);
+            }
             setLoading(false);
         }
     };
