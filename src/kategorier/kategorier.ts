@@ -360,7 +360,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
                 titleKey: 'YRKESSKADE',
                 allowsAnke: true,
                 showAnkeList: [],
-                digitalKlage: [],
+                digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
                 digitalKlageFullmakt: false,
                 path: 'yrkesskade',
                 mailKlageUrl: {
