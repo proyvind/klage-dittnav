@@ -778,7 +778,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         title: { [Languages.nb]: 'Til eller fra Norge', [Languages.en]: 'To and from Norway' },
         path: 'til-eller-fra-norge',
         beskrivelse: {
-            [Languages.nb]: 'Medlemskap i folketrygdloven',
+            [Languages.nb]: 'Medlemskap i folketrygden og trygdeavgift',
             [Languages.en]: 'Membership of National Insurance Act'
         },
         kategorier: [
