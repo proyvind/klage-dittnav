@@ -1,5 +1,6 @@
 FROM node:12-alpine
 ENV NODE_ENV production
+ENV NPM_CONFIG_CACHE=/tmp
 
 WORKDIR usr/src/app
 COPY server server/
