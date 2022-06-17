@@ -1,8 +1,0 @@
-name: 'Klage Ditt NAV Code QL Config'
-
-paths:
-  - src
-  - server
-paths-ignore:
-  - node_modules
-  - '**/*.test.ts'
