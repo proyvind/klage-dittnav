@@ -1,0 +1,7 @@
+frontend/*
+!frontend/dist
+!frontend/public
+server/*
+!server/dist
+!server/package.json
+!server/node_modules

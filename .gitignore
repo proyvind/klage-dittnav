@@ -1,7 +1,2 @@
-node_modules
 .idea
 .DS_Store
-build
-public/pdf.worker.js
-
-src/**/*.css

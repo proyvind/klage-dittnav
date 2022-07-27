@@ -5,35 +5,36 @@ metadata:
   namespace: klage
   labels:
     team: klage
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100M"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
 spec:
   port: 8080
   image: {{ image }}
-  ingresses:
-  {{#each ingresses as |url|}}
-     - {{url}}
-  {{/each}}
   replicas:
     min: 2
     max: 4
     cpuThresholdPercentage: 80
   liveness:
-    path: /internal/isAlive
-    initialDelay: 10
+    path: /isAlive
+    initialDelay: 3
   readiness:
-    path: /internal/isReady
-    initialDelay: 10
+    path: /isReady
+    initialDelay: 3
+  tokenx:
+    enabled: true
   idporten:
-    enabled: false
-  envFrom:
-    - secret: amplitude
-  env:
-    {{#each env}}
-       - name: {{@key}}
-         value: "{{this}}"
-    {{/each}}
+    enabled: true
+    sidecar:
+      enabled: true
   accessPolicy:
     outbound:
-      external:
-        {{#each externals as |host|}}
-        - host: {{host}}
-        {{/each}}
+      rules:
+        - application: klage-dittnav-api
+  ingresses:
+  {{#each ingresses as |url|}}
+    - {{url}}
+  {{/each}}
+  envFrom:
+    - secret: amplitude
+    - secret: slack-url

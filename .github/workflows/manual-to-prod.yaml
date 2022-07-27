@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env:
-  BASEIMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav
+  BASEIMAGE: ghcr.io/${{ github.repository }}/klage-dittnav
 jobs:
   deployprod:
     name: Deploy to prod-gcp
@@ -20,7 +20,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais.yaml
-          VARS: nais/prod.json
+          VARS: nais/prod.yaml
       - name: Generate release version
         run: |
           TIME=$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M)

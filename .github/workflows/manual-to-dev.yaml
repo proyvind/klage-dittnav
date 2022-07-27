@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/klage-dittnav:${{ github.sha }}
+  IMAGE: ghcr.io/${{ github.repository }}/klage-dittnav:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -19,18 +19,41 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Build
+      - name: Install frontend dependencies
         run: |
+          cd frontend
           npm ci
+      - name: Build frontend
+        env:
+          VERSION: ${{ github.sha }}
+        run: |
+          cd frontend
           npm run build
-      - name: Build docker image
-        run: docker build -t ${IMAGE} .
-      - name: Login to Github Package Registry
+      - name: Test frontend
+        run: |
+          cd frontend
+          npm test
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm ci
+      - name: Build server
+        run: |
+          cd server
+          npm run build
+      - name: Test server
+        run: |
+          cd server
+          npm test
+      - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-      - name: Push Docker image
-        run: docker push ${IMAGE}
+          VERSION: ${{ github.sha }}
+        run: |
+          cat Dockerfile
+          docker build --build-arg VERSION --tag ${IMAGE} .
+          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker push ${IMAGE}
       - name: Post failures to Slack
         if: failure()
         run: |
@@ -51,7 +74,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais.yaml
-          VARS: nais/dev.json
+          VARS: nais/dev.yaml
       - name: Post failures to Slack
         if: failure()
         run: |
