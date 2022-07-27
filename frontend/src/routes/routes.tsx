@@ -12,7 +12,6 @@ import { AnkeoppsummeringPage } from './ankeskjema/summary/anke-oppsummering-pag
 import { CreateAnke } from './create-anke';
 import { CreateKlage } from './create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
-import { InngangFullmakt } from './inngang/inngang-fullmakt';
 import { InngangInnsendingDigital } from './inngang/inngang-innsendingsvalg-digital';
 import { InngangInnsendingPost } from './inngang/inngang-innsendingsvalg-post';
 import { InngangKategorier } from './inngang/inngang-kategorier';
@@ -58,7 +57,6 @@ export const Router = () => (
 
               {innsendingsRoutes}
               {kategoriRoutes}
-              {fullmaktRoutes}
 
               <Route path="klage">
                 <Route path=":klageId">
@@ -130,22 +128,5 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
   inngangkategori.kategorier.map((kategori) => {
     const path = `${inngangkategori.path}/${kategori.path}`;
     return <Route key={path} path={path} element={getInngangInnsendingComponent(inngangkategori, kategori)} />;
-  })
-);
-
-const fullmaktRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
-  inngangkategori.kategorier.map((kategori) => {
-    const path = `${inngangkategori.path}/${kategori.path}/fullmakt`;
-    return (
-      <Route
-        key={path}
-        path={path}
-        element={
-          <UserLoader>
-            <InngangFullmakt inngangkategori={inngangkategori} kategori={kategori} />
-          </UserLoader>
-        }
-      />
-    );
   })
 );
