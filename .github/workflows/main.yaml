@@ -58,7 +58,7 @@ jobs:
         name: Checkout code
       - uses: nais/deploy/actions/deploy@master
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/dev.yaml
@@ -71,7 +71,7 @@ jobs:
         name: Checkout code
       - uses: nais/deploy/actions/deploy@master
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/prod.yaml
