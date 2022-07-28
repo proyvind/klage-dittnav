@@ -1,5 +1,5 @@
 import { Alert, BodyShort } from '@navikt/ds-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from '../language/use-translation';
 import { LoadingPage } from '../loading-page/loading-page';
 import { useGetUserQuery } from '../redux-api/user/api';
@@ -14,7 +14,13 @@ export const UserLoader = ({ children }: Props) => {
   const { user_loader } = useTranslation();
   const { isLoading, isError } = useGetUserQuery();
 
-  if (isLoading) {
+  useEffect(() => {
+    if (isError) {
+      login();
+    }
+  }, [isError]);
+
+  if (isLoading || isError) {
     return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
   }
 
