@@ -1,8 +1,9 @@
 /* eslint-disable max-lines */
+import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
+import { ExternalLink } from '../components/link/link';
 import { displayBytes, displayFnr } from '../functions/display';
-import { ExternalLink } from '../link/link';
-import { Utfall } from '../redux-api/case/available-anke/types';
+import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
 import { CaseStatus } from '../redux-api/case/types';
 import { TemaKey } from '../tema/tema';
@@ -10,30 +11,49 @@ import { TemaKey } from '../tema/tema';
 export type Language = typeof nb;
 
 export const nb = {
+  fullmakt: {
+    title: 'Klage på vegne av andre',
+    description: 'Digital innsending av klage når du har fullmakt på vegne av andre.',
+    help: {
+      text: 'Slik gir du fullmakt til andre',
+      url: 'https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema',
+    },
+    loading: 'Sjekker fullmakt...',
+  },
   inngang: {
     title_postfix: 'klage eller anke',
+    guide_panel: {
+      general_info: [
+        <BodyShort key="1" spacing>
+          Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage eller anke. Les mer om{' '}
+          <ExternalLink
+            href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
+            inline
+          >
+            dine klagerettigheter
+          </ExternalLink>
+          .
+        </BodyShort>,
+      ].map((c, index) => <span key={index}>{c}</span>),
+      login_info: [
+        <BodyShort key="2" spacing>
+          For at du skal få best mulig brukeropplevelse, anbefaler vi deg å <Link href="/oauth2/login">logge inn</Link>{' '}
+          før du går videre.
+        </BodyShort>,
+        <ExternalLink key="external-id" href="https://www.norge.no/elektronisk-id" inline>
+          Slik skaffer du deg elektronisk ID.
+        </ExternalLink>,
+      ],
+    },
     hovedkategorier: {
       title: 'Klage eller anke på vedtak',
-      description: [
-        'Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage. Start med å velge hvilket tema saken gjelder. Les mer om ',
-        <ExternalLink
-          key="klagerettigheter"
-          href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-          inline
-        >
-          dine klagerettigheter
-        </ExternalLink>,
-        '.',
-      ].map((c, index) => <span key={index}>{c}</span>),
-      chooseTema: 'Velg tema',
-    },
-    skjemaHistorikk: {
-      ankemuligheterTitle: 'Dine ankemuligheter',
+      chooseTema: 'Hvilket tema gjelder saken?',
     },
     kategorier: {
-      title: 'Hvilken tjeneste eller ytelse gjelder det?',
+      title: 'Hvilken tjeneste eller ytelse gjelder saken?',
     },
     innsendingsvalg: {
+      title: 'Hva vil du?',
       common: {
         read_more: [
           'Les mer om ',
@@ -46,81 +66,66 @@ export const nb = {
           </ExternalLink>,
           '.',
         ].map((c, index) => <span key={index}>{c}</span>),
-        estimate: [
-          'Du kan se ',
-          <ExternalLink
-            key="saksbehandlingstid"
-            href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-            inline
-          >
-            forventet saksbehandlingstid for klage og anke
-          </ExternalLink>,
-          ' i egen oversikt.',
-        ].map((c, index) => <span key={index}>{c}</span>),
-      },
-      digital: {
-        cards: {
-          digital_klage: {
-            title: 'Klage digitalt',
-            title_resume: 'Klage digitalt (påbegynt)',
-            description: 'For å sende inn digitalt må du logge inn med elektronisk ID.',
-          },
-          digital_anke: {
-            title: 'Anke digitalt',
-            title_resume: 'Anke digitalt (påbegynt)',
-            description: (date: string, utfall: string) =>
-              `Anke på vedtak av ${date} med utfall ${utfall.toLowerCase()}.`,
-          },
-          post: {
-            title: 'Klage via post',
-            description: 'Klageskjema som sendes inn via post. Også for deg som skal klage på vegne av andre.',
-          },
-          anke: {
-            title: 'Innsending av anke',
-            description: 'For å sende inn en anke fyller du ut et skjema som sendes via post.',
-          },
-          fullmakt: {
-            title: 'Klage på vegne av andre',
-            description: 'Digital innsending av klage når du har fullmakt på vegne av andre.',
-          },
-        },
+        warning: 'Klagen eller anken din lagres i nettleseren inntil fanen lukkes, selv om du ikke er logget inn.',
         elektronisk_id: {
-          text: 'Slik skaffer du deg elektronisk ID',
+          text: 'Slik skaffer du deg elektronisk ID.',
           url: 'https://www.norge.no/elektronisk-id',
         },
-        fullmakt_help: {
-          text: 'Slik gir du fullmakt til andre',
-          url: 'https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema',
+      },
+      klage: {
+        title: 'Klage på vedtak fra NAV',
+        description: {
+          logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
+          logged_in_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
+          logged_out_digital:
+            'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut klagen, signere den og sende den via post.',
+          logged_out_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
         },
       },
-      post: {
-        title: 'Innsending via post',
-        description: `Klage eller anke på denne tjenesten krever at du må du sende inn via post. Veiviseren hjelper
-                deg med utfylling av en førsteside og klageskjema. Dette må du skrive ut og sende inn til den
-                adressen som står på førstesiden, sammen med kopi av eventuelle andre dokumenter eller
-                kvitteringer.`,
-        cards: {
-          post: {
-            title: 'Skjema for klager',
-            description: 'Dette velger du når du skal klage på et vedtak du har fått fra NAV.',
-          },
-          anke: {
-            title: 'Skjema for anke',
-            description: `Dette velger du hvis du tidligere har sendt inn en klage og ønsker å
-                        anke til Trygderetten.`,
-          },
+      anke: {
+        title: 'Anke på vedtak fra NAV Klageinstans',
+        description: {
+          logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
+          logged_in_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
+          logged_out_digital: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
+          logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
       fullmakt: {
         title_postfix: 'klage på vegne av andre',
         title: 'Klage på vegne av andre',
         who: 'Hvem klager du på vegne av?',
-        nin: 'Fødselsnummer for den du har fullmakt til (11 siffer)',
-        invalid_nin: 'Ugyldig fødselsnummer',
+        nin: 'Fødsels- eller D-nummer for den du har fullmakt til (11 siffer)',
         search: 'Søk',
         no_fullmakt: (fnr: string, temaName: string) =>
           `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${temaName}.`,
       },
+    },
+  },
+  klageskjema_post: {
+    common: {
+      title_fragment: 'klage',
+      steps: ['Begrunnelse', 'Oppsummering', 'Innsending'],
+      page_title: 'Klage på vedtak',
+    },
+    has_attachments_label: 'Jeg skal sende med vedlegg.',
+    send_by_post_text: 'Du må laste ned klagen din her, skrive den ut, signere den og sende den inn via post til NAV.',
+    download: 'Last ned PDF',
+    post_guidetext: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
+    should_log_in_digital:
+      'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut klagen, signere den og sende den via post.',
+    logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
+    summary: {
+      title: 'Se over før du skriver ut',
+    },
+    innsending: {
+      title: 'Hva gjør du nå?',
+      steg: [
+        'Skriv ut klagen. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer forsiden og siste side i klagen.',
+        'Legg ved vedleggene.',
+        'Send via post til ',
+      ],
     },
   },
   klageskjema: {
@@ -138,7 +143,7 @@ export const nb = {
         label: 'Klage på vegne av:',
       },
       reasons: {
-        title: 'Hva er du uenig i? (valgfri)',
+        title: 'Hva gjelder klagen? (valgfri)',
         not_specified: 'Ikke spesifisert.',
         texts: {
           [Reason.AVSLAG_PAA_SOKNAD]: 'Jeg har fått avslag på søknaden min',
@@ -159,8 +164,6 @@ export const nb = {
         placeholder: 'Skriv inn din begrunnelse her.',
         description:
           'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.',
-        begrunnelse_mangler: 'Du må skrive en begrunnelse før du går videre.',
-        error_empty: 'Du må skrive en begrunnelse før du går videre.',
       },
       autosave: {
         popover: 'Vi lagrer endringene dine automatisk.',
@@ -192,6 +195,7 @@ export const nb = {
           `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`,
       },
       next_button: 'Gå videre',
+      delete_title: 'Slett klagen og returner til hovedsiden',
     },
     summary: {
       title: 'Se over før du sender inn',
@@ -200,19 +204,6 @@ export const nb = {
         person: {
           title: <>Person&shy;opplysninger</>,
           info_from: 'Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.',
-          given_name: 'For- og mellomnavn',
-          surname: 'Etternavn',
-          nin: 'Fødselsnummer',
-          phone: 'Telefonnummer',
-          address: 'Adresse',
-          change_name_address: {
-            text: 'Endre navn eller adresse (Folkeregisteret)',
-            url: 'https://www.skatteetaten.no/person/folkeregister/',
-          },
-          change_phone: {
-            text: 'Endre telefonnummer (Kontakt- og reservasjonsregisteret)',
-            url: 'https://brukerprofil.difi.no/minprofil',
-          },
         },
         case: {
           title: 'Opplysninger fra saken',
@@ -224,14 +215,14 @@ export const nb = {
           from_system: 'Hentet fra internt system',
         },
         begrunnelse: {
-          title: 'Begrunnelse i din klage',
-          what: 'Hva er du uenig i?',
+          title: 'Begrunnelse i klagen din',
+          what: 'Hva gjelder klagen?',
           why: 'Hvorfor er du uenig?',
           documents: 'Vedlagte dokumenter',
         },
       },
-      back: 'Tilbake',
       next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt klage'),
+      post_link: 'Last ned hvis du heller ønsker å sende via post',
     },
     kvittering: {
       title: 'Kvittering for innsendt klage',
@@ -239,8 +230,17 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description:
-          'Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.',
+        description: [
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
+          <ExternalLink
+            key="ettersende"
+            href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+            inline
+          >
+            trykk her for å ettersende dokumenter
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler klagen din videre på våre ',
@@ -253,22 +253,40 @@ export const nb = {
         </ExternalLink>,
         '.',
       ].map((c, index) => <span key={index}>{c}</span>),
-      see_estimate: [
-        'Du kan se ',
-        <ExternalLink
-          key="saksbehandlingstid"
-          href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-          inline
-        >
-          forventet saksbehandlingstid for klage og anke
-        </ExternalLink>,
-        ' i egen oversikt.',
-      ].map((c, index) => <span key={index}>{c}</span>),
-      dine_saker: 'Se dine saker på DITT NAV',
+      dine_saker: {
+        title: 'Se dine saker på Ditt NAV',
+        url: 'https://person.nav.no/mine-saker/',
+      },
       loading: {
         title: 'Sender inn klage...',
         still_working: 'Jobber fortsatt...',
       },
+    },
+  },
+  ankeskjema_post: {
+    common: {
+      title_fragment: 'Anke',
+      steps: ['Begrunnelse', 'Oppsummering', 'Innsending'],
+      page_title: 'Anke på vedtak',
+    },
+    has_attachments_label: 'Jeg skal sende med vedlegg.',
+    send_by_post_text: 'Du må laste ned anken din her, skrive den ut, signere den og sende den inn via post til NAV.',
+    download: 'Last ned PDF',
+    post_guidetext: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
+    should_log_in_digital:
+      'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut anken, signere den og sende den via post.',
+    logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
+    summary: {
+      title: 'Se over før du skriver ut',
+    },
+    innsending: {
+      title: 'Hva gjør du nå?',
+      steg: [
+        'Skriv ut anken. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer anken.',
+        'Legg ved vedleggene.',
+        'Send via post til ',
+      ],
     },
   },
   ankeskjema: {
@@ -291,12 +309,14 @@ export const nb = {
       saksnummer: {
         title: 'Saksnummer (valgfri)',
       },
+      klageenhet: {
+        title: 'Klageenhet',
+        not_specified: 'Ingen enhet valgt',
+      },
       begrunnelse_text: {
         title: 'Beskriv din anke',
         placeholder: 'Skriv inn din begrunnelse her.',
         description: 'Her kan du skrive inn din anke. Legg ved dokumenter som skal følge saken til Trygderetten.',
-        begrunnelse_mangler: 'Du må skrive en begrunnelse før du går videre.',
-        error_empty: 'Du må skrive en begrunnelse før du går videre.',
       },
       autosave: {
         popover: 'Vi lagrer endringene dine automatisk.',
@@ -328,6 +348,7 @@ export const nb = {
           `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`,
       },
       next_button: 'Gå videre',
+      delete_title: 'Slett anken og returner til hovedsiden',
     },
     summary: {
       title: 'Se over før du sender inn',
@@ -336,19 +357,6 @@ export const nb = {
         person: {
           title: <>Person&shy;opplysninger</>,
           info_from: 'Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.',
-          given_name: 'For- og mellomnavn',
-          surname: 'Etternavn',
-          nin: 'Fødselsnummer',
-          phone: 'Telefonnummer',
-          address: 'Adresse',
-          change_name_address: {
-            text: 'Endre navn eller adresse (Folkeregisteret)',
-            url: 'https://www.skatteetaten.no/person/folkeregister/',
-          },
-          change_phone: {
-            text: 'Endre telefonnummer (Kontakt- og reservasjonsregisteret)',
-            url: 'https://brukerprofil.difi.no/minprofil',
-          },
         },
         case: {
           title: 'Opplysninger fra saken',
@@ -360,13 +368,14 @@ export const nb = {
           from_system: 'Hentet fra internt system',
         },
         begrunnelse: {
-          title: 'Begrunnelse i din anke',
+          title: 'Begrunnelse i anken din',
           why: 'Beskrivelse i din anke',
           documents: 'Vedlagte dokumenter',
         },
       },
       back: 'Tilbake',
-      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt anke'),
+      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Last ned / skriv ut' : 'Se innsendt anke'),
+      post_link: 'Last ned hvis du heller ønsker å sende via post',
     },
     kvittering: {
       title: 'Kvittering for innsendt anke',
@@ -374,8 +383,17 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description:
-          'Du trenger ikke gjøre noe mer, vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg.',
+        description: [
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
+          <ExternalLink
+            key="ettersende"
+            href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+            inline
+          >
+            trykk her for å ettersende dokumenter
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler anken din videre på våre ',
@@ -388,18 +406,10 @@ export const nb = {
         </ExternalLink>,
         '.',
       ],
-      see_estimate: [
-        'Du kan se ',
-        <ExternalLink
-          key="saksbehandlingstid"
-          href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-          inline
-        >
-          forventet saksbehandlingstid for klage og anke
-        </ExternalLink>,
-        ' i egen oversikt.',
-      ].map((c, index) => <span key={index}>{c}</span>),
-      dine_saker: 'Se dine saker på DITT NAV',
+      dine_saker: {
+        title: 'Se dine saker på Ditt NAV',
+        url: 'https://person.nav.no/mine-saker/',
+      },
       loading: {
         title: 'Sender inn anke...',
         still_working: 'Jobber fortsatt...',
@@ -457,9 +467,6 @@ export const nb = {
     title: 'Finner ikke siden',
     go_back: 'Gå tilbake til startsiden',
   },
-  fullmakt: {
-    loading: 'Sjekker fullmakt...',
-  },
   utfall: {
     [Utfall.TRUKKET]: 'Trukket',
     [Utfall.RETUR]: 'Retur',
@@ -470,7 +477,16 @@ export const nb = {
     [Utfall.UGUNST]: 'Omgjort',
     [Utfall.AVVIST]: 'Avvist',
   },
-  errorMessages: {
+  kvittering: {
+    see_estimate: [
+      'Du kan se ',
+      <ExternalLink key="saksbehandlingstid" href="https://www.nav.no/saksbehandlingstider" inline>
+        forventet saksbehandlingstid for klage og anke
+      </ExternalLink>,
+      ' i egen oversikt.',
+    ].map((c, index) => <span key={index}>{c}</span>),
+  },
+  error_messages: {
     TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',
     TOTAL_TOO_LARGE: 'Total filstørrelse kan ikke være større enn 32 MB.',
     ENCRYPTED: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med.',
@@ -478,11 +494,52 @@ export const nb = {
     VIRUS: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med.',
     FILE_COULD_NOT_BE_CONVERTED:
       'Du har prøvd å legge til et vedlegg med et format vi ikke støtter. Vedlegg er begrenset til PNG, JPEG, og PDF.',
+    skjema: {
+      title: 'Feil i skjema',
+      fnr: 'Fødselsnummer er ikke gyldig.',
+      f_or_d_number: 'Ugyldig fødsels- eller D-nummer',
+      vedtak_date: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden, eller tom.',
+      vedtak_date_required: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden.',
+      fornavn: 'Du må fylle inn fornavn og mellomnavn.',
+      etternavn: 'Du må fylle inn etternavn.',
+      begrunnelse: 'Du må skrive en begrunnelse før du går videre.',
+      enhet: 'Du må velge en enhet.',
+    },
   },
   common: {
     logged_out: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
     log_in: 'Logg inn',
     retry: 'Prøv på nytt',
     generic_error: 'Noe gikk galt. Vennligst prøv igjen senere.',
+    f_or_d_number: 'Fødsels- eller D-nummer',
+    fornavn: 'For- og mellomnavn',
+    etternavn: 'Etternavn',
+    address: 'Adresse',
+    phone_number: 'Telefonnummer',
+    download: 'Last ned / skriv ut',
+    optional_suffix: ' (valgfri)',
+    klage: 'Klage',
+    anke: 'Anke',
+    back: 'Tilbake',
+    close_confirm: 'Er du sikker på at du vil lukke denne nettsiden?',
+    last_changed: 'Sist endret',
+    delete: 'Slett',
+    cancel: 'Avbryt',
+    yes: 'Ja',
+    no: 'Nei',
+    expires_in: (exp: string) => `Du vil bli logget ut ${exp}. For å fortsette trenger du bare logge inn igjen.`,
+  },
+  personalised: {
+    draft_klager: {
+      title: 'Påbegynte klager',
+    },
+    draft_anker: {
+      title: 'Påbegynte anker',
+      item_title: 'Påbegynt anke',
+    },
+    available_anker: {
+      title: 'Avslåtte klager',
+      klage_date: 'Klagens vedtaksdato',
+    },
   },
 };

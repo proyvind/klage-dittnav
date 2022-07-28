@@ -1,6 +1,6 @@
 import { serverConfig } from './server-config';
 
-export const getEnvironmentVersion = <T>(local: T, development: T, production: T): T => {
+const getEnvironmentVersion = <T>(local: T, development: T, production: T): T => {
   if (isDeployedToDev) {
     return development;
   }
@@ -12,7 +12,7 @@ export const getEnvironmentVersion = <T>(local: T, development: T, production: T
   return local;
 };
 
-export const isDeployedToDev = serverConfig.cluster === 'dev-gcp';
+const isDeployedToDev = serverConfig.cluster === 'dev-gcp';
 export const isDeployedToProd = serverConfig.cluster === 'prod-gcp';
 export const isDeployed = isDeployedToDev || isDeployedToProd;
 
@@ -21,5 +21,5 @@ export const ENVIRONMENT = getEnvironmentVersion('local', 'development', 'produc
 export const DOMAIN: string = getEnvironmentVersion(
   `http://localhost:${serverConfig.port}`,
   'https://klage.dev.nav.no',
-  'https://klage.intern.nav.no',
+  'https://klage.intern.nav.no'
 );

@@ -71,6 +71,7 @@ export class ServerSentEventManager {
   private async preflight(url: string): Promise<boolean> {
     try {
       const { status } = await fetch(url, { method: 'GET' });
+
       return status >= 200 && status < 400;
     } catch {
       return false;
@@ -96,6 +97,7 @@ export class ServerSentEventManager {
         if (!preflightOK) {
           // Probably the session timed out. Double check the logged in status.
           userApi.util.invalidateTags(['user', 'isAuthenticated']);
+
           return;
         }
 

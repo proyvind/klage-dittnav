@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getQueryValue } from '../query/get-query-value';
+import { getQueryValue } from '../functions/get-query-value';
 import { ensureStringIsTema } from '../tema/tema';
 import { InngangHovedkategorier } from './inngang/inngang-hovedkategorier';
 import { LandingPage } from './landing-page';
@@ -25,3 +25,5 @@ export const RootWithQuery = () => {
 
   return LandingPage(temaKey, titleKey, ytelseKey, saksnummerValue);
 };
+
+export default RootWithQuery;

@@ -1,15 +1,18 @@
 import { Heading, LinkPanel } from '@navikt/ds-react';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+import { DraftKlageAndAnkeLists } from '../../components/personalised-content/personalised-content';
+import { TitleLoader } from '../../components/text-loader/title-loader';
+import { usePageInit } from '../../hooks/use-page-init';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
-import { usePageInit } from '../../page-init/page-init';
 import { InngangMainContainer } from '../../styled-components/main-container';
-import { Title } from '../../title/title';
+import { TemaKey } from '../../tema/tema';
+import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
 
 interface Props {
@@ -25,12 +28,22 @@ export const InngangKategorier = React.memo(
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
     useBreadcrumbs([], title);
 
+    const temaAndTitleKeyList: [TemaKey, string][] = useMemo(
+      () => inngangkategori.kategorier.map(({ temaKey, titleKey }) => [temaKey, titleKey]),
+      [inngangkategori.kategorier]
+    );
+
     return (
       <InngangMainContainer>
         <PanelContainer>
           <CenteredHeading spacing level="1" size="xlarge">
             {title}
           </CenteredHeading>
+
+          <InngangGuidePanel />
+
+          <DraftKlageAndAnkeLists temaAndTitleKeyList={temaAndTitleKeyList} />
+
           <InngangPanel as="section">
             <Heading spacing level="2" size="large">
               {inngang.kategorier.title}
@@ -46,8 +59,11 @@ export const InngangKategorier = React.memo(
 
 InngangKategorier.displayName = 'InngangKategorier';
 
+export default InngangKategorier;
+
 const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
   const lang = useLanguage();
+
   return (
     <LinkContainer>
       {kategorier.map((kategori) => {
@@ -75,9 +91,9 @@ interface KategoriLinkProps {
 }
 
 const KategoriLink = ({ titleKey, path }: KategoriLinkProps) => (
-  <LinkPanel as={NavLink} to={path} border>
+  <LinkPanel as={Link} to={path} border>
     <LinkPanel.Title>
-      <Title titleKey={titleKey} />
+      <TitleLoader titleKey={titleKey} />
     </LinkPanel.Title>
   </LinkPanel>
 );
@@ -90,7 +106,7 @@ interface ExternalKategoriProps {
 const ExternalKategoriLink = ({ titleKey, externalUrl }: ExternalKategoriProps) => (
   <LinkPanel href={externalUrl} border>
     <LinkPanel.Title>
-      <Title titleKey={titleKey} />
+      <TitleLoader titleKey={titleKey} />
     </LinkPanel.Title>
   </LinkPanel>
 );

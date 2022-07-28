@@ -19,6 +19,7 @@ export const useBreadcrumbs = (breadcrumbs: Breadcrumb[] | null, currentTitle: s
   useEffect(() => {
     if (breadcrumbs === null) {
       setBreadcrumbs([]);
+
       return;
     }
 
@@ -32,6 +33,7 @@ export const useBreadcrumbs = (breadcrumbs: Breadcrumb[] | null, currentTitle: s
 
     if (currentTitle === null) {
       setBreadcrumbs([hovedkategorierBreadcrumb, ...breadcrumbs]);
+
       return;
     }
 

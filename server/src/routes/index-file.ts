@@ -4,7 +4,10 @@ import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr';
 import { frontendDistDirectoryPath } from '../config/config';
 import { ENVIRONMENT, isDeployedToProd } from '../config/env';
 import { VERSION } from '../config/version';
+import { getLogger } from '../logger';
 import { EmojiIcons, sendToSlack } from '../slack';
+
+const log = getLogger('index-file');
 
 class IndexFile {
   private readonly INDEX_HTML_PATH = path.join(frontendDistDirectoryPath, 'index.html');
@@ -30,6 +33,7 @@ class IndexFile {
       setInterval(this.generateFile, 60 * 1000);
     } catch (e) {
       if (e instanceof Error) {
+        log.error({ error: e, msg: 'Failed to generate index file' });
         sendToSlack(`Error when generating index file: ${e.message}`, EmojiIcons.Scream);
       }
 
@@ -58,7 +62,10 @@ class IndexFile {
 
       this._indexFile = indexHtml.replace('{{ENVIRONMENT}}', ENVIRONMENT).replace('{{VERSION}}', VERSION);
 
-      console.info(`Successfully updated index.html with Dekoratøren (${Math.round(end - start)}ms) and variables.`);
+      log.debug({
+        msg: `Successfully updated index.html with Dekoratøren and variables.`,
+        data: { responseTime: Math.round(end - start) },
+      });
     } catch (e) {
       if (e instanceof Error) {
         throw e;

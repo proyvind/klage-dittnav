@@ -1,85 +1,178 @@
 import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query/react';
-import React, { useEffect } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LoadingPage } from '../components/loading-page/loading-page';
 import { displayFnr } from '../functions/display';
-import { useTitleKey } from '../hooks/use-titles';
+import { getQueryValue } from '../functions/get-query-value';
+import { useSessionKlage } from '../hooks/use-session-klage';
+import { useIsAuthenticated, useUser } from '../hooks/use-user';
 import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
-import { LoadingPage } from '../loading-page/loading-page';
-import { getQueryValue } from '../query/get-query-value';
-import { useCreateKlageMutation } from '../redux-api/case/klage/api';
+import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../redux-api/case/klage/api';
 import { useGetFullmaktsgiverQuery } from '../redux-api/user/api';
+import { useAppDispatch } from '../redux/configure-store';
+import { createSessionKlage } from '../redux/session/klage/helpers';
+import { deleteSessionKlage, setSessionKlage } from '../redux/session/session';
 import { TemaKey, ensureStringIsTema } from '../tema/tema';
 
 export const CreateKlage = () => {
   const [query] = useSearchParams();
   const language = useLanguage();
+  const navigate = useNavigate();
   const { klage_create, klage_loader, fullmakt } = useTranslation();
+  const { isLoading: authIsLoading, data: isAuthenticated } = useIsAuthenticated();
+  const { data: user, isLoading: userIsLoading } = useUser();
 
   const tema = query.get('tema');
 
-  const [titleKey, titleKeyIsLoading] = useTitleKey(getQueryValue(query.get('tittel')));
   const temaKey = ensureStringIsTema(getQueryValue(tema));
+  const titleKey = getQueryValue(query.get('tittel'));
   const saksnummer = getQueryValue(query.get('saksnummer'));
+
   const fullmaktsgiver = getQueryValue(query.get('fullmaktsgiver'));
 
   const [hasFullmaktsgiver, hasFullmaktsgiverIsLoading] = useHasFullmaktsgiver(temaKey, fullmaktsgiver);
 
-  const [createKlage, { data: klage, isLoading, isError: createHasFailed, isSuccess }] = useCreateKlageMutation();
+  const [createKlage, { isLoading: createIsLoading, isError: createHasFailed, isSuccess: createIsSuccess }] =
+    useCreateKlageMutation();
+
+  const [resumeOrCreateKlage, { isLoading: resumeIsLoading, isError: resumeHasFailed, isSuccess: resumeIsSuccess }] =
+    useResumeOrCreateKlageMutation();
+
+  const sessionKlage = useSessionKlage(temaKey, titleKey);
+  const dispatch = useAppDispatch();
+
+  const sessionKlageIsLoading = typeof sessionKlage === 'undefined';
+
+  const isInitialized = useMemo(
+    () =>
+      createIsSuccess ||
+      resumeIsSuccess ||
+      authIsLoading ||
+      userIsLoading ||
+      resumeIsLoading ||
+      createIsLoading ||
+      createHasFailed ||
+      resumeHasFailed ||
+      sessionKlageIsLoading,
+    [
+      authIsLoading,
+      createHasFailed,
+      createIsLoading,
+      createIsSuccess,
+      resumeHasFailed,
+      resumeIsLoading,
+      resumeIsSuccess,
+      sessionKlageIsLoading,
+      userIsLoading,
+    ]
+  );
 
   useEffect(() => {
-    if (isSuccess || typeof klage !== 'undefined') {
+    if (isInitialized || temaKey === null || isAuthenticated === true) {
       return;
     }
 
-    if (createHasFailed) {
+    if (!sessionKlageIsLoading && sessionKlage === null) {
+      dispatch(
+        setSessionKlage({
+          key: { temaKey, titleKey },
+          klage: createSessionKlage(language, temaKey, titleKey, saksnummer),
+        })
+      );
+    }
+
+    const q = saksnummer !== null && saksnummer.length !== 0 ? `?saksnummer=${saksnummer}` : '';
+    const t = titleKey !== null && titleKey.length !== 0 ? titleKey : 'NONE';
+    navigate(`/${language}/klage/uinnlogget/${temaKey}/${t}/begrunnelse${q}`, { replace: true });
+  }, [
+    dispatch,
+    isAuthenticated,
+    language,
+    isInitialized,
+    navigate,
+    saksnummer,
+    temaKey,
+    titleKey,
+    sessionKlage,
+    sessionKlageIsLoading,
+    authIsLoading,
+    userIsLoading,
+  ]);
+
+  useEffect(() => {
+    if (isInitialized || temaKey === null || isAuthenticated === false) {
       return;
     }
 
-    if (temaKey === null) {
+    if (hasFullmaktsgiverIsLoading || (fullmaktsgiver !== null && !hasFullmaktsgiver)) {
       return;
     }
 
-    if (hasFullmaktsgiverIsLoading || titleKeyIsLoading || isLoading) {
+    if (
+      !sessionKlageIsLoading &&
+      sessionKlage !== null &&
+      sessionKlage.foedselsnummer === user?.folkeregisteridentifikator?.identifikasjonsnummer
+    ) {
+      createKlage({
+        tema: sessionKlage.tema,
+        titleKey: sessionKlage.titleKey ?? undefined,
+        checkboxesSelected: sessionKlage.checkboxesSelected,
+        userSaksnummer: sessionKlage.userSaksnummer,
+        language: sessionKlage.language,
+        vedtakDate: sessionKlage.vedtakDate,
+        internalSaksnummer: saksnummer,
+        fritekst: sessionKlage.fritekst,
+        fullmaktsgiver,
+      })
+        .unwrap()
+        .then(({ id }) => {
+          dispatch(deleteSessionKlage({ temaKey, titleKey }));
+          navigate(`/${language}/klage/${id}/begrunnelse`, { replace: true });
+        });
+
       return;
     }
 
-    if (fullmaktsgiver !== null && !hasFullmaktsgiver) {
-      return;
-    }
-
-    createKlage({
+    resumeOrCreateKlage({
       tema: temaKey,
       titleKey: titleKey ?? undefined,
       internalSaksnummer: saksnummer,
       fullmaktsgiver,
-    });
+    })
+      .unwrap()
+      .then(({ id }) => navigate(`/${language}/klage/${id}/begrunnelse`, { replace: true }));
   }, [
-    createHasFailed,
     createKlage,
     fullmaktsgiver,
     hasFullmaktsgiver,
     hasFullmaktsgiverIsLoading,
-    isLoading,
-    isSuccess,
-    klage,
+    isAuthenticated,
+    language,
+    isInitialized,
+    navigate,
+    resumeOrCreateKlage,
     saksnummer,
+    sessionKlage,
     temaKey,
     titleKey,
-    titleKeyIsLoading,
+    sessionKlageIsLoading,
+    dispatch,
+    user?.folkeregisteridentifikator?.identifikasjonsnummer,
   ]);
 
   if (temaKey === null) {
     return <Alert variant="error">{klage_create.invalid_tema(tema?.toString())}</Alert>;
   }
 
-  if (createHasFailed) {
+  if (createHasFailed || resumeHasFailed) {
     return <Alert variant="error">{klage_create.create_error}</Alert>;
   }
 
   if (fullmaktsgiver !== null && !hasFullmaktsgiver && !hasFullmaktsgiverIsLoading) {
     const error = klage_create.finne_fullmaktsgiver_error(displayFnr(fullmaktsgiver));
+
     return <Alert variant="error">{error}</Alert>;
   }
 
@@ -87,11 +180,11 @@ export const CreateKlage = () => {
     return <LoadingPage>{fullmakt.loading}</LoadingPage>;
   }
 
-  if (isLoading || typeof klage === 'undefined') {
+  if (createIsLoading || resumeIsLoading) {
     return <LoadingPage>{klage_loader.loading_klage}</LoadingPage>;
   }
 
-  return <Navigate to={`/${language}/klage/${klage.id}/begrunnelse`} replace />;
+  return <LoadingPage>{klage_loader.loading_klage}</LoadingPage>;
 };
 
 const useHasFullmaktsgiver = (temaKey: TemaKey | null, fullmaktsgiver: string | null): [boolean, boolean] => {
@@ -100,3 +193,5 @@ const useHasFullmaktsgiver = (temaKey: TemaKey | null, fullmaktsgiver: string | 
 
   return [isSuccess, isLoading || isFetching];
 };
+
+export default CreateKlage;

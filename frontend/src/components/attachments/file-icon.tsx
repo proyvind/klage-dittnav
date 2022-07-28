@@ -1,14 +1,14 @@
 import { FileContent, Picture } from '@navikt/ds-icons';
 import React from 'react';
 
-export interface FileIconProps {
+interface FileIconProps {
   contentType: string;
 }
 
 export const FileIcon = ({ contentType }: FileIconProps) => {
   if (contentType.includes('image')) {
-    return <Picture />;
+    return <Picture aria-hidden />;
   }
 
-  return <FileContent />;
+  return <FileContent aria-hidden />;
 };

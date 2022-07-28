@@ -3,6 +3,9 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { getOnBehalfOfAccessToken } from '../auth/on-behalf-of';
 import { getTokenXClient } from '../auth/token-x-client';
 import { API_CLIENT_IDS } from '../config/config';
+import { getLogger } from '../logger';
+
+const log = getLogger('proxy');
 
 export const setupProxy = async () => {
   const authClient = await getTokenXClient();
@@ -20,8 +23,11 @@ export const setupProxy = async () => {
           req.headers['authorization'] = `Bearer ${obo_access_token}`;
           req.headers['idporten-token'] = tokenXtoken;
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : '';
-          console.warn(`Failed to prepare request with OBO token. ${errorMessage}`, route);
+          log.warn({
+            msg: `Failed to prepare request with OBO token for route ${route}`,
+            error,
+            data: { appName },
+          });
         }
       }
 
@@ -41,13 +47,20 @@ export const setupProxy = async () => {
           res.write(
             JSON.stringify({
               error: `Failed to connect to API. Reason: ${err.message}`,
-            }),
+            })
           );
           res.end();
         },
         logLevel: 'warn',
+        logProvider: () => ({
+          log: (msg: string) => log.info({ msg, data: { appName } }),
+          info: (msg: string) => log.info({ msg, data: { appName } }),
+          debug: (msg: string) => log.debug({ msg, data: { appName } }),
+          warn: (msg: string) => log.warn({ msg, data: { appName } }),
+          error: (msg: string) => log.error({ msg, data: { appName } }),
+        }),
         changeOrigin: true,
-      }),
+      })
     );
   });
 

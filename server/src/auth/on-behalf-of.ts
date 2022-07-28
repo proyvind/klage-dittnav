@@ -1,21 +1,14 @@
 import { Client, GrantBody } from 'openid-client';
 import { serverConfig } from '../config/server-config';
+import { getLogger } from '../logger';
 import { now, oboCache } from './on-behalf-of-cache';
 
-const getSubjectToken = (bearerToken: string) => {
-  const parts = bearerToken.split(' ');
-
-  if (parts.length !== 2) {
-    throw new Error('Error while splitting bearer token');
-  }
-
-  return parts[1];
-};
+const log = getLogger('auth');
 
 export const getOnBehalfOfAccessToken = async (
   authClient: Client,
   access_token: string,
-  appName: string,
+  appName: string
 ): Promise<string> => {
   const cacheKey = `${access_token}-${appName}`;
 
@@ -33,7 +26,7 @@ export const getOnBehalfOfAccessToken = async (
 
   if (typeof authClient.issuer.metadata.token_endpoint !== 'string') {
     const error = new Error(`OpenID issuer misconfigured. Missing token endpoint.`);
-    console.error('On-Behalf-Of:', error);
+    log.error({ error });
     throw error;
   }
 
@@ -64,7 +57,7 @@ export const getOnBehalfOfAccessToken = async (
     return obo_access_token;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('On-Behalf-Of:', error);
+      log.error({ error });
       throw error;
     }
 
@@ -74,4 +67,14 @@ export const getOnBehalfOfAccessToken = async (
 
     throw new Error('Unknown error while getting on-behalf-of access token.');
   }
+};
+
+const getSubjectToken = (bearerToken: string) => {
+  const parts = bearerToken.split(' ');
+
+  if (parts.length !== 2) {
+    throw new Error('Error while splitting bearer token');
+  }
+
+  return parts[1];
 };

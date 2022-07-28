@@ -1,8 +1,13 @@
+import { getLogger } from '../logger';
+
+const log = getLogger('parse-json');
+
 export const parseJSON = <T>(json: string): T | null => {
   try {
     return JSON.parse(json);
-  } catch (e) {
-    console.warn('Failed to parse JSON', json, e);
+  } catch (error) {
+    log.warn({ msg: 'Failed to parse JSON', data: json, error });
+
     return null;
   }
 };

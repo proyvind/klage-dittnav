@@ -33,6 +33,7 @@ export const queryStringify = (query: unknown): string => {
 
       if (Array.isArray(value)) {
         const arrayValue = value.map(stringifyValue).filter(isNotNull).join(',');
+
         return `${key}=${arrayValue}`;
       }
 

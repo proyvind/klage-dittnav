@@ -12,7 +12,7 @@ export const PanelContainer = styled(Panel)`
 export const InngangPanel = styled(Panel)`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 16px;
   width: 100%;
   background-color: #fff;
 `;
@@ -20,10 +20,10 @@ export const InngangPanel = styled(Panel)`
 export const LinkContainer = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 

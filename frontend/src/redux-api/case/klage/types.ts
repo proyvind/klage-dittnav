@@ -1,12 +1,7 @@
-import { ISODate } from '../../../date/date';
 import { StringValue } from '../../../kategorier/kategorier';
 import { Languages } from '../../../language/types';
 import { TemaKey } from '../../../tema/tema';
-import { Attachment, Case } from '../types';
-
-export interface KlageAttachment extends Attachment {
-  readonly klageId: number;
-}
+import { Case } from '../types';
 
 export enum Reason {
   AVSLAG_PAA_SOKNAD = 'AVSLAG_PAA_SOKNAD',
@@ -23,17 +18,22 @@ export interface NewKlage {
   readonly fullmaktsgiver: string | null;
 }
 
-export type Updatable = Pick<Klage, 'fritekst' | 'vedtakDate' | 'checkboxesSelected' | 'userSaksnummer'>;
-export type UpdatableKeys = keyof Updatable;
-export const UPDATABLE_KEYS: UpdatableKeys[] = ['fritekst', 'vedtakDate', 'checkboxesSelected', 'userSaksnummer'];
-
 export interface Klage extends NewKlage, Case {
-  readonly id: string;
-  readonly vedlegg: KlageAttachment[];
   readonly title: StringValue;
   readonly language: Languages;
-  readonly fritekst: string;
   readonly checkboxesSelected: Reason[];
-  readonly userSaksnummer: string | null;
-  readonly vedtakDate: ISODate | null;
 }
+
+export type Updatable = Pick<Klage, 'fritekst' | 'vedtakDate' | 'checkboxesSelected' | 'userSaksnummer' | 'hasVedlegg'>;
+
+type UpdatableKeys = keyof Updatable;
+
+export const UPDATABLE_KEYS: UpdatableKeys[] = ['fritekst', 'vedtakDate', 'checkboxesSelected', 'userSaksnummer'];
+
+interface IKlageUpdate<T extends keyof Updatable> {
+  readonly id: Klage['id'];
+  readonly key: T;
+  readonly value: Updatable[T];
+}
+
+export type KlageUpdate = IKlageUpdate<keyof Updatable>;

@@ -1,11 +1,11 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
-export interface ApiError {
+interface ApiError {
   status: number;
   data: ApiErrorData;
 }
 
-export interface ApiErrorData {
+interface ApiErrorData {
   status: number;
   detail: string;
   title: string;

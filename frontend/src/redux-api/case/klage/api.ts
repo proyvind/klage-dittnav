@@ -1,14 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { API_BASE_QUERY, API_PATH } from '../../common';
 import { ServerSentEventManager, ServerSentEventType } from '../../server-sent-events';
-import { Case, CaseStatus, DeleteAttachmentParams, FinalizedCase, UploadAttachmentParams } from '../types';
-import { Klage, KlageAttachment, NewKlage, Updatable } from './types';
-
-interface Update<T extends keyof Updatable> {
-  readonly id: Klage['id'];
-  readonly key: T;
-  readonly value: Updatable[T];
-}
+import { Attachment, Case, CaseStatus, DeleteAttachmentParams, FinalizedCase, UploadAttachmentParams } from '../types';
+import { Klage, KlageUpdate, NewKlage } from './types';
 
 type BaseUpdateResponse = Pick<Case, 'modifiedByUser'>;
 
@@ -54,12 +48,12 @@ export const klageApi = createApi({
           console.error(err);
         }
       },
-      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (klageId, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => [data, ...klager]));
+        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
-    createKlage: builder.mutation<Klage, NewKlage>({
+    resumeOrCreateKlage: builder.mutation<Klage, NewKlage>({
       query: (body) => ({
         method: 'PUT',
         url: '/klager',
@@ -68,10 +62,22 @@ export const klageApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
         dispatch(klageApi.util.updateQueryData('getKlage', data.id, () => data));
-        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => [data, ...klager]));
+        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
-    updateKlage: builder.mutation<BaseUpdateResponse, Update<keyof Updatable>>({
+    createKlage: builder.mutation<Klage, Partial<Klage>>({
+      query: (body) => ({
+        method: 'POST',
+        url: '/klager',
+        body,
+      }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        dispatch(klageApi.util.updateQueryData('getKlage', data.id, () => data));
+        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
+      },
+    }),
+    updateKlage: builder.mutation<BaseUpdateResponse, KlageUpdate>({
       query: ({ id, key, value }) => ({
         method: 'PUT',
         url: `/klager/${id}/${key.toLowerCase()}`,
@@ -99,6 +105,21 @@ export const klageApi = createApi({
           patchResult.undo();
           klagerPatchResult.undo();
         }
+      },
+    }),
+    deleteKlage: builder.mutation<void, string>({
+      query: (klageId) => ({
+        method: 'DELETE',
+        url: `/klager/${klageId}`,
+      }),
+      onQueryStarted: async (klageId, { dispatch, queryFulfilled }) => {
+        await queryFulfilled;
+        dispatch(klageApi.util.updateQueryData('getKlage', klageId, () => undefined));
+        dispatch(
+          klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
+            klager.filter((klage) => klage.id !== klageId)
+          )
+        );
       },
     }),
     finalizeKlage: builder.mutation<FinalizedCase, string>({
@@ -134,14 +155,16 @@ export const klageApi = createApi({
         );
       },
     }),
-    uploadAttachment: builder.mutation<KlageAttachment, UploadAttachmentParams>({
+    uploadAttachment: builder.mutation<Attachment, UploadAttachmentParams>({
       query: ({ caseId, file }) => {
         const formData = new FormData();
         formData.append('vedlegg', file, file.name);
+
         return { method: 'POST', url: `/klager/${caseId}/vedlegg`, body: formData };
       },
       onQueryStarted: async ({ caseId }, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
+
         dispatch(
           klageApi.util.updateQueryData('getKlage', caseId, (draft) => ({
             ...draft,
@@ -178,7 +201,17 @@ export const {
   useDeleteAttachmentMutation,
   useFinalizeKlageMutation,
   useGetKlageQuery,
-  useLazyGetKlageQuery,
-  useUploadAttachmentMutation,
+  useResumeOrCreateKlageMutation,
   useUpdateKlageMutation,
+  useUploadAttachmentMutation,
+  useGetKlagerQuery,
+  useDeleteKlageMutation,
 } = klageApi;
+
+const addKlage = (klager: Klage[], newKlage: Klage) => {
+  if (klager.some(({ id }) => id === newKlage.id)) {
+    return klager.map((klage) => (klage.id === newKlage.id ? newKlage : klage));
+  }
+
+  return [newKlage, ...klager];
+};

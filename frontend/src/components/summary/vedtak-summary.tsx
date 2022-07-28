@@ -20,11 +20,11 @@ export const VedtakSummary = ({ vedtakDate, internalSaksnummer, translations, us
 
 interface SaksnummerTextProps {
   userSaksnummer?: string | null;
-  internalSaksnummer: string | null;
+  internalSaksnummer?: string | null;
   translations: Language['klageskjema' | 'ankeskjema'];
 }
 
-const SaksnummerText = ({ internalSaksnummer, translations, userSaksnummer }: SaksnummerTextProps) => {
+const SaksnummerText = ({ internalSaksnummer = null, translations, userSaksnummer = null }: SaksnummerTextProps) => {
   if (typeof userSaksnummer === 'string' && userSaksnummer.length !== 0) {
     return <BodyShort>{userSaksnummer}</BodyShort>;
   }

@@ -1,85 +1,110 @@
-import React from 'react';
+import { Alert, BodyShort } from '@navikt/ds-react';
+import { ErrorBoundary, withSentryReactRouterV6Routing } from '@sentry/react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { LoadingPage } from '../components/loading-page/loading-page';
 import { ENVIRONMENT } from '../environment/environment';
-import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
-import { INNGANG_KATEGORIER, InngangKategori, Kategori } from '../kategorier/kategorier';
+import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
 import { LanguageComponent } from '../language/component';
 import { Languages } from '../language/types';
-import { UserLoader } from '../user/user-loader';
-import { AnkebegrunnelsePage } from './ankeskjema/begrunnelse/anke-begrunnelse-page';
-import { AnkekvitteringPage } from './ankeskjema/kvittering/anke-kvittering-page';
-import { AnkeoppsummeringPage } from './ankeskjema/summary/anke-oppsummering-page';
-import { CreateAnke } from './create-anke';
-import { CreateKlage } from './create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
-import { InngangInnsendingDigital } from './inngang/inngang-innsendingsvalg-digital';
-import { InngangInnsendingPost } from './inngang/inngang-innsendingsvalg-post';
-import { InngangKategorier } from './inngang/inngang-kategorier';
-import { KlagebegrunnelsePage } from './klageskjema/begrunnelse/klage-begrunnelse-page';
-import { KlagekvitteringPage } from './klageskjema/kvittering/klage-kvittering-page';
-import { KlageoppsummeringPage } from './klageskjema/summary/klage-oppsummering-page';
-import { NotFoundPage } from './not-found-page';
-import { RootWithQuery } from './root-with-query';
+import { LoginIfUnauthorized, RedirectIfAuthorized, UpgradeSession } from './redirects';
+
+const AnkebegrunnelsePage = lazy(() => import('../components/anke/innlogget/begrunnelse/anke-begrunnelse-page'));
+const AnkeinnsendingPage = lazy(() => import('../components/anke/innlogget/innsending/anke-innsending-page'));
+const AnkekvitteringPage = lazy(() => import('../components/anke/innlogget/kvittering/anke-kvittering-page'));
+const AnkeoppsummeringPage = lazy(() => import('../components/anke/innlogget/summary/anke-oppsummering-page'));
+const SessionAnkebegrunnelsePage = lazy(
+  () => import('../components/anke/uinnlogget/begrunnelse/anke-begrunnelse-page')
+);
+const SessionAnkeinnsendingPage = lazy(() => import('../components/anke/uinnlogget/innsending/anke-innsending-page'));
+const SessionAnkeoppsummeringPage = lazy(() => import('../components/anke/uinnlogget/summary/anke-oppsummering-page'));
+const KlagebegrunnelsePage = lazy(() => import('../components/klage/innlogget/begrunnelse/klage-begrunnelse-page'));
+const KlageinnsendingPage = lazy(() => import('../components/klage/innlogget/innsending/klage-innsending-page'));
+const KlagekvitteringPage = lazy(() => import('../components/klage/innlogget/kvittering/klage-kvittering-page'));
+const KlageoppsummeringPage = lazy(() => import('../components/klage/innlogget/summary/klage-oppsummering-page'));
+const SessionKlagebegrunnelsePage = lazy(
+  () => import('../components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page')
+);
+const SessionKlageinnsendingPage = lazy(
+  () => import('../components/klage/uinnlogget/innsending/klage-innsending-page')
+);
+const SessionKlageoppsummeringPage = lazy(
+  () => import('../components/klage/uinnlogget/summary/klage-oppsummering-page')
+);
+const CreateAnke = lazy(() => import('./create-anke'));
+const CreateKlage = lazy(() => import('./create-klage'));
+const InngangInnsending = lazy(() => import('./inngang/inngang-innsendingsvalg'));
+const InngangKategorier = lazy(() => import('./inngang/inngang-kategorier'));
+const NotFoundPage = lazy(() => import('./not-found-page'));
+const RootWithQuery = lazy(() => import('./root-with-query'));
+
+const SentryRoutes = withSentryReactRouterV6Routing(Routes);
 
 export const Router = () => (
   <BrowserRouter>
     <DekoratorSetRedirect>
       <LanguageComponent>
-        <ErrorBoundary>
-          <Routes>
-            <Route path="/:lang">
-              <Route
-                path="anke/ny"
-                element={
-                  <UserLoader>
-                    <CreateAnke />
-                  </UserLoader>
-                }
-              />
+        <ErrorBoundary
+          fallback={
+            <Alert variant="warning">
+              <BodyShort>Beklager, det skjedde en feil.</BodyShort>
+              <BodyShort>Sorry, something went wrong.</BodyShort>
+            </Alert>
+          }
+        >
+          <Suspense fallback={<LoadingPage />}>
+            <SentryRoutes>
+              <Route path="ny" element={<CreateKlage />} />
+              <Route path="/:lang" element={<UpgradeSession />}>
+                {innsendingsRoutes}
+                {kategoriRoutes}
 
-              <Route
-                path="klage/ny"
-                element={
-                  <UserLoader>
-                    <CreateKlage />
-                  </UserLoader>
-                }
-              />
+                <Route path="klage">
+                  <Route path="ny" element={<CreateKlage />} />
 
-              <Route
-                path="ny"
-                element={
-                  <UserLoader>
-                    <CreateKlage />
-                  </UserLoader>
-                }
-              />
+                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
+                    <Route path=":temaKey/:titleKey">
+                      <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
+                      <Route path="innsending" element={<SessionKlageinnsendingPage />} />
+                    </Route>
+                  </Route>
 
-              {innsendingsRoutes}
-              {kategoriRoutes}
-
-              <Route path="klage">
-                <Route path=":klageId">
-                  <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
-                  <Route path="oppsummering" element={<KlageoppsummeringPage />} />
-                  <Route path="kvittering" element={<KlagekvitteringPage />} />
+                  <Route path=":klageId" element={<LoginIfUnauthorized />}>
+                    <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
+                    <Route path="oppsummering" element={<KlageoppsummeringPage />} />
+                    <Route path="kvittering" element={<KlagekvitteringPage />} />
+                    <Route path="innsending" element={<KlageinnsendingPage />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path="anke">
-                <Route path=":ankeId">
-                  <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
-                  <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
-                  <Route path="kvittering" element={<AnkekvitteringPage />} />
+                <Route path="anke">
+                  <Route path="ny" element={<CreateAnke />} />
+
+                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
+                    <Route path=":temaKey/:titleKey">
+                      <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
+                      <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
+                    </Route>
+                  </Route>
+
+                  <Route path=":ankeId" element={<LoginIfUnauthorized />}>
+                    <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
+                    <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
+                    <Route path="kvittering" element={<AnkekvitteringPage />} />
+                    <Route path="innsending" element={<AnkeinnsendingPage />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path="" element={<RootWithQuery />} />
-              <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
-            </Route>
-            <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+                <Route path="" element={<RootWithQuery />} />
+                <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
+              </Route>
+              <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </SentryRoutes>
+          </Suspense>
         </ErrorBoundary>
       </LanguageComponent>
     </DekoratorSetRedirect>
@@ -94,39 +119,23 @@ const kategoriRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
   />
 ));
 
-const getInngangInnsendingComponent = (inngangkategori: InngangKategori, kategori: Kategori) => {
-  const { digitalKlage, digitalKlageFullmakt, titleKey, temaKey, allowsAnke, mailKlageUrl, mailAnkeUrl } = kategori;
-
-  if (digitalKlage.includes(ENVIRONMENT.environment)) {
-    return (
-      <InngangInnsendingDigital
-        temaKey={temaKey}
-        titleKey={titleKey}
-        ytelse={null}
-        inngangkategori={inngangkategori}
-        digitalKlageFullmakt={digitalKlageFullmakt}
-        allowsAnke={allowsAnke}
-        mailKlageUrl={mailKlageUrl}
-        mailAnkeUrl={mailAnkeUrl}
-      />
-    );
-  }
-
-  return (
-    <InngangInnsendingPost
-      temaKey={temaKey}
-      titleKey={titleKey}
-      inngangkategori={inngangkategori}
-      allowsAnke={allowsAnke}
-      mailKlageUrl={mailKlageUrl}
-      mailAnkeUrl={mailAnkeUrl}
-    />
-  );
-};
-
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
   inngangkategori.kategorier.map((kategori) => {
     const path = `${inngangkategori.path}/${kategori.path}`;
-    return <Route key={path} path={path} element={getInngangInnsendingComponent(inngangkategori, kategori)} />;
+
+    return (
+      <Route
+        key={path}
+        path={path}
+        element={
+          <InngangInnsending
+            {...kategori}
+            inngangkategori={inngangkategori}
+            supportsDigitalKlage={kategori.digitalKlage.includes(ENVIRONMENT.environment)}
+            supportsDigitalAnke={kategori.digitalAnke.includes(ENVIRONMENT.environment)}
+          />
+        }
+      />
+    );
   })
 );

@@ -5,13 +5,6 @@ import styled from 'styled-components';
 import { Language } from '../../language/language';
 import { Ellipsis } from '../../styled-components/ellipsis';
 
-export enum AutosaveStatus {
-  NONE,
-  SAVING,
-  SAVED,
-  FAILED,
-}
-
 interface StatusProps {
   isLoading: boolean;
   isError: boolean;

@@ -13,39 +13,31 @@ export const useTemaName = (temaKey: TemaKey) => {
   return titles[temaKey] ?? `${lang}_TITLE_${temaKey}`;
 };
 
-export const useTitle = (titleKey: string): string => {
+export const useTitle = (titleKey?: string | null): [string, boolean] => {
   const lang = useLanguage();
-  const { data: titles, isLoading } = useGetLanguageTitlesQuery(lang);
+  const { data = {}, isLoading } = useGetLanguageTitlesQuery(lang);
 
-  if (isLoading || typeof titles === 'undefined') {
-    return titleKey;
-  }
+  const title = typeof titleKey === 'string' ? data[titleKey] ?? '' : '';
 
-  return titles[titleKey] ?? titleKey;
+  return [title, isLoading];
 };
 
-export const useTitleOrYtelse = (temaKey: TemaKey, titleKey?: string | null, ytelse?: string | null) => {
+export const useTitleOrTemaName = (temaKey: TemaKey, titleKey?: string | null): [string, boolean] => {
   const temaName = useTemaName(temaKey);
-  const title = useTitle(titleKey ?? '');
+  const [title, isLoading] = useTitle(titleKey);
 
   if (typeof titleKey === 'string') {
-    return title;
+    return [title, isLoading];
   }
 
-  if (typeof ytelse === 'string') {
-    return ytelse;
-  }
-
-  return temaName;
+  return [temaName, false];
 };
 
-export const useTitleKey = (titleKey: string | null): [string | null, boolean] => {
+export const useTitles = (titleKeys: string[]): [string[], boolean] => {
   const lang = useLanguage();
-  const { data: titles, isLoading } = useGetLanguageTitlesQuery(lang);
+  const { data = {}, isLoading } = useGetLanguageTitlesQuery(lang);
 
-  if (titleKey === null || isLoading || typeof titles === 'undefined') {
-    return [null, isLoading];
-  }
+  const titles = titleKeys.map((titleKey) => data[titleKey] ?? titleKey);
 
-  return [titles[titleKey] !== undefined ? titleKey : null, isLoading];
+  return [titles, isLoading];
 };

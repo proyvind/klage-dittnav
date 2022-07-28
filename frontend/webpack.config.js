@@ -16,23 +16,8 @@ module.exports = (_env, { mode }) => ({
         }
       },
       {
-        test: /\.(le|c)ss$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                strictMath: true,
-              },
-            },
-          },
-        ],
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
@@ -76,11 +61,7 @@ module.exports = (_env, { mode }) => ({
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process': {
-        env: {
-          NODE_ENV: JSON.stringify(mode),
-        }
-      }
+      'process.env.NODE_ENV': JSON.stringify(mode),
     }),
     new webpack.EnvironmentPlugin({'VERSION': 'dev'}),
   ]

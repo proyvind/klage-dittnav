@@ -3,17 +3,23 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { DOMAIN, isDeployed, isDeployedToProd } from './config/env';
 import { init } from './init';
+import { getLogger, httpLoggingMiddleware } from './logger';
 import { processErrors } from './process-errors';
 import { indexFile } from './routes/index-file';
 import { EmojiIcons, sendToSlack } from './slack';
 
 processErrors();
 
+const log = getLogger('server');
+
 if (isDeployed) {
-  sendToSlack('Starting...', EmojiIcons.StartStruck);
+  log.info({ msg: 'Started!' });
+  sendToSlack('Started!', EmojiIcons.StartStruck);
 }
 
 const server = express();
+
+server.use(httpLoggingMiddleware);
 
 server.set('trust proxy', true);
 server.disable('x-powered-by');
@@ -63,12 +69,12 @@ server.use(
       'X-Requested-With',
     ],
     origin: isDeployedToProd ? DOMAIN : [DOMAIN, /https?:\/\/localhost:\d{4,}/],
-  }),
+  })
 );
 
 server.get('/isAlive', (req, res) => res.status(200).send('Alive'));
 server.get('/isReady', (req, res) =>
-  res.status(indexFile.isReady ? 200 : 418).send(indexFile.isReady ? 'Ready' : 'Not ready'),
+  res.status(indexFile.isReady ? 200 : 418).send(indexFile.isReady ? 'Ready' : 'Not ready')
 );
 
 init(server);

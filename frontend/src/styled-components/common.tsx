@@ -1,4 +1,3 @@
-import { BodyLong } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 export const CenteredContainer = styled.div`
@@ -19,9 +18,4 @@ export const SpaceBetweenFlexListContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-`;
-
-export const WrapBodyLong = styled(BodyLong)`
-  white-space: pre-line;
-  word-break: break-all;
 `;

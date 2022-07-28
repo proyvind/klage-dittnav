@@ -2,6 +2,7 @@ frontend/*
 !frontend/dist
 !frontend/public
 server/*
+!server/.npmrc
 !server/dist
 !server/package.json
 !server/node_modules

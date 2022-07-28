@@ -2,6 +2,9 @@ import { JWK } from 'jose';
 import { Issuer } from 'openid-client';
 import { requiredEnvString, requiredEnvUrl } from '../config/env-var';
 import { parseJSON } from '../functions/parse-json';
+import { getLogger } from '../logger';
+
+const log = getLogger('auth');
 
 const getJwk = () => {
   const envVar = 'TOKEN_X_PRIVATE_JWK';
@@ -27,8 +30,8 @@ export const getTokenXClient = async () => {
     const keys = [getJwk()];
 
     return new issuer.Client({ client_id: clientId, token_endpoint_auth_method: 'private_key_jwt' }, { keys });
-  } catch (e) {
-    console.error('Failed to get Token X client', e);
-    throw e;
+  } catch (error) {
+    log.error({ error, msg: 'Failed to get Token X client' });
+    throw error;
   }
 };

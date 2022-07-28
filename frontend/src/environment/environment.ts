@@ -9,24 +9,29 @@ export enum EnvString {
 interface EnvironmentVariables {
   apiUrl: string;
   environment: EnvString;
+  version: string;
 }
 
-export class Environment implements EnvironmentVariables {
+class Environment implements EnvironmentVariables {
   public apiUrl: string;
   public environment: EnvString;
+  public version: string;
 
   constructor() {
-    const { apiUrl, environment } = this.init();
+    const { apiUrl, environment, version } = this.init();
     this.apiUrl = apiUrl;
     this.environment = environment;
+    this.version = version;
   }
 
   private init(): EnvironmentVariables {
     const environment = this.getEnvironment();
+    const version = this.getVersion();
 
     return {
       apiUrl: '/api',
       environment,
+      version,
     };
   }
 
@@ -38,6 +43,16 @@ export class Environment implements EnvironmentVariables {
     }
 
     return EnvString.LOCAL;
+  }
+
+  private getVersion(): string {
+    const version = document.documentElement.getAttribute('data-version');
+
+    if (version === null || version === '{{VERSION}}') {
+      return EnvString.LOCAL;
+    }
+
+    return version;
   }
 }
 

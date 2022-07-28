@@ -1,10 +1,10 @@
 import { FetchArgs, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
 
-export const IS_LOCALHOST = window.location.hostname === 'localhost';
+const IS_LOCALHOST = window.location.hostname === 'localhost';
 
 const mode: RequestMode | undefined = IS_LOCALHOST ? 'cors' : undefined;
 
-export const staggeredBaseQuery = (baseUrl: string) => {
+const staggeredBaseQuery = (baseUrl: string) => {
   const fetch = fetchBaseQuery({
     baseUrl,
     mode,
@@ -20,7 +20,6 @@ export const staggeredBaseQuery = (baseUrl: string) => {
       }
 
       if (result.error.status === 401) {
-        // TODO: Handle 401 error. Should contain reason in body. Show relevant UI based on reason.
         console.info('401 data', result.error);
         retry.fail(result.error.data);
       } else if (
@@ -28,7 +27,8 @@ export const staggeredBaseQuery = (baseUrl: string) => {
         result.error.status === 403 ||
         result.error.status === 404 ||
         result.error.status === 405 ||
-        result.error.status === 413
+        result.error.status === 413 ||
+        result.error.status === 501
       ) {
         retry.fail(result.error);
       }

@@ -1,17 +1,18 @@
 import { Upload } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { captureException } from '@sentry/react';
 import React, { useRef } from 'react';
+import styled from 'styled-components';
 import { isError } from '../../functions/is-api-error';
 import { Language } from '../../language/language';
-import { AnkeAttachment } from '../../redux-api/case/anke/types';
-import { KlageAttachment } from '../../redux-api/case/klage/types';
-import { UploadAttachmentParams } from '../../redux-api/case/types';
+import { useUploadAttachmentMutation as useUploadAnkeAttachmentMutation } from '../../redux-api/case/anke/api';
+import { useUploadAttachmentMutation as useUploadKlageAttachmentMutation } from '../../redux-api/case/klage/api';
 
 interface Props {
   caseId: string;
   inputId: string;
-  uploadAttachment: (params: UploadAttachmentParams) => Promise<KlageAttachment | AnkeAttachment>;
+  useUploadAttachment: typeof useUploadKlageAttachmentMutation | typeof useUploadAnkeAttachmentMutation;
   setLoading: (loading: boolean) => void;
   isLoading: boolean;
   setError: (error: FetchBaseQueryError) => void;
@@ -25,10 +26,11 @@ export const UploadButton = ({
   setError,
   caseId,
   translations,
-  uploadAttachment,
+  useUploadAttachment,
 }: Props) => {
   const { upload_button_text } = translations.begrunnelse.attachments;
   const fileInput = useRef<HTMLInputElement>(null);
+  const [uploadAttachment] = useUploadAttachment();
 
   const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -48,9 +50,10 @@ export const UploadButton = ({
 
     const uploads = Array.from(files).map(async (file) => {
       try {
-        await uploadAttachment({ caseId, file });
+        await uploadAttachment({ caseId, file }).unwrap();
       } catch (err) {
         if (isError(err)) {
+          captureException(err);
           setError(err);
         }
 
@@ -64,10 +67,15 @@ export const UploadButton = ({
 
   return (
     <>
-      <Button variant="secondary" onClick={handleAttachmentClick} loading={isLoading}>
+      <StyledUploadButton
+        variant="secondary"
+        onClick={handleAttachmentClick}
+        loading={isLoading}
+        id="upload-attachment"
+      >
         <Upload /> {upload_button_text}
-      </Button>
-      <input
+      </StyledUploadButton>
+      <StyledUploadInput
         id={inputId}
         type="file"
         multiple
@@ -77,8 +85,15 @@ export const UploadButton = ({
           upload(e);
           e.currentTarget.value = '';
         }}
-        style={{ display: 'none' }}
       />
     </>
   );
 };
+
+const StyledUploadButton = styled(Button)`
+  align-self: flex-start;
+`;
+
+const StyledUploadInput = styled.input`
+  display: none;
+`;

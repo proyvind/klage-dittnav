@@ -1,25 +1,24 @@
 import { Close, Delete } from '@navikt/ds-icons';
-import { BodyLong, Button, Label, Loader } from '@navikt/ds-react';
-import { SerializedError } from '@reduxjs/toolkit';
+import { Alert, BodyLong, Button, ErrorSummary, Label, Loader } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { displayBytes } from '../../functions/display';
+import { isApiError, isError } from '../../functions/is-api-error';
 import { Language } from '../../language/language';
-import { ExternalLink } from '../../link/link';
-import { AnkeAttachment } from '../../redux-api/case/anke/types';
-import { KlageAttachment } from '../../redux-api/case/klage/types';
-import { Attachment, DeleteAttachmentParams, UploadAttachmentParams } from '../../redux-api/case/types';
-import { KlageAlertStripe } from '../../styled-components/alert';
+import { useTranslation } from '../../language/use-translation';
+import { useUploadAttachmentMutation as useUploadAnkeAttachmentMutation } from '../../redux-api/case/anke/api';
+import { useUploadAttachmentMutation as useUploadKlageAttachmentMutation } from '../../redux-api/case/klage/api';
+import { Attachment, DeleteAttachmentParams } from '../../redux-api/case/types';
 import { CenteredContainer } from '../../styled-components/common';
-import { ErrorProps, Errors } from '../errors/errors';
+import { ExternalLink } from '../link/link';
 import { FileIcon } from './file-icon';
 import { UploadButton } from './upload-button';
 
-interface Props extends Pick<ErrorProps, 'logIn'> {
+interface Props {
   attachments: Attachment[];
   onDelete: (attachment: DeleteAttachmentParams) => void;
-  uploadAttachment: (params: UploadAttachmentParams) => Promise<KlageAttachment | AnkeAttachment>;
+  useUploadAttachment: typeof useUploadKlageAttachmentMutation | typeof useUploadAnkeAttachmentMutation;
   basePath: string;
   caseId: string;
   translations: Language['klageskjema' | 'ankeskjema'];
@@ -28,27 +27,29 @@ interface Props extends Pick<ErrorProps, 'logIn'> {
 const FILE_INPUT_ID = 'file-upload-input';
 
 export const AttachmentsSection = ({
-  uploadAttachment,
+  useUploadAttachment,
   attachments,
   onDelete,
   basePath,
   caseId,
   translations,
-  logIn,
 }: Props) => {
+  const { common } = useTranslation();
   const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
-  const [attachmentErrors, setAttachmentErrors] = useState<Set<FetchBaseQueryError>>(new Set([]));
+  const [attachmentErrors, setAttachmentErrors] = useState<FetchBaseQueryError[]>([]);
 
   return (
-    <div>
-      <Label htmlFor={FILE_INPUT_ID} as="label">
-        {translations.begrunnelse.attachments.title} ({attachments.length})
-      </Label>
-      <BodyLong spacing>{translations.begrunnelse.attachments.description}</BodyLong>
+    <>
+      <div>
+        <Label htmlFor={FILE_INPUT_ID} as="label">
+          {translations.begrunnelse.attachments.title} ({attachments.length})
+        </Label>
+        <BodyLong>{translations.begrunnelse.attachments.description}</BodyLong>
+      </div>
       <StyledList>
         {attachments.map(({ id, tittel, sizeInBytes, contentType }) => (
           <StyledListItem key={id}>
-            <ExternalLink href={`${basePath}/${caseId}/vedlegg/${id}`} openInNewWindow>
+            <ExternalLink href={`${basePath}/${caseId}/vedlegg/${id}`}>
               <FileIcon contentType={contentType} />
               <span>
                 {tittel} ({displayBytes(sizeInBytes)})
@@ -57,39 +58,33 @@ export const AttachmentsSection = ({
             <Button
               variant="danger"
               size="small"
-              title={`Slett ${tittel}`}
+              title={`${common.delete} ${tittel}`}
               onClick={() => onDelete({ caseId, attachmentId: id })}
-            >
-              <Delete />
-            </Button>
+              icon={<Delete />}
+            />
           </StyledListItem>
         ))}
       </StyledList>
 
       {showAttachmentLoader(attachmentsLoading)}
 
-      <KlageAlertStripe variant="info" inline>
+      <Alert variant="info" inline>
         <BodyLong>{translations.begrunnelse.attachments.supported_types}</BodyLong>
         <BodyLong>{translations.begrunnelse.attachments.size_limit}</BodyLong>
-      </KlageAlertStripe>
+      </Alert>
 
-      <ShowErrors
-        errors={Array.from(attachmentErrors)}
-        clear={() => setAttachmentErrors(new Set([]))}
-        translations={translations}
-        logIn={logIn}
-      />
+      <ShowErrors errors={attachmentErrors} clear={() => setAttachmentErrors([])} translations={translations} />
 
       <UploadButton
         inputId={FILE_INPUT_ID}
         setLoading={setAttachmentsLoading}
         caseId={caseId}
-        setError={(error) => setAttachmentErrors((e) => e.add(error))}
+        setError={(error) => setAttachmentErrors((e) => [...e, error])}
         translations={translations}
         isLoading={attachmentsLoading}
-        uploadAttachment={uploadAttachment}
+        useUploadAttachment={useUploadAttachment}
       />
-    </div>
+    </>
   );
 };
 
@@ -105,32 +100,50 @@ const showAttachmentLoader = (loading: boolean) => {
   );
 };
 
-interface ShowErrorsProps extends Pick<ErrorProps, 'logIn'> {
-  errors: (FetchBaseQueryError | SerializedError)[];
+interface ShowErrorsProps {
+  errors: FetchBaseQueryError[];
   clear: () => void;
   translations: Language['klageskjema' | 'ankeskjema'];
 }
 
-const ShowErrors = ({ errors, clear, translations, logIn }: ShowErrorsProps) => {
+const ShowErrors = ({ errors, clear, translations }: ShowErrorsProps) => {
+  const errorMessages = useErrorMessages(errors);
+
   if (errors.length === 0) {
     return null;
   }
 
   return (
-    <StyledErrorContainer>
+    <div>
       <StyledClearButton variant="secondary" onClick={clear}>
         <Close /> {translations.begrunnelse.attachments.clear_errors}
       </StyledClearButton>
-      {errors.map((error, i) => (
-        <Errors key={i} error={error} logIn={logIn} show />
-      ))}
-    </StyledErrorContainer>
+      <ErrorSummary>
+        {errorMessages.map((error, i) => (
+          <ErrorSummary.Item key={i} href="#upload-attachment">
+            {error}
+          </ErrorSummary.Item>
+        ))}
+      </ErrorSummary>
+    </div>
   );
 };
 
-const StyledErrorContainer = styled.div`
-  margin-bottom: 32px;
-`;
+const useErrorMessages = (errors: FetchBaseQueryError[]): string[] => {
+  const { common, error_messages } = useTranslation();
+
+  return errors.map((error): string => {
+    if (isApiError(error)) {
+      return error_messages[error.data.detail] ?? common.generic_error;
+    }
+
+    if (isError(error)) {
+      return typeof error.data === 'string' ? error.data : common.generic_error;
+    }
+
+    return common.generic_error;
+  });
+};
 
 const StyledClearButton = styled(Button)`
   margin-bottom: 8px;
@@ -143,7 +156,6 @@ const StyledList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-bottom: 32px;
 `;
 
 const StyledListItem = styled.li`

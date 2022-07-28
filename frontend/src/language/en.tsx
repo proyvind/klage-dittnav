@@ -1,32 +1,56 @@
 /* eslint-disable max-lines */
+import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
+import { ExternalLink } from '../components/link/link';
 import { displayBytes, displayFnr } from '../functions/display';
-import { ExternalLink } from '../link/link';
-import { Utfall } from '../redux-api/case/available-anke/types';
+import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
 import { CaseStatus } from '../redux-api/case/types';
 import { TemaKey } from '../tema/tema';
 import { Language } from './nb';
 
 export const en: Language = {
+  fullmakt: {
+    title: 'Complaint on behalf of others',
+    description: 'Digital submission of complaint when you are authorised on behalf of others.',
+    help: {
+      text: 'How to give power of attorney to others',
+      url: 'https://www.nav.no/soknader/en/person/diverse/fullmaktskjema',
+    },
+    loading: 'Checking power of attorney...',
+  },
   inngang: {
     title_postfix: 'complain or appeal',
+    guide_panel: {
+      general_info: [
+        <BodyShort key="1" spacing>
+          You have a right to complain if you have received a decision from NAV and disagree with the decision. Read
+          more about{' '}
+          <ExternalLink href="https://www.nav.no/en/home/rules-and-regulations/appeals" inline>
+            your right to complain
+          </ExternalLink>
+          .
+        </BodyShort>,
+      ].map((c, index) => <span key={index}>{c}</span>),
+      login_info: [
+        <BodyShort key="2" spacing>
+          To get the best possible user experience, we recommend that you <Link href="/oauth2/login">log in</Link>{' '}
+          before you proceed.{' '}
+          <ExternalLink href="https://www.norge.no/en/electronic-id" inline>
+            How to get an electronic ID.
+          </ExternalLink>
+        </BodyShort>,
+      ],
+    },
     hovedkategorier: {
       title: 'Complain or appeal against decision',
-      description: [
-        'You have a right to complain if you have received a decision from NAV and disagree with the decision. Start by selecting the topic of your case. Read more about ',
-        <ExternalLink key="klagerettigheter" href="https://www.nav.no/en/home/rules-and-regulations/appeals" inline>
-          your right to complain
-        </ExternalLink>,
-        '.',
-      ].map((c, index) => <span key={index}>{c}</span>),
       chooseTema: 'Select topic',
     },
-    skjemaHistorikk: { ankemuligheterTitle: 'Your appeal options' },
     kategorier: {
       title: 'Which service or benefit is applicable?',
     },
     innsendingsvalg: {
+      title: 'What do you want?',
       common: {
         read_more: [
           'Read more about ',
@@ -35,82 +59,70 @@ export const en: Language = {
           </ExternalLink>,
           '.',
         ].map((c, index) => <span key={index}>{c}</span>),
-        estimate: [
-          'You can see ',
-          <ExternalLink
-            key="saksbehandlingstid"
-            href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-            inline
-          >
-            the expected case processing time for complaints and appeals
-          </ExternalLink>,
-          ' in a separate overview.',
-        ].map((c, index) => <span key={index}>{c}</span>),
-      },
-      digital: {
-        cards: {
-          digital_klage: {
-            title: 'Complain digitally',
-            title_resume: 'Complain digitally (started)',
-            description: 'You must log in with your electronic ID to submit a digital complaint.',
-          },
-          digital_anke: {
-            title: 'Appeal digitally',
-            title_resume: 'Appeal digitally (started)',
-            description: (date: string, utfalltekst: string) =>
-              `Appeal on the decision made on ${date} with result ${utfalltekst.toLowerCase()}.`,
-          },
-          post: {
-            title: 'Complaint by post',
-            description:
-              'Complaint form to be submitted by post. Also for those who lodge a complaint on behalf of others.',
-          },
-          anke: {
-            title: 'Submission of appeal',
-            description: 'To submit an appeal, you must fill out a form sent by post.',
-          },
-          fullmakt: {
-            title: 'Complaint on behalf of others',
-            description: 'Digital submission of complaint when you are authorised on behalf of others.',
-          },
-        },
+        warning:
+          'Your complaint or appeal may be stored in the browser until the tab is closed, even if you are not logged in.',
         elektronisk_id: {
-          text: 'How to obtain an electronic ID',
-          url: 'https://www.norge.no/elektronisk-id',
-        },
-        fullmakt_help: {
-          text: 'How to give power of attorney to others',
-          url: 'https://www.nav.no/soknader/en/person/diverse/fullmaktskjema',
+          text: 'How to get an electronic ID.',
+          url: 'https://www.norge.no/en/electronic-id',
         },
       },
-      post: {
-        title: 'Submission by post',
-        description: `Complaints or appeals against this service must be submitted by post.
-                The guide will help you fill out a cover page and complaint form.
-                You must print it out and send it to the address listed on the cover page together with a copy of any other documents or receipts.`,
-        cards: {
-          post: {
-            title: 'Form for complaints',
-            description: 'Select this when you are complaining about a decision you have received from NAV.',
-          },
-          anke: {
-            title: 'Submission of appeal',
-            description: 'Select this when you have submitted a complaint earlier and wish to appeal to Trygderetten.',
-          },
+      klage: {
+        title: 'Complain on decision from NAV',
+        description: {
+          logged_in_digital: 'You can send your complaint and attachments digitally here.',
+          logged_in_post: 'Here you can fill out a complaint form. It has to be signed, printed, and sent by post.',
+          logged_out_digital:
+            'If you log in, you will be able to send the complaint and attachments digitally. You can continue without logging in, but you will have to print your complaint, sign it, and send it by post.',
+          logged_out_post: 'Here you can fill out a complaint form. It has to be signed, printed, and sent by post.',
+        },
+      },
+      anke: {
+        title: 'Appeal on decision from NAV Klageinstans',
+        description: {
+          logged_in_digital: 'You can send your appeal and attachments digitally here.',
+          logged_in_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
+          logged_out_digital: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
+          logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
       fullmakt: {
         title_postfix: 'Complain on behalf of others',
         title: 'Complain on behalf of others',
         who: 'On whose behalf are you lodging a complaint?',
-        nin: 'National identification number of the person you have power of atorney for',
-        invalid_nin: 'Invalid national identity number',
+        nin: 'National identification number of the person you have power of attorney for',
         search: 'Search',
         no_fullmakt: (fnr: string, temaName: string) =>
           `You do not have power of attorney for the person with national identity number ${displayFnr(
             fnr
           )} for the topic ${temaName}.`,
       },
+    },
+  },
+  klageskjema_post: {
+    common: {
+      title_fragment: 'complain',
+      steps: ['Reason', 'Summary', 'Sending'],
+      page_title: 'Complain against decision',
+    },
+    has_attachments_label: 'I will include attachments.',
+    send_by_post_text:
+      'You must download your complaint form and send it to the address listed on the cover page together with a copy of any other documents or receipts.',
+    download: 'Download PDF',
+    post_guidetext: 'Here you can fill out a complaint form. It has to be signed, printed, and sent by post.',
+    should_log_in_digital:
+      'If you log in, you will be able to send the complaint and attachments digitally. You can continue without logging in, but you will have to print your complaint, sign it, and send it by post.',
+    logged_in_digital: 'You can send your complaint and attachments digitally here.',
+    summary: {
+      title: 'Review before you print',
+    },
+    innsending: {
+      title: 'What do you do now?',
+      steg: [
+        'Print the complaint. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
+        'Sign the cover page and the last page of the complaint.',
+        'Add the attachments.',
+        'Send by post to ',
+      ],
     },
   },
   klageskjema: {
@@ -149,8 +161,6 @@ export const en: Language = {
         placeholder: 'State your reason here.',
         description:
           'Explain in your own words what you disagree with and what you wish to have changed. Attach documents that can show NAV why you disagree.',
-        begrunnelse_mangler: 'You must state a reason before continuing.',
-        error_empty: 'You must state a reason before continuing.',
       },
       autosave: {
         popover: 'We are saving your changes automatically.',
@@ -181,6 +191,7 @@ export const en: Language = {
           `Could not delete attachment "${name}" with ID "${id}". ${reason}`,
       },
       next_button: 'Continue',
+      delete_title: 'Delete complaint and return to start page',
     },
     summary: {
       title: 'Review before you submit',
@@ -190,19 +201,6 @@ export const en: Language = {
           title: <>Personal data</>,
           info_from:
             'Obtained from the National Registry (Folkeregisteret) and the Common Contact Register (Kontakt- og reserverasjonsregisteret).',
-          given_name: 'First and middle name(s)',
-          surname: 'Last name',
-          nin: 'National identity number',
-          phone: 'Phone number',
-          address: 'Address',
-          change_name_address: {
-            text: 'Change name or address (National Registry / Folkeregisteret)',
-            url: 'https://www.skatteetaten.no/person/folkeregister/',
-          },
-          change_phone: {
-            text: 'Change phone number (Common Contact Register / Kontakt- og reservasjonsregisteret)',
-            url: 'https://brukerprofil.difi.no/minprofil',
-          },
         },
         case: {
           title: 'Information from the case',
@@ -215,13 +213,13 @@ export const en: Language = {
         },
         begrunnelse: {
           title: 'Reason in your complaint',
-          what: 'What do you disagree with?',
+          what: 'What is your complain about?',
           why: 'Why do you disagree?',
           documents: 'Attached documents',
         },
       },
-      back: 'Back',
       next: (status: CaseStatus) => (status === CaseStatus.DRAFT ? 'Submit' : 'See submitted complaint'),
+      post_link: 'Download if you would rather send by post',
     },
     kvittering: {
       title: 'Receipt for submitted complaint',
@@ -229,7 +227,17 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you.`,
+        description: [
+          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, `,
+          <ExternalLink
+            key="ettersende"
+            href="https://www.nav.no/soknader/en/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+            inline
+          >
+            click here to forward documentation
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
@@ -238,22 +246,41 @@ export const en: Language = {
         </ExternalLink>,
         '.',
       ].map((c, index) => <span key={index}>{c}</span>),
-      see_estimate: [
-        'You can see ',
-        <ExternalLink
-          key="saksbehandlingstid"
-          href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-          inline
-        >
-          the expected case processing time for complaints and appeals
-        </ExternalLink>,
-        ' in a separate overview.',
-      ].map((c, index) => <span key={index}>{c}</span>),
-      dine_saker: 'See your cases on Your page',
+      dine_saker: {
+        title: 'See your cases on My page',
+        url: 'https://person.nav.no/mine-saker/',
+      },
       loading: {
         title: 'Submitting complaint...',
         still_working: 'Still working...',
       },
+    },
+  },
+  ankeskjema_post: {
+    common: {
+      title_fragment: 'Appeal',
+      steps: ['Reason', 'Summary', 'Sending'],
+      page_title: 'Appeal against decision',
+    },
+    has_attachments_label: 'I will include attachments.',
+    send_by_post_text:
+      'You must download your appeal form and send it to the address listed on the cover page together with a copy of any other documents or receipts.',
+    download: 'Download PDF',
+    post_guidetext: 'Here you can fill out a appeal form. It has to be signed, printed, and sent by post.',
+    should_log_in_digital:
+      'If you log in, you will be able to send the appeal and attachments digitally. You can continue without logging in, but you will have to print your appeal, sign it, and send it by post.',
+    logged_in_digital: 'You can send your appeal and attachments digitally here.',
+    summary: {
+      title: 'Review before you print',
+    },
+    innsending: {
+      title: 'What do you do now?',
+      steg: [
+        'Print the appeal. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
+        'Sign the appeal.',
+        'Add the attachments.',
+        'Send by post to ',
+      ],
     },
   },
   ankeskjema: {
@@ -276,12 +303,14 @@ export const en: Language = {
       saksnummer: {
         title: 'Case number (optional)',
       },
+      klageenhet: {
+        title: 'Complaint unit',
+        not_specified: 'No complaint unit selected',
+      },
       begrunnelse_text: {
         title: 'Describe your appeal',
         placeholder: 'State your reason here.',
         description: 'Please state your appeal in your own words. Attach documents that can show NAV why you appeal.',
-        begrunnelse_mangler: 'You must state a reason before continuing.',
-        error_empty: 'You must state a reason before continuing.',
       },
       autosave: {
         popover: 'We are saving your changes automatically.',
@@ -312,6 +341,7 @@ export const en: Language = {
           `Could not delete attachment "${name}" with ID "${id}". ${reason}`,
       },
       next_button: 'Continue',
+      delete_title: 'Delete appeal and return to start page',
     },
     summary: {
       title: 'Review before you submit',
@@ -321,19 +351,6 @@ export const en: Language = {
           title: <>Personal data</>,
           info_from:
             'Obtained from the National Registry (Folkeregisteret) and the Common Contact Register (Kontakt- og reserverasjonsregisteret).',
-          given_name: 'First and middle name(s)',
-          surname: 'Last name',
-          nin: 'National identity number',
-          phone: 'Phone number',
-          address: 'Address',
-          change_name_address: {
-            text: 'Change name or address (National Registry / Folkeregisteret)',
-            url: 'https://www.skatteetaten.no/person/folkeregister/',
-          },
-          change_phone: {
-            text: 'Change phone number (Common Contact Register / Kontakt- og reservasjonsregisteret)',
-            url: 'https://brukerprofil.difi.no/minprofil',
-          },
         },
         case: {
           title: 'Information from the case',
@@ -352,6 +369,7 @@ export const en: Language = {
       },
       back: 'Back',
       next: (status: CaseStatus) => (status === CaseStatus.DRAFT ? 'Submit' : 'See submitted appeal'),
+      post_link: 'Download if you would rather send by post',
     },
     kvittering: {
       title: 'Receipt for submitted appeal',
@@ -359,7 +377,17 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you.`,
+        description: [
+          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, `,
+          <ExternalLink
+            key="ettersende"
+            href="https://www.nav.no/soknader/en/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+            inline
+          >
+            click here to forward documentation
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
@@ -368,18 +396,10 @@ export const en: Language = {
         </ExternalLink>,
         '.',
       ],
-      see_estimate: [
-        'You can see ',
-        <ExternalLink
-          key="processing"
-          href="https://www.nav.no/no/nav-og-samfunn/om-nav/saksbehandlingstider-i-nav/relatert-informasjon/klage-og-anke"
-          inline
-        >
-          the expected case processing time for complaints and appeals
-        </ExternalLink>,
-        ' in a separate overview.',
-      ].map((c, index) => <span key={index}>{c}</span>),
-      dine_saker: 'See your cases on Your page',
+      dine_saker: {
+        title: 'See your cases on My page',
+        url: 'https://person.nav.no/mine-saker/',
+      },
       loading: {
         title: 'Submitting appeal...',
         still_working: 'Still working...',
@@ -440,9 +460,6 @@ export const en: Language = {
     title: 'Page not found',
     go_back: 'Go back to homepage',
   },
-  fullmakt: {
-    loading: 'Checking power of attorney...',
-  },
   utfall: {
     [Utfall.TRUKKET]: 'Drawn',
     [Utfall.RETUR]: 'Returned',
@@ -453,7 +470,16 @@ export const en: Language = {
     [Utfall.UGUNST]: 'Reversed',
     [Utfall.AVVIST]: 'Rejected',
   },
-  errorMessages: {
+  kvittering: {
+    see_estimate: [
+      'You can see ',
+      <ExternalLink key="processing" href="https://www.nav.no/saksbehandlingstider" inline>
+        the expected case processing time for complaints and appeals
+      </ExternalLink>,
+      ' in a separate overview.',
+    ].map((c, index) => <span key={index}>{c}</span>),
+  },
+  error_messages: {
     TOO_LARGE: 'The file size cannot be larger than 8 MB.',
     TOTAL_TOO_LARGE: 'Total file size cannot exceed 32 MB.',
     ENCRYPTED: 'We suspect that your file is encrypted, therefore it cannot be included.',
@@ -461,11 +487,52 @@ export const en: Language = {
     VIRUS: 'We suspect that your file contains a virus, therefore is cannot be included.',
     FILE_COULD_NOT_BE_CONVERTED:
       'You have tried to include an attachment with a format we do not support. Attachments are limited to til PNG, JPEG, and PDF.',
+    skjema: {
+      title: 'Form is not complete',
+      fnr: 'National identity number is not valid.',
+      f_or_d_number: 'Invalid national identity number',
+      vedtak_date: 'Decision date must be a valid date that is not in the future, or empty.',
+      vedtak_date_required: 'Decision date must be a valid date that is not in the future.',
+      fornavn: 'First and middle name can not be empty.',
+      etternavn: 'Surname can not be empty.',
+      begrunnelse: 'You must state a reason before continuing.',
+      enhet: 'You must select a unit.',
+    },
   },
   common: {
     logged_out: 'You have been logged out. To continue, you just need to log in again.',
     log_in: 'Log in',
     retry: 'Retry',
     generic_error: 'Something went wrong. Please try again later.',
+    f_or_d_number: 'National identity or D number',
+    fornavn: 'First and middle name',
+    etternavn: 'Surname',
+    address: 'Address',
+    phone_number: 'Phone number',
+    download: 'Download / print',
+    optional_suffix: ' (optional)',
+    klage: 'Complaint',
+    anke: 'Appeal',
+    back: 'Back',
+    close_confirm: 'Are you sure you want to close this website?',
+    last_changed: 'Last changed',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    yes: 'Yes',
+    no: 'No',
+    expires_in: (exp: string) => `You will be logged out ${exp}. To continue, you just need to log in again.`,
+  },
+  personalised: {
+    draft_klager: {
+      title: 'Draft complaints',
+    },
+    draft_anker: {
+      title: 'Draft appeals',
+      item_title: 'Draft appeal',
+    },
+    available_anker: {
+      title: 'Declined complaints',
+      klage_date: 'Complaint decision date',
+    },
   },
 };

@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-export enum Size {
+enum Size {
   mobileS = '320px',
   mobileM = '375px',
   mobileL = '480px',
@@ -24,21 +22,4 @@ export const device = {
   laptopL: `(min-width: ${Size.laptopL})`,
   desktop: `(min-width: ${Size.desktop})`,
   desktopL: `(min-width: ${Size.desktop})`,
-};
-
-const matchMediaQuery = (size: Size) => window.matchMedia(`(max-width: ${size})`);
-
-const type = 'change';
-
-export const useMatchMediaQuery = (size: Size) => {
-  const [isSize, setIsSize] = useState<boolean>(matchMediaQuery(size).matches);
-
-  useEffect(() => {
-    const query = matchMediaQuery(size);
-    const listener = ({ matches }: MediaQueryListEvent) => setIsSize(matches);
-    query.addEventListener(type, listener);
-    return () => query.removeEventListener(type, listener);
-  }, [size]);
-
-  return isSize;
 };

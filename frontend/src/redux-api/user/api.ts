@@ -3,7 +3,7 @@ import { TemaKey } from '../../tema/tema';
 import { API_BASE_QUERY } from '../common';
 import { IAuthResponse, IUser } from './types';
 
-export interface GetFullmaktsgiverParams {
+interface GetFullmaktsgiverParams {
   temaKey: TemaKey;
   fullmaktsgiver: string;
 }
@@ -18,8 +18,8 @@ export const userApi = createApi({
       providesTags: ['user'],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        const authenticated = typeof data !== 'undefined';
-        dispatch(userApi.util.updateQueryData('isAuthenticated', undefined, () => ({ authenticated })));
+        const tokenx = typeof data !== 'undefined';
+        dispatch(userApi.util.updateQueryData('isAuthenticated', undefined, (draft) => ({ ...draft, tokenx })));
       },
     }),
     // Get another user's data. Only possible if that user has granted "fullmakt".
@@ -32,7 +32,7 @@ export const userApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
 
-        if (!data.authenticated) {
+        if (!data.tokenx) {
           dispatch(userApi.util.updateQueryData('getUser', undefined, () => undefined));
         }
       },
@@ -40,6 +40,7 @@ export const userApi = createApi({
   }),
 });
 
+// eslint-disable-next-line import/no-unused-modules
 export const {
   useGetFullmaktsgiverQuery,
   useGetUserQuery,

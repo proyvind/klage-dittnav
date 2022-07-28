@@ -2,16 +2,16 @@ import { Alert, Button, Heading, LinkPanel } from '@navikt/ds-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-import { FnrInput } from '../../components/fnr-input/fnr-input';
+import { FnrDnrInput } from '../../components/fnr-dnr-input/fnr-dnr-input';
 import { displayFnr, getFullName } from '../../functions/display';
 import { isApiError } from '../../functions/is-api-error';
 import { queryStringify } from '../../functions/query-string';
-import { useTemaName, useTitle, useTitleOrYtelse } from '../../hooks/use-titles';
+import { usePageInit } from '../../hooks/use-page-init';
+import { useTemaName, useTitle, useTitleOrTemaName } from '../../hooks/use-titles';
 import { InngangKategori, Kategori } from '../../kategorier/kategorier';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
-import { usePageInit } from '../../page-init/page-init';
 import { useLazyGetFullmaktsgiverQuery } from '../../redux-api/user/api';
 import { IUser } from '../../redux-api/user/types';
 import { MarginTopContainer } from '../../styled-components/common';
@@ -29,9 +29,10 @@ const FieldWithButton = styled.div`
   align-items: flex-end;
 `;
 
+// eslint-disable-next-line import/no-unused-modules
 export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
   const { titleKey, temaKey } = kategori;
-  const title = useTitleOrYtelse(temaKey, titleKey);
+  const [title] = useTitleOrTemaName(temaKey, titleKey);
   const lang = useLanguage();
   const { inngang } = useTranslation();
   usePageInit(`${title} \u2013 ${inngang.innsendingsvalg.fullmakt.title_postfix}`);
@@ -39,14 +40,13 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
   useBreadcrumbs(breadcrumbs, inngang.innsendingsvalg.fullmakt.title);
 
   const [fodselsnummer, setFodselsnummer] = useState<string>('');
-  const [valid, setValid] = useState<boolean | null>(null);
   const [getFullmaktsgiver, { isLoading: loading, data: selectedFullmaktsgiver, error }] =
     useLazyGetFullmaktsgiverQuery();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const temaName = useTemaName(temaKey);
 
-  const { no_fullmakt, invalid_nin } = inngang.innsendingsvalg.fullmakt;
+  const { no_fullmakt } = inngang.innsendingsvalg.fullmakt;
 
   const query = useMemo(
     () =>
@@ -58,13 +58,8 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     [temaKey, titleKey, fodselsnummer]
   );
 
-  const handleSubmit = async () => {
-    if (valid === true) {
-      getFullmaktsgiver({ temaKey, fullmaktsgiver: fodselsnummer });
-      setErrorMessage(null);
-    } else {
-      setErrorMessage(invalid_nin);
-    }
+  const handleSubmit = () => {
+    getFullmaktsgiver({ temaKey, fullmaktsgiver: fodselsnummer });
   };
 
   useEffect(() => {
@@ -72,6 +67,12 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
       setErrorMessage(no_fullmakt(fodselsnummer, temaName));
     }
   }, [error, fodselsnummer, no_fullmakt, temaName]);
+
+  const onChangeFoedselsnummer = (value: string) => {
+    if (fodselsnummer !== value) {
+      setFodselsnummer(value);
+    }
+  };
 
   return (
     <InngangMainContainer>
@@ -85,17 +86,17 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
             {inngang.innsendingsvalg.fullmakt.who}
           </Heading>
           <FieldWithButton>
-            <FnrInput
-              label={inngang.innsendingsvalg.fullmakt.nin}
-              autoComplete="off"
-              value={fodselsnummer ?? ''}
-              onChange={(e) => setFodselsnummer(e.target.value)}
-              onValidate={(val) => setValid(val)}
-              onKeyDown={({ key }) => {
-                if (key === 'Enter') {
-                  handleSubmit();
-                }
-              }}
+            <FnrDnrInput
+              value={fodselsnummer}
+              onChange={onChangeFoedselsnummer}
+              onBlur={onChangeFoedselsnummer}
+              onError={(id, e) => setErrorMessage(e ?? null)}
+              error={errorMessage ?? undefined}
+              // onKeyDown={({ key }) => {
+              //   if (key === 'Enter') {
+              //     handleSubmit();
+              //   }
+              // }}
             />
             <Button variant="primary" onClick={handleSubmit} loading={loading}>
               {inngang.innsendingsvalg.fullmakt.search}
@@ -134,7 +135,7 @@ const Fullmakt = ({ selectedFullmaktsgiver, query }: FullmaktProps) => {
 
   return (
     <MarginTopContainer>
-      <LinkPanel href={`/ny?${query}`} border>
+      <LinkPanel href={`/klage/ny?${query}`} border>
         <LinkPanel.Description>
           {`${getFullName(selectedFullmaktsgiver)} (${displayFnr(
             selectedFullmaktsgiver.folkeregisteridentifikator?.identifikasjonsnummer ?? ''
@@ -146,7 +147,7 @@ const Fullmakt = ({ selectedFullmaktsgiver, query }: FullmaktProps) => {
 };
 
 const useCreateBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori, lang: Languages): Breadcrumb[] => {
-  const title = useTitle(kategori.titleKey);
+  const [title] = useTitle(kategori.titleKey);
 
   return useMemo(
     () => [

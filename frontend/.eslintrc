@@ -1,5 +1,12 @@
 {
-  "ignorePatterns": ["Dockerfile", "*.json", "*.md", ".*", "webpack.*", "jest.*"],
+  "ignorePatterns": [
+    "Dockerfile",
+    "*.json",
+    "*.md",
+    ".*",
+    "webpack.*",
+    "jest.*"
+  ],
   "extends": [
     "prettier",
     "eslint:recommended",
@@ -34,6 +41,221 @@
     "es6": true
   },
   "rules": {
+    "@typescript-eslint/array-type": "error",
+    "@typescript-eslint/consistent-type-definitions": [
+      "error",
+      "interface"
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "no-type-imports"
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-base-to-string": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ],
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ],
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/prefer-includes": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    "@typescript-eslint/prefer-reduce-type-parameter": "error",
+    "@typescript-eslint/restrict-template-expressions": [
+      "error",
+      {
+        "allowNumber": true
+      }
+    ],
+    "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/switch-exhaustiveness-check": "error",
+    "array-callback-return": "error",
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "comma-dangle": [
+      0,
+      "never"
+    ],
+    "complexity": [
+      "error",
+      {
+        "max": 20
+      }
+    ],
+    "curly": [
+      "error",
+      "all"
+    ],
+    "eol-last": [
+      "error",
+      "always"
+    ],
+    "eqeqeq": "error",
+    "import/first": "error",
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 1
+      }
+    ],
+    "import/no-cycle": "error",
+    "import/no-default-export": "off",
+    "import/no-duplicates": "error",
+    "import/no-self-import": "error",
+    "import/no-unused-modules": [
+      "error",
+      {
+        "unusedExports": true,
+        "missingExports": true,
+        "src": [
+          "./src"
+        ],
+        "ignoreExports": [
+          "./src/index.tsx"
+        ]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object"
+        ],
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-expect-assertions": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "keyword-spacing": [
+      "error",
+      {
+        "before": true
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "max-depth": [
+      "error",
+      {
+        "max": 4
+      }
+    ],
+    "max-lines": [
+      "error",
+      {
+        "max": 400,
+        "skipBlankLines": false,
+        "skipComments": true
+      }
+    ],
+    "no-alert": "error",
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error",
+          "info"
+        ]
+      }
+    ],
+    "no-debugger": "error",
+    "no-duplicate-imports": "error",
+    "no-else-return": "error",
+    "no-eval": "error",
+    "no-extend-native": "error",
+    "no-implicit-coercion": "error",
+    "no-lonely-if": "error",
+    "no-nested-ternary": "error",
+    "no-proto": "error",
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "event",
+        "message": "Use local parameter instead."
+      },
+      {
+        "name": "Element",
+        "message": "Import Element from slate"
+      },
+      {
+        "name": "DocumentType",
+        "message": "Import DocumentType locally"
+      }
+    ],
+    "no-return-assign": [
+      "error",
+      "always"
+    ],
+    "no-shadow": "off",
+    "no-unneeded-ternary": "error",
+    "no-unused-vars": "off",
+    "no-useless-rename": "error",
+    "no-useless-return": "error",
+    "no-var": "error",
+    "object-shorthand": [
+      "error",
+      "always"
+    ],
+    "padded-blocks": [
+      "error",
+      "never"
+    ],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": [
+          "block",
+          "block-like",
+          "return"
+        ]
+      },
+      {
+        "blankLine": "never",
+        "prev": "*",
+        "next": [
+          "case",
+          "default"
+        ]
+      }
+    ],
+    "prefer-arrow/prefer-arrow-functions": [
+      "warn",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
+    "prefer-const": "error",
+    "prefer-destructuring": "error",
+    "prefer-object-spread": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
     "prettier/prettier": [
       "error",
       {
@@ -44,126 +266,32 @@
         "endOfLine": "lf"
       }
     ],
-    "max-lines": ["error", {
-      "max": 400,
-      "skipBlankLines": false,
-      "skipComments": true
-    }],
-    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
-    "no-debugger": "error",
-    "linebreak-style": ["error", "unix"],
-    "max-depth": ["error", { "max": 4 }],
-    "no-lonely-if": "error",
-    "complexity": ["error", { "max": 20 }],
-    "curly": ["error", "all"],
-    "no-alert": "error",
-    "no-eval": "error",
-    "no-extend-native": "error",
-    "no-proto": "error",
-    "no-return-assign": ["error", "always"],
-    "no-implicit-coercion": "error",
-    "no-nested-ternary": "error",
-    "no-restricted-globals": [
+    "radix": [
       "error",
-      {
-          "name": "event",
-          "message": "Use local parameter instead."
-      },
-      {
-          "name": "Element",
-          "message": "Import Element from slate"
-      },
-      {
-        "name": "DocumentType",
-        "message": "Import DocumentType locally"
-      }
+      "always"
     ],
-    "no-unneeded-ternary": "error",
-    "arrow-body-style": ["error", "as-needed"],
-    "prefer-const": "error",
-    "prefer-destructuring": "error",
-    "eol-last": ["error", "always"],
-    "padded-blocks": ["error", "never"],
-    "@typescript-eslint/no-empty-function": "off",
-    "prefer-arrow/prefer-arrow-functions": [
-      "warn",
-      {
-        "disallowPrototype": true,
-        "singleReturnOnly": false,
-        "classPropertiesAllowed": false
-      }
-    ],
-    "sort-imports": ["error", {
-      "ignoreDeclarationSort": true
-    }],
-    "comma-dangle": [0, "never"],
-    "no-unused-vars": "off",
-    "no-duplicate-imports": "error",
-    "no-var": "error",
-    "eqeqeq": "error",
-    "radix": ["error", "always"],
-    "yoda": ["error", "never"],
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"],
-    "no-useless-rename": "error",
-    "no-useless-return": "error",
-    "no-else-return": "error",
-    "array-callback-return": "error",
-    "object-shorthand": ["error", "always"],
-    "prefer-rest-params": "error",
-    "prefer-spread": "error",
-    "prefer-object-spread": "error",
-    "padding-line-between-statements": ["error",
-      { "blankLine": "always", "prev": "*", "next": "block" },
-      { "blankLine": "always", "prev": "block", "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": "block-like" },
-      { "blankLine": "always", "prev": "block-like", "next": "*" }
-    ],
-    "space-before-blocks": ["error", {
-      "functions": "always",
-      "keywords": "always",
-      "classes": "always"
-    }],
-    "keyword-spacing": ["error", {
-      "before": true
-    }],
-    "import/no-cycle": "error",
-    "import/no-self-import": "error",
-    "import/first": "error",
-    "import/no-default-export": "error",
-    "import/newline-after-import": ["error", { "count": 1 }],
-    "import/no-duplicates": "error",
-    "import/order": ["error", {
-      "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object"],
-      "newlines-between": "never",
-      "alphabetize": {
-        "order": "asc"
-      }
-    }],
-    "@typescript-eslint/array-type": "error",
-    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-    "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "no-type-imports" }],
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-base-to-string": "error",
-    "@typescript-eslint/no-unsafe-assignment": "error",
-    "@typescript-eslint/no-unused-vars": ["error"],
-    "@typescript-eslint/no-var-requires": 0,
-    "@typescript-eslint/prefer-includes": "error",
-    "@typescript-eslint/prefer-nullish-coalescing": "error",
-    "@typescript-eslint/prefer-reduce-type-parameter": "error",
-    "@typescript-eslint/restrict-template-expressions": ["error", { "allowNumber": true }],
-    "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/switch-exhaustiveness-check": "error",
-    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
     "react/jsx-curly-brace-presence": "error",
     "react/prop-types": "off",
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error",
-    "jest/prefer-expect-assertions": "error"
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "space-before-blocks": [
+      "error",
+      {
+        "functions": "always",
+        "keywords": "always",
+        "classes": "always"
+      }
+    ],
+    "yoda": [
+      "error",
+      "never"
+    ]
   },
   "overrides": [
     {

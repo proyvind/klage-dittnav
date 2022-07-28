@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { LoadingPage } from '../components/loading-page/loading-page';
 import { queryStringify } from '../functions/query-string';
 import { useUser } from '../hooks/use-user';
 import { useTranslation } from '../language/use-translation';
-import { LoadingPage } from '../loading-page/loading-page';
 import { TemaKey } from '../tema/tema';
-import { InngangInnsendingDigital } from './inngang/inngang-innsendingsvalg-digital';
+import { InngangInnsending } from './inngang/inngang-innsendingsvalg';
 
 export const LandingPage = (
   temaKey: TemaKey,
@@ -22,7 +22,7 @@ export const LandingPage = (
 
   if (typeof user === 'undefined') {
     return (
-      <InngangInnsendingDigital temaKey={temaKey} ytelse={ytelse} titleKey={titleKey} internalSaksnummer={saksnummer} />
+      <InngangInnsending temaKey={temaKey} titleKey={titleKey} internalSaksnummer={saksnummer} supportsDigitalKlage />
     );
   }
 
@@ -33,5 +33,5 @@ export const LandingPage = (
     saksnummer,
   });
 
-  return <Navigate to={`/ny?${query}`} />;
+  return <Navigate to={`/klage/ny?${query}`} />;
 };

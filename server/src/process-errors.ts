@@ -1,34 +1,34 @@
+import { getLogger } from './logger';
 import { EmojiIcons, sendToSlack } from './slack';
+
+const log = getLogger('');
 
 export const processErrors = () => {
   process
     .on('unhandledRejection', (reason, promise) => {
-      console.error(`Process ${process.pid} received a unhandledRejection signal, ${JSON.stringify(reason)}`);
+      log.error({ error: reason, msg: `Process ${process.pid} received a unhandledRejection signal` });
 
-      promise.catch((err) => {
-        if (err instanceof Error) {
-          console.error(`Uncaught error: ${err.message}`);
-        } else {
-          console.error(`Uncaught error: Unknown error.`);
-        }
-
+      promise.catch((error: unknown) => {
+        log.error({ error, msg: `Uncaught error` });
         process.exit(1);
       });
     })
-    .on('uncaughtException', (e) => {
-      console.error(`Process ${process.pid} received a uncaughtException signal, ${e.message}`);
+    .on('uncaughtException', (error) => {
+      log.error({ error, msg: `Process ${process.pid} received a uncaughtException signal` });
       process.exit(1);
     })
     .on('SIGTERM', (signal) => {
-      console.error(`Process ${process.pid} received a SIGTERM signal, ${signal}`);
-      process.exit(1);
+      log.info({ msg: `Process ${process.pid} received a ${signal} signal.` });
+      process.exit(0);
     })
-
     .on('SIGINT', (signal) => {
-      console.error(`Process ${process.pid} has been interrupted, ${signal}`);
+      const error = new Error(`Process ${process.pid} has been interrupted, ${signal}.`);
+      log.error({ error });
       process.exit(1);
     })
     .on('beforeExit', async (code) => {
-      sendToSlack(`Crash ${JSON.stringify(code)}`, EmojiIcons.Scream);
+      const msg = `Crash ${JSON.stringify(code)}`;
+      log.error({ msg });
+      sendToSlack(msg, EmojiIcons.Scream);
     });
 };

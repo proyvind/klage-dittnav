@@ -11,7 +11,9 @@ export interface DeleteAttachmentParams {
 }
 
 export enum CaseStatus {
+  OPEN = 'OPEN',
   DRAFT = 'DRAFT',
+  DOWNLOADED = 'DOWNLOADED',
   DONE = 'DONE',
   DELETED = 'DELETED',
 }
@@ -22,10 +24,16 @@ export interface FinalizedCase {
 }
 
 export interface Case {
+  readonly id: string;
   readonly finalizedDate: ISODate | null;
   readonly modifiedByUser: ISODateTime;
   readonly status: CaseStatus;
   readonly journalpostId: string | null;
+  readonly userSaksnummer: string | null;
+  readonly fritekst: string;
+  readonly vedtakDate: ISODate | null;
+  readonly vedlegg: Attachment[];
+  readonly hasVedlegg: boolean;
 }
 
 export interface Attachment {

@@ -1,12 +1,14 @@
 import { skipToken } from '@reduxjs/toolkit/dist/query/react';
 import { useGetUserQuery, useIsAuthenticatedQuery } from '../redux-api/user/api';
 
-export const useStatus = () => {
-  const { data, ...rest } = useIsAuthenticatedQuery();
-  return { ...rest, data: data?.authenticated };
+export const useIsAuthenticated = (skip?: typeof skipToken) => {
+  const { data, ...rest } = useIsAuthenticatedQuery(skip);
+
+  return { ...rest, data: data?.tokenx };
 };
 
 export const useUser = () => {
-  const { data } = useStatus();
+  const { data } = useIsAuthenticated();
+
   return useGetUserQuery(data === true ? undefined : skipToken);
 };

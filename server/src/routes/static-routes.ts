@@ -1,7 +1,10 @@
 import express from 'express';
 import { frontendDistDirectoryPath } from '../config/config';
 import { getCookie } from '../functions/cookies';
+import { getLogger } from '../logger';
 import { indexFile } from './index-file';
+
+const log = getLogger('static-routes');
 
 const router = express.Router();
 
@@ -12,8 +15,8 @@ export const setupStaticRoutes = () => {
     try {
       res.contentType('text/html');
       res.send(indexFile.indexFile);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      log.error({ error, msg: 'HTTP 500 - Failed to send index file' });
       res.status(500).send('<h1>500 Internal Server Error</h1>');
     }
   });

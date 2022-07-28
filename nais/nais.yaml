@@ -31,6 +31,7 @@ spec:
     outbound:
       rules:
         - application: klage-dittnav-api
+        - application: klage-kodeverk-api
   ingresses:
   {{#each ingresses as |url|}}
     - {{url}}
