@@ -19,17 +19,20 @@ export const CreateKlage = () => {
 
   const tema = query.get('tema');
 
-  const titleKey = useTitleKey(getQueryValue(query.get('tittel')));
+  const [titleKey, titleKeyIsLoading] = useTitleKey(getQueryValue(query.get('tittel')));
   const temaKey = ensureStringIsTema(getQueryValue(tema));
-  const ytelse = getQueryValue(query.get('ytelse'));
   const saksnummer = getQueryValue(query.get('saksnummer'));
   const fullmaktsgiver = getQueryValue(query.get('fullmaktsgiver'));
 
   const [hasFullmaktsgiver, hasFullmaktsgiverIsLoading] = useHasFullmaktsgiver(temaKey, fullmaktsgiver);
 
-  const [createKlage, { data: klage, isLoading, isError: createHasFailed }] = useCreateKlageMutation();
+  const [createKlage, { data: klage, isLoading, isError: createHasFailed, isSuccess }] = useCreateKlageMutation();
 
   useEffect(() => {
+    if (isSuccess || typeof klage !== 'undefined') {
+      return;
+    }
+
     if (createHasFailed) {
       return;
     }
@@ -38,7 +41,7 @@ export const CreateKlage = () => {
       return;
     }
 
-    if (hasFullmaktsgiverIsLoading || isLoading) {
+    if (hasFullmaktsgiverIsLoading || titleKeyIsLoading || isLoading) {
       return;
     }
 
@@ -49,24 +52,22 @@ export const CreateKlage = () => {
     createKlage({
       tema: temaKey,
       titleKey: titleKey ?? undefined,
-      ytelse: ytelse ?? undefined,
       internalSaksnummer: saksnummer,
       fullmaktsgiver,
     });
   }, [
-    temaKey,
-    klage_create,
-    tema,
-    hasFullmaktsgiverIsLoading,
-    createKlage,
-    titleKey,
-    ytelse,
-    saksnummer,
-    fullmaktsgiver,
-    language,
-    isLoading,
-    hasFullmaktsgiver,
     createHasFailed,
+    createKlage,
+    fullmaktsgiver,
+    hasFullmaktsgiver,
+    hasFullmaktsgiverIsLoading,
+    isLoading,
+    isSuccess,
+    klage,
+    saksnummer,
+    temaKey,
+    titleKey,
+    titleKeyIsLoading,
   ]);
 
   if (temaKey === null) {

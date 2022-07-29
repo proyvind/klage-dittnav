@@ -39,13 +39,13 @@ export const useTitleOrYtelse = (temaKey: TemaKey, titleKey?: string | null, yte
   return temaName;
 };
 
-export const useTitleKey = (titleKey: string | null): string | null => {
+export const useTitleKey = (titleKey: string | null): [string | null, boolean] => {
   const lang = useLanguage();
   const { data: titles, isLoading } = useGetLanguageTitlesQuery(lang);
 
   if (titleKey === null || isLoading || typeof titles === 'undefined') {
-    return null;
+    return [null, isLoading];
   }
 
-  return titles[titleKey] !== undefined ? titleKey : null;
+  return [titles[titleKey] !== undefined ? titleKey : null, isLoading];
 };
