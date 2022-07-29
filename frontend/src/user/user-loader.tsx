@@ -1,9 +1,7 @@
-import { Alert, BodyShort } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
+import { useStatus } from '../hooks/use-user';
 import { useTranslation } from '../language/use-translation';
 import { LoadingPage } from '../loading-page/loading-page';
-import { useGetUserQuery } from '../redux-api/user/api';
-import { LoginButton } from '../styled-components/login-button';
 import { login } from './login';
 
 interface Props {
@@ -12,26 +10,17 @@ interface Props {
 
 export const UserLoader = ({ children }: Props) => {
   const { user_loader } = useTranslation();
-  const { isLoading, isError } = useGetUserQuery();
+  const { isLoading, data } = useStatus();
 
   useEffect(() => {
-    if (isError) {
+    if (!isLoading && data === false) {
       login();
     }
-  }, [isError]);
+  }, [isLoading, data]);
 
-  if (isLoading || isError) {
-    return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
+  if (data === true) {
+    return children;
   }
 
-  if (isError) {
-    return (
-      <Alert variant="error">
-        <BodyShort>{user_loader.other_error}</BodyShort>
-        <LoginButton onClick={login}>{user_loader.log_in}</LoginButton>
-      </Alert>
-    );
-  }
-
-  return children;
+  return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
 };

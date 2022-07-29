@@ -7,4 +7,4 @@ export const getLoginRedirectPath = (): string => {
   return `/oauth2/login?redirect=${redirectAfter}`;
 };
 
-export const login = () => window.location.replace(getLoginRedirectPath());
+export const login = () => window.location.assign(getLoginRedirectPath());

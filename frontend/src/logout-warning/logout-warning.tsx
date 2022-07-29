@@ -5,7 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import relative from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import React, { useEffect, useState } from 'react';
-import { useGetUserQuery } from '../redux-api/user/api';
+import { useUser } from '../hooks/use-user';
 import { LoginButton } from '../styled-components/login-button';
 import { login } from '../user/login';
 
@@ -16,7 +16,7 @@ dayjs.extend(isSameOrBefore);
 const MINUTES_TO_WARN = 10;
 
 export const LogoutWarning = () => {
-  const { data: user, isLoading } = useGetUserQuery();
+  const { data: user, isLoading } = useUser();
   const [expiresIn, setExpiresIn] = useState<string | null>(null);
   const [expired, setExpired] = useState<boolean>(false);
 

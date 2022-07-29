@@ -14,7 +14,7 @@ interface Props {
 
 export const DineAnkemuligheter = ({ show, temaKey }: Props) => {
   const { data: isLoggedIn, isLoading } = useStatus();
-  const { data: allAvailableAnkerForUser = [] } = useGetAvailableAnkerQuery(isLoggedIn ? temaKey : skipToken);
+  const { data: allAvailableAnkerForUser = [] } = useGetAvailableAnkerQuery(isLoggedIn === true ? temaKey : skipToken);
 
   if (!show) {
     return null;
@@ -29,7 +29,7 @@ export const DineAnkemuligheter = ({ show, temaKey }: Props) => {
     );
   }
 
-  if (!isLoggedIn) {
+  if (isLoggedIn === false) {
     return (
       <GuidePanel>
         <Link href="/oauth2/login">Logg inn</Link> for å klage/anke digitalt og se saker du kan anke på.

@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { ENVIRONMENT, EnvString } from '../../environment/environment';
 import { staggeredBaseQuery } from '../common';
+import { userApi } from './api';
 
 export interface UnauthenticatedUser {
   authenticated: boolean;
@@ -29,6 +30,13 @@ export const statusApi = createApi({
   endpoints: (builder) => ({
     getStatus: builder.query<UnauthenticatedUser | AuthenticatedUser, void>({
       query: () => '/person/innloggingsstatus/auth',
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+
+        if (!data.authenticated) {
+          dispatch(userApi.util.updateQueryData('getUser', undefined, () => undefined));
+        }
+      },
     }),
   }),
 });

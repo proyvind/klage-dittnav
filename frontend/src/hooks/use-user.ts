@@ -3,11 +3,11 @@ import { useGetUserQuery } from '../redux-api/user/api';
 import { useGetStatusQuery } from '../redux-api/user/status-api';
 
 export const useStatus = () => {
-  const { data: status, ...rest } = useGetStatusQuery();
-  return { ...rest, data: status?.authenticated === true };
+  const { data, ...rest } = useGetStatusQuery();
+  return { ...rest, data: data?.authenticated };
 };
 
 export const useUser = () => {
-  const { data: status } = useGetStatusQuery();
-  return useGetUserQuery(status?.authenticated === true ? undefined : skipToken);
+  const { data } = useStatus();
+  return useGetUserQuery(data === true ? undefined : skipToken);
 };

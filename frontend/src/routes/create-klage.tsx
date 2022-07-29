@@ -90,7 +90,7 @@ export const CreateKlage = () => {
     return <LoadingPage>{klage_loader.loading_klage}</LoadingPage>;
   }
 
-  return <Navigate to={`/${language}/klage/${klage.id}/begrunnelse`} />;
+  return <Navigate to={`/${language}/klage/${klage.id}/begrunnelse`} replace />;
 };
 
 const useHasFullmaktsgiver = (temaKey: TemaKey | null, fullmaktsgiver: string | null): [boolean, boolean] => {

@@ -6,6 +6,7 @@ import { InformationPointBox } from '../../../components/information-point-box/i
 import { AttachmentSummary } from '../../../components/summary/attachment-summary';
 import { PersonligeOpplysningerSummary } from '../../../components/summary/personlige-opplysninger-summary';
 import { VedtakSummary } from '../../../components/summary/vedtak-summary';
+import { useUser } from '../../../hooks/use-user';
 import { Clipboard } from '../../../icons/ClipboardIcon';
 import { useLanguage } from '../../../language/use-language';
 import { useTranslation } from '../../../language/use-translation';
@@ -16,7 +17,6 @@ import { useFinalizeKlageMutation } from '../../../redux-api/case/klage/api';
 import { Klage } from '../../../redux-api/case/klage/types';
 import { CaseStatus } from '../../../redux-api/case/types';
 import { API_PATH } from '../../../redux-api/common';
-import { useGetUserQuery } from '../../../redux-api/user/api';
 import { KlageLoader } from '../../../store/klage/klage-loader';
 import { KlageAlertStripe } from '../../../styled-components/alert';
 import { CenteredContainer } from '../../../styled-components/common';
@@ -43,7 +43,7 @@ const RenderKlageoppsummeringPage = ({ klage }: Props) => {
   const [loading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: user, isLoading: userIsLoading } = useGetUserQuery();
+  const { data: user, isLoading: userIsLoading } = useUser();
   const [finalizeKlage] = useFinalizeKlageMutation();
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);

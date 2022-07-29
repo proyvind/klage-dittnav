@@ -31,5 +31,5 @@ export const CreateAnke = () => {
     return <LoadingPage>{anke_loader.loading_anke}</LoadingPage>;
   }
 
-  return <Navigate to={`/${language}/anke/${anke.ankeInternalSaksnummer}/begrunnelse`} />;
+  return <Navigate to={`/${language}/anke/${anke.ankeInternalSaksnummer}/begrunnelse`} replace />;
 };
