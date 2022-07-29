@@ -1,5 +1,5 @@
 import { parseJSON } from '../functions/parse-json';
-import { IS_LOCALHOST } from './common';
+import { statusApi } from './user/status-api';
 
 export enum ServerSentEventType {
   JOURNALPOSTID = 'journalpostId',
@@ -44,7 +44,7 @@ export class ServerSentEventManager {
     };
 
     this.listeners.push([eventName, eventListener]);
-    this.events?.addEventListener(eventName, eventListener);
+    this.events.addEventListener(eventName, eventListener);
 
     return this;
   }
@@ -68,12 +68,19 @@ export class ServerSentEventManager {
     }
   }
 
+  private async preflight(url: string): Promise<boolean> {
+    try {
+      const { status } = await fetch(url, { method: 'GET' });
+      return status >= 200 && status < 400;
+    } catch {
+      return false;
+    }
+  }
+
   private createEventSource(): EventSource {
     const url = this.lastEventId === null ? this.url : `${this.url}?lastEventId=${this.lastEventId}`;
 
-    const events = new EventSource(url, {
-      withCredentials: IS_LOCALHOST,
-    });
+    const events = new EventSource(url);
 
     events.addEventListener('error', () => {
       if (events.readyState !== EventSource.CLOSED) {
@@ -83,7 +90,15 @@ export class ServerSentEventManager {
       this.isConnected = false;
       this.connectionListeners.forEach((listener) => listener(this.isConnected));
 
-      setTimeout(() => {
+      setTimeout(async () => {
+        const preflightOK = await this.preflight(url);
+
+        if (!preflightOK) {
+          // Probably the session timed out. Double check the logged in status.
+          statusApi.util.invalidateTags(['status']);
+          return;
+        }
+
         this.events = this.createEventSource();
       }, 3000);
     });

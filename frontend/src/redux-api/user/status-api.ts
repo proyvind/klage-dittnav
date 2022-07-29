@@ -27,9 +27,11 @@ const getDomain = (): string => {
 export const statusApi = createApi({
   reducerPath: 'statusApi',
   baseQuery: staggeredBaseQuery(getDomain()),
+  tagTypes: ['status'],
   endpoints: (builder) => ({
     getStatus: builder.query<UnauthenticatedUser | AuthenticatedUser, void>({
       query: () => '/person/innloggingsstatus/auth',
+      providesTags: ['status'],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
 
