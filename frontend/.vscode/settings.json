@@ -22,5 +22,8 @@
     "prettier.requireConfig": true,
     "npm-intellisense.importQuotes": "'",
     "npm-intellisense.importES6": true,
-    "npm-intellisense.showBuildInLibs": true
+    "npm-intellisense.showBuildInLibs": true,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
