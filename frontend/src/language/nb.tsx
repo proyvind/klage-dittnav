@@ -152,6 +152,7 @@ export const nb = {
       },
       saksnummer: {
         title: 'Saksnummer (valgfri)',
+        internalTitle: 'Saksnummer',
       },
       begrunnelse_text: {
         title: 'Hvorfor er du uenig?',

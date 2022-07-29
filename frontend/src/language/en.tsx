@@ -142,6 +142,7 @@ export const en: Language = {
       },
       saksnummer: {
         title: 'Case number (optional)',
+        internalTitle: 'Case number',
       },
       begrunnelse_text: {
         title: 'Why do you disagree?',

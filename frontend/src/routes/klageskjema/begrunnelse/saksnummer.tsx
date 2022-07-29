@@ -11,12 +11,12 @@ interface Props extends Omit<UserSaksnummerProps, 'title'> {
 
 export const Saksnummer = ({ internalSaksnummer, ...rest }: Props) => {
   const { klageskjema } = useTranslation();
-  const { title } = klageskjema.begrunnelse.saksnummer;
+  const { title, internalTitle } = klageskjema.begrunnelse.saksnummer;
 
   if (internalSaksnummer !== null) {
     return (
       <div>
-        <Label>{title}</Label>
+        <Label>{internalTitle}</Label>
         <BodyShort>{internalSaksnummer}</BodyShort>
       </div>
     );
