@@ -21,7 +21,7 @@ const getDomain = (): string => {
     return 'https://innloggingsstatus.dev.nav.no';
   }
 
-  return 'https://innloggingsstatus.nav.no';
+  return 'https://www.nav.no';
 };
 
 export const statusApi = createApi({
