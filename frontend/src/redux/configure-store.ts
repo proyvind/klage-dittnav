@@ -5,7 +5,6 @@ import { availableAnkeApi } from '../redux-api/case/available-anke/api';
 import { klageApi } from '../redux-api/case/klage/api';
 import { titlesApi } from '../redux-api/titles';
 import { userApi } from '../redux-api/user/api';
-import { statusApi } from '../redux-api/user/status-api';
 import { RootState, rootReducer } from './root';
 
 export const reduxStore = configureStore({
@@ -24,7 +23,6 @@ export const reduxStore = configureStore({
         ],
       },
     }).concat([
-      statusApi.middleware,
       titlesApi.middleware,
       userApi.middleware,
       klageApi.middleware,

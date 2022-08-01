@@ -29,3 +29,7 @@ export interface IUser {
   folkeregisteridentifikator?: IIdentifikator;
   tokenExpires: number; // Expiration timestamp in milliseconds since 01-01-1970.
 }
+
+export interface IAuthResponse {
+  authenticated: boolean;
+}

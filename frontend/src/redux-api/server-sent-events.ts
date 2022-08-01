@@ -1,5 +1,5 @@
 import { parseJSON } from '../functions/parse-json';
-import { statusApi } from './user/status-api';
+import { userApi } from './user/api';
 
 export enum ServerSentEventType {
   JOURNALPOSTID = 'journalpostId',
@@ -95,7 +95,7 @@ export class ServerSentEventManager {
 
         if (!preflightOK) {
           // Probably the session timed out. Double check the logged in status.
-          statusApi.util.invalidateTags(['status']);
+          userApi.util.invalidateTags(['user', 'isAuthenticated']);
           return;
         }
 
