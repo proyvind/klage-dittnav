@@ -624,9 +624,9 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         path: 'avtalefestet-pensjon',
         mailKlageUrl: {
           [Languages.nb]:
-            'https://www.nav.no/soknader/nb/person/pensjon/avtalefestet-pensjon-fra-statens-pensjonskasse/NAV%2062-00.16/klage/brev',
+            'https://www.nav.no/soknader/nb/person/pensjon/alderspensjon-og-avtalefestet-pensjon/NAV%2019-01.05/klage/brev',
           [Languages.en]:
-            'https://www.nav.no/soknader/en/person/pensjon/avtalefestet-pensjon-fra-statens-pensjonskasse/NAV%2062-00.16/klage/brev',
+            'https://www.nav.no/soknader/en/person/pensjon/alderspensjon-og-avtalefestet-pensjon/NAV%2019-01.05/klage/brev',
         },
 
         mailAnkeUrl: {
