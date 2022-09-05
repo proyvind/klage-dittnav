@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useErrors } from '../../../../hooks/use-errors';
 import { useSessionAnkeUpdate } from '../../../../hooks/use-session-anke-update';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -41,7 +41,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigital(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
 
   const { errors, isValid, isEverythingValid, setError } = useErrors({
     type: 'session-anke',

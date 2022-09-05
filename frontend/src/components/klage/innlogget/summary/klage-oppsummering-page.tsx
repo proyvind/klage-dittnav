@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { LoadingPage } from '../../../../components/loading-page/loading-page';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '../../../../hooks/use-user';
 import { Clipboard } from '../../../../icons/clipboard';
 import { useTranslation } from '../../../../language/use-translation';
@@ -32,7 +32,7 @@ export const KlageoppsummeringPage = () => <KlageLoader Component={Wrapper} />;
 export default KlageoppsummeringPage;
 
 const Wrapper = ({ klage }: { klage: Klage }) => {
-  const supportsDigital = useSupportsDigital(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
   const { data: user, isLoading: userIsLoading } = useUser();
   const { user_loader } = useTranslation();
 
@@ -65,7 +65,7 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigital(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;

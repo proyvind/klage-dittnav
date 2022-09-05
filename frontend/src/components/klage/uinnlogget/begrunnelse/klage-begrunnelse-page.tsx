@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useErrors } from '../../../../hooks/use-errors';
 import { useSessionKlageUpdate } from '../../../../hooks/use-session-klage-update';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -41,7 +41,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const { klageskjema, klageskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigital(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
 
   const { errors, isValid, isEverythingValid, setError } = useErrors({
     type: 'session-klage',

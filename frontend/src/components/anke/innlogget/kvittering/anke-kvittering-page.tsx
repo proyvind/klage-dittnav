@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -25,7 +25,7 @@ interface Props {
 const RenderAnkekvitteringPage = ({ anke }: Props) => {
   const language = useLanguage();
   const { ankeskjema, ankeskjema_post } = useTranslation();
-  const supportsDigital = useSupportsDigital(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema);
 
   useLogPageView(PageIdentifier.ANKESKJEMA_KVITTERING);
 

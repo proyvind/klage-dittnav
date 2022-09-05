@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -25,7 +25,7 @@ interface Props {
 const RenderKlagekvitteringPage = ({ klage }: Props) => {
   const language = useLanguage();
   const { klageskjema } = useTranslation();
-  const supportsDigital = useSupportsDigital(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_KVITTERING);
 

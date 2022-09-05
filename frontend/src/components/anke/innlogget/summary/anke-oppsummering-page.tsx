@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { LoadingPage } from '../../../../components/loading-page/loading-page';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '../../../../hooks/use-user';
 import { Clipboard } from '../../../../icons/clipboard';
 import { useTranslation } from '../../../../language/use-translation';
@@ -31,7 +31,7 @@ export const AnkeoppsummeringPage = () => <AnkeLoader Component={Wrapper} />;
 export default AnkeoppsummeringPage;
 
 const Wrapper = ({ anke }: { anke: Anke }) => {
-  const supportsDigital = useSupportsDigital(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema);
   const { data: user, isLoading: userIsLoading } = useUser();
   const { user_loader } = useTranslation();
 
@@ -64,7 +64,7 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
 
   useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigital(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;

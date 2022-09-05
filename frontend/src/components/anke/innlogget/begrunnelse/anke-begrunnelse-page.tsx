@@ -2,7 +2,7 @@ import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useErrors } from '../../../../hooks/use-errors';
-import { useSupportsDigital } from '../../../../hooks/use-supports-digital';
+import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useUser } from '../../../../hooks/use-user';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
@@ -48,7 +48,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigital(anke.tema, null);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, null);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteAnke, { isLoading }] = useDeleteAnkeMutation();
 
