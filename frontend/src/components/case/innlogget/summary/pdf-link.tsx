@@ -31,7 +31,14 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
   if (hasUploadedVedlegg) {
     return (
       <CenteredContainer>
-        <Button as="a" href={href} onClick={() => navigate('../innsending')} size="small" variant="tertiary">
+        <Button
+          as="a"
+          href={href}
+          target="_blank"
+          onClick={() => navigate('../innsending')}
+          size="small"
+          variant="tertiary"
+        >
           {text}
         </Button>
       </CenteredContainer>
@@ -50,6 +57,7 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
           as="a"
           loading={isLoading}
           href={href}
+          target="_blank"
           onClick={isLoading ? (e) => e.preventDefault() : () => navigate('../innsending')}
           size="small"
           variant="tertiary"
