@@ -27,18 +27,9 @@ class IndexFile {
   }
 
   private async init() {
-    try {
-      await this.generateFile();
-      this.setReady();
-      setInterval(this.generateFile, 60 * 1000);
-    } catch (e) {
-      if (e instanceof Error) {
-        log.error({ error: e, msg: 'Failed to generate index file' });
-        sendToSlack(`Error when generating index file: ${e.message}`, EmojiIcons.Scream);
-      }
-
-      this.init();
-    }
+    await this.generateFile();
+    this.setReady();
+    setInterval(this.generateFile, 60 * 1000);
   }
 
   private setReady = () => {
@@ -66,12 +57,10 @@ class IndexFile {
         msg: `Successfully updated index.html with Dekoratøren and variables.`,
         data: { responseTime: Math.round(end - start) },
       });
-    } catch (e) {
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error('Unknown error.');
-      }
+    } catch (error) {
+      log.error({ error, msg: 'Failed to update index.html with Dekoratøren and variables' });
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      sendToSlack(`Error when generating index file: ${errorMsg}`, EmojiIcons.Scream);
     }
 
     return this;

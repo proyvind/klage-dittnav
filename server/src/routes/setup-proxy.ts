@@ -36,34 +36,48 @@ export const setupProxy = async () => {
   });
 
   PROXIED_CLIENT_IDS.forEach((appName) => {
-    router.use(
-      `/api/${appName}`,
-      createProxyMiddleware({
-        target: `http://${appName}`,
-        pathRewrite: {
-          [`^/api/${appName}`]: '',
-        },
-        onError: (err, req, res) => {
-          res.statusCode = 500;
-          res.setHeader('Content-Type', 'application/json');
-          res.write(
-            JSON.stringify({
-              error: `Failed to connect to API. Reason: ${err.message}`,
-            })
-          );
-          res.end();
-        },
-        logLevel: 'warn',
-        logProvider: () => ({
-          log: (msg: string) => log.info({ msg, data: { appName } }),
-          info: (msg: string) => log.info({ msg, data: { appName } }),
-          debug: (msg: string) => log.debug({ msg, data: { appName } }),
-          warn: (msg: string) => log.warn({ msg, data: { appName } }),
-          error: (msg: string) => log.error({ msg, data: { appName } }),
-        }),
-        changeOrigin: true,
-      })
-    );
+    const proxy = createProxyMiddleware({
+      target: `http://${appName}`,
+      pathRewrite: {
+        [`^/api/${appName}`]: '',
+      },
+      onError: (error, req, res) => {
+        if (res.headersSent) {
+          log.error({
+            msg: 'Headers already sent.',
+            error,
+            data: {
+              appName,
+              statusCode: res.statusCode,
+              url: req.originalUrl,
+              method: req.method,
+            },
+          });
+
+          return;
+        }
+
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        const body = JSON.stringify({ error: `Failed to connect to API. Reason: ${error.message}` });
+        res.end(body);
+        log.error({
+          msg: 'Failed to connect to API.',
+          error,
+          data: { appName, url: req.originalUrl, method: req.method },
+        });
+      },
+      logLevel: 'warn',
+      logProvider: () => ({
+        log: (msg: string) => log.info({ msg, data: { appName } }),
+        info: (msg: string) => log.info({ msg, data: { appName } }),
+        debug: (msg: string) => log.debug({ msg, data: { appName } }),
+        warn: (msg: string) => log.warn({ msg, data: { appName } }),
+        error: (msg: string) => log.error({ msg, data: { appName } }),
+      }),
+      changeOrigin: true,
+    });
+
+    router.use(`/api/${appName}`, proxy);
   });
 
   return router;

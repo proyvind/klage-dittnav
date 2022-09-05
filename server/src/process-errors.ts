@@ -8,15 +8,11 @@ export const processErrors = () => {
     .on('unhandledRejection', (reason, promise) => {
       log.error({ error: reason, msg: `Process ${process.pid} received a unhandledRejection signal` });
 
-      promise.catch((error: unknown) => {
-        log.error({ error, msg: `Uncaught error` });
-        process.exit(1);
-      });
+      promise.catch((error: unknown) => log.error({ error, msg: `Uncaught error` }));
     })
-    .on('uncaughtException', (error) => {
-      log.error({ error, msg: `Process ${process.pid} received a uncaughtException signal` });
-      process.exit(1);
-    })
+    .on('uncaughtException', (error) =>
+      log.error({ error, msg: `Process ${process.pid} received a uncaughtException signal` })
+    )
     .on('SIGTERM', (signal) => {
       log.info({ msg: `Process ${process.pid} received a ${signal} signal.` });
       process.exit(0);
