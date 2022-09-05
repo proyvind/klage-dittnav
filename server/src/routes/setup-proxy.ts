@@ -2,7 +2,7 @@ import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { getOnBehalfOfAccessToken } from '../auth/on-behalf-of';
 import { getTokenXClient } from '../auth/token-x-client';
-import { API_CLIENT_IDS } from '../config/config';
+import { OBO_CLIENT_IDS, PROXIED_CLIENT_IDS } from '../config/config';
 import { getLogger } from '../logger';
 
 const log = getLogger('proxy');
@@ -11,7 +11,7 @@ export const setupProxy = async () => {
   const authClient = await getTokenXClient();
   const router = express.Router();
 
-  API_CLIENT_IDS.forEach((appName) => {
+  OBO_CLIENT_IDS.forEach((appName) => {
     const route = `/api/${appName}`;
 
     router.use(route, async (req, res, next) => {
@@ -33,7 +33,9 @@ export const setupProxy = async () => {
 
       next();
     });
+  });
 
+  PROXIED_CLIENT_IDS.forEach((appName) => {
     router.use(
       `/api/${appName}`,
       createProxyMiddleware({
