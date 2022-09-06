@@ -19,6 +19,11 @@ const staggeredBaseQuery = (baseUrl: string) => {
         return result;
       }
 
+      if (typeof result.error.status === 'string') {
+        console.error('Request failed with error', result.error.status);
+        retry.fail(result.error);
+      }
+
       if (result.error.status === 401) {
         console.info('401 data', result.error);
         retry.fail(result.error.data);
