@@ -1,5 +1,5 @@
 import { Datepicker, DatepickerChange } from '@navikt/ds-datepicker';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ISODate } from '../../../../date/date';
 import { isApiError, isError } from '../../../../functions/is-api-error';
 import { Language } from '../../../../language/nb';
@@ -32,6 +32,7 @@ export const VedtakDateDigital = ({
   required = false,
 }: VedtakDateProps) => {
   const langugage = useLanguage();
+  const [date, setDate] = useState(vedtakDate);
   const { common, error_messages } = useTranslation();
   const [updateVedtakDate, status] = useUpdate();
   const id = required ? FormFieldsIds.VEDTAK_DATE_REQUIRED : FormFieldsIds.VEDTAK_DATE;
@@ -42,30 +43,42 @@ export const VedtakDateDigital = ({
 
   const update = useCallback(
     (value: string | null) => {
-      updateVedtakDate({ key: 'vedtakDate', value, id: caseId })
-        .unwrap()
-        .catch((e) => {
-          if (isError(e) && e.status === 401) {
-            onError(id, common.logged_out);
+      {
+        updateVedtakDate({ key: 'vedtakDate', value, id: caseId })
+          .unwrap()
+          .catch((e) => {
+            if (isError(e) && e.status === 401) {
+              onError(id, common.logged_out);
 
-            return;
-          }
+              return;
+            }
 
-          if (isApiError(e)) {
-            onError(id, error_messages[e.data.detail]);
+            if (isApiError(e)) {
+              onError(id, error_messages[e.data.detail]);
 
-            return;
-          }
+              return;
+            }
 
-          onError(id, common.generic_error);
-        });
+            onError(id, common.generic_error);
+          });
+      }
     },
     [updateVedtakDate, caseId, onError, id, common.generic_error, common.logged_out, error_messages]
   );
 
-  const onInternalChange: DatepickerChange = (date) => {
-    const e = validator(date);
-    update(date);
+  const onInternalChange: DatepickerChange = (value: string) => {
+    if (value === date) {
+      return;
+    }
+
+    setDate(value);
+
+    const e = validator(value);
+
+    if (typeof e === 'undefined') {
+      update(value === '' ? null : value);
+    }
+
     onError(id, e);
   };
 
@@ -75,7 +88,7 @@ export const VedtakDateDigital = ({
         id={id}
         onChange={onInternalChange}
         error={error}
-        value={vedtakDate ?? undefined}
+        value={date ?? undefined}
         showYearSelector
         limitations={{
           maxDate: MAX_DATE,
