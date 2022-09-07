@@ -1,4 +1,3 @@
-import { Alert, BodyShort } from '@navikt/ds-react';
 import { ErrorBoundary, withSentryReactRouterV6Routing } from '@sentry/react';
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
@@ -8,7 +7,9 @@ import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
 import { LanguageComponent } from '../language/component';
 import { Languages } from '../language/types';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
+import { NavigationLogger } from './navigation-logger';
 import { LoginIfUnauthorized, RedirectIfAuthorized, UpgradeSession } from './redirects';
+import { SentryFallback } from './sentry-fallback';
 
 const AnkebegrunnelsePage = lazy(() => import('../components/anke/innlogget/begrunnelse/anke-begrunnelse-page'));
 const AnkeinnsendingPage = lazy(() => import('../components/anke/innlogget/innsending/anke-innsending-page'));
@@ -43,71 +44,66 @@ const SentryRoutes = withSentryReactRouterV6Routing(Routes);
 
 export const Router = () => (
   <BrowserRouter>
-    <DekoratorSetRedirect>
-      <LanguageComponent>
-        <ErrorBoundary
-          fallback={
-            <Alert variant="warning">
-              <BodyShort>Beklager, det skjedde en feil.</BodyShort>
-              <BodyShort>Sorry, something went wrong.</BodyShort>
-            </Alert>
-          }
-        >
-          <Suspense fallback={<LoadingPage />}>
-            <SentryRoutes>
-              <Route path="ny" element={<CreateKlage />} />
-              <Route path="/:lang" element={<UpgradeSession />}>
-                {innsendingsRoutes}
-                {kategoriRoutes}
+    <NavigationLogger>
+      <DekoratorSetRedirect>
+        <LanguageComponent>
+          <ErrorBoundary fallback={SentryFallback}>
+            <Suspense fallback={<LoadingPage />}>
+              <SentryRoutes>
+                <Route path="ny" element={<CreateKlage />} />
+                <Route path="/:lang" element={<UpgradeSession />}>
+                  {innsendingsRoutes}
+                  {kategoriRoutes}
 
-                <Route path="klage">
-                  <Route path="ny" element={<CreateKlage />} />
+                  <Route path="klage">
+                    <Route path="ny" element={<CreateKlage />} />
 
-                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
-                    <Route path=":temaKey/:titleKey">
-                      <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
-                      <Route path="innsending" element={<SessionKlageinnsendingPage />} />
+                    <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
+                      <Route path=":temaKey/:titleKey">
+                        <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
+                        <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
+                        <Route path="innsending" element={<SessionKlageinnsendingPage />} />
+                      </Route>
+                    </Route>
+
+                    <Route path=":klageId" element={<LoginIfUnauthorized />}>
+                      <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<KlageoppsummeringPage />} />
+                      <Route path="kvittering" element={<KlagekvitteringPage />} />
+                      <Route path="innsending" element={<KlageinnsendingPage />} />
                     </Route>
                   </Route>
 
-                  <Route path=":klageId" element={<LoginIfUnauthorized />}>
-                    <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
-                    <Route path="oppsummering" element={<KlageoppsummeringPage />} />
-                    <Route path="kvittering" element={<KlagekvitteringPage />} />
-                    <Route path="innsending" element={<KlageinnsendingPage />} />
-                  </Route>
-                </Route>
+                  <Route path="anke">
+                    <Route path="ny" element={<CreateAnke />} />
 
-                <Route path="anke">
-                  <Route path="ny" element={<CreateAnke />} />
+                    <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
+                      <Route path=":temaKey/:titleKey">
+                        <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
+                        <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
+                        <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
+                      </Route>
+                    </Route>
 
-                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
-                    <Route path=":temaKey/:titleKey">
-                      <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
-                      <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
+                    <Route path=":ankeId" element={<LoginIfUnauthorized />}>
+                      <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
+                      <Route path="kvittering" element={<AnkekvitteringPage />} />
+                      <Route path="innsending" element={<AnkeinnsendingPage />} />
                     </Route>
                   </Route>
 
-                  <Route path=":ankeId" element={<LoginIfUnauthorized />}>
-                    <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
-                    <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
-                    <Route path="kvittering" element={<AnkekvitteringPage />} />
-                    <Route path="innsending" element={<AnkeinnsendingPage />} />
-                  </Route>
+                  <Route path="" element={<RootWithQuery />} />
+                  <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
                 </Route>
-
-                <Route path="" element={<RootWithQuery />} />
-                <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
-              </Route>
-              <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </SentryRoutes>
-          </Suspense>
-        </ErrorBoundary>
-      </LanguageComponent>
-    </DekoratorSetRedirect>
+                <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </SentryRoutes>
+            </Suspense>
+          </ErrorBoundary>
+        </LanguageComponent>
+      </DekoratorSetRedirect>
+    </NavigationLogger>
   </BrowserRouter>
 );
 

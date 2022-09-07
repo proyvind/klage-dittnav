@@ -8,6 +8,7 @@ import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
+import { addAppEvent } from '../../../../logging/user-trace';
 import {
   useDeleteAttachmentMutation,
   useDeleteKlageMutation,
@@ -67,18 +68,20 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
     event.preventDefault();
 
     if (!isEverythingValid()) {
+      addAppEvent('invalid-klage');
+
       return;
     }
-
-    event.target;
 
     navigate(NEXT_PAGE_URL);
   };
 
-  const deleteAndReturn = () =>
+  const deleteAndReturn = () => {
+    addAppEvent('delete-klage');
     deleteKlage(klage.id)
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));
+  };
 
   const Attachments = supportsDigital
     ? () => (

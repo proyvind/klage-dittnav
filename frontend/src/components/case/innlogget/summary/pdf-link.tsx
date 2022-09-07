@@ -2,6 +2,7 @@ import { Button, Checkbox, CheckboxGroup, ReadMore } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../../../language/use-translation';
+import { addAppEvent } from '../../../../logging/user-trace';
 import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
 import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
 import { CenteredContainer } from '../../../../styled-components/common';
@@ -28,17 +29,15 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
     return null;
   }
 
+  const onClick = () => {
+    addAppEvent('download-pdf');
+    navigate('../innsending');
+  };
+
   if (hasUploadedVedlegg) {
     return (
       <CenteredContainer>
-        <Button
-          as="a"
-          href={href}
-          target="_blank"
-          onClick={() => navigate('../innsending')}
-          size="small"
-          variant="tertiary"
-        >
+        <Button as="a" href={href} target="_blank" onClick={onClick} size="small" variant="tertiary">
           {text}
         </Button>
       </CenteredContainer>
@@ -58,7 +57,7 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
           loading={isLoading}
           href={href}
           target="_blank"
-          onClick={isLoading ? (e) => e.preventDefault() : () => navigate('../innsending')}
+          onClick={isLoading ? (e) => e.preventDefault() : () => onClick()}
           size="small"
           variant="tertiary"
         >

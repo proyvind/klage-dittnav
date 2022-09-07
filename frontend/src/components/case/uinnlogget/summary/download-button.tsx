@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useTitle } from '../../../../hooks/use-titles';
 import { useTranslation } from '../../../../language/use-translation';
+import { addApiEvent, addAppEvent, addErrorEvent, logAllUserEvents } from '../../../../logging/user-trace';
 import { API_PATH } from '../../../../redux-api/common';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';
@@ -30,24 +31,43 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
 
+    addAppEvent(`download-${type}-pdf`);
+
     setpdfLoading(true);
 
-    const res = await fetch(`${API_PATH}/pdf/${type}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...caseData }),
-    });
+    try {
+      const endpoint = `${API_PATH}/pdf/${type}`;
+      const method = 'POST';
 
-    if (res.ok) {
-      const blob = new Blob([await res.blob()], { type: 'octet/stream' });
-      const a = document.createElement('a');
-      a.download = `NAV ${TYPE_NAMES[type]} - ${title} - ${dayjs().format('YYYY-MM-DD HH-mm-ss')}.pdf`;
-      a.href = URL.createObjectURL(blob);
-      a.click();
+      const res = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...caseData }),
+      });
 
-      navigate(NEXT_PAGE_URL);
+      if (res.ok) {
+        const blob = new Blob([await res.blob()], { type: 'octet/stream' });
+        const a = document.createElement('a');
+        a.download = `NAV ${TYPE_NAMES[type]} - ${title} - ${dayjs().format('YYYY-MM-DD HH-mm-ss')}.pdf`;
+        a.href = URL.createObjectURL(blob);
+        a.click();
+
+        addApiEvent(endpoint, method, res.status, `Successfully generated PDF for ${type}.`);
+
+        navigate(NEXT_PAGE_URL);
+      } else {
+        addApiEvent(endpoint, method, res.status, `Failed to generate PDF for ${type}.`);
+        logAllUserEvents();
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        addErrorEvent(`(${type}) ${e.message}`, e.stack);
+      } else {
+        addErrorEvent(`Failed to generate PDF for ${type}.`);
+      }
+      logAllUserEvents();
     }
 
     setpdfLoading(false);

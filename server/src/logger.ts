@@ -15,11 +15,9 @@ type SerializableValue =
   | null
   | null[]
   | undefined
-  | undefined[]
-  | AnyObject
-  | AnyObject[];
+  | undefined[];
 
-interface AnyObject {
+export interface AnyObject {
   [key: string]: SerializableValue;
 }
 
@@ -27,12 +25,12 @@ type LogArgs =
   | {
       msg?: string;
       error: Error | unknown;
-      data?: SerializableValue;
+      data?: SerializableValue | AnyObject;
     }
   | {
       msg: string;
       error?: Error | unknown;
-      data?: SerializableValue;
+      data?: SerializableValue | AnyObject;
     };
 
 interface Logger {
@@ -73,12 +71,27 @@ export const getLogger = (module: string): Logger => {
 
 const getLog = (module: string, level: Level, { msg, error, data }: LogArgs) => {
   const log: Log = {
-    ...(typeof data === 'object' && data !== null && !Array.isArray(data) ? data : { data }),
     level,
     '@timestamp': new Date().toISOString(),
     version: VERSION,
     module,
   };
+
+  if (typeof data === 'object' && data !== null) {
+    if (Array.isArray(data)) {
+      log.data = JSON.stringify(data, null, 2);
+    } else {
+      Object.entries(data).forEach(([key, value]) => {
+        if (typeof value !== 'object' && value !== null) {
+          log[key] = value;
+        } else {
+          log[key] = JSON.stringify(value, null, 2);
+        }
+      });
+    }
+  } else {
+    log.data = data;
+  }
 
   if (error instanceof Error) {
     log.stacktrace = error.stack;

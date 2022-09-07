@@ -1,4 +1,5 @@
 import { FetchArgs, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
+import { addApiEvent, logAllUserEvents } from '../logging/user-trace';
 
 const IS_LOCALHOST = window.location.hostname === 'localhost';
 
@@ -15,6 +16,16 @@ const staggeredBaseQuery = (baseUrl: string) => {
     async (args: string | FetchArgs, api, extraOptions) => {
       const result = await fetch(args, api, extraOptions);
 
+      if (typeof args === 'string') {
+        addApiEvent(args, 'GET', result.meta?.response?.status ?? 0, result.error?.data?.['detail']);
+      } else {
+        addApiEvent(args.url, args.method ?? 'GET', result.meta?.response?.status ?? 0, result.error?.data?.['detail']);
+      }
+
+      if (result.meta?.response?.ok !== true) {
+        logAllUserEvents();
+      }
+
       if (typeof result.error === 'undefined') {
         return result;
       }
@@ -25,7 +36,6 @@ const staggeredBaseQuery = (baseUrl: string) => {
       }
 
       if (result.error.status === 401) {
-        console.info('401 data', result.error);
         retry.fail(result.error.data);
       } else if (
         result.error.status === 400 ||

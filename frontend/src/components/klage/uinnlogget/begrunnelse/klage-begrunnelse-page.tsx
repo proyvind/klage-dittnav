@@ -9,6 +9,7 @@ import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
+import { addAppEvent } from '../../../../logging/user-trace';
 import { useAppDispatch } from '../../../../redux/configure-store';
 import { deleteSessionKlage } from '../../../../redux/session/session';
 import { CenteredContainer } from '../../../../styled-components/common';
@@ -52,6 +53,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
     event.preventDefault();
 
     if (!isEverythingValid()) {
+      addAppEvent('invalid-klage');
+
       return;
     }
 
@@ -59,6 +62,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   };
 
   const deleteAndReturn = () => {
+    addAppEvent('delete-session-klage');
     dispatch(deleteSessionKlage({ temaKey: klage.tema, titleKey: klage.titleKey }));
     navigate(`/${language}`, { replace: true });
   };

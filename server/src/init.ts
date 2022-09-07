@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import { serverConfig } from './config/server-config';
 import { getLogger } from './logger';
+import { errorReporter } from './routes/error-report';
 import { setupProxy } from './routes/setup-proxy';
 import { setupStaticRoutes } from './routes/static-routes';
 import { setupVersionRoute } from './routes/version';
@@ -21,6 +22,7 @@ export const init = async (server: Express) => {
         res.redirect('/oauth2/login?redirect=/');
       }
     });
+    server.use(errorReporter());
     server.use(setupVersionRoute());
     server.use(await setupProxy());
     server.use(setupStaticRoutes());

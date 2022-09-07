@@ -1,4 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { setTokenExpires } from '../../logging/user-trace';
 import { TemaKey } from '../../tema/tema';
 import { API_BASE_QUERY } from '../common';
 import { IAuthResponse, IUser } from './types';
@@ -20,6 +21,8 @@ export const userApi = createApi({
         const { data } = await queryFulfilled;
         const tokenx = typeof data !== 'undefined';
         dispatch(userApi.util.updateQueryData('isAuthenticated', undefined, (draft) => ({ ...draft, tokenx })));
+
+        setTokenExpires(data.tokenExpires);
       },
     }),
     // Get another user's data. Only possible if that user has granted "fullmakt".
