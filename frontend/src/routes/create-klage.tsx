@@ -193,5 +193,3 @@ const useHasFullmaktsgiver = (temaKey: TemaKey | null, fullmaktsgiver: string | 
 
   return [isSuccess, isLoading || isFetching];
 };
-
-export default CreateKlage;

@@ -33,7 +33,6 @@ import { AnkeLoader } from '../anke-loader';
 import { KaEnhet } from './ka-enhet';
 
 export const AnkebegrunnelsePage = () => <AnkeLoader Component={RenderAnkebegrunnelsePage} />;
-export default AnkebegrunnelsePage;
 
 interface Props {
   anke: Anke;

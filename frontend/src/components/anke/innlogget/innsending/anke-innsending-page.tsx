@@ -4,7 +4,6 @@ import { RenderCaseinnsendingPage } from '../../../case/common/post/innsending-p
 import { AnkeLoader } from '../anke-loader';
 
 export const AnkeinnsendingPage = () => <AnkeLoader Component={AnkeinnsendingPageWrapper} />;
-export default AnkeinnsendingPage;
 
 interface Props {
   anke: Anke;

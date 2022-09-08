@@ -166,5 +166,3 @@ export const CreateAnke = () => {
 
   return <LoadingPage>{anke_loader.loading_anke}</LoadingPage>;
 };
-
-export default CreateAnke;

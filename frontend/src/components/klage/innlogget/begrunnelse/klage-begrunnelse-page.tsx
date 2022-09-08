@@ -34,7 +34,6 @@ import { KlageLoader } from '../klage-loader';
 import { Reasons } from './reasons';
 
 export const KlagebegrunnelsePage = () => <KlageLoader Component={RenderKlagebegrunnelsePage} />;
-export default KlagebegrunnelsePage;
 
 interface Props {
   klage: Klage;

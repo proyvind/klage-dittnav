@@ -1,44 +1,34 @@
 import { ErrorBoundary, withSentryReactRouterV6Routing } from '@sentry/react';
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { LoadingPage } from '../components/loading-page/loading-page';
+import { AnkebegrunnelsePage } from '../components/anke/innlogget/begrunnelse/anke-begrunnelse-page';
+import { AnkeinnsendingPage } from '../components/anke/innlogget/innsending/anke-innsending-page';
+import { AnkekvitteringPage } from '../components/anke/innlogget/kvittering/anke-kvittering-page';
+import { AnkeoppsummeringPage } from '../components/anke/innlogget/summary/anke-oppsummering-page';
+import { SessionAnkebegrunnelsePage } from '../components/anke/uinnlogget/begrunnelse/anke-begrunnelse-page';
+import { SessionAnkeinnsendingPage } from '../components/anke/uinnlogget/innsending/anke-innsending-page';
+import { SessionAnkeoppsummeringPage } from '../components/anke/uinnlogget/summary/anke-oppsummering-page';
+import { KlagebegrunnelsePage } from '../components/klage/innlogget/begrunnelse/klage-begrunnelse-page';
+import { KlageinnsendingPage } from '../components/klage/innlogget/innsending/klage-innsending-page';
+import { KlagekvitteringPage } from '../components/klage/innlogget/kvittering/klage-kvittering-page';
+import { KlageoppsummeringPage } from '../components/klage/innlogget/summary/klage-oppsummering-page';
+import { SessionKlagebegrunnelsePage } from '../components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page';
+import { SessionKlageinnsendingPage } from '../components/klage/uinnlogget/innsending/klage-innsending-page';
+import { SessionKlageoppsummeringPage } from '../components/klage/uinnlogget/summary/klage-oppsummering-page';
 import { ENVIRONMENT } from '../environment/environment';
 import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
 import { LanguageComponent } from '../language/component';
 import { Languages } from '../language/types';
+import { CreateAnke } from './create-anke';
+import { CreateKlage } from './create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
+import { InngangInnsending } from './inngang/inngang-innsendingsvalg';
+import { InngangKategorier } from './inngang/inngang-kategorier';
 import { NavigationLogger } from './navigation-logger';
+import { NotFoundPage } from './not-found-page';
 import { LoginIfUnauthorized, RedirectIfAuthorized, UpgradeSession } from './redirects';
+import { RootWithQuery } from './root-with-query';
 import { SentryFallback } from './sentry-fallback';
-
-const AnkebegrunnelsePage = lazy(() => import('../components/anke/innlogget/begrunnelse/anke-begrunnelse-page'));
-const AnkeinnsendingPage = lazy(() => import('../components/anke/innlogget/innsending/anke-innsending-page'));
-const AnkekvitteringPage = lazy(() => import('../components/anke/innlogget/kvittering/anke-kvittering-page'));
-const AnkeoppsummeringPage = lazy(() => import('../components/anke/innlogget/summary/anke-oppsummering-page'));
-const SessionAnkebegrunnelsePage = lazy(
-  () => import('../components/anke/uinnlogget/begrunnelse/anke-begrunnelse-page')
-);
-const SessionAnkeinnsendingPage = lazy(() => import('../components/anke/uinnlogget/innsending/anke-innsending-page'));
-const SessionAnkeoppsummeringPage = lazy(() => import('../components/anke/uinnlogget/summary/anke-oppsummering-page'));
-const KlagebegrunnelsePage = lazy(() => import('../components/klage/innlogget/begrunnelse/klage-begrunnelse-page'));
-const KlageinnsendingPage = lazy(() => import('../components/klage/innlogget/innsending/klage-innsending-page'));
-const KlagekvitteringPage = lazy(() => import('../components/klage/innlogget/kvittering/klage-kvittering-page'));
-const KlageoppsummeringPage = lazy(() => import('../components/klage/innlogget/summary/klage-oppsummering-page'));
-const SessionKlagebegrunnelsePage = lazy(
-  () => import('../components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page')
-);
-const SessionKlageinnsendingPage = lazy(
-  () => import('../components/klage/uinnlogget/innsending/klage-innsending-page')
-);
-const SessionKlageoppsummeringPage = lazy(
-  () => import('../components/klage/uinnlogget/summary/klage-oppsummering-page')
-);
-const CreateAnke = lazy(() => import('./create-anke'));
-const CreateKlage = lazy(() => import('./create-klage'));
-const InngangInnsending = lazy(() => import('./inngang/inngang-innsendingsvalg'));
-const InngangKategorier = lazy(() => import('./inngang/inngang-kategorier'));
-const NotFoundPage = lazy(() => import('./not-found-page'));
-const RootWithQuery = lazy(() => import('./root-with-query'));
 
 const SentryRoutes = withSentryReactRouterV6Routing(Routes);
 
@@ -48,58 +38,56 @@ export const Router = () => (
       <DekoratorSetRedirect>
         <LanguageComponent>
           <ErrorBoundary fallback={SentryFallback}>
-            <Suspense fallback={<LoadingPage />}>
-              <SentryRoutes>
-                <Route path="ny" element={<CreateKlage />} />
-                <Route path="/:lang" element={<UpgradeSession />}>
-                  {innsendingsRoutes}
-                  {kategoriRoutes}
+            <SentryRoutes>
+              <Route path="ny" element={<CreateKlage />} />
+              <Route path="/:lang" element={<UpgradeSession />}>
+                {innsendingsRoutes}
+                {kategoriRoutes}
 
-                  <Route path="klage">
-                    <Route path="ny" element={<CreateKlage />} />
+                <Route path="klage">
+                  <Route path="ny" element={<CreateKlage />} />
 
-                    <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
-                      <Route path=":temaKey/:titleKey">
-                        <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
-                        <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
-                        <Route path="innsending" element={<SessionKlageinnsendingPage />} />
-                      </Route>
-                    </Route>
-
-                    <Route path=":klageId" element={<LoginIfUnauthorized />}>
-                      <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<KlageoppsummeringPage />} />
-                      <Route path="kvittering" element={<KlagekvitteringPage />} />
-                      <Route path="innsending" element={<KlageinnsendingPage />} />
+                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
+                    <Route path=":temaKey/:titleKey">
+                      <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
+                      <Route path="innsending" element={<SessionKlageinnsendingPage />} />
                     </Route>
                   </Route>
 
-                  <Route path="anke">
-                    <Route path="ny" element={<CreateAnke />} />
-
-                    <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
-                      <Route path=":temaKey/:titleKey">
-                        <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
-                        <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
-                        <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
-                      </Route>
-                    </Route>
-
-                    <Route path=":ankeId" element={<LoginIfUnauthorized />}>
-                      <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
-                      <Route path="kvittering" element={<AnkekvitteringPage />} />
-                      <Route path="innsending" element={<AnkeinnsendingPage />} />
-                    </Route>
+                  <Route path=":klageId" element={<LoginIfUnauthorized />}>
+                    <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
+                    <Route path="oppsummering" element={<KlageoppsummeringPage />} />
+                    <Route path="kvittering" element={<KlagekvitteringPage />} />
+                    <Route path="innsending" element={<KlageinnsendingPage />} />
                   </Route>
-
-                  <Route path="" element={<RootWithQuery />} />
-                  <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
                 </Route>
-                <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </SentryRoutes>
-            </Suspense>
+
+                <Route path="anke">
+                  <Route path="ny" element={<CreateAnke />} />
+
+                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
+                    <Route path=":temaKey/:titleKey">
+                      <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
+                      <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
+                      <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
+                    </Route>
+                  </Route>
+
+                  <Route path=":ankeId" element={<LoginIfUnauthorized />}>
+                    <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
+                    <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
+                    <Route path="kvittering" element={<AnkekvitteringPage />} />
+                    <Route path="innsending" element={<AnkeinnsendingPage />} />
+                  </Route>
+                </Route>
+
+                <Route path="" element={<RootWithQuery />} />
+                <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
+              </Route>
+              <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </SentryRoutes>
           </ErrorBoundary>
         </LanguageComponent>
       </DekoratorSetRedirect>

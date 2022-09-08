@@ -26,7 +26,6 @@ import { KlageSessionLoader } from '../klage-loader';
 import { ISessionKlage } from '../types';
 
 export const SessionKlagebegrunnelsePage = () => <KlageSessionLoader Component={RenderKlagebegrunnelsePage} />;
-export default SessionKlagebegrunnelsePage;
 
 interface Props {
   klage: ISessionKlage;

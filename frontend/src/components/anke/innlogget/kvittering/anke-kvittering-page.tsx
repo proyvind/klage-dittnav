@@ -16,7 +16,6 @@ import { KvitteringPageLoader } from '../../../case/innlogget/kvittering/kvitter
 import { AnkeLoader } from '../anke-loader';
 
 export const AnkekvitteringPage = () => <AnkeLoader Component={RenderAnkekvitteringPage} />;
-export default AnkekvitteringPage;
 
 interface Props {
   anke: Anke;

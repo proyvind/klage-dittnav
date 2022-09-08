@@ -29,7 +29,6 @@ import { VedtakSummary } from '../../../summary/vedtak-summary';
 import { KlageLoader } from '../klage-loader';
 
 export const KlageoppsummeringPage = () => <KlageLoader Component={Wrapper} />;
-export default KlageoppsummeringPage;
 
 const Wrapper = ({ klage }: { klage: Klage }) => {
   const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);

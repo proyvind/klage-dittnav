@@ -30,8 +30,6 @@ export const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;

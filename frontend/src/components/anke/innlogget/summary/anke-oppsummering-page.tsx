@@ -28,7 +28,6 @@ import { VedtakSummary } from '../../../summary/vedtak-summary';
 import { AnkeLoader } from '../anke-loader';
 
 export const AnkeoppsummeringPage = () => <AnkeLoader Component={Wrapper} />;
-export default AnkeoppsummeringPage;
 
 const Wrapper = ({ anke }: { anke: Anke }) => {
   const supportsDigital = useSupportsDigitalAnke(anke.tema);

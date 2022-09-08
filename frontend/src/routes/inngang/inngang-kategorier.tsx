@@ -59,8 +59,6 @@ export const InngangKategorier = React.memo(
 
 InngangKategorier.displayName = 'InngangKategorier';
 
-export default InngangKategorier;
-
 const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
   const lang = useLanguage();
 

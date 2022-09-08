@@ -25,7 +25,6 @@ import { ISessionAnke } from '../types';
 import { KaEnhet } from './ka-enhet';
 
 export const SessionAnkebegrunnelsePage = () => <AnkeSessionLoader Component={RenderAnkebegrunnelsePage} />;
-export default SessionAnkebegrunnelsePage;
 
 interface Props {
   anke: ISessionAnke;

@@ -25,5 +25,3 @@ export const RootWithQuery = () => {
 
   return LandingPage(temaKey, titleKey, ytelseKey, saksnummerValue);
 };
-
-export default RootWithQuery;

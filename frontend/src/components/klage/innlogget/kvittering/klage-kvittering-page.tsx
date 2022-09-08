@@ -16,7 +16,6 @@ import { KvitteringPageLoader } from '../../../case/innlogget/kvittering/kvitter
 import { KlageLoader } from '../klage-loader';
 
 export const KlagekvitteringPage = () => <KlageLoader Component={RenderKlagekvitteringPage} />;
-export default KlagekvitteringPage;
 
 interface Props {
   klage: Klage;

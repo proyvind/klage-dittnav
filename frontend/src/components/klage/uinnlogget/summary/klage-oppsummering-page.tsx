@@ -5,7 +5,6 @@ import { KlageSessionLoader } from '../klage-loader';
 import { ISessionKlage } from '../types';
 
 export const SessionKlageoppsummeringPage = () => <KlageSessionLoader Component={Wrapper} />;
-export default SessionKlageoppsummeringPage;
 
 const Wrapper = ({ klage }: { klage: ISessionKlage }) => (
   <SummaryPagePost caseData={klage} type="session-klage">

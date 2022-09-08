@@ -90,8 +90,6 @@ export const InngangInnsending = React.memo(
 
 InngangInnsending.displayName = 'InngangInnsending';
 
-export default InngangInnsending;
-
 interface LinksProps {
   temaKey: TemaKey;
   titleKey: string | null;
