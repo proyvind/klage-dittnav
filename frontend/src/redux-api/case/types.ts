@@ -37,10 +37,8 @@ export interface Case {
 }
 
 export interface Attachment {
-  readonly content: string;
   readonly contentType: string; // Default value is "Ukjent" in backend.
   readonly id: number;
-  readonly ref: string;
   readonly sizeInBytes: number;
   readonly tittel: string;
 }
