@@ -22,8 +22,7 @@ export const NotFoundPage = () => {
       <Heading size="large" level="2">
         {not_found_page.title}
       </Heading>
-      <StyledButton onClick={onClick}>
-        <Home />
+      <StyledButton onClick={onClick} icon={<Home aria-hidden />}>
         {not_found_page.go_back}
       </StyledButton>
     </Container>

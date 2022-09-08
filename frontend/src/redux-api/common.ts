@@ -1,5 +1,6 @@
 import { FetchArgs, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
-import { addApiEvent, sendErrorReport } from '../logging/user-trace';
+import { isNotUndefined } from '../functions/is-not-type-guards';
+import { addApiEvent, sendErrorReport } from '../logging/error-report/error-report';
 
 const IS_LOCALHOST = window.location.hostname === 'localhost';
 
@@ -23,7 +24,7 @@ const staggeredBaseQuery = (baseUrl: string) => {
           args.url,
           args.method ?? 'GET',
           result.meta?.response?.status ?? result.error?.status,
-          result.error?.data?.['detail']
+          [result.error?.data?.['title'], result.error?.data?.['detail']].filter(isNotUndefined).join(' - ')
         );
       }
 

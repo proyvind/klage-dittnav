@@ -5,7 +5,8 @@ import { queryStringify } from '../functions/query-string';
 import { useIsAuthenticated } from '../hooks/use-user';
 import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
-import { addAppEvent } from '../logging/user-trace';
+import { AppEventEnum } from '../logging/error-report/action';
+import { addAppEvent } from '../logging/error-report/error-report';
 import { useIsAuthenticatedQuery } from '../redux-api/user/api';
 import { login } from '../user/login';
 
@@ -36,7 +37,7 @@ export const UpgradeSession = () => {
 
   useEffect(() => {
     if (shouldUpgradeSession) {
-      addAppEvent('upgrade-session');
+      addAppEvent(AppEventEnum.UPGRADE_SESSION);
       login();
     }
   }, [shouldUpgradeSession]);

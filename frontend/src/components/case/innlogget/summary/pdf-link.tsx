@@ -2,7 +2,8 @@ import { Button, Checkbox, CheckboxGroup, ReadMore } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../../../language/use-translation';
-import { addAppEvent } from '../../../../logging/user-trace';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
 import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
 import { CenteredContainer } from '../../../../styled-components/common';
@@ -30,7 +31,7 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
   }
 
   const onClick = () => {
-    addAppEvent('download-pdf');
+    addAppEvent(AppEventEnum.DOWNLOAD);
     navigate('../innsending');
   };
 

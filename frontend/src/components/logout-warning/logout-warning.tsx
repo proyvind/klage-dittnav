@@ -10,6 +10,8 @@ import { useUser } from '../../hooks/use-user';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
+import { AppEventEnum } from '../../logging/error-report/action';
+import { addAppEvent } from '../../logging/error-report/error-report';
 import { LoginButton } from '../../styled-components/login-button';
 import { login } from '../../user/login';
 
@@ -60,10 +62,15 @@ export const LogoutWarning = () => {
   }, [user, expired, expiresIn, isLoading, language]);
 
   if (expired || user === null) {
+    const onClick = () => {
+      addAppEvent(AppEventEnum.LOGIN);
+      login();
+    };
+
     return (
       <GuidePanel>
         <BodyLong>{common.logged_out}</BodyLong>
-        <LoginButton onClick={login}>{common.log_in}</LoginButton>
+        <LoginButton onClick={onClick}>{common.log_in}</LoginButton>
       </GuidePanel>
     );
   }

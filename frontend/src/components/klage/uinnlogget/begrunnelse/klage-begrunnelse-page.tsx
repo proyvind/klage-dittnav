@@ -8,8 +8,9 @@ import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital'
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
-import { addAppEvent } from '../../../../logging/user-trace';
 import { useAppDispatch } from '../../../../redux/configure-store';
 import { deleteSessionKlage } from '../../../../redux/session/session';
 import { CenteredContainer } from '../../../../styled-components/common';
@@ -50,9 +51,10 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    addAppEvent(AppEventEnum.SUBMIT);
 
     if (!isEverythingValid()) {
-      addAppEvent('invalid-klage');
+      addAppEvent(AppEventEnum.INVALID);
 
       return;
     }
@@ -61,7 +63,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    addAppEvent('delete-session-klage');
+    addAppEvent(AppEventEnum.DELETE_CASE);
     dispatch(deleteSessionKlage({ temaKey: klage.tema, titleKey: klage.titleKey }));
     navigate(`/${language}`, { replace: true });
   };

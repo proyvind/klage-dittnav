@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { addNavigationEvent } from '../logging/user-trace';
+import { addNavigationEvent } from '../logging/error-report/error-report';
 
 interface Props {
   children: JSX.Element;

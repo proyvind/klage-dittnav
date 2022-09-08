@@ -7,6 +7,8 @@ import { displayBytes } from '../../functions/display';
 import { isApiError, isError } from '../../functions/is-api-error';
 import { Language } from '../../language/language';
 import { useTranslation } from '../../language/use-translation';
+import { AppEventEnum } from '../../logging/error-report/action';
+import { addAppEvent } from '../../logging/error-report/error-report';
 import { useUploadAttachmentMutation as useUploadAnkeAttachmentMutation } from '../../redux-api/case/anke/api';
 import { useUploadAttachmentMutation as useUploadKlageAttachmentMutation } from '../../redux-api/case/klage/api';
 import { Attachment, DeleteAttachmentParams } from '../../redux-api/case/types';
@@ -38,6 +40,11 @@ export const AttachmentsSection = ({
   const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
   const [attachmentErrors, setAttachmentErrors] = useState<FetchBaseQueryError[]>([]);
 
+  const deleteAttachment = (attachmentId: number) => {
+    addAppEvent(AppEventEnum.DELETE_ATTACHMENT);
+    onDelete({ caseId, attachmentId });
+  };
+
   return (
     <>
       <div>
@@ -49,7 +56,10 @@ export const AttachmentsSection = ({
       <StyledList>
         {attachments.map(({ id, tittel, sizeInBytes, contentType }) => (
           <StyledListItem key={id}>
-            <ExternalLink href={`${basePath}/${caseId}/vedlegg/${id}`}>
+            <ExternalLink
+              href={`${basePath}/${caseId}/vedlegg/${id}`}
+              onClick={() => addAppEvent(AppEventEnum.DOWNLOAD_ATTACHMENT)}
+            >
               <FileIcon contentType={contentType} />
               <span>
                 {tittel} ({displayBytes(sizeInBytes)})
@@ -59,7 +69,7 @@ export const AttachmentsSection = ({
               variant="danger"
               size="small"
               title={`${common.delete} ${tittel}`}
-              onClick={() => onDelete({ caseId, attachmentId: id })}
+              onClick={() => deleteAttachment(id)}
               icon={<Delete />}
             />
           </StyledListItem>
@@ -113,9 +123,14 @@ const ShowErrors = ({ errors, clear, translations }: ShowErrorsProps) => {
     return null;
   }
 
+  const clearErrors = () => {
+    clear();
+    addAppEvent(AppEventEnum.CLEAR_ERRORS);
+  };
+
   return (
     <div>
-      <StyledClearButton variant="secondary" onClick={clear}>
+      <StyledClearButton variant="secondary" onClick={clearErrors}>
         <Close /> {translations.begrunnelse.attachments.clear_errors}
       </StyledClearButton>
       <ErrorSummary>

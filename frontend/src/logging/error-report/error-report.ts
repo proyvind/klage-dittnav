@@ -1,5 +1,6 @@
-import { ENVIRONMENT } from '../environment/environment';
-import { parseJSON } from '../functions/parse-json';
+import { ENVIRONMENT } from '../../environment/environment';
+import { parseJSON } from '../../functions/parse-json';
+import { AppEventEnum } from './action';
 import { formatSessionTime } from './formatters';
 
 interface BaseEvent {
@@ -15,7 +16,7 @@ interface NavigationEvent {
 
 interface AppEvent {
   type: 'app';
-  action: string;
+  action: AppEventEnum;
 }
 
 interface ErrorEvent {
@@ -87,7 +88,7 @@ const addEvent = (event: UserEvent) => {
 
 export const addNavigationEvent = (route: string) => addEvent({ type: 'navigation', ...getBaseEvent(route) });
 
-export const addAppEvent = (action: string) => addEvent({ type: 'app', action, ...getBaseEvent() });
+export const addAppEvent = (action: AppEventEnum) => addEvent({ type: 'app', action, ...getBaseEvent() });
 
 export const addErrorEvent = (
   error_message: string,

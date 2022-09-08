@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { arraysShallowMatch } from '../../../functions/arrays';
 import { useTranslation } from '../../../language/use-translation';
+import { AppEventEnum } from '../../../logging/error-report/action';
+import { addAppEvent, addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
 import { useGetAnkeQuery, useUpdateAnkeMutation } from '../../../redux-api/case/anke/api';
 import { Anke, UPDATABLE_KEYS } from '../../../redux-api/case/anke/types';
 import { CaseStatus } from '../../../redux-api/case/types';
@@ -25,7 +27,10 @@ export const AnkeLoader = ({ Component }: Props) => {
 
   useEffect(() => {
     if (typeof ankeId !== 'string') {
-      setError(anke_loader.format_error('INGEN', new Error('Missing ID.')));
+      const e = new Error('ID for anke is missing');
+      addErrorEvent(e.message, e.stack);
+      sendErrorReport();
+      setError(anke_loader.format_error('INGEN', e));
 
       return;
     }
@@ -35,7 +40,10 @@ export const AnkeLoader = ({ Component }: Props) => {
     }
 
     if (typeof anke === 'undefined') {
-      setError(anke_loader.format_error(ankeId, new Error('Anke not found.')));
+      const e = new Error('Anke not found.');
+      addErrorEvent(e.message, e.stack);
+      sendErrorReport();
+      setError(anke_loader.format_error(ankeId, e));
 
       return;
     }
@@ -46,6 +54,7 @@ export const AnkeLoader = ({ Component }: Props) => {
 
     setStatus(anke_loader.restoring);
 
+    addAppEvent(AppEventEnum.CASE_FROM_SESSION_STORAGE);
     const local = ankeStore.get();
 
     Promise.all(
@@ -63,6 +72,8 @@ export const AnkeLoader = ({ Component }: Props) => {
         }
 
         if (storedValue !== value) {
+          addAppEvent(AppEventEnum.UPDATE_CASE_FROM_SESSION_STORAGE);
+
           return updateAnke({ id: ankeId, key, value }).unwrap();
         }
       })

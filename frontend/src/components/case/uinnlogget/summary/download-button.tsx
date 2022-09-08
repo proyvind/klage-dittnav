@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useTitle } from '../../../../hooks/use-titles';
 import { useTranslation } from '../../../../language/use-translation';
-import { addApiEvent, addAppEvent, addErrorEvent, sendErrorReport } from '../../../../logging/user-trace';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import {
+  addApiEvent,
+  addAppEvent,
+  addErrorEvent,
+  sendErrorReport,
+} from '../../../../logging/error-report/error-report';
 import { API_PATH } from '../../../../redux-api/common';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';
@@ -31,7 +37,7 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
 
-    addAppEvent(`download-${type}-pdf`);
+    addAppEvent(AppEventEnum.DOWNLOAD);
 
     setpdfLoading(true);
 

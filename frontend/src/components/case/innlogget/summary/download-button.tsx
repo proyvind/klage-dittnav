@@ -4,6 +4,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useIsAuthenticated } from '../../../../hooks/use-user';
 import { useTranslation } from '../../../../language/use-translation';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { API_PATH } from '../../../../redux-api/common';
 import { login } from '../../../../user/login';
 
@@ -18,12 +20,22 @@ export const DownloadButton = ({ id, subPath }: Props) => {
   const { data: isAuthenticated } = useIsAuthenticated();
 
   if (isAuthenticated === false) {
+    const onClick = () => {
+      addAppEvent(AppEventEnum.LOGIN);
+      login();
+    };
+
     return (
-      <Button variant="primary" onClick={login} icon={<Login />} iconPosition="left">
+      <Button variant="primary" onClick={onClick} icon={<Login />} iconPosition="left">
         {common.log_in}
       </Button>
     );
   }
+
+  const onClick = () => {
+    addAppEvent(AppEventEnum.DOWNLOAD);
+    navigate('../innsending');
+  };
 
   return (
     <Button
@@ -31,7 +43,7 @@ export const DownloadButton = ({ id, subPath }: Props) => {
       as="a"
       variant="primary"
       target="_blank"
-      onClick={() => navigate('../innsending')}
+      onClick={onClick}
       icon={<Download />}
       iconPosition="left"
     >

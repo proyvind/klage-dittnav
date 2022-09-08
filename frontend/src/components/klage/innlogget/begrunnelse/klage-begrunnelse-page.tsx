@@ -7,8 +7,9 @@ import { useUser } from '../../../../hooks/use-user';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
-import { addAppEvent } from '../../../../logging/user-trace';
 import {
   useDeleteAttachmentMutation,
   useDeleteKlageMutation,
@@ -66,8 +67,10 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
 
+    addAppEvent(AppEventEnum.SUBMIT);
+
     if (!isEverythingValid()) {
-      addAppEvent('invalid-klage');
+      addAppEvent(AppEventEnum.INVALID);
 
       return;
     }
@@ -76,7 +79,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    addAppEvent('delete-klage');
+    addAppEvent(AppEventEnum.DELETE_CASE);
     deleteKlage(klage.id)
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));

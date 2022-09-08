@@ -8,6 +8,8 @@ import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
 import { useAppDispatch } from '../../../../redux/configure-store';
 import { deleteSessionAnke } from '../../../../redux/session/session';
@@ -49,8 +51,11 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    addAppEvent(AppEventEnum.SUBMIT);
 
     if (!isEverythingValid() || !isValid) {
+      addAppEvent(AppEventEnum.INVALID);
+
       return;
     }
 
@@ -58,6 +63,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   };
 
   const deleteAndReturn = () => {
+    addAppEvent(AppEventEnum.DELETE_CASE);
     dispatch(deleteSessionAnke({ temaKey: anke.tema, titleKey: anke.titleKey }));
     navigate(`/${language}`, { replace: true });
   };

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { arraysShallowMatch } from '../../../functions/arrays';
 import { useTranslation } from '../../../language/use-translation';
+import { AppEventEnum } from '../../../logging/error-report/action';
+import { addAppEvent, addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
 import { useGetKlageQuery, useUpdateKlageMutation } from '../../../redux-api/case/klage/api';
 import { Klage, UPDATABLE_KEYS } from '../../../redux-api/case/klage/types';
 import { CaseStatus } from '../../../redux-api/case/types';
@@ -27,7 +29,10 @@ export const KlageLoader = ({ Component }: Props) => {
 
   useEffect(() => {
     if (typeof klageId !== 'string') {
-      setError(klage_loader.format_error('INGEN', new Error('Missing ID.')));
+      const e = new Error('ID for klage is missing');
+      addErrorEvent(e.message, e.stack);
+      sendErrorReport();
+      setError(klage_loader.format_error('INGEN', e));
 
       return;
     }
@@ -37,7 +42,10 @@ export const KlageLoader = ({ Component }: Props) => {
     }
 
     if (typeof klage === 'undefined') {
-      setError(klage_loader.format_error(klageId, new Error('Klage not found.')));
+      const e = new Error('Klage not found.');
+      addErrorEvent(e.message, e.stack);
+      sendErrorReport();
+      setError(klage_loader.format_error(klageId, e));
 
       return;
     }
@@ -52,6 +60,7 @@ export const KlageLoader = ({ Component }: Props) => {
 
     setStatus(klage_loader.restoring);
 
+    addAppEvent(AppEventEnum.CASE_FROM_SESSION_STORAGE);
     const local = klageStore.get();
 
     Promise.all(
@@ -69,6 +78,8 @@ export const KlageLoader = ({ Component }: Props) => {
         }
 
         if (storedValue !== value) {
+          addAppEvent(AppEventEnum.UPDATE_CASE_FROM_SESSION_STORAGE);
+
           return updateKlage({ id: klageId, key, value }).unwrap();
         }
       })

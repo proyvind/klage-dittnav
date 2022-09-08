@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from '../../../../hooks/use-user';
 import { useTranslation } from '../../../../language/use-translation';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useFinalizeKlageMutation } from '../../../../redux-api/case/klage/api';
 import { CaseStatus } from '../../../../redux-api/case/types';
 import { login } from '../../../../user/login';
@@ -24,8 +26,13 @@ export const FinalizeDigital = ({ setError, status, id, fritekst }: Props) => {
   const { data: isAuthenticated } = useIsAuthenticated();
 
   if (isAuthenticated === false) {
+    const onClick = () => {
+      addAppEvent(AppEventEnum.LOGIN);
+      login();
+    };
+
     return (
-      <Button variant="primary" onClick={login} icon={<Login />} iconPosition="left">
+      <Button variant="primary" onClick={onClick} icon={<Login />} iconPosition="left">
         {common.log_in}
       </Button>
     );
@@ -33,6 +40,8 @@ export const FinalizeDigital = ({ setError, status, id, fritekst }: Props) => {
 
   const submitForm = async (event: React.MouseEvent) => {
     event.preventDefault();
+
+    addAppEvent(AppEventEnum.FINALIZE);
 
     if (status === CaseStatus.DONE) {
       navigate(NEXT_PAGE_URL);

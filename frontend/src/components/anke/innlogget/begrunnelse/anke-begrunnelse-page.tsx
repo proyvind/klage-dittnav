@@ -7,6 +7,8 @@ import { useUser } from '../../../../hooks/use-user';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
 import {
   useDeleteAnkeMutation,
@@ -64,18 +66,23 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const submitAnke = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    addAppEvent(AppEventEnum.SUBMIT);
 
     if (!isEverythingValid() || !isValid) {
+      addAppEvent(AppEventEnum.INVALID);
+
       return;
     }
 
     navigate(NEXT_PAGE_URL);
   };
 
-  const deleteAndReturn = () =>
+  const deleteAndReturn = () => {
+    addAppEvent(AppEventEnum.DELETE_CASE);
     deleteAnke(anke.id)
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));
+  };
 
   const Attachments = supportsDigital
     ? () => (

@@ -6,6 +6,8 @@ import { ISODate, isoDateToPretty } from '../../../../date/date';
 import { Envelope } from '../../../../icons/envelope';
 import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';
+import { AppEventEnum } from '../../../../logging/error-report/action';
+import { addAppEvent } from '../../../../logging/error-report/error-report';
 import { CenteredContainer } from '../../../../styled-components/common';
 import { CenteredHeading } from '../../../../styled-components/page-title';
 import { ExternalLink } from '../../../link/link';
@@ -31,7 +33,7 @@ export const Kvittering = ({ caseId, finalizedDate, translations, basePath }: Pr
       </div>
 
       <BodyShort>
-        <ExternalLink href={`${basePath}/${caseId}/pdf`}>
+        <ExternalLink href={`${basePath}/${caseId}/pdf`} onClick={() => addAppEvent(AppEventEnum.DOWNLOAD)}>
           <FileContent />
           <span>{translations.kvittering.download}</span>
         </ExternalLink>

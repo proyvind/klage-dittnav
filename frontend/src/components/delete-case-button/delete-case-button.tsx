@@ -2,6 +2,8 @@ import { Delete } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useTranslation } from '../../language/use-translation';
+import { AppEventEnum } from '../../logging/error-report/action';
+import { addAppEvent } from '../../logging/error-report/error-report';
 
 interface Props {
   onDelete: () => void;
@@ -19,6 +21,11 @@ export const DeleteCaseButton = ({ onDelete, isLoading, title }: Props) => {
     );
   }
 
+  const deleteCase = () => {
+    addAppEvent(AppEventEnum.DELETE_CASE);
+    onDelete();
+  };
+
   return (
     <>
       <Button variant="secondary" size="medium" onClick={() => setShowConfirm(false)}>
@@ -27,7 +34,7 @@ export const DeleteCaseButton = ({ onDelete, isLoading, title }: Props) => {
       <Button
         variant="danger"
         size="medium"
-        onClick={onDelete}
+        onClick={deleteCase}
         loading={isLoading}
         disabled={isLoading}
         title={title}
