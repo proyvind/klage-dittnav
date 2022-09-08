@@ -1,4 +1,5 @@
-import { parseJSON } from '../functions/parse-json';
+import { AppEventEnum } from '../logging/error-report/action';
+import { addApiEvent, addAppEvent } from '../logging/error-report/error-report';
 import { userApi } from './user/api';
 
 export enum ServerSentEventType {
@@ -8,7 +9,6 @@ export enum ServerSentEventType {
 type ServerSentEvent = MessageEvent<string>;
 
 type ListenerFn<T> = (event: T) => void;
-type JsonListenerFn<T> = (data: T | null, event: ServerSentEvent) => void;
 type EventListenerFn = (event: Event) => void;
 type EventListener = [ServerSentEventType, EventListenerFn];
 
@@ -37,6 +37,8 @@ export class ServerSentEventManager {
 
   public addEventListener(eventName: ServerSentEventType, listener: ListenerFn<ServerSentEvent>) {
     const eventListener: EventListenerFn = (event) => {
+      addAppEvent(AppEventEnum.SSE_EVENT_RECEIVED);
+
       if (isServerSentEvent(event)) {
         this.lastEventId = event.lastEventId;
         listener(event);
@@ -45,19 +47,6 @@ export class ServerSentEventManager {
 
     this.listeners.push([eventName, eventListener]);
     this.events.addEventListener(eventName, eventListener);
-
-    return this;
-  }
-
-  public addJsonEventListener<T>(eventName: ServerSentEventType, listener: JsonListenerFn<T>) {
-    this.addEventListener(eventName, (event) => {
-      if (event.data.length === 0) {
-        return listener(null, event);
-      }
-
-      const parsed = parseJSON<T>(event.data);
-      listener(parsed, event);
-    });
 
     return this;
   }
@@ -71,9 +60,12 @@ export class ServerSentEventManager {
   private async preflight(url: string): Promise<boolean> {
     try {
       const { status } = await fetch(url, { method: 'GET' });
+      addApiEvent(url, 'GET', status, 'Preflight for SSE connection.');
 
       return status >= 200 && status < 400;
     } catch {
+      addApiEvent(url, 'GET', 'NETWORK_ERROR', 'Preflight for SSE connection failed.');
+
       return false;
     }
   }
@@ -84,6 +76,8 @@ export class ServerSentEventManager {
     const events = new EventSource(url);
 
     events.addEventListener('error', () => {
+      addAppEvent(AppEventEnum.SSE_ERROR);
+
       if (events.readyState !== EventSource.CLOSED) {
         return;
       }
@@ -106,6 +100,7 @@ export class ServerSentEventManager {
     });
 
     events.addEventListener('open', () => {
+      addAppEvent(AppEventEnum.SSE_OPEN);
       this.listeners.forEach(([event, listener]) => events.addEventListener(event, listener));
       this.isConnected = true;
       this.connectionListeners.forEach((listener) => listener(this.isConnected));
@@ -115,6 +110,7 @@ export class ServerSentEventManager {
   }
 
   public close() {
+    addAppEvent(AppEventEnum.SSE_CLOSE);
     this.events?.close();
     this.removeAllEventListeners();
   }
