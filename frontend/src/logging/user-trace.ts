@@ -1,9 +1,10 @@
+import { ENVIRONMENT } from '../environment/environment';
 import { parseJSON } from '../functions/parse-json';
 import { formatSessionTime } from './formatters';
 
 interface BaseEvent {
   timestamp: number[]; // Unix timestamp in milliseconds
-  sessionTime: string[]; // Time since start of session.
+  session_time: string[]; // Time since start of session.
   route: string; // Current path. /nb/klage/1234/begrunnelse
   count: number; // Number of times this event has been logged.
 }
@@ -19,10 +20,10 @@ interface AppEvent {
 
 interface ErrorEvent {
   type: 'error';
-  errorMessage: string;
-  errorStack?: string;
-  componentStack?: string;
-  eventId?: string;
+  error_message: string;
+  error_stack?: string;
+  component_stack?: string;
+  event_id?: string;
 }
 
 interface ApiEvent {
@@ -34,13 +35,14 @@ interface ApiEvent {
 type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent);
 
 const startTime = Date.now();
-const userEvents: UserEvent[] = [];
+const user_events: UserEvent[] = [];
 
 interface ErrorReport {
-  sessionTimeMs: number;
-  formattedSessionTime: string;
-  tokenExpires: number;
-  userEvents: UserEvent[];
+  session_time_ms: number;
+  formatted_session_time: string;
+  token_expires: number;
+  user_events: UserEvent[];
+  client_version: string;
 }
 
 const getErrorReport = (): ErrorReport => {
@@ -52,10 +54,11 @@ const getErrorReport = (): ErrorReport => {
   }
 
   return {
-    sessionTimeMs: 0,
-    formattedSessionTime: '',
-    tokenExpires: 0,
-    userEvents,
+    session_time_ms: 0,
+    formatted_session_time: '',
+    token_expires: 0,
+    user_events,
+    client_version: ENVIRONMENT.version,
   };
 };
 
@@ -64,20 +67,20 @@ const data: ErrorReport = getErrorReport();
 const save = () => window.sessionStorage.setItem('error-report', JSON.stringify(data));
 
 const addEvent = (event: UserEvent) => {
-  const existingEvent = userEvents[userEvents.length - 1];
+  const existingEvent = user_events[user_events.length - 1];
 
   if (existingEvent !== undefined && eventEquality(existingEvent, event)) {
-    userEvents[userEvents.length - 1] = {
+    user_events[user_events.length - 1] = {
       ...event,
       count: existingEvent.count + 1,
       timestamp: [...existingEvent.timestamp, ...event.timestamp],
-      sessionTime: [...existingEvent.sessionTime, ...event.sessionTime],
+      session_time: [...existingEvent.session_time, ...event.session_time],
     };
 
     return;
   }
 
-  userEvents.push(event);
+  user_events.push(event);
   save();
 };
 
@@ -85,8 +88,20 @@ export const addNavigationEvent = (route: string) => addEvent({ type: 'navigatio
 
 export const addAppEvent = (action: string) => addEvent({ type: 'app', action, ...getBaseEvent() });
 
-export const addErrorEvent = (errorMessage: string, errorStack?: string, componentStack?: string, eventId?: string) =>
-  addEvent({ type: 'error', errorMessage, errorStack, componentStack, eventId, ...getBaseEvent() });
+export const addErrorEvent = (
+  error_message: string,
+  error_stack?: string,
+  component_stack?: string,
+  event_id?: string
+) =>
+  addEvent({
+    type: 'error',
+    error_message,
+    error_stack,
+    component_stack,
+    event_id,
+    ...getBaseEvent(),
+  });
 
 export const addApiEvent = (
   endpoint: string,
@@ -96,13 +111,13 @@ export const addApiEvent = (
 ) => addEvent({ type: 'api', request: `${method} ${status} ${endpoint}`, message, ...getBaseEvent() });
 
 export const setTokenExpires = (tokenExpires: number) => {
-  data.tokenExpires = tokenExpires;
+  data.token_expires = tokenExpires;
   save();
 };
 
 export const sendErrorReport = async () => {
-  data.sessionTimeMs = Date.now() - startTime;
-  data.formattedSessionTime = formatSessionTime(data.sessionTimeMs);
+  data.session_time_ms = Date.now() - startTime;
+  data.formatted_session_time = formatSessionTime(data.session_time_ms);
 
   try {
     const res = await fetch('/error-report', {
@@ -130,7 +145,7 @@ const getBaseEvent = (route = window.location.pathname): BaseEvent => {
 
   return {
     timestamp: [now],
-    sessionTime: [formatSessionTime(now - startTime)],
+    session_time: [formatSessionTime(now - startTime)],
     count: 1,
     route,
   };
