@@ -479,6 +479,19 @@ export const en: Language = {
       ' in a separate overview.',
     ].map((c, index) => <span key={index}>{c}</span>),
   },
+  innsending: {
+    ettersending: [
+      `If you have forgotten to include some attachments, `,
+      <ExternalLink
+        key="ettersende"
+        href="https://www.nav.no/soknader/en/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+        inline
+      >
+        click here to forward documentation
+      </ExternalLink>,
+      '.',
+    ],
+  },
   error_messages: {
     TOO_LARGE: 'The file size cannot be larger than 8 MB.',
     TOTAL_TOO_LARGE: 'Total file size cannot exceed 32 MB.',

@@ -62,7 +62,7 @@ export const nb = {
             href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
             inline
           >
-            dine klagerettigheter på våre tema-sider
+            dine klagerettigheter på våre temasider
           </ExternalLink>,
           '.',
         ].map((c, index) => <span key={index}>{c}</span>),
@@ -231,7 +231,7 @@ export const nb = {
       general_info: {
         title: 'Nå er resten vårt ansvar',
         description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge ved noen vedlegg, ',
           <ExternalLink
             key="ettersende"
             href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
@@ -249,7 +249,7 @@ export const nb = {
           href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
           inline
         >
-          tema-sider om klage og anke
+          temasider om klage og anke
         </ExternalLink>,
         '.',
       ].map((c, index) => <span key={index}>{c}</span>),
@@ -384,7 +384,7 @@ export const nb = {
       general_info: {
         title: 'Nå er resten vårt ansvar',
         description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge ved noen vedlegg, ',
           <ExternalLink
             key="ettersende"
             href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
@@ -402,7 +402,7 @@ export const nb = {
           href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
           inline
         >
-          tema-sider om klage og anke
+          temasider om klage og anke
         </ExternalLink>,
         '.',
       ],
@@ -485,6 +485,19 @@ export const nb = {
       </ExternalLink>,
       ' i egen oversikt.',
     ].map((c, index) => <span key={index}>{c}</span>),
+  },
+  innsending: {
+    ettersending: [
+      'Har du glemt å legge ved noen vedlegg, ',
+      <ExternalLink
+        key="ettersende"
+        href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
+        inline
+      >
+        trykk her for å ettersende dokumenter
+      </ExternalLink>,
+      '.',
+    ],
   },
   error_messages: {
     TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',

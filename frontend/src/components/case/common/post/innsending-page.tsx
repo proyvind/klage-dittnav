@@ -1,4 +1,4 @@
-import { Button, GuidePanel, Heading } from '@navikt/ds-react';
+import { BodyShort, Button, GuidePanel, Heading } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ export const RenderCaseinnsendingPage = (props: Props) => {
   const isKlage = type === 'klage' || type === 'session-klage';
   const pageIdentifier = isKlage ? PageIdentifier.KLAGESKJEMA_INNSENDING : PageIdentifier.ANKESKJEMA_INNSENDING;
   useLogPageView(pageIdentifier);
-  const { klageskjema_post, ankeskjema_post, common } = useTranslation();
+  const { klageskjema_post, ankeskjema_post, common, innsending } = useTranslation();
   const navigate = useNavigate();
 
   const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
@@ -69,6 +69,8 @@ export const RenderCaseinnsendingPage = (props: Props) => {
             </span>
           </ListItem>
         </InstructionList>
+
+        <StyledBodyShort spacing>{innsending.ettersending}</StyledBodyShort>
       </GuidePanel>
       <CenteredContainer>
         <Button as={Link} to="../oppsummering" variant="secondary">
@@ -101,4 +103,8 @@ const ListItem = styled.li`
 
 const Address = styled.address`
   display: block;
+`;
+
+const StyledBodyShort = styled(BodyShort)`
+  margin-top: 16px;
 `;
