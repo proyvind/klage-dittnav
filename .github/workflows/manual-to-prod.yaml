@@ -3,36 +3,78 @@ on:
   workflow_dispatch:
 
 env:
-  BASEIMAGE: ghcr.io/${{ github.repository }}/klage-dittnav
+  IMAGE: ghcr.io/${{ github.repository }}/klage-dittnav:${{ github.sha }}
 jobs:
-  deployprod:
-    name: Deploy to prod-gcp
+  build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+      - name: Build frontend
+        env:
+          VERSION: ${{ github.sha }}
+        run: |
+          cd frontend
+          npm run build
+      - name: Test frontend
+        run: |
+          cd frontend
+          npm test
+      - name: Install server dependencies
+        run: |
+          cd server
+          npm ci
+      - name: Build server
+        run: |
+          cd server
+          npm run build
+      - name: Test server
+        run: |
+          cd server
+          npm test
+      - name: Build and publish Docker image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.sha }}
+        run: |
+          cat Dockerfile
+          docker build --build-arg VERSION --tag ${IMAGE} .
+          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker push ${IMAGE}
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Bygg av klage-dittnav feilet"
+          CHANNEL: "#klage-notifications"
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+  deploy-to-prod:
+    name: Deploy to prod-gcp
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
         name: Checkout code
-      - name: Lag tag for image
-        run: echo "TAG=$(git log -1 --pretty='%ad_%h' --date=format:'%Y%m%d%H%M%S')" >> $GITHUB_ENV
-      - name: Lag full image referanse
-        run: echo "IMAGE=$BASEIMAGE:$TAG" >> $GITHUB_ENV
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais/nais.yaml
           VARS: nais/prod.yaml
-      - name: Generate release version
-        run: |
-          TIME=$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M)
-          COMMIT=$(git rev-parse --short=7 HEAD)
-          VERSION=$TIME-$COMMIT
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-      - uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.VERSION }}
-          release_name: ${{ env.VERSION }}
       - name: Post failures to Slack
         if: failure()
         run: |
