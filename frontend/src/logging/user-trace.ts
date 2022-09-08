@@ -1,3 +1,5 @@
+import { parseJSON } from '../functions/parse-json';
+
 interface BaseEvent {
   timestamp: number; // Unix timestamp in milliseconds
   path: string; // Current path. /nb/klage/1234/begrunnelse
@@ -33,12 +35,32 @@ type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent
 const startTime = Date.now();
 const userEvents: UserEvent[] = [];
 
-const data = {
-  sessionTimeSeconds: 0,
-  formattedSessionTime: '',
-  tokenExpires: 0,
-  userEvents,
+interface ErrorReport {
+  sessionTimeSeconds: number;
+  formattedSessionTime: string;
+  tokenExpires: number;
+  userEvents: UserEvent[];
+}
+
+const getErrorReport = (): ErrorReport => {
+  const json = window.sessionStorage.getItem('error-report');
+  const errorReport = json === null ? null : parseJSON<ErrorReport>(json);
+
+  if (errorReport !== null) {
+    return errorReport;
+  }
+
+  return {
+    sessionTimeSeconds: 0,
+    formattedSessionTime: '',
+    tokenExpires: 0,
+    userEvents,
+  };
 };
+
+const data: ErrorReport = getErrorReport();
+
+const save = () => window.sessionStorage.setItem('error-report', JSON.stringify(data));
 
 const addEvent = (event: UserEvent) => {
   const lastEvent = userEvents[userEvents.length - 1];
@@ -50,6 +72,7 @@ const addEvent = (event: UserEvent) => {
   }
 
   userEvents.push(event);
+  save();
 };
 
 export const addNavigationEvent = (path: string) => addEvent({ type: 'navigation', ...getBaseEvent(path) });
@@ -64,9 +87,10 @@ export const addApiEvent = (endpoint: string, method: string, status: number, me
 
 export const setTokenExpires = (tokenExpires: number) => {
   data.tokenExpires = tokenExpires;
+  save();
 };
 
-export const logAllUserEvents = async () => {
+export const sendErrorReport = async () => {
   data.sessionTimeSeconds = Math.round((Date.now() - startTime) / 1000);
   data.formattedSessionTime = formatSessionTime(data.sessionTimeSeconds);
 

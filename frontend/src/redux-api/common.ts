@@ -1,5 +1,5 @@
 import { FetchArgs, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
-import { addApiEvent, logAllUserEvents } from '../logging/user-trace';
+import { addApiEvent, sendErrorReport } from '../logging/user-trace';
 
 const IS_LOCALHOST = window.location.hostname === 'localhost';
 
@@ -23,7 +23,7 @@ const staggeredBaseQuery = (baseUrl: string) => {
       }
 
       if (result.meta?.response?.ok !== true) {
-        logAllUserEvents();
+        sendErrorReport();
       }
 
       if (typeof result.error === 'undefined') {

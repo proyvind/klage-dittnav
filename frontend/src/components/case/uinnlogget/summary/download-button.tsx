@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useTitle } from '../../../../hooks/use-titles';
 import { useTranslation } from '../../../../language/use-translation';
-import { addApiEvent, addAppEvent, addErrorEvent, logAllUserEvents } from '../../../../logging/user-trace';
+import { addApiEvent, addAppEvent, addErrorEvent, sendErrorReport } from '../../../../logging/user-trace';
 import { API_PATH } from '../../../../redux-api/common';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';
@@ -59,7 +59,7 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
         navigate(NEXT_PAGE_URL);
       } else {
         addApiEvent(endpoint, method, res.status, `Failed to generate PDF for ${type}.`);
-        logAllUserEvents();
+        sendErrorReport();
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -67,7 +67,7 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
       } else {
         addErrorEvent(`Failed to generate PDF for ${type}.`);
       }
-      logAllUserEvents();
+      sendErrorReport();
     }
 
     setpdfLoading(false);
