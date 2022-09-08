@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { isoDateTimeToPretty, isoDateToPretty, isoTimeToPretty, prettyDateToISO } from './date';
 
 describe('iSO dates should be pretty formatted', () => {

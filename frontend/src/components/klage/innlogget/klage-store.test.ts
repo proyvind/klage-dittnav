@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { Reason } from '../../../redux-api/case/klage/types';
 import { KLAGE_STORAGE_KEYS, KlageStorage } from './klage-store';
 

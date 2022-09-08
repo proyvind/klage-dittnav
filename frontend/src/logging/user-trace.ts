@@ -1,8 +1,11 @@
 import { parseJSON } from '../functions/parse-json';
+import { formatSessionTime } from './formatters';
 
 interface BaseEvent {
-  timestamp: number; // Unix timestamp in milliseconds
-  path: string; // Current path. /nb/klage/1234/begrunnelse
+  timestamp: number[]; // Unix timestamp in milliseconds
+  sessionTime: string[]; // Time since start of session.
+  route: string; // Current path. /nb/klage/1234/begrunnelse
+  count: number; // Number of times this event has been logged.
 }
 
 interface NavigationEvent {
@@ -25,9 +28,7 @@ interface ErrorEvent {
 interface ApiEvent {
   type: 'api';
   message?: string;
-  endpoint: string;
-  status: number;
-  method: string;
+  request: string;
 }
 
 type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent);
@@ -36,7 +37,7 @@ const startTime = Date.now();
 const userEvents: UserEvent[] = [];
 
 interface ErrorReport {
-  sessionTimeSeconds: number;
+  sessionTimeMs: number;
   formattedSessionTime: string;
   tokenExpires: number;
   userEvents: UserEvent[];
@@ -51,7 +52,7 @@ const getErrorReport = (): ErrorReport => {
   }
 
   return {
-    sessionTimeSeconds: 0,
+    sessionTimeMs: 0,
     formattedSessionTime: '',
     tokenExpires: 0,
     userEvents,
@@ -63,10 +64,15 @@ const data: ErrorReport = getErrorReport();
 const save = () => window.sessionStorage.setItem('error-report', JSON.stringify(data));
 
 const addEvent = (event: UserEvent) => {
-  const lastEvent = userEvents[userEvents.length - 1];
+  const existingEvent = userEvents[userEvents.length - 1];
 
-  if (lastEvent !== undefined && eventEquality(lastEvent, event)) {
-    userEvents[userEvents.length - 1] = event;
+  if (existingEvent !== undefined && eventEquality(existingEvent, event)) {
+    userEvents[userEvents.length - 1] = {
+      ...event,
+      count: existingEvent.count + 1,
+      timestamp: [...existingEvent.timestamp, ...event.timestamp],
+      sessionTime: [...existingEvent.sessionTime, ...event.sessionTime],
+    };
 
     return;
   }
@@ -75,15 +81,19 @@ const addEvent = (event: UserEvent) => {
   save();
 };
 
-export const addNavigationEvent = (path: string) => addEvent({ type: 'navigation', ...getBaseEvent(path) });
+export const addNavigationEvent = (route: string) => addEvent({ type: 'navigation', ...getBaseEvent(route) });
 
 export const addAppEvent = (action: string) => addEvent({ type: 'app', action, ...getBaseEvent() });
 
 export const addErrorEvent = (errorMessage: string, errorStack?: string, componentStack?: string, eventId?: string) =>
   addEvent({ type: 'error', errorMessage, errorStack, componentStack, eventId, ...getBaseEvent() });
 
-export const addApiEvent = (endpoint: string, method: string, status: number, message?: string) =>
-  addEvent({ type: 'api', endpoint, status, method, message, ...getBaseEvent() });
+export const addApiEvent = (
+  endpoint: string,
+  method: string,
+  status: number | string = 'NO_STATUS',
+  message?: string
+) => addEvent({ type: 'api', request: `${method} ${status} ${endpoint}`, message, ...getBaseEvent() });
 
 export const setTokenExpires = (tokenExpires: number) => {
   data.tokenExpires = tokenExpires;
@@ -91,8 +101,8 @@ export const setTokenExpires = (tokenExpires: number) => {
 };
 
 export const sendErrorReport = async () => {
-  data.sessionTimeSeconds = Math.round((Date.now() - startTime) / 1000);
-  data.formattedSessionTime = formatSessionTime(data.sessionTimeSeconds);
+  data.sessionTimeMs = Date.now() - startTime;
+  data.formattedSessionTime = formatSessionTime(data.sessionTimeMs);
 
   try {
     const res = await fetch('/error-report', {
@@ -115,27 +125,21 @@ export const sendErrorReport = async () => {
   }
 };
 
-const getBaseEvent = (path = window.location.pathname): BaseEvent => ({
-  timestamp: Date.now(),
-  path,
-});
+const getBaseEvent = (route = window.location.pathname): BaseEvent => {
+  const now = Date.now();
+
+  return {
+    timestamp: [now],
+    sessionTime: [formatSessionTime(now - startTime)],
+    count: 1,
+    route,
+  };
+};
 
 const eventEquality = (a: UserEvent, b: UserEvent) => {
   if (a.type === 'api' && b.type === 'api') {
-    return a.endpoint === b.endpoint && a.method === b.method && a.status === b.status && a.message === b.message;
+    return a.request === b.request && a.message === b.message;
   }
 
   return false;
-};
-
-const formatSessionTime = (sessionTimeSeconds: number): string => {
-  const hours = Math.floor(sessionTimeSeconds / 3600);
-  const minutes = Math.floor((sessionTimeSeconds - hours * 3600) / 60);
-  const seconds = sessionTimeSeconds - hours * 3600 - minutes * 60;
-
-  const h = hours.toString().padStart(2, '0');
-  const m = minutes.toString().padStart(2, '0');
-  const s = seconds.toString().padStart(2, '0');
-
-  return `${h}h ${m}m ${s}s`;
 };
