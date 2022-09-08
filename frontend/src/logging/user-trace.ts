@@ -71,7 +71,7 @@ export const logAllUserEvents = async () => {
   data.formattedSessionTime = formatSessionTime(data.sessionTimeSeconds);
 
   try {
-    const res = await fetch('/internal/error-report', {
+    const res = await fetch('/error-report', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
