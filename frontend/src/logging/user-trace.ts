@@ -35,7 +35,6 @@ interface ApiEvent {
 type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent);
 
 const startTime = Date.now();
-const user_events: UserEvent[] = [];
 
 interface ErrorReport {
   session_time_ms: number;
@@ -45,32 +44,34 @@ interface ErrorReport {
   client_version: string;
 }
 
-const getErrorReport = (): ErrorReport => {
-  const json = window.sessionStorage.getItem('error-report');
-  const errorReport = json === null ? null : parseJSON<ErrorReport>(json);
+const SESSION_STORAGE_KEY = 'error-report';
 
-  if (errorReport !== null) {
-    return errorReport;
+const getErrorReport = (): ErrorReport => {
+  const json = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
+  const savedErrorReport = json === null ? null : parseJSON<ErrorReport>(json);
+
+  if (savedErrorReport !== null && savedErrorReport.client_version === ENVIRONMENT.version) {
+    return savedErrorReport;
   }
 
   return {
     session_time_ms: 0,
     formatted_session_time: '',
     token_expires: 0,
-    user_events,
+    user_events: [],
     client_version: ENVIRONMENT.version,
   };
 };
 
-const data: ErrorReport = getErrorReport();
+const errorReport: ErrorReport = getErrorReport();
 
-const save = () => window.sessionStorage.setItem('error-report', JSON.stringify(data));
+const save = () => window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(errorReport));
 
 const addEvent = (event: UserEvent) => {
-  const existingEvent = user_events[user_events.length - 1];
+  const existingEvent = errorReport.user_events[errorReport.user_events.length - 1];
 
   if (existingEvent !== undefined && eventEquality(existingEvent, event)) {
-    user_events[user_events.length - 1] = {
+    errorReport.user_events[errorReport.user_events.length - 1] = {
       ...event,
       count: existingEvent.count + 1,
       timestamp: [...existingEvent.timestamp, ...event.timestamp],
@@ -80,7 +81,7 @@ const addEvent = (event: UserEvent) => {
     return;
   }
 
-  user_events.push(event);
+  errorReport.user_events.push(event);
   save();
 };
 
@@ -111,13 +112,13 @@ export const addApiEvent = (
 ) => addEvent({ type: 'api', request: `${method} ${status} ${endpoint}`, message, ...getBaseEvent() });
 
 export const setTokenExpires = (tokenExpires: number) => {
-  data.token_expires = tokenExpires;
+  errorReport.token_expires = tokenExpires;
   save();
 };
 
 export const sendErrorReport = async () => {
-  data.session_time_ms = Date.now() - startTime;
-  data.formatted_session_time = formatSessionTime(data.session_time_ms);
+  errorReport.session_time_ms = Date.now() - startTime;
+  errorReport.formatted_session_time = formatSessionTime(errorReport.session_time_ms);
 
   try {
     const res = await fetch('/error-report', {
@@ -125,7 +126,7 @@ export const sendErrorReport = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(errorReport),
     });
 
     if (!res.ok) {
