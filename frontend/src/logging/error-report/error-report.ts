@@ -1,6 +1,8 @@
 import { ENVIRONMENT } from '../../environment/environment';
 import { isNotUndefined } from '../../functions/is-not-type-guards';
 import { parseJSON } from '../../functions/parse-json';
+import { SessionAnkeKey } from '../../redux/session/anke/types';
+import { SessionKlageKey } from '../../redux/session/klage/types';
 import { AppEventEnum } from './action';
 import { formatSessionTime } from './formatters';
 
@@ -33,7 +35,13 @@ interface ApiEvent {
   request: string;
 }
 
-type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent);
+interface SessionEvent {
+  type: 'session';
+  action: string;
+  key: SessionAnkeKey | SessionKlageKey;
+}
+
+type UserEvent = BaseEvent & (NavigationEvent | AppEvent | ErrorEvent | ApiEvent | SessionEvent);
 
 const startTime = Date.now();
 
@@ -52,6 +60,8 @@ const getErrorReport = (): ErrorReport => {
   const savedErrorReport = json === null ? null : parseJSON<ErrorReport>(json);
 
   if (savedErrorReport !== null && savedErrorReport.client_version === ENVIRONMENT.version) {
+    addEvent({ type: 'app', action: AppEventEnum.RESTORE_ERROR_REPORT, ...getBaseEvent() });
+
     return savedErrorReport;
   }
 
@@ -107,6 +117,9 @@ export const addApiEvent = (
   message?: string
 ) => addEvent({ type: 'api', request: `${method} ${status} ${endpoint}`, message, ...getBaseEvent() });
 
+export const addSessionEvent = (action: string, key: SessionAnkeKey | SessionKlageKey) =>
+  addEvent({ type: 'session', key, action, ...getBaseEvent() });
+
 export const setTokenExpires = (tokenExpires: number) => {
   errorReport.token_expires = tokenExpires;
   save();
@@ -128,22 +141,27 @@ export const sendErrorReport = async () => {
           .reverse()
           .map((line) => {
             switch (line.type) {
-              case 'navigation':
-                return `Navigate to ${formatBaseEventLine(line)}`;
-              case 'app':
-                return `${line.action} ${formatBaseEventLine(line)}`;
-              case 'error':
-                return `Error: ${line.error_message} ${formatBaseEventLine(line)}\n${[
-                  line.error_stack,
-                  line.component_stack,
-                ]
+              case 'navigation': {
+                return formatEvent(line, 'Navigate to');
+              }
+              case 'app': {
+                return formatEvent(line, line.action);
+              }
+              case 'error': {
+                const stack = [line.error_stack, line.component_stack]
                   .filter(isNotUndefined)
                   .map((s) => `\t${s}`)
-                  .join('\n---\n')}`;
-              case 'api':
-                return `${line.request} ${
-                  typeof line.message === 'string' ? `- ${line.message}` : ''
-                } ${formatBaseEventLine(line)}`;
+                  .join('\n---\n');
+
+                const msg = `Error: ${line.error_message}`;
+
+                return formatEvent(line, msg, `\n${stack}`);
+              }
+              case 'api': {
+                const msg = `${line.request} ${typeof line.message === 'string' ? `- ${line.message}` : ''}`;
+
+                return formatEvent(line, msg);
+              }
               default:
                 return '';
             }
@@ -183,5 +201,14 @@ const eventEquality = (a: UserEvent, b: UserEvent) => {
   return false;
 };
 
-const formatBaseEventLine = ({ session_time, timestamp, count, route }: BaseEvent) =>
-  `[${route}] (x${count}) @ ${session_time.join(', ')} (${timestamp.join(', ')})`;
+const formatEvent = ({ session_time, timestamp, count, route }: BaseEvent, msg: string, stack = ''): string =>
+  `[${formatTime(session_time)} (x${zeroPad(count)})]\t[${route}]\t${msg} (${formatTime(timestamp)})${stack}`;
+
+const formatTime = (times: string[] | number[]): string => {
+  const [first] = times;
+  const last = times[times.length - 1];
+
+  return [first, last].filter(isNotUndefined).join(' - ');
+};
+
+const zeroPad = (num: number) => num.toString(10).padStart(3, '0');

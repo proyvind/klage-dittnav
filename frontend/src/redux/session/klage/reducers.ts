@@ -2,6 +2,7 @@ import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
+import { addSessionEvent } from '../../../logging/error-report/error-report';
 import { State } from '../types';
 import { getSessionKlageKey } from './helpers';
 import { readSessionKlage, saveSessionKlage } from './storage';
@@ -11,6 +12,8 @@ dayjs.extend(utc);
 
 const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
   const { key, klage } = payload;
+
+  addSessionEvent('setSessionKlage', key);
 
   const klageKey = getSessionKlageKey(key.temaKey, key.titleKey);
 
@@ -37,6 +40,9 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
   }
 
   const klageKey = getSessionKlageKey(temaKey, titleKey);
+
+  addSessionEvent('updateSessionKlage', klageKey);
+
   const klage = state.klager[klageKey];
 
   if (typeof klage === 'undefined' || klage === null) {
@@ -58,6 +64,9 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
 
 const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
   const { key, klage } = payload;
+
+  addSessionEvent('loadSessionKlage', key);
+
   const { temaKey, titleKey } = key;
   const savedKlage = readSessionKlage(temaKey, titleKey);
   const sessionKey = getSessionKlageKey(temaKey, titleKey);
@@ -85,6 +94,9 @@ const deleteSessionKlage: CaseReducer<State, PayloadAction<SessionKlageKey>> = (
   const { temaKey, titleKey } = payload;
 
   const key = saveSessionKlage(temaKey, titleKey, null);
+
+  addSessionEvent('saveSessionKlage', key);
+
   delete state.klager[key];
 
   return state;

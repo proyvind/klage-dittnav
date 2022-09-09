@@ -1,4 +1,5 @@
 export enum AppEventEnum {
+  RESTORE_ERROR_REPORT = 'Restore Error Report from session storage',
   CASE_FROM_SESSION_STORAGE = 'Get case from session storage',
   CLEAR_ERRORS = 'Clear errors',
   CLICK_UPLOAD_ATTACHMENT = 'Click upload attachment',

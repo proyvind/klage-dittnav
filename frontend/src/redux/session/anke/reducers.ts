@@ -1,6 +1,7 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { addSessionEvent } from '../../../logging/error-report/error-report';
 import { State } from '../types';
 import { getSessionAnkeKey } from './helpers';
 import { readSessionAnke, saveSessionAnke } from './storage';
@@ -10,6 +11,8 @@ dayjs.extend(utc);
 
 const setSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (state, { payload }) => {
   const { key, anke } = payload;
+
+  addSessionEvent('setSessionAnke', key);
 
   const ankeKey = getSessionAnkeKey(key);
 
@@ -31,6 +34,8 @@ const setSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (s
 const updateSessionAnke: CaseReducer<State, PayloadAction<SessionAnkeUpdate>> = (state, { payload }) => {
   const { key, update } = payload;
 
+  addSessionEvent('updateSessionAnke', key);
+
   const ankeKey = getSessionAnkeKey(key);
   const anke = state.anker[ankeKey];
 
@@ -49,6 +54,9 @@ const updateSessionAnke: CaseReducer<State, PayloadAction<SessionAnkeUpdate>> = 
 
 const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (state, { payload }) => {
   const { key, anke } = payload;
+
+  addSessionEvent('loadSessionAnke', key);
+
   const savedAnke = readSessionAnke(key);
   const sessionKey = getSessionAnkeKey(key);
 
@@ -73,6 +81,9 @@ const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (
 
 const deleteSessionAnke: CaseReducer<State, PayloadAction<SessionAnkeKey>> = (state, { payload }) => {
   const key = saveSessionAnke(null, payload);
+
+  addSessionEvent('deleteSessionAnke', key);
+
   delete state.anker[key];
 
   return state;
