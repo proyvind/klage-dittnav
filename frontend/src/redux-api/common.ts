@@ -17,16 +17,13 @@ const staggeredBaseQuery = (baseUrl: string) => {
     async (args: string | FetchArgs, api, extraOptions) => {
       const result = await fetch(args, api, extraOptions);
 
-      if (typeof args === 'string') {
-        addApiEvent(args, 'GET', result.meta?.response?.status ?? result.error?.status, result.error?.data?.['detail']);
-      } else {
-        addApiEvent(
-          args.url,
-          args.method ?? 'GET',
-          result.meta?.response?.status ?? result.error?.status,
-          [result.error?.data?.['title'], result.error?.data?.['detail']].filter(isNotUndefined).join(' - ')
-        );
-      }
+      const argsIsString = typeof args === 'string';
+      addApiEvent(
+        argsIsString ? args : args.url,
+        argsIsString ? 'GET' : args.method ?? 'GET',
+        result.meta?.response?.status ?? result.error?.status,
+        [result.error?.data?.['title'], result.error?.data?.['detail']].filter(isNotUndefined).join(' - ')
+      );
 
       if (result.meta?.response?.ok !== true) {
         sendErrorReport();

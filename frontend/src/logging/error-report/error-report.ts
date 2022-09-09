@@ -1,4 +1,5 @@
 import { ENVIRONMENT } from '../../environment/environment';
+import { isNotUndefined } from '../../functions/is-not-type-guards';
 import { parseJSON } from '../../functions/parse-json';
 import { AppEventEnum } from './action';
 import { formatSessionTime } from './formatters';
@@ -24,7 +25,6 @@ interface ErrorEvent {
   error_message: string;
   error_stack?: string;
   component_stack?: string;
-  event_id?: string;
 }
 
 interface ApiEvent {
@@ -82,6 +82,7 @@ const addEvent = (event: UserEvent) => {
     return;
   }
 
+  errorReport.user_events = errorReport.user_events.slice(-99);
   errorReport.user_events.push(event);
   save();
 };
@@ -90,18 +91,12 @@ export const addNavigationEvent = (route: string) => addEvent({ type: 'navigatio
 
 export const addAppEvent = (action: AppEventEnum) => addEvent({ type: 'app', action, ...getBaseEvent() });
 
-export const addErrorEvent = (
-  error_message: string,
-  error_stack?: string,
-  component_stack?: string,
-  event_id?: string
-) =>
+export const addErrorEvent = (error_message: string, error_stack?: string, component_stack?: string) =>
   addEvent({
     type: 'error',
     error_message,
     error_stack,
     component_stack,
-    event_id,
     ...getBaseEvent(),
   });
 
@@ -127,7 +122,34 @@ export const sendErrorReport = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(errorReport),
+      body: JSON.stringify({
+        ...errorReport,
+        user_events: errorReport.user_events
+          .reverse()
+          .map((line) => {
+            switch (line.type) {
+              case 'navigation':
+                return `Navigate to ${formatBaseEventLine(line)}`;
+              case 'app':
+                return `${line.action} ${formatBaseEventLine(line)}`;
+              case 'error':
+                return `Error: ${line.error_message} ${formatBaseEventLine(line)}\n${[
+                  line.error_stack,
+                  line.component_stack,
+                ]
+                  .filter(isNotUndefined)
+                  .map((s) => `\t${s}`)
+                  .join('\n---\n')}`;
+              case 'api':
+                return `${line.request} ${
+                  typeof line.message === 'string' ? `- ${line.message}` : ''
+                } ${formatBaseEventLine(line)}`;
+              default:
+                return '';
+            }
+          })
+          .join('\n'),
+      }),
     });
 
     if (!res.ok) {
@@ -160,3 +182,6 @@ const eventEquality = (a: UserEvent, b: UserEvent) => {
 
   return false;
 };
+
+const formatBaseEventLine = ({ session_time, timestamp, count, route }: BaseEvent) =>
+  `[${route}] (x${count}) @ ${session_time.join(', ')} (${timestamp.join(', ')})`;
