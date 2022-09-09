@@ -10,9 +10,7 @@ export interface Anke extends Case, NewAnke {
   enhetsnummer: string | null;
 }
 
-export type Updatable = Pick<Anke, 'fritekst' | 'vedtakDate' | 'userSaksnummer' | 'hasVedlegg' | 'enhetsnummer'>;
-type UpdatableKeys = keyof Updatable;
-export const UPDATABLE_KEYS: UpdatableKeys[] = ['fritekst', 'vedtakDate', 'userSaksnummer'];
+type Updatable = Pick<Anke, 'fritekst' | 'vedtakDate' | 'userSaksnummer' | 'hasVedlegg' | 'enhetsnummer'>;
 
 interface IAnkeUpdate<T extends keyof Updatable> {
   readonly id: Anke['id'];

@@ -2,16 +2,12 @@ import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { arraysShallowMatch } from '../../../functions/arrays';
 import { useTranslation } from '../../../language/use-translation';
-import { AppEventEnum } from '../../../logging/error-report/action';
-import { addAppEvent, addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
+import { addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
 import { useGetKlageQuery, useUpdateKlageMutation } from '../../../redux-api/case/klage/api';
-import { Klage, UPDATABLE_KEYS } from '../../../redux-api/case/klage/types';
-import { CaseStatus } from '../../../redux-api/case/types';
+import { Klage } from '../../../redux-api/case/klage/types';
 import { useLazyGetFullmaktsgiverQuery } from '../../../redux-api/user/api';
 import { LoadingPage } from '../../loading-page/loading-page';
-import { klageStore } from './klage-store';
 
 interface Props {
   Component: React.ComponentType<{ klage: Klage }>;
@@ -21,7 +17,6 @@ export const KlageLoader = ({ Component }: Props) => {
   const { klageId } = useParams();
   const { klage_loader } = useTranslation();
   const [error, setError] = useState<string | null>(null);
-  const [status, setStatus] = useState(klage_loader.loading_klage);
 
   const [updateKlage, { isLoading: isUpdating }] = useUpdateKlageMutation();
   const { data: klage, isLoading } = useGetKlageQuery(klageId ?? skipToken);
@@ -53,37 +48,6 @@ export const KlageLoader = ({ Component }: Props) => {
     if (klage.fullmaktsgiver !== null) {
       getFullmaktsgiver({ temaKey: klage.tema, fullmaktsgiver: klage.fullmaktsgiver });
     }
-
-    if (klage.status !== CaseStatus.DRAFT) {
-      return;
-    }
-
-    setStatus(klage_loader.restoring);
-
-    addAppEvent(AppEventEnum.CASE_FROM_SESSION_STORAGE);
-    const local = klageStore.get();
-
-    Promise.all(
-      UPDATABLE_KEYS.map(async (key) => {
-        const value = local[key];
-
-        if (typeof value === 'undefined') {
-          return;
-        }
-
-        const storedValue = klage[key];
-
-        if (Array.isArray(value) && Array.isArray(storedValue) && arraysShallowMatch(value, storedValue)) {
-          return;
-        }
-
-        if (storedValue !== value) {
-          addAppEvent(AppEventEnum.UPDATE_CASE_FROM_SESSION_STORAGE);
-
-          return updateKlage({ id: klageId, key, value }).unwrap();
-        }
-      })
-    ).finally(klageStore.clear);
   }, [klageId, klage, klage_loader, updateKlage, getFullmaktsgiver, isLoading]);
 
   if (error !== null) {
@@ -91,7 +55,7 @@ export const KlageLoader = ({ Component }: Props) => {
   }
 
   if (isLoading || isUpdating || typeof klage === 'undefined') {
-    return <LoadingPage>{status}</LoadingPage>;
+    return <LoadingPage>{klage_loader.loading_klage}</LoadingPage>;
   }
 
   return <Component klage={klage} />;

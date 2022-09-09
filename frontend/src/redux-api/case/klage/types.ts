@@ -24,11 +24,7 @@ export interface Klage extends NewKlage, Case {
   readonly checkboxesSelected: Reason[];
 }
 
-export type Updatable = Pick<Klage, 'fritekst' | 'vedtakDate' | 'checkboxesSelected' | 'userSaksnummer' | 'hasVedlegg'>;
-
-type UpdatableKeys = keyof Updatable;
-
-export const UPDATABLE_KEYS: UpdatableKeys[] = ['fritekst', 'vedtakDate', 'checkboxesSelected', 'userSaksnummer'];
+type Updatable = Pick<Klage, 'fritekst' | 'vedtakDate' | 'checkboxesSelected' | 'userSaksnummer' | 'hasVedlegg'>;
 
 interface IKlageUpdate<T extends keyof Updatable> {
   readonly id: Klage['id'];
