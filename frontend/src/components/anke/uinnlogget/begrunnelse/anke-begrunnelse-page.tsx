@@ -63,7 +63,6 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    addAppEvent(AppEventEnum.DELETE_CASE);
     dispatch(deleteSessionAnke({ temaKey: anke.tema, titleKey: anke.titleKey }));
     navigate(`/${language}`, { replace: true });
   };
