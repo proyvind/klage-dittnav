@@ -25,7 +25,7 @@ server.set('trust proxy', true);
 server.disable('x-powered-by');
 
 const shouldCompress = (req: Request, res: Response) => {
-  if (res.get('Content-Type') === 'text/event-stream') {
+  if (res.get('Content-Type') === 'text/event-stream' || req.path.endsWith('.map')) {
     return false;
   }
 
