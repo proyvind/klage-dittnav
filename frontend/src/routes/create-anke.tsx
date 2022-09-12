@@ -8,6 +8,8 @@ import { useSessionAnke } from '../hooks/use-session-anke';
 import { useIsAuthenticated, useUser } from '../hooks/use-user';
 import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
+import { AppEventEnum } from '../logging/error-report/action';
+import { addAppEvent } from '../logging/error-report/error-report';
 import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '../redux-api/case/anke/api';
 import { useAppDispatch } from '../redux/configure-store';
 import { createSessionAnke } from '../redux/session/anke/helpers';
@@ -81,6 +83,7 @@ export const CreateAnke = () => {
     }
 
     if (!sessionAnkeIsLoading && sessionAnke === null && key !== skipToken) {
+      addAppEvent(AppEventEnum.CREATE_SESSION_CASE);
       dispatch(
         setSessionAnke({
           key,
@@ -117,6 +120,7 @@ export const CreateAnke = () => {
       key !== skipToken &&
       sessionAnke.foedselsnummer === user?.folkeregisteridentifikator?.identifikasjonsnummer
     ) {
+      addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
       createAnke({
         fritekst: sessionAnke.fritekst,
         hasVedlegg: sessionAnke.hasVedlegg,
@@ -132,6 +136,7 @@ export const CreateAnke = () => {
       return;
     }
 
+    addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
     resumeOrCreateAnke({ tema: temaKey, titleKey })
       .unwrap()
       .then((anke) => navigate(`/${language}/anke/${anke.id}/begrunnelse`, { replace: true }));

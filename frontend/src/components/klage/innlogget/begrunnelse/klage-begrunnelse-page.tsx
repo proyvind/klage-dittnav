@@ -78,12 +78,10 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
     navigate(NEXT_PAGE_URL);
   };
 
-  const deleteAndReturn = () => {
-    addAppEvent(AppEventEnum.DELETE_CASE);
+  const deleteAndReturn = () =>
     deleteKlage(klage.id)
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));
-  };
 
   const Attachments = supportsDigital
     ? () => (

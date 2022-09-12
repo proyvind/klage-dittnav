@@ -11,9 +11,9 @@ import { SessionKlageKey, SessionKlagePayload, SessionKlageUpdate } from './type
 dayjs.extend(utc);
 
 const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
-  const { key, klage } = payload;
+  addSessionEvent('Set session klage');
 
-  addSessionEvent('setSessionKlage', key);
+  const { key, klage } = payload;
 
   const klageKey = getSessionKlageKey(key.temaKey, key.titleKey);
 
@@ -33,6 +33,8 @@ const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = 
 };
 
 const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> = (state, { payload }) => {
+  addSessionEvent('Update session Klage');
+
   const { temaKey, titleKey, update } = payload;
 
   if (temaKey === null) {
@@ -40,8 +42,6 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
   }
 
   const klageKey = getSessionKlageKey(temaKey, titleKey);
-
-  addSessionEvent('updateSessionKlage', klageKey);
 
   const klage = state.klager[klageKey];
 
@@ -63,9 +63,9 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
 };
 
 const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
-  const { key, klage } = payload;
+  addSessionEvent('Load session klage');
 
-  addSessionEvent('loadSessionKlage', key);
+  const { key, klage } = payload;
 
   const { temaKey, titleKey } = key;
   const savedKlage = readSessionKlage(temaKey, titleKey);
@@ -91,11 +91,11 @@ const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> =
 };
 
 const deleteSessionKlage: CaseReducer<State, PayloadAction<SessionKlageKey>> = (state, { payload }) => {
+  addSessionEvent('Delete session klage');
+
   const { temaKey, titleKey } = payload;
 
   const key = saveSessionKlage(temaKey, titleKey, null);
-
-  addSessionEvent('saveSessionKlage', key);
 
   delete state.klager[key];
 

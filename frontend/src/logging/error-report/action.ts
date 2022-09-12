@@ -1,6 +1,4 @@
 export enum AppEventEnum {
-  RESTORE_ERROR_REPORT = 'Restore Error Report from session storage',
-  CASE_FROM_SESSION_STORAGE = 'Get case from session storage',
   CLEAR_ERRORS = 'Clear errors',
   CLICK_UPLOAD_ATTACHMENT = 'Click upload attachment',
   DELETE_ATTACHMENT = 'Delete attachment',
@@ -16,6 +14,9 @@ export enum AppEventEnum {
   SSE_OPEN = 'SSE open',
   START_UPLOAD_FILES = 'Start upload files',
   SUBMIT = 'Click submit button',
-  UPDATE_CASE_FROM_SESSION_STORAGE = 'Update case from session storage',
+  CREATE_CASE_FROM_SESSION_STORAGE = 'Create case from session storage',
+  CREATE_OR_RESUME_CASE = 'Create or resume case',
+  CREATE_SESSION_CASE = 'Create session case',
+  RESUME_SESSION_CASE = 'Resume session case',
   UPGRADE_SESSION = 'Upgrade session',
 }

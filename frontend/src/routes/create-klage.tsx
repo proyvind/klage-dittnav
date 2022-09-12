@@ -9,6 +9,8 @@ import { useSessionKlage } from '../hooks/use-session-klage';
 import { useIsAuthenticated, useUser } from '../hooks/use-user';
 import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
+import { AppEventEnum } from '../logging/error-report/action';
+import { addAppEvent } from '../logging/error-report/error-report';
 import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../redux-api/case/klage/api';
 import { useGetFullmaktsgiverQuery } from '../redux-api/user/api';
 import { useAppDispatch } from '../redux/configure-store';
@@ -74,13 +76,18 @@ export const CreateKlage = () => {
       return;
     }
 
-    if (!sessionKlageIsLoading && sessionKlage === null) {
-      dispatch(
-        setSessionKlage({
-          key: { temaKey, titleKey },
-          klage: createSessionKlage(language, temaKey, titleKey, saksnummer),
-        })
-      );
+    if (!sessionKlageIsLoading) {
+      if (sessionKlage === null) {
+        addAppEvent(AppEventEnum.CREATE_SESSION_CASE);
+        dispatch(
+          setSessionKlage({
+            key: { temaKey, titleKey },
+            klage: createSessionKlage(language, temaKey, titleKey, saksnummer),
+          })
+        );
+      } else {
+        addAppEvent(AppEventEnum.RESUME_SESSION_CASE);
+      }
     }
 
     const q = saksnummer !== null && saksnummer.length !== 0 ? `?saksnummer=${saksnummer}` : '';
@@ -115,6 +122,7 @@ export const CreateKlage = () => {
       sessionKlage !== null &&
       sessionKlage.foedselsnummer === user?.folkeregisteridentifikator?.identifikasjonsnummer
     ) {
+      addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
       createKlage({
         tema: sessionKlage.tema,
         titleKey: sessionKlage.titleKey ?? undefined,
@@ -135,6 +143,7 @@ export const CreateKlage = () => {
       return;
     }
 
+    addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
     resumeOrCreateKlage({
       tema: temaKey,
       titleKey: titleKey ?? undefined,

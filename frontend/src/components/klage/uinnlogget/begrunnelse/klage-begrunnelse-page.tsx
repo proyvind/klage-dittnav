@@ -63,7 +63,6 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    addAppEvent(AppEventEnum.DELETE_CASE);
     dispatch(deleteSessionKlage({ temaKey: klage.tema, titleKey: klage.titleKey }));
     navigate(`/${language}`, { replace: true });
   };
