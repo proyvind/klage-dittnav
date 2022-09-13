@@ -25,6 +25,10 @@ const eventEquality = (a: UserEvent, b: UserEvent) => {
     return a.request === b.request && a.message === b.message;
   }
 
+  if (a.type === 'session' && b.type === 'session') {
+    return a.action === b.action;
+  }
+
   return false;
 };
 
@@ -83,6 +87,9 @@ class ErrorReport {
     this.errorReport.session_time_ms = Date.now() - startTime;
     this.errorReport.formatted_session_time = formatSessionTime(this.errorReport.session_time_ms);
 
+    const maxRouteLength = this.maxRouteLength();
+    const maxCount = this.maxCount();
+
     try {
       const res = await fetch('/error-report', {
         method: 'POST',
@@ -96,10 +103,10 @@ class ErrorReport {
             .map((line) => {
               switch (line.type) {
                 case 'navigation': {
-                  return formatEvent(line, 'Navigate to');
+                  return formatEvent({ ...line, msg: 'Navigate to' }, { maxRouteLength, maxCount });
                 }
                 case 'app': {
-                  return formatEvent(line, line.action);
+                  return formatEvent({ ...line, msg: line.action }, { maxRouteLength, maxCount });
                 }
                 case 'error': {
                   const stack = [line.error_stack, line.component_stack]
@@ -109,20 +116,20 @@ class ErrorReport {
 
                   const msg = `Error: ${line.error_message}`;
 
-                  return formatEvent(line, msg, `\n${stack}`);
+                  return formatEvent({ ...line, stack, msg }, { maxRouteLength, maxCount });
                 }
                 case 'api': {
                   const msg = `${line.request} ${typeof line.message === 'string' ? `- ${line.message}` : ''}`;
 
-                  return formatEvent(line, msg);
+                  return formatEvent({ ...line, msg }, { maxRouteLength, maxCount });
                 }
                 case 'session': {
-                  return formatEvent(line, line.action);
+                  return formatEvent({ ...line, msg: line.action }, { maxRouteLength, maxCount });
                 }
                 case 'restore-error-report': {
                   const msg = `Restored. Referrer: "${line.referrer}".`;
 
-                  return formatEvent(line, msg);
+                  return formatEvent({ ...line, msg }, { maxRouteLength, maxCount });
                 }
               }
 
@@ -143,6 +150,10 @@ class ErrorReport {
       }
     }
   };
+
+  private maxRouteLength = (): number => Math.max(...this.errorReport.user_events.map((e) => e.route.length));
+
+  private maxCount = (): number => Math.max(...this.errorReport.user_events.map((e) => e.count));
 
   private save = () => window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(this.errorReport));
 

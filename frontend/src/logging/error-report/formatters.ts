@@ -15,14 +15,39 @@ export const formatSessionTime = (sessionTimeMs: number): string => {
   return `${h}:${m}:${s}.${ms}`;
 };
 
-export const formatEvent = ({ session_time, timestamp, count, route }: BaseEvent, msg: string, stack = ''): string =>
-  `[${formatTime(session_time)} (x${zeroPad(count)})]\t[${route}]\t${msg} (${formatTime(timestamp)})${stack}`;
+interface LogEvent extends BaseEvent {
+  msg: string;
+  stack?: string;
+}
+
+interface ColumnOptions {
+  maxRouteLength: number;
+  maxCount: number;
+}
+
+export const formatEvent = (
+  { session_time, timestamp, count, route, msg, stack }: LogEvent,
+  { maxRouteLength, maxCount }: ColumnOptions
+): string => {
+  const time = formatTime(session_time);
+  const formattedRoute = formatRoute(route, maxRouteLength);
+  const epochTime = formatTime(timestamp);
+  const formattedCount = formatCount(count, maxCount);
+  const formattedStack = formatStack(stack);
+
+  return `${time} ${formattedRoute} ${formattedCount} ${msg} ${epochTime}${formattedStack}`;
+};
 
 const formatTime = (times: string[] | number[]): string => {
   const [first] = times;
   const last = times[times.length - 1];
 
-  return [first, last].filter(isNotUndefined).join(' - ');
+  return `[${[first, last].filter(isNotUndefined).join(' - ')}]`;
 };
 
-const zeroPad = (num: number) => num.toString(10).padStart(3, '0');
+const formatStack = (stack?: string): string => (typeof stack === 'string' ? `\n${stack}` : '');
+
+const formatCount = (count: number, maxCount: number): string =>
+  `${count.toString().padStart(maxCount.toString().length, ' ')}x`;
+
+const formatRoute = (route: string, lineLength: number): string => `[${route}]`.padEnd(lineLength + 2, ' ');
