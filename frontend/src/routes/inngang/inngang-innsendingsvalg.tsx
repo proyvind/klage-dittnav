@@ -1,6 +1,6 @@
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert, Heading, LinkPanel } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { ExternalLink } from '../../components/link/link';
 import { Optional } from '../../components/optional/optional';
@@ -77,6 +77,11 @@ export const InngangInnsending = React.memo(
                 digital={supportsDigitalAnke}
               />
             </Optional>
+
+            <LinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}`} border>
+              <LinkPanel.Title>Ettersendelse</LinkPanel.Title>
+              <LinkPanel.Description>Ettersendelse av dokumentasjon for klager og anker.</LinkPanel.Description>
+            </LinkPanel>
           </InngangPanel>
         </PanelContainer>
       </InngangMainContainer>

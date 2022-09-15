@@ -32,6 +32,10 @@ export const RenderCaseinnsendingPage = (props: Props) => {
     }
   }, [isValid, navigate]);
 
+  if (type === 'ettersendelse') {
+    return null;
+  }
+
   const { steps, title_fragment, page_title } = isKlage ? klageskjema_post.common : ankeskjema_post.common;
 
   const titleKey = type === 'klage' || type === 'session-klage' ? caseData.titleKey : null;

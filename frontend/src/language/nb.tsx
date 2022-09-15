@@ -91,6 +91,9 @@ export const nb = {
           logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
+      ettersendelse: {
+        title: 'Ettersendelse',
+      },
       fullmakt: {
         title_postfix: 'klage på vegne av andre',
         title: 'Klage på vegne av andre',
@@ -100,6 +103,13 @@ export const nb = {
         no_fullmakt: (fnr: string, temaName: string) =>
           `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${temaName}.`,
       },
+    },
+  },
+  ettersendelse: {
+    title: 'Ettersendelse',
+    enhet: {
+      title: 'Hvis du har mottatt et brev fra NAV Klageinstans',
+      none: 'Ikke mottatt brev',
     },
   },
   klageskjema_post: {
@@ -497,7 +507,7 @@ export const nb = {
     skjema: {
       title: 'Feil i skjema',
       fnr: 'Fødselsnummer er ikke gyldig.',
-      f_or_d_number: 'Ugyldig fødsels- eller D-nummer',
+      f_or_d_number: 'Ugyldig fødsels- eller D-nummer.',
       vedtak_date: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden, eller tom.',
       vedtak_date_required: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden.',
       fornavn: 'Du må fylle inn fornavn og mellomnavn.',

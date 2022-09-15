@@ -8,6 +8,7 @@ import { AnkeoppsummeringPage } from '../components/anke/innlogget/summary/anke-
 import { SessionAnkebegrunnelsePage } from '../components/anke/uinnlogget/begrunnelse/anke-begrunnelse-page';
 import { SessionAnkeinnsendingPage } from '../components/anke/uinnlogget/innsending/anke-innsending-page';
 import { SessionAnkeoppsummeringPage } from '../components/anke/uinnlogget/summary/anke-oppsummering-page';
+import { EttersendelsePage } from '../components/ettersendelse/ettersendelse-page';
 import { KlagebegrunnelsePage } from '../components/klage/innlogget/begrunnelse/klage-begrunnelse-page';
 import { KlageinnsendingPage } from '../components/klage/innlogget/innsending/klage-innsending-page';
 import { KlagekvitteringPage } from '../components/klage/innlogget/kvittering/klage-kvittering-page';
@@ -105,21 +106,23 @@ const kategoriRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
 
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
   inngangkategori.kategorier.map((kategori) => {
-    const path = `${inngangkategori.path}/${kategori.path}`;
+    const kategoriPath = `${inngangkategori.path}/${kategori.path}`;
 
     return (
-      <Route
-        key={path}
-        path={path}
-        element={
-          <InngangInnsending
-            {...kategori}
-            inngangkategori={inngangkategori}
-            supportsDigitalKlage={kategori.digitalKlage.includes(ENVIRONMENT.environment)}
-            supportsDigitalAnke={kategori.digitalAnke.includes(ENVIRONMENT.environment)}
-          />
-        }
-      />
+      <React.Fragment key={kategoriPath}>
+        <Route
+          path={kategoriPath}
+          element={
+            <InngangInnsending
+              {...kategori}
+              inngangkategori={inngangkategori}
+              supportsDigitalKlage={kategori.digitalKlage.includes(ENVIRONMENT.environment)}
+              supportsDigitalAnke={kategori.digitalAnke.includes(ENVIRONMENT.environment)}
+            />
+          }
+        />
+        <Route path={`ettersendelse/${kategori.temaKey}`} element={<EttersendelsePage tema={kategori.temaKey} />} />
+      </React.Fragment>
     );
   })
 );

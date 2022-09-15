@@ -11,6 +11,7 @@ import {
   validateRequiredVedtakDate,
   validateVedtakDate,
 } from '../components/case/common/validators';
+import { IEttersendelse } from '../components/ettersendelse/types';
 import { ISessionKlage } from '../components/klage/uinnlogget/types';
 import { useTranslation } from '../language/use-translation';
 import { Anke } from '../redux-api/case/anke/types';
@@ -68,7 +69,11 @@ interface AnkeValues {
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: string | null;
 }
 
-type ValidationValues = SessionKlageValues | SessionAnkeValues | KlageValues | AnkeValues;
+interface EttersendelseValues {
+  [FormFieldsIds.FNR_DNR]: string;
+}
+
+type ValidationValues = SessionKlageValues | SessionAnkeValues | KlageValues | AnkeValues | EttersendelseValues;
 
 export type Data =
   | {
@@ -86,6 +91,10 @@ export type Data =
   | {
       caseData: ISessionAnke;
       type: 'session-anke';
+    }
+  | {
+      caseData: IEttersendelse;
+      type: 'ettersendelse';
     };
 
 export const useErrors = (data: Data) => {
@@ -159,6 +168,13 @@ const getValues = (data: Data): ValidationValues => {
         [FormFieldsIds.FRITEKST]: data.caseData.fritekst,
         [FormFieldsIds.VEDTAK_DATE_REQUIRED]: data.caseData.vedtakDate,
         [FormFieldsIds.KLAGEENHET]: data.caseData.enhetsnummer,
+      };
+
+      return v;
+    }
+    case 'ettersendelse': {
+      const v: EttersendelseValues = {
+        [FormFieldsIds.FNR_DNR]: data.caseData.foedselsnummer,
       };
 
       return v;

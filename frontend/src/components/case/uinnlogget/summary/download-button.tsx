@@ -15,17 +15,19 @@ import {
 } from '../../../../logging/error-report/error-report';
 import { API_PATH } from '../../../../redux-api/common';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
+import { IEttersendelse } from '../../../ettersendelse/types';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';
 
 interface Props {
-  caseData: ISessionKlage | ISessionAnke;
+  caseData: ISessionKlage | ISessionAnke | IEttersendelse;
   titleKey?: string | null;
-  type: 'klage' | 'anke';
+  type: 'klage' | 'anke' | 'ettersendelse';
 }
 
 const TYPE_NAMES = {
   klage: 'Klage',
   anke: 'Anke',
+  ettersendelse: 'Ettersendelse',
 };
 
 export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
@@ -62,7 +64,9 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
 
         addApiEvent(endpoint, method, res.status, `Successfully generated PDF for ${type}.`);
 
-        navigate(NEXT_PAGE_URL);
+        if (type !== 'ettersendelse') {
+          navigate(NEXT_PAGE_URL);
+        }
       } else {
         addApiEvent(endpoint, method, res.status, `Failed to generate PDF for ${type}.`);
         sendErrorReport();

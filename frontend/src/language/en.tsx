@@ -85,6 +85,9 @@ export const en: Language = {
           logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
+      ettersendelse: {
+        title: 'Submit additional documentation',
+      },
       fullmakt: {
         title_postfix: 'Complain on behalf of others',
         title: 'Complain on behalf of others',
@@ -96,6 +99,13 @@ export const en: Language = {
             fnr
           )} for the topic ${temaName}.`,
       },
+    },
+  },
+  ettersendelse: {
+    title: 'Submit additional documentation',
+    enhet: {
+      title: 'If you have received a letter from NAV Klageinstans',
+      none: 'No letter received',
     },
   },
   klageskjema_post: {
@@ -490,7 +500,7 @@ export const en: Language = {
     skjema: {
       title: 'Form is not complete',
       fnr: 'National identity number is not valid.',
-      f_or_d_number: 'Invalid national identity number',
+      f_or_d_number: 'Invalid national identity number.',
       vedtak_date: 'Decision date must be a valid date that is not in the future, or empty.',
       vedtak_date_required: 'Decision date must be a valid date that is not in the future.',
       fornavn: 'First and middle name can not be empty.',

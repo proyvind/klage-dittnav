@@ -42,6 +42,10 @@ export const SummaryPagePost = ({ children, ...props }: Props) => {
     }
   }, [isValid, navigate]);
 
+  if (type === 'ettersendelse') {
+    return null;
+  }
+
   const foedselsnummer = isSessionCase(caseData)
     ? caseData.foedselsnummer
     : user?.folkeregisteridentifikator?.identifikasjonsnummer;
