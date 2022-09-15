@@ -85,9 +85,6 @@ export const en: Language = {
           logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
-      ettersendelse: {
-        title: 'Submit additional documentation',
-      },
       fullmakt: {
         title_postfix: 'Complain on behalf of others',
         title: 'Complain on behalf of others',
@@ -103,6 +100,7 @@ export const en: Language = {
   },
   ettersendelse: {
     title: 'Submit additional documentation',
+    guide_text: 'Forward documentation to a previously submitted complaint or appeal.',
     enhet: {
       title: 'If you have received a letter from NAV Klageinstans',
       none: 'No letter received',
@@ -237,17 +235,7 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: [
-          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, `,
-          <ExternalLink
-            key="ettersende"
-            href="https://www.nav.no/soknader/en/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
-            inline
-          >
-            click here to forward documentation
-          </ExternalLink>,
-          '.',
-        ],
+        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time.`,
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
@@ -387,17 +375,7 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: [
-          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, `,
-          <ExternalLink
-            key="ettersende"
-            href="https://www.nav.no/soknader/en/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
-            inline
-          >
-            click here to forward documentation
-          </ExternalLink>,
-          '.',
-        ],
+        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time.`,
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',

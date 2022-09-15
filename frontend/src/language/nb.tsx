@@ -91,9 +91,6 @@ export const nb = {
           logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
-      ettersendelse: {
-        title: 'Ettersendelse',
-      },
       fullmakt: {
         title_postfix: 'klage på vegne av andre',
         title: 'Klage på vegne av andre',
@@ -107,6 +104,7 @@ export const nb = {
   },
   ettersendelse: {
     title: 'Ettersendelse',
+    guide_text: 'Her kan du ettersende dokumentasjon til en tidligere innsendt klage eller anke.',
     enhet: {
       title: 'Hvis du har mottatt et brev fra NAV Klageinstans',
       none: 'Ikke mottatt brev',
@@ -240,17 +238,8 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
-          <ExternalLink
-            key="ettersende"
-            href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
-            inline
-          >
-            trykk her for å ettersende dokumenter
-          </ExternalLink>,
-          '.',
-        ],
+        description:
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, kan du når som helst ettersende dokumenter.',
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler klagen din videre på våre ',
@@ -393,17 +382,8 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, ',
-          <ExternalLink
-            key="ettersende"
-            href="https://www.nav.no/soknader/nb/person/diverse/div-dokumentasjon/NAV%2000-03.00/klage/ettersendelse/brev"
-            inline
-          >
-            trykk her for å ettersende dokumenter
-          </ExternalLink>,
-          '.',
-        ],
+        description:
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, kan du når som helst ettersende dokumenter.',
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler anken din videre på våre ',
