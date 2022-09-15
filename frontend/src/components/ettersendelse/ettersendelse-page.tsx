@@ -1,3 +1,4 @@
+import { GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useErrors } from '../../hooks/use-errors';
 import { useTemaName } from '../../hooks/use-titles';
@@ -22,30 +23,23 @@ interface Props {
 
 export const EttersendelsePage = ({ tema }: Props) => {
   const temaName = useTemaName(tema);
-  const { inngang } = useTranslation();
+  const { ettersendelse } = useTranslation();
   const language = useLanguage();
   const { data: user, isLoading } = useUser();
   const [foedselsnummer, setFoedselsnummer] = useState(user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '');
   const [enhetsnummer, setEnhetsnummer] = useState<string | undefined>();
 
-  const ettersendelse: IEttersendelse = {
-    tema,
-    foedselsnummer,
-    enhetsnummer,
-    language,
-  };
+  const caseData: IEttersendelse = { tema, foedselsnummer, enhetsnummer, language };
 
-  const { errors, setError } = useErrors({
-    type: 'ettersendelse',
-    caseData: ettersendelse,
-  });
+  const { errors, setError } = useErrors({ type: 'ettersendelse', caseData });
 
-  const { title } = inngang.innsendingsvalg.ettersendelse;
+  const { title, guide_text } = ettersendelse;
 
   return (
     <FormMainContainer>
       <FormTitleContainer tittel={title} undertittel={temaName} />
       <ContentContainer>
+        <GuidePanel>{guide_text}</GuidePanel>
         <FnrDnr
           fnr={user?.folkeregisteridentifikator?.identifikasjonsnummer}
           userFnr={foedselsnummer}
@@ -57,7 +51,7 @@ export const EttersendelsePage = ({ tema }: Props) => {
         <KaEnhet enhet={enhetsnummer} error={errors[FormFieldsIds.KLAGEENHET]} onChange={setEnhetsnummer} />
         <Errors {...errors} />
         <CenteredContainer>
-          <DownloadButton type="ettersendelse" caseData={ettersendelse} />
+          <DownloadButton type="ettersendelse" caseData={caseData} />
         </CenteredContainer>
       </ContentContainer>
     </FormMainContainer>
