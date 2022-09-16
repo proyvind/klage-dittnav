@@ -1,11 +1,11 @@
 import path from 'path';
 import { isDeployed } from './env';
-import { requiredEnvUrl } from './env-var';
+import { requiredEnvString, requiredEnvUrl } from './env-var';
 
 export const slack = {
   url: isDeployed ? requiredEnvUrl('SLACK_URL') : '',
   channel: '#klage-notifications',
-  messagePrefix: 'KLAGE-DITTNAV frontend NodeJS - ',
+  messagePrefix: `${requiredEnvString('NAIS_APP_NAME', 'klage-dittnav').toUpperCase()} frontend NodeJS -`,
 };
 
 export const OBO_CLIENT_IDS = ['klage-dittnav-api'];

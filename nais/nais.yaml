@@ -27,6 +27,8 @@ spec:
     enabled: true
     sidecar:
       enabled: true
+  prometheus:
+    enabled: true
   accessPolicy:
     outbound:
       rules:

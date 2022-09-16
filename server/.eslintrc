@@ -75,7 +75,7 @@
     "import/no-default-export": "off",
     "import/no-duplicates": "error",
     "import/no-self-import": "error",
-    "import/no-unused-modules": [ "error", { "unusedExports": true, "missingExports": true, "src": [ "./src" ], "ignoreExports": [ "./src/server.ts" ] } ],
+    "import/no-unused-modules": [ "error", { "unusedExports": true, "missingExports": true, "src": [ "./src" ], "ignoreExports": [ "./src/server.ts", "./src/**/*.test.ts" ] } ],
     "import/order": [ "error", { "groups": [ "builtin", "external", "internal", "parent", "sibling", "index", "object" ], "newlines-between": "never", "alphabetize": { "order": "asc" } } ], 
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",

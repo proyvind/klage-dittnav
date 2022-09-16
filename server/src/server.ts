@@ -5,6 +5,7 @@ import { DOMAIN, isDeployed, isDeployedToProd } from './config/env';
 import { init } from './init';
 import { getLogger, httpLoggingMiddleware } from './logger';
 import { processErrors } from './process-errors';
+import { metricsMiddleware } from './prometheus/middleware';
 import { indexFile } from './routes/index-file';
 import { EmojiIcons, sendToSlack } from './slack';
 
@@ -18,6 +19,9 @@ if (isDeployed) {
 }
 
 const server = express();
+
+// Add the prometheus middleware to all routes
+server.use(metricsMiddleware);
 
 server.use(httpLoggingMiddleware);
 
