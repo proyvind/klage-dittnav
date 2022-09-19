@@ -30,6 +30,13 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
     [caseId, onError, update, validator]
   );
 
+  const NoneSelected = () =>
+    enhet === null ? (
+      <option value={NONE} disabled selected>
+        {ankeskjema.begrunnelse.klageenhet.not_specified}
+      </option>
+    ) : null;
+
   return (
     <Select
       id={FormFieldsIds.KLAGEENHET}
@@ -39,7 +46,7 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
       onChange={({ target }) => onChange(target.value)}
       error={error}
     >
-      <option value={NONE}>{ankeskjema.begrunnelse.klageenhet.not_specified}</option>
+      <NoneSelected />
       {data?.map((k) => (
         <option key={k.id} value={k.id}>
           {k.navn}
