@@ -96,14 +96,28 @@ export const en: Language = {
             fnr
           )} for the topic ${temaName}.`,
       },
+      ettersendelse: {
+        title: 'Submit additional documentation to a complaint or appeal',
+        description:
+          'If you have complained on or appealed against a decision, and you need to submit additional documentation, click here to get help with submitting the documentation via post.',
+      },
     },
   },
   ettersendelse: {
-    title: 'Submit additional documentation',
-    guide_text: 'Forward documentation to a previously submitted complaint or appeal.',
+    title: 'Submit additional documentation to a complaint or appeal',
+    guide_text: [
+      <BodyShort key="1" spacing>
+        To submit additional documentation, first you have to print a cover page that NAV has generated for you. Put
+        this on top of the documentation. Follow the instructions on the cover page.
+      </BodyShort>,
+      <BodyShort key="2" spacing>
+        Send by post to:
+      </BodyShort>,
+    ],
     enhet: {
-      title: 'If you have received a letter from NAV Klageinstans',
-      none: 'No letter received',
+      radio_title: 'Have you received a letter from NAV Klageinstans?',
+      select_title: 'Which NAV office did you receive the letter from?',
+      none: 'Select office',
     },
   },
   klageskjema_post: {
@@ -375,7 +389,7 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time.`,
+        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can send them to us later by clicking on "Submit additional documentation to a previously submitted complaint or appeal" for the topic in question.`,
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',

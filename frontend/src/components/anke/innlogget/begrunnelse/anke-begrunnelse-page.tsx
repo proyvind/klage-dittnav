@@ -131,7 +131,12 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
         error={errors[FormFieldsIds.VEDTAK_DATE_REQUIRED]}
       />
 
-      <KaEnhet enhet={anke.enhetsnummer} caseId={anke.id} onError={setError} error={errors[FormFieldsIds.KLAGEENHET]} />
+      <KaEnhet
+        enhet={anke.enhetsnummer}
+        caseId={anke.id}
+        onError={setError}
+        error={errors[FormFieldsIds.KLAGEENHET_ANKE]}
+      />
 
       <UserSaksnummerDigital
         userSaksnummer={anke.userSaksnummer}

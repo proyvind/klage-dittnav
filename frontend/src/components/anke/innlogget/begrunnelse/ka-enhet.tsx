@@ -4,7 +4,7 @@ import { useTranslation } from '../../../../language/use-translation';
 import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
 import { useKlageenheterForAnke } from '../../../../simple-api-state/use-kodeverk';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
-import { validateKlageenhet } from '../../../case/common/validators';
+import { validateKlageenhetAnke } from '../../../case/common/validators';
 
 interface Props {
   caseId: string;
@@ -18,12 +18,12 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
   const [update] = useUpdateAnkeMutation();
   const { data, isLoading } = useKlageenheterForAnke();
 
-  const validator = useMemo(() => validateKlageenhet(error_messages), [error_messages]);
+  const validator = useMemo(() => validateKlageenhetAnke(error_messages), [error_messages]);
 
   const onChange = useCallback(
     (v: string) => {
       const e = validator(v);
-      onError(FormFieldsIds.KLAGEENHET, e);
+      onError(FormFieldsIds.KLAGEENHET_ANKE, e);
       const value = e === undefined ? v : null;
       update({ key: 'enhetsnummer', value, id: caseId });
     },
@@ -39,7 +39,7 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
 
   return (
     <Select
-      id={FormFieldsIds.KLAGEENHET}
+      id={FormFieldsIds.KLAGEENHET_ANKE}
       label={ankeskjema.begrunnelse.klageenhet.title}
       disabled={isLoading}
       value={enhet ?? undefined}

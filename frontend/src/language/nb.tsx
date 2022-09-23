@@ -78,7 +78,7 @@ export const nb = {
           logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
           logged_in_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
           logged_out_digital:
-            'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut klagen, signere den og sende den via post.',
+            'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
           logged_out_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
         },
       },
@@ -100,14 +100,26 @@ export const nb = {
         no_fullmakt: (fnr: string, temaName: string) =>
           `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${temaName}.`,
       },
+      ettersendelse: {
+        title: 'Ettersendelse til klage eller anke',
+        description:
+          'Har du klaget eller anket på et vedtak og ønsker å ettersende dokumentasjon, kan du trykke her for å få hjelp til å sende dokumentasjonen via post.',
+      },
     },
   },
   ettersendelse: {
-    title: 'Ettersendelse',
-    guide_text: 'Her kan du ettersende dokumentasjon til en tidligere innsendt klage eller anke.',
+    title: 'Ettersende dokumentasjon på tidligere innsendt klage/anke',
+    guide_text: [
+      <BodyShort key="1" spacing>
+        For å kunne ettersende dokumentasjon må du først skrive ut en forside som NAV har laget for deg. Denne skal
+        ligge øverst. Følg oppskriften på forsiden.
+      </BodyShort>,
+      <BodyShort key="2">Send via post til:</BodyShort>,
+    ],
     enhet: {
-      title: 'Hvis du har mottatt et brev fra NAV Klageinstans',
-      none: 'Ikke mottatt brev',
+      radio_title: 'Har du mottatt brev fra NAV Klageinstans?',
+      select_title: 'Hvilken enhet mottok du brevet fra?',
+      none: 'Velg enhet',
     },
   },
   klageskjema_post: {
@@ -121,7 +133,7 @@ export const nb = {
     download: 'Last ned PDF',
     post_guidetext: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
     should_log_in_digital:
-      'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut klagen, signere den og sende den via post.',
+      'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
     logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
     summary: {
       title: 'Se over før du skriver ut',
@@ -239,7 +251,7 @@ export const nb = {
       general_info: {
         title: 'Nå er resten vårt ansvar',
         description:
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, kan du når som helst ettersende dokumenter.',
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersende dokumentasjon på tidligere innsendt klage/anke" på ytelsen det gjelder.',
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler klagen din videre på våre ',
@@ -273,7 +285,7 @@ export const nb = {
     download: 'Last ned PDF',
     post_guidetext: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
     should_log_in_digital:
-      'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du må skrive ut anken, signere den og sende den via post.',
+      'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
     logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
     summary: {
       title: 'Se over før du skriver ut',
@@ -383,7 +395,7 @@ export const nb = {
       general_info: {
         title: 'Nå er resten vårt ansvar',
         description:
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Har du glemt å legge med noen vedlegg, kan du når som helst ettersende dokumenter.',
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersende dokumentasjon på tidligere innsendt klage/anke" på ytelsen det gjelder.',
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler anken din videre på våre ',

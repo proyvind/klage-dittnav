@@ -33,10 +33,15 @@ export const validateRequiredVedtakDate: ValidatorFactory =
   (value) =>
     value !== null && value.length !== 0 && validateDate(value) ? undefined : skjema.vedtak_date_required;
 
-export const validateKlageenhet: ValidatorFactory =
+export const validateKlageenhetAnke: ValidatorFactory =
   ({ skjema }) =>
   (value) =>
     value !== null && value.length !== 0 && value !== 'NONE' ? undefined : skjema.enhet;
+
+export const validateKlageenhetEttersendelse: ValidatorFactory =
+  ({ skjema }) =>
+  (value) =>
+    value !== null && (value.length === 0 || value === 'NONE') ? skjema.enhet : undefined;
 
 export const validateFritekst: ValidatorFactory =
   ({ skjema }) =>

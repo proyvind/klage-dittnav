@@ -4,7 +4,8 @@ export enum FormFieldsIds {
   ETTERNAVN = 'etternavn',
   VEDTAK_DATE = 'vedtak-date',
   VEDTAK_DATE_REQUIRED = 'vedtak-date-required',
-  KLAGEENHET = 'klageenhet',
+  KLAGEENHET_ANKE = 'klageenhet-anke',
+  KLAGEENHET_ETTERSENDELSE = 'klageenhet-ettersendelse',
   SAKSNUMMER = 'saksnummer',
   FRITEKST = 'fritekst',
 }

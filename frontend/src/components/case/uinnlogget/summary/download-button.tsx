@@ -22,6 +22,7 @@ interface Props {
   caseData: ISessionKlage | ISessionAnke | IEttersendelse;
   titleKey?: string | null;
   type: 'klage' | 'anke' | 'ettersendelse';
+  validForm?: () => boolean;
 }
 
 const TYPE_NAMES = {
@@ -30,7 +31,7 @@ const TYPE_NAMES = {
   ettersendelse: 'Ettersendelse',
 };
 
-export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
+export const DownloadButton = ({ caseData, titleKey, type, validForm }: Props) => {
   const { common } = useTranslation();
   const [pdfLoading, setpdfLoading] = useState(false);
   const [title] = useTitle(titleKey);
@@ -38,6 +39,10 @@ export const DownloadButton = ({ caseData, titleKey, type }: Props) => {
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+
+    if (typeof validForm === 'function' && !validForm()) {
+      return;
+    }
 
     addAppEvent(AppEventEnum.DOWNLOAD);
 

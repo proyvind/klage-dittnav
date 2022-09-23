@@ -27,11 +27,11 @@ export const EttersendelsePage = ({ tema }: Props) => {
   const language = useLanguage();
   const { data: user, isLoading } = useUser();
   const [foedselsnummer, setFoedselsnummer] = useState(user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '');
-  const [enhetsnummer, setEnhetsnummer] = useState<string | undefined>();
+  const [enhetsnummer, setEnhetsnummer] = useState<string | null>(null);
 
   const caseData: IEttersendelse = { tema, foedselsnummer, enhetsnummer, language };
 
-  const { errors, setError } = useErrors({ type: 'ettersendelse', caseData });
+  const { errors, setError, isEverythingValid } = useErrors({ type: 'ettersendelse', caseData });
 
   const { title, guide_text } = ettersendelse;
 
@@ -39,7 +39,16 @@ export const EttersendelsePage = ({ tema }: Props) => {
     <FormMainContainer>
       <FormTitleContainer tittel={title} undertittel={temaName} />
       <ContentContainer>
-        <GuidePanel>{guide_text}</GuidePanel>
+        <GuidePanel>
+          {guide_text}
+          <address>
+            NAV skanning
+            <br />
+            Postboks 1400
+            <br />
+            0109 Oslo
+          </address>
+        </GuidePanel>
         <FnrDnr
           fnr={user?.folkeregisteridentifikator?.identifikasjonsnummer}
           userFnr={foedselsnummer}
@@ -48,10 +57,15 @@ export const EttersendelsePage = ({ tema }: Props) => {
           error={errors[FormFieldsIds.FNR_DNR]}
           isLoading={isLoading}
         />
-        <KaEnhet enhet={enhetsnummer} error={errors[FormFieldsIds.KLAGEENHET]} onChange={setEnhetsnummer} />
+        <KaEnhet
+          enhet={enhetsnummer}
+          error={errors[FormFieldsIds.KLAGEENHET_ETTERSENDELSE]}
+          onChange={setEnhetsnummer}
+        />
+
         <Errors {...errors} />
         <CenteredContainer>
-          <DownloadButton type="ettersendelse" caseData={caseData} />
+          <DownloadButton type="ettersendelse" caseData={caseData} validForm={isEverythingValid} />
         </CenteredContainer>
       </ContentContainer>
     </FormMainContainer>

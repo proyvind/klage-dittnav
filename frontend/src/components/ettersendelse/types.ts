@@ -4,6 +4,6 @@ import { TemaKey } from '../../tema/tema';
 export interface IEttersendelse {
   tema: TemaKey;
   foedselsnummer: string;
-  enhetsnummer?: string;
+  enhetsnummer: string | null;
   language: Languages;
 }

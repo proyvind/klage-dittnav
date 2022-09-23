@@ -98,7 +98,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
         enhet={anke.enhetsnummer}
         onChange={(enhetsnummer) => updateAnke({ enhetsnummer })}
         onError={setError}
-        error={errors[FormFieldsIds.KLAGEENHET]}
+        error={errors[FormFieldsIds.KLAGEENHET_ANKE]}
       />
 
       <UserSaksnummer

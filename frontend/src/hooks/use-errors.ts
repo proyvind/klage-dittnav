@@ -7,7 +7,8 @@ import {
   validateFnrDnr,
   validateFornavn,
   validateFritekst,
-  validateKlageenhet,
+  validateKlageenhetAnke,
+  validateKlageenhetEttersendelse,
   validateRequiredVedtakDate,
   validateVedtakDate,
 } from '../components/case/common/validators';
@@ -25,7 +26,8 @@ const INITIAL_ERRORS: ErrorState = {
   [FormFieldsIds.ETTERNAVN]: undefined,
   [FormFieldsIds.VEDTAK_DATE]: undefined,
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: undefined,
-  [FormFieldsIds.KLAGEENHET]: undefined,
+  [FormFieldsIds.KLAGEENHET_ANKE]: undefined,
+  [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: undefined,
   [FormFieldsIds.SAKSNUMMER]: undefined,
   [FormFieldsIds.FRITEKST]: undefined,
 };
@@ -36,7 +38,8 @@ const VALIDATORS: Record<FormFieldsIds, ValidatorFactory> = {
   [FormFieldsIds.ETTERNAVN]: validateEtternavn,
   [FormFieldsIds.VEDTAK_DATE]: validateVedtakDate,
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: validateRequiredVedtakDate,
-  [FormFieldsIds.KLAGEENHET]: validateKlageenhet,
+  [FormFieldsIds.KLAGEENHET_ANKE]: validateKlageenhetAnke,
+  [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: validateKlageenhetEttersendelse,
   [FormFieldsIds.SAKSNUMMER]: () => () => undefined,
   [FormFieldsIds.FRITEKST]: validateFritekst,
 };
@@ -54,7 +57,7 @@ interface SessionAnkeValues {
   [FormFieldsIds.FORNAVN]: string | null;
   [FormFieldsIds.ETTERNAVN]: string | null;
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: string | null;
-  [FormFieldsIds.KLAGEENHET]: string | null;
+  [FormFieldsIds.KLAGEENHET_ANKE]: string | null;
   [FormFieldsIds.FRITEKST]: string | null;
 }
 
@@ -65,12 +68,13 @@ interface KlageValues {
 
 interface AnkeValues {
   [FormFieldsIds.FRITEKST]: string | null;
-  [FormFieldsIds.KLAGEENHET]: string | null;
+  [FormFieldsIds.KLAGEENHET_ANKE]: string | null;
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: string | null;
 }
 
 interface EttersendelseValues {
   [FormFieldsIds.FNR_DNR]: string;
+  [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: string | null;
 }
 
 type ValidationValues = SessionKlageValues | SessionAnkeValues | KlageValues | AnkeValues | EttersendelseValues;
@@ -144,7 +148,7 @@ const getValues = (data: Data): ValidationValues => {
       const v: AnkeValues = {
         [FormFieldsIds.FRITEKST]: data.caseData.fritekst,
         [FormFieldsIds.VEDTAK_DATE_REQUIRED]: data.caseData.vedtakDate,
-        [FormFieldsIds.KLAGEENHET]: data.caseData.enhetsnummer,
+        [FormFieldsIds.KLAGEENHET_ANKE]: data.caseData.enhetsnummer,
       };
 
       return v;
@@ -167,7 +171,7 @@ const getValues = (data: Data): ValidationValues => {
         [FormFieldsIds.ETTERNAVN]: data.caseData.navn.etternavn ?? null,
         [FormFieldsIds.FRITEKST]: data.caseData.fritekst,
         [FormFieldsIds.VEDTAK_DATE_REQUIRED]: data.caseData.vedtakDate,
-        [FormFieldsIds.KLAGEENHET]: data.caseData.enhetsnummer,
+        [FormFieldsIds.KLAGEENHET_ANKE]: data.caseData.enhetsnummer,
       };
 
       return v;
@@ -175,6 +179,7 @@ const getValues = (data: Data): ValidationValues => {
     case 'ettersendelse': {
       const v: EttersendelseValues = {
         [FormFieldsIds.FNR_DNR]: data.caseData.foedselsnummer,
+        [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: data.caseData.enhetsnummer,
       };
 
       return v;

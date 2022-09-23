@@ -2,12 +2,14 @@ import { Alert, Heading, LinkPanel } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
+import { IconLinkPanel } from '../../components/icon-link-panel/icon-link-panel';
 import { ExternalLink } from '../../components/link/link';
 import { Optional } from '../../components/optional/optional';
 import { queryStringify } from '../../functions/query-string';
 import { usePageInit } from '../../hooks/use-page-init';
 import { useTitleOrTemaName } from '../../hooks/use-titles';
 import { useIsAuthenticated } from '../../hooks/use-user';
+import { Document } from '../../icons/document';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
@@ -78,10 +80,10 @@ export const InngangInnsending = React.memo(
               />
             </Optional>
 
-            <LinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}`} border>
-              <LinkPanel.Title>Ettersendelse</LinkPanel.Title>
-              <LinkPanel.Description>Ettersendelse av dokumentasjon for klager og anker.</LinkPanel.Description>
-            </LinkPanel>
+            <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}`} border icon={<Document />}>
+              <LinkPanel.Title>{inngang.innsendingsvalg.ettersendelse.title}</LinkPanel.Title>
+              <LinkPanel.Description>{inngang.innsendingsvalg.ettersendelse.description}</LinkPanel.Description>
+            </IconLinkPanel>
           </InngangPanel>
         </PanelContainer>
       </InngangMainContainer>
