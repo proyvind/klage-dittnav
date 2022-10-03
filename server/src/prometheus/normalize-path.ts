@@ -11,5 +11,9 @@ export const normalizePath = (path: string) => {
     return path.substring(API_PREFIX_LENGTH).replaceAll(idRegex, '/:id');
   }
 
+  if (path === '/error-report') {
+    return path;
+  }
+
   return '/';
 };
