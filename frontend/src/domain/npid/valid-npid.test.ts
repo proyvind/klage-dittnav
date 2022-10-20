@@ -21,7 +21,7 @@ describe('npid', () => {
         expect(validNpid('99999999999', true)).toBe(false);
       });
 
-      it('should handle NPID with invalid control cipers but valid date-part', () => {
+      it('should handle NPID with invalid control ciphers but valid date-part', () => {
         expect.assertions(1);
         expect(validNpid('04257549999', true)).toBe(false);
       });
@@ -48,7 +48,7 @@ describe('npid', () => {
         expect(validNpid('99999999999')).toBe(false);
       });
 
-      it('should handle NPID with invalid control cipers but valid date-part', () => {
+      it('should handle NPID with invalid control ciphers but valid date-part', () => {
         expect.assertions(1);
         expect(validNpid('04257549999', false)).toBe(false);
       });
