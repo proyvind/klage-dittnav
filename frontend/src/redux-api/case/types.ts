@@ -1,4 +1,4 @@
-import { ISODate, ISODateTime } from '../../date/date';
+import { ISODate, ISODateTime } from '../../domain/date/date';
 
 export interface UploadAttachmentParams {
   file: File;

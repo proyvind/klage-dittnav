@@ -1,6 +1,6 @@
 import { Datepicker, DatepickerChange } from '@navikt/ds-datepicker';
 import React, { useCallback, useMemo, useState } from 'react';
-import { ISODate } from '../../../../date/date';
+import { ISODate } from '../../../../domain/date/date';
 import { isApiError, isError } from '../../../../functions/is-api-error';
 import { Language } from '../../../../language/nb';
 import { useLanguage } from '../../../../language/use-language';

@@ -1,6 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
-import { ISODate, isoDateToPretty } from '../../date/date';
+import { ISODate, isoDateToPretty } from '../../domain/date/date';
 import { Language } from '../../language/language';
 import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InformationPointBox } from '../information-point-box/information-point-box';

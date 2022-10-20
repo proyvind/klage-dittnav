@@ -2,7 +2,7 @@ import { FileContent } from '@navikt/ds-icons';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { ISODate, isoDateToPretty } from '../../../../date/date';
+import { ISODate, isoDateToPretty } from '../../../../domain/date/date';
 import { Envelope } from '../../../../icons/envelope';
 import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';

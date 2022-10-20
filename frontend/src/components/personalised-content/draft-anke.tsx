@@ -1,7 +1,7 @@
 import { LinkPanel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ISODateTime, isoDateTimeToPretty } from '../../date/date';
+import { ISODateTime, isoDateTimeToPretty } from '../../domain/date/date';
 import { useTitleOrTemaName } from '../../hooks/use-titles';
 import { LawBook } from '../../icons/law-book';
 import { useLanguage } from '../../language/use-language';

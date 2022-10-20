@@ -2,7 +2,7 @@ import { Heading, LinkPanel } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { isoDateTimeToPretty } from '../../date/date';
+import { isoDateTimeToPretty } from '../../domain/date/date';
 import { useTitle } from '../../hooks/use-titles';
 import { useIsAuthenticated } from '../../hooks/use-user';
 import { LawBook } from '../../icons/law-book';

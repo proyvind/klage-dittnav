@@ -1,7 +1,7 @@
 import { Datepicker, DatepickerChange } from '@navikt/ds-datepicker';
 import '@navikt/ds-datepicker/lib/index.css';
 import React, { useMemo } from 'react';
-import { ISODate } from '../../../../date/date';
+import { ISODate } from '../../../../domain/date/date';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { FormFieldsIds } from '../form-fields-ids';

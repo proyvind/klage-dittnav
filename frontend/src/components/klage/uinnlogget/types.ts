@@ -1,4 +1,4 @@
-import { ISODate } from '../../../date/date';
+import { ISODate } from '../../../domain/date/date';
 import { Languages } from '../../../language/types';
 import { Reason } from '../../../redux-api/case/klage/types';
 import { IName } from '../../../redux-api/user/types';
