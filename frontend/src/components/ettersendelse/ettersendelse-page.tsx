@@ -54,7 +54,7 @@ export const EttersendelsePage = ({ tema }: Props) => {
           userFnr={foedselsnummer}
           onChange={setFoedselsnummer}
           onError={setError}
-          error={errors[FormFieldsIds.FNR_DNR]}
+          error={errors[FormFieldsIds.FNR_DNR_NPID]}
           isLoading={isLoading}
         />
         <KaEnhet

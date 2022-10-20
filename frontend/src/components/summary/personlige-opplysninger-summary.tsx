@@ -22,7 +22,7 @@ export const PersonligeOpplysningerSummary = ({ fornavn, etternavn, f_or_d_numbe
       <InformationPointBox header={common.etternavn}>
         <BodyShort>{etternavn}</BodyShort>
       </InformationPointBox>
-      <InformationPointBox header={common.f_or_d_number}>
+      <InformationPointBox header={common.fnr_dnr_or_npid}>
         <BodyShort>{displayFnr(f_or_d_number)}</BodyShort>
       </InformationPointBox>
     </SpaceBetweenFlexListContainer>

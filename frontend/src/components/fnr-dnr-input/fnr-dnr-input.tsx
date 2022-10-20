@@ -1,6 +1,8 @@
 import { TextField } from '@navikt/ds-react';
 import { dnr, fnr } from '@navikt/fnrvalidator';
 import React from 'react';
+import { validNpid } from '../../domain/npid/valid-npid';
+import { ENVIRONMENT } from '../../environment/environment';
 import { useTranslation } from '../../language/use-translation';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 
@@ -24,16 +26,19 @@ export const FnrDnrInput = ({ value, onChange, onBlur, onError, error }: Props) 
 
     onBlur(cleanedValue);
 
-    const valid = fnr(cleanedValue).status === 'valid' || dnr(cleanedValue).status === 'valid';
+    const valid =
+      fnr(cleanedValue).status === 'valid' ||
+      dnr(cleanedValue).status === 'valid' ||
+      validNpid(cleanedValue, ENVIRONMENT.isProduction);
 
-    const e = valid ? undefined : error_messages.skjema.f_or_d_number;
-    onError(FormFieldsIds.FNR_DNR, e);
+    const e = valid ? undefined : error_messages.skjema.fnr_dnr_or_npid;
+    onError(FormFieldsIds.FNR_DNR_NPID, e);
   };
 
   return (
     <TextField
-      id={FormFieldsIds.FNR_DNR}
-      label={common.f_or_d_number}
+      id={FormFieldsIds.FNR_DNR_NPID}
+      label={common.fnr_dnr_or_npid}
       value={value}
       onBlur={onInternalBlur}
       minLength={11}

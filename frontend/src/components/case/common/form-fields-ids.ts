@@ -1,5 +1,5 @@
 export enum FormFieldsIds {
-  FNR_DNR = 'fnr-dnr',
+  FNR_DNR_NPID = 'fnr-dnr-npid',
   FORNAVN = 'fornavn',
   ETTERNAVN = 'etternavn',
   VEDTAK_DATE = 'vedtak-date',

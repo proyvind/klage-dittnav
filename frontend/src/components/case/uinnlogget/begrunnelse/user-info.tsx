@@ -32,7 +32,7 @@ export const UserInfo = ({ klageOrAnke, update, onError, errors }: Props) => {
         onBlur={onChange}
         onChange={onChange}
         onError={onError}
-        error={errors[FormFieldsIds.FNR_DNR]}
+        error={errors[FormFieldsIds.FNR_DNR_NPID]}
       />
 
       <TextInput

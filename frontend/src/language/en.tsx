@@ -89,7 +89,7 @@ export const en: Language = {
         title_postfix: 'Complain on behalf of others',
         title: 'Complain on behalf of others',
         who: 'On whose behalf are you lodging a complaint?',
-        nin: 'National identification number of the person you have power of attorney for',
+        nin: 'National identification number, D number or NPID of the person you have power of attorney for',
         search: 'Search',
         no_fullmakt: (fnr: string, temaName: string) =>
           `You do not have power of attorney for the person with national identity number ${displayFnr(
@@ -492,7 +492,7 @@ export const en: Language = {
     skjema: {
       title: 'Form is not complete',
       fnr: 'National identity number is not valid.',
-      f_or_d_number: 'Invalid national identity number.',
+      fnr_dnr_or_npid: 'Invalid national identity numbe, D number or NPID.',
       vedtak_date: 'Decision date must be a valid date that is not in the future, or empty.',
       vedtak_date_required: 'Decision date must be a valid date that is not in the future.',
       fornavn: 'First and middle name can not be empty.',
@@ -506,7 +506,7 @@ export const en: Language = {
     log_in: 'Log in',
     retry: 'Retry',
     generic_error: 'Something went wrong. Please try again later.',
-    f_or_d_number: 'National identity or D number',
+    fnr_dnr_or_npid: 'National identity number, D number or NPID',
     fornavn: 'First and middle name',
     etternavn: 'Surname',
     address: 'Address',

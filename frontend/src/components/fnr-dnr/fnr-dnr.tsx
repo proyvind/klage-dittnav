@@ -20,7 +20,7 @@ export const FnrDnr = ({ fnr, userFnr, onChange, onError, error, isLoading }: Pr
 
   if (isLoading) {
     return (
-      <InformationPointBox header={common.f_or_d_number}>
+      <InformationPointBox header={common.fnr_dnr_or_npid}>
         <Loader size="small" />
       </InformationPointBox>
     );
@@ -28,7 +28,7 @@ export const FnrDnr = ({ fnr, userFnr, onChange, onError, error, isLoading }: Pr
 
   if (typeof fnr === 'string') {
     return (
-      <InformationPointBox header={common.f_or_d_number}>
+      <InformationPointBox header={common.fnr_dnr_or_npid}>
         <BodyShort>{displayFnr(fnr)}</BodyShort>
       </InformationPointBox>
     );

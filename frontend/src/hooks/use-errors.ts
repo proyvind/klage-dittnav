@@ -21,7 +21,7 @@ import { Klage } from '../redux-api/case/klage/types';
 export type ErrorState = Record<FormFieldsIds, string | undefined>;
 
 const INITIAL_ERRORS: ErrorState = {
-  [FormFieldsIds.FNR_DNR]: undefined,
+  [FormFieldsIds.FNR_DNR_NPID]: undefined,
   [FormFieldsIds.FORNAVN]: undefined,
   [FormFieldsIds.ETTERNAVN]: undefined,
   [FormFieldsIds.VEDTAK_DATE]: undefined,
@@ -33,7 +33,7 @@ const INITIAL_ERRORS: ErrorState = {
 };
 
 const VALIDATORS: Record<FormFieldsIds, ValidatorFactory> = {
-  [FormFieldsIds.FNR_DNR]: validateFnrDnr,
+  [FormFieldsIds.FNR_DNR_NPID]: validateFnrDnr,
   [FormFieldsIds.FORNAVN]: validateFornavn,
   [FormFieldsIds.ETTERNAVN]: validateEtternavn,
   [FormFieldsIds.VEDTAK_DATE]: validateVedtakDate,
@@ -45,7 +45,7 @@ const VALIDATORS: Record<FormFieldsIds, ValidatorFactory> = {
 };
 
 interface SessionKlageValues {
-  [FormFieldsIds.FNR_DNR]: string | null;
+  [FormFieldsIds.FNR_DNR_NPID]: string | null;
   [FormFieldsIds.FORNAVN]: string | null;
   [FormFieldsIds.ETTERNAVN]: string | null;
   [FormFieldsIds.VEDTAK_DATE]: string | null;
@@ -53,7 +53,7 @@ interface SessionKlageValues {
 }
 
 interface SessionAnkeValues {
-  [FormFieldsIds.FNR_DNR]: string | null;
+  [FormFieldsIds.FNR_DNR_NPID]: string | null;
   [FormFieldsIds.FORNAVN]: string | null;
   [FormFieldsIds.ETTERNAVN]: string | null;
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: string | null;
@@ -73,7 +73,7 @@ interface AnkeValues {
 }
 
 interface EttersendelseValues {
-  [FormFieldsIds.FNR_DNR]: string;
+  [FormFieldsIds.FNR_DNR_NPID]: string;
   [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: string | null;
 }
 
@@ -155,7 +155,7 @@ const getValues = (data: Data): ValidationValues => {
     }
     case 'session-klage': {
       const v: SessionKlageValues = {
-        [FormFieldsIds.FNR_DNR]: data.caseData.foedselsnummer,
+        [FormFieldsIds.FNR_DNR_NPID]: data.caseData.foedselsnummer,
         [FormFieldsIds.FORNAVN]: data.caseData.navn.fornavn ?? null,
         [FormFieldsIds.ETTERNAVN]: data.caseData.navn.etternavn ?? null,
         [FormFieldsIds.FRITEKST]: data.caseData.fritekst,
@@ -166,7 +166,7 @@ const getValues = (data: Data): ValidationValues => {
     }
     case 'session-anke': {
       const v: SessionAnkeValues = {
-        [FormFieldsIds.FNR_DNR]: data.caseData.foedselsnummer,
+        [FormFieldsIds.FNR_DNR_NPID]: data.caseData.foedselsnummer,
         [FormFieldsIds.FORNAVN]: data.caseData.navn.fornavn ?? null,
         [FormFieldsIds.ETTERNAVN]: data.caseData.navn.etternavn ?? null,
         [FormFieldsIds.FRITEKST]: data.caseData.fritekst,
@@ -178,7 +178,7 @@ const getValues = (data: Data): ValidationValues => {
     }
     case 'ettersendelse': {
       const v: EttersendelseValues = {
-        [FormFieldsIds.FNR_DNR]: data.caseData.foedselsnummer,
+        [FormFieldsIds.FNR_DNR_NPID]: data.caseData.foedselsnummer,
         [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: data.caseData.enhetsnummer,
       };
 

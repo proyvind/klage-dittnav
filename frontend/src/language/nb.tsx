@@ -95,7 +95,7 @@ export const nb = {
         title_postfix: 'klage på vegne av andre',
         title: 'Klage på vegne av andre',
         who: 'Hvem klager du på vegne av?',
-        nin: 'Fødsels- eller D-nummer for den du har fullmakt til (11 siffer)',
+        nin: 'Fødselsnummer, D-nummer eller NPID for den du har fullmakt til (11 siffer)',
         search: 'Søk',
         no_fullmakt: (fnr: string, temaName: string) =>
           `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${temaName}.`,
@@ -499,7 +499,7 @@ export const nb = {
     skjema: {
       title: 'Feil i skjema',
       fnr: 'Fødselsnummer er ikke gyldig.',
-      f_or_d_number: 'Ugyldig fødsels- eller D-nummer.',
+      fnr_dnr_or_npid: 'Ugyldig fødselsnummer, D-nummer eller NPID.',
       vedtak_date: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden, eller tom.',
       vedtak_date_required: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden.',
       fornavn: 'Du må fylle inn fornavn og mellomnavn.',
@@ -513,7 +513,7 @@ export const nb = {
     log_in: 'Logg inn',
     retry: 'Prøv på nytt',
     generic_error: 'Noe gikk galt. Vennligst prøv igjen senere.',
-    f_or_d_number: 'Fødsels- eller D-nummer',
+    fnr_dnr_or_npid: 'Fødselsnummer, D-nummer eller NPID',
     fornavn: 'For- og mellomnavn',
     etternavn: 'Etternavn',
     address: 'Adresse',

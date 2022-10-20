@@ -5,9 +5,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createRoutesFromChildren, matchRoutes, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from './app/app';
-import { ENVIRONMENT, EnvString } from './environment/environment';
+import { ENVIRONMENT } from './environment/environment';
 
-if (ENVIRONMENT.environment === EnvString.LOCAL) {
+if (ENVIRONMENT.isLocal) {
   injectDecoratorClientSide({
     env: 'dev',
     simple: true,
@@ -34,7 +34,7 @@ Sentry.init({
   environment: ENVIRONMENT.environment,
   release: ENVIRONMENT.version,
   normalizeDepth: 10,
-  enabled: ENVIRONMENT.environment !== EnvString.LOCAL,
+  enabled: ENVIRONMENT.isDeployed,
 });
 
 try {

@@ -11,7 +11,7 @@ export type ValidatorFactory = (errorMessages: Language['error_messages']) => Va
 export const validateFnrDnr: ValidatorFactory =
   ({ skjema }) =>
   (val) =>
-    fnr(val ?? '').status === 'valid' || dnr(val ?? '').status === 'valid' ? undefined : skjema.f_or_d_number;
+    fnr(val ?? '').status === 'valid' || dnr(val ?? '').status === 'valid' ? undefined : skjema.fnr_dnr_or_npid;
 
 export const validateFornavn: ValidatorFactory =
   ({ skjema }) =>
