@@ -2,7 +2,7 @@ import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createRoutesFromChildren, matchRoutes, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from './app/app';
 import { ENVIRONMENT } from './environment/environment';
@@ -37,8 +37,9 @@ Sentry.init({
   enabled: ENVIRONMENT.isDeployed,
 });
 
-try {
-  ReactDOM.render(<App />, document.getElementById('root'));
-} catch (error) {
-  Sentry.captureException(error);
+const container = document.getElementById('root');
+
+if (container !== null) {
+  const root = createRoot(container);
+  root.render(<App />);
 }

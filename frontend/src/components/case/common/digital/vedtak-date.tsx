@@ -1,16 +1,14 @@
-import { Datepicker, DatepickerChange } from '@navikt/ds-datepicker';
 import React, { useCallback, useMemo, useState } from 'react';
 import { ISODate } from '../../../../domain/date/date';
 import { isApiError, isError } from '../../../../functions/is-api-error';
 import { Language } from '../../../../language/nb';
-import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
 import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
 import { AutosaveProgressIndicator } from '../../../autosave-progress/autosave-progress';
+import { DatePicker } from '../../../date-picker/date-picker';
 import { FormFieldsIds } from '../form-fields-ids';
 import { validateRequiredVedtakDate, validateVedtakDate } from '../validators';
-import '@navikt/ds-datepicker/lib/index.css';
 
 interface VedtakDateProps {
   vedtakDate: ISODate | null;
@@ -31,7 +29,6 @@ export const VedtakDateDigital = ({
   error,
   required = false,
 }: VedtakDateProps) => {
-  const langugage = useLanguage();
   const [date, setDate] = useState(vedtakDate);
   const { common, error_messages } = useTranslation();
   const [updateVedtakDate, status] = useUpdate();
@@ -66,7 +63,7 @@ export const VedtakDateDigital = ({
     [updateVedtakDate, caseId, onError, id, common.generic_error, common.logged_out, error_messages]
   );
 
-  const onInternalChange: DatepickerChange = (value: string) => {
+  const onInternalChange = (value: string | null) => {
     if (value === date) {
       return;
     }
@@ -84,22 +81,15 @@ export const VedtakDateDigital = ({
 
   return (
     <div>
-      <Datepicker
+      <DatePicker
         id={id}
         onChange={onInternalChange}
         error={error}
-        value={date ?? undefined}
-        showYearSelector
-        limitations={{
-          maxDate: MAX_DATE,
-        }}
-        inputName={id}
+        value={date ?? null}
         label={skjema.begrunnelse.vedtak_date.title}
-        locale={langugage}
+        size="medium"
       />
       <AutosaveProgressIndicator translations={skjema} {...status} />
     </div>
   );
 };
-
-const MAX_DATE = new Date().toISOString().substring(0, 10);
