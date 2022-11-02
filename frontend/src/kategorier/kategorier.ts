@@ -338,7 +338,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         titleKey: 'SYKDOM_I_FAMILIEN',
         allowsAnke: true,
         showAnkeList: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlage: [EnvString.DEV, EnvString.LOCAL],
+        digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
         digitalAnke: [],
         digitalKlageFullmakt: false,
         path: 'sykdom-i-familien',
