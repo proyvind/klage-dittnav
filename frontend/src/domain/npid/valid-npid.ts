@@ -4,11 +4,11 @@ const CONTROL_CIPHERS_1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
 const CONTROL_CIPHERS_2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 
 export const validNpid = (npid: string, isProd = true): boolean => {
-  if (isProd) {
-    if (!elevenDigitsRegex.test(npid)) {
-      return false;
-    }
+  if (!elevenDigitsRegex.test(npid)) {
+    return false;
+  }
 
+  if (isProd) {
     const day = parseInt(npid.substring(0, 2), 10);
 
     if (day < 1 || day > 31) {
