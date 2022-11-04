@@ -72,12 +72,22 @@ interface AnkeValues {
   [FormFieldsIds.VEDTAK_DATE_REQUIRED]: string | null;
 }
 
-interface EttersendelseValues {
+interface UnauthenticatedEttersendelseValues {
   [FormFieldsIds.FNR_DNR_NPID]: string;
   [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: string | null;
 }
 
-type ValidationValues = SessionKlageValues | SessionAnkeValues | KlageValues | AnkeValues | EttersendelseValues;
+interface AuthenticatedEttersendelseValues {
+  [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: string | null;
+}
+
+type ValidationValues =
+  | SessionKlageValues
+  | SessionAnkeValues
+  | KlageValues
+  | AnkeValues
+  | UnauthenticatedEttersendelseValues
+  | AuthenticatedEttersendelseValues;
 
 export type Data =
   | {
@@ -98,14 +108,18 @@ export type Data =
     }
   | {
       caseData: IEttersendelse;
-      type: 'ettersendelse';
+      type: 'unauthenticated-ettersendelse';
+    }
+  | {
+      caseData: IEttersendelse;
+      type: 'authenticated-ettersendelse';
     };
 
 export const useErrors = (data: Data) => {
   const { error_messages } = useTranslation();
   const [errors, setErrors] = useState(INITIAL_ERRORS);
-
   const values = useMemo(() => getValues(data), [data]);
+
   const setError = useCallback((id: FormFieldsIds, error?: string) => setErrors((e) => ({ ...e, [id]: error })), []);
   const isValid = useMemo(() => Object.values(errors).every((v) => v === undefined), [errors]);
 
@@ -176,9 +190,16 @@ const getValues = (data: Data): ValidationValues => {
 
       return v;
     }
-    case 'ettersendelse': {
-      const v: EttersendelseValues = {
+    case 'unauthenticated-ettersendelse': {
+      const v: UnauthenticatedEttersendelseValues = {
         [FormFieldsIds.FNR_DNR_NPID]: data.caseData.foedselsnummer,
+        [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: data.caseData.enhetsnummer,
+      };
+
+      return v;
+    }
+    case 'authenticated-ettersendelse': {
+      const v: AuthenticatedEttersendelseValues = {
         [FormFieldsIds.KLAGEENHET_ETTERSENDELSE]: data.caseData.enhetsnummer,
       };
 

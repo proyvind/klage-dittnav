@@ -32,7 +32,7 @@ export const RenderCaseinnsendingPage = (props: Props) => {
     }
   }, [isValid, navigate]);
 
-  if (type === 'ettersendelse') {
+  if (type === 'authenticated-ettersendelse' || type === 'unauthenticated-ettersendelse') {
     return null;
   }
 
