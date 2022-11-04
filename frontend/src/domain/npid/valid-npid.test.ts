@@ -44,8 +44,8 @@ describe('npid', () => {
     describe('invalid', () => {
       it('should handle 100% invalid NPIDs', () => {
         expect.assertions(2);
-        expect(validNpid('01234567890')).toBe(false);
-        expect(validNpid('99999999999')).toBe(false);
+        expect(validNpid('01234567890', false)).toBe(false);
+        expect(validNpid('99999999999', false)).toBe(false);
       });
 
       it('should handle NPID with invalid control ciphers but valid date-part', () => {
