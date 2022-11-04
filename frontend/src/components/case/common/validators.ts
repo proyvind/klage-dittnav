@@ -1,6 +1,8 @@
 import { dnr, fnr } from '@navikt/fnrvalidator';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { validNpid } from '../../../domain/npid/valid-npid';
+import { ENVIRONMENT } from '../../../environment/environment';
 import { Language } from '../../../language/language';
 
 dayjs.extend(isSameOrBefore);
@@ -11,7 +13,11 @@ export type ValidatorFactory = (errorMessages: Language['error_messages']) => Va
 export const validateFnrDnr: ValidatorFactory =
   ({ skjema }) =>
   (val) =>
-    fnr(val ?? '').status === 'valid' || dnr(val ?? '').status === 'valid' ? undefined : skjema.fnr_dnr_or_npid;
+    fnr(val ?? '').status === 'valid' ||
+    dnr(val ?? '').status === 'valid' ||
+    validNpid(val ?? '', ENVIRONMENT.isProduction)
+      ? undefined
+      : skjema.fnr_dnr_or_npid;
 
 export const validateFornavn: ValidatorFactory =
   ({ skjema }) =>
