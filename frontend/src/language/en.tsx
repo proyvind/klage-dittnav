@@ -63,7 +63,7 @@ export const en: Language = {
           'Your complaint or appeal may be stored in the browser until the tab is closed, even if you are not logged in.',
         elektronisk_id: {
           text: 'How to get an electronic ID.',
-          url: 'https://www.norge.no/en/electronic-id',
+          url: 'https://www.norge.no/en/digital-citizen/electronic-id',
         },
       },
       klage: {

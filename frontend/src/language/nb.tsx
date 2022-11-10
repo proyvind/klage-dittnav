@@ -40,7 +40,7 @@ export const nb = {
           For at du skal få best mulig brukeropplevelse, anbefaler vi deg å <Link href="/oauth2/login">logge inn</Link>{' '}
           før du går videre.
         </BodyShort>,
-        <ExternalLink key="external-id" href="https://www.norge.no/elektronisk-id" inline>
+        <ExternalLink key="external-id" href="https://www.norge.no/nb/digital-borger/elektronisk-id" inline>
           Slik skaffer du deg elektronisk ID.
         </ExternalLink>,
       ],
