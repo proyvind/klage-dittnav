@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@main
         with:
           node-version: '16'
           cache: 'npm'
@@ -54,7 +54,7 @@ jobs:
           docker build --build-arg VERSION --tag ${IMAGE} .
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${IMAGE}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@main
         name: Checkout code
       - uses: nais/deploy/actions/deploy@master
         env:
@@ -67,7 +67,7 @@ jobs:
     needs: deploytodev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
         name: Checkout code
       - uses: nais/deploy/actions/deploy@master
         env:
@@ -81,9 +81,7 @@ jobs:
           COMMIT=$(git rev-parse --short=7 HEAD)
           VERSION=$TIME-$COMMIT
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-      - uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ncipollo/release-action@main
         with:
-          tag_name: ${{ env.VERSION }}
-          release_name: ${{ env.VERSION }}
+          tag: ${{ env.VERSION }}
+
