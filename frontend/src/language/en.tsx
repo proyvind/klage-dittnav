@@ -99,7 +99,7 @@ export const en: Language = {
       ettersendelse: {
         title: 'Submit additional documentation to a complaint or appeal',
         description:
-          'If you have complained on or appealed against a decision, and you need to submit additional documentation, click here to get help with submitting the documentation via post.',
+          'If you have complained or appealed against a decision, and you wish to submit additional documentation or send in new/changed information regarding your case, click here to get help with submitting it via post.',
       },
     },
   },

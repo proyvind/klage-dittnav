@@ -103,7 +103,7 @@ export const nb = {
       ettersendelse: {
         title: 'Ettersendelse til klage eller anke',
         description:
-          'Har du klaget eller anket på et vedtak og ønsker å ettersende dokumentasjon, kan du trykke her for å få hjelp til å sende dokumentasjonen via post.',
+          'Har du klaget eller anket på et vedtak og ønsker å ettersende dokumentasjon eller sende inn nye/endrede opplysninger i saken din, kan du trykke her for å få hjelp til å sende inn dette via post.',
       },
     },
   },
