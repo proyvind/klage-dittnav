@@ -198,7 +198,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         titleKey: 'UFORETRYGD',
         allowsAnke: true,
         showAnkeList: [],
-        digitalKlage: [],
+        digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [],
         digitalKlageFullmakt: false,
         path: 'uforetrygd',
