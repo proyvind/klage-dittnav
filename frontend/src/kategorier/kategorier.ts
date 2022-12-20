@@ -178,7 +178,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         titleKey: 'SYKEPENGER',
         allowsAnke: true,
         showAnkeList: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlage: [],
+        digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [],
         digitalKlageFullmakt: false,
         path: 'sykepenger',
