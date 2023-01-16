@@ -1,8 +1,9 @@
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Data, useErrors } from '../../../../hooks/use-errors';
+import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
 import { useLogPageView } from '../../../../logging/use-log-page-view';
@@ -17,12 +18,9 @@ export const RenderCaseinnsendingPage = (props: Props) => {
   const isKlage = type === 'klage' || type === 'session-klage';
   const pageIdentifier = isKlage ? PageIdentifier.KLAGESKJEMA_INNSENDING : PageIdentifier.ANKESKJEMA_INNSENDING;
   useLogPageView(pageIdentifier);
-  const { klageskjema_post, ankeskjema_post, common } = useTranslation();
   const navigate = useNavigate();
 
-  const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
-
-  const { title, steg } = skjema_post.innsending;
+  const { page_title, title_fragment, steps, titleKey, title, stepTexts, address, common } = useTexts(props);
 
   const { isValid } = useErrors(props);
 
@@ -35,10 +33,6 @@ export const RenderCaseinnsendingPage = (props: Props) => {
   if (type === 'authenticated-ettersendelse' || type === 'unauthenticated-ettersendelse') {
     return null;
   }
-
-  const { steps, title_fragment, page_title } = isKlage ? klageskjema_post.common : ankeskjema_post.common;
-
-  const titleKey = type === 'klage' || type === 'session-klage' ? caseData.titleKey : null;
 
   return (
     <PostFormContainer
@@ -55,20 +49,20 @@ export const RenderCaseinnsendingPage = (props: Props) => {
       </Heading>
       <GuidePanel>
         <InstructionList>
-          <ListItem>{steg[0]}</ListItem>
-          <ListItem>{steg[1]}</ListItem>
+          <ListItem>{stepTexts[0]}</ListItem>
+          <ListItem>{stepTexts[1]}</ListItem>
           <Optional show={caseData.hasVedlegg}>
-            <ListItem>{steg[2]}</ListItem>
+            <ListItem>{stepTexts[2]}</ListItem>
           </Optional>
           <ListItem>
             <span>
-              {steg[3]}
+              {stepTexts[3]}
               <Address>
-                NAV skanning
+                {address[0]}
                 <br />
-                Postboks 1400
+                {address[1]}
                 <br />
-                0109 Oslo
+                {address[2]}
               </Address>
             </span>
           </ListItem>
@@ -81,6 +75,54 @@ export const RenderCaseinnsendingPage = (props: Props) => {
       </CenteredContainer>
     </PostFormContainer>
   );
+};
+
+const useTexts = ({
+  caseData,
+  type,
+}: Props): {
+  title: string;
+  page_title: string;
+  title_fragment: string;
+  titleKey: string | null | undefined;
+  common: Language['common'];
+  steps: string[];
+  stepTexts: string[];
+  address: [string, string, string];
+} => {
+  const isKlage = type === 'klage' || type === 'session-klage';
+  const { klageskjema_post, ankeskjema_post, common } = useTranslation();
+  const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
+  const { title, steg, steg_simple } = skjema_post.innsending;
+  const { steps, title_fragment, page_title } = isKlage ? klageskjema_post.common : ankeskjema_post.common;
+  const titleKey = type === 'klage' || type === 'session-klage' ? caseData.titleKey : null;
+
+  return useMemo(() => {
+    switch (titleKey) {
+      case 'LONNSGARANTI':
+        return {
+          stepTexts: steg_simple,
+          address: ['NAV Arbeid og ytelser Kristiania', 'Postboks 6683 St. Olavs plass', '0129 Oslo'],
+          title,
+          page_title,
+          title_fragment,
+          titleKey,
+          common,
+          steps,
+        };
+      default:
+        return {
+          stepTexts: steg,
+          address: ['NAV skanning', 'Postboks 1400', '0109 Oslo'],
+          title,
+          page_title,
+          title_fragment,
+          titleKey,
+          common,
+          steps,
+        };
+    }
+  }, [common, page_title, steg, steg_simple, steps, title, titleKey, title_fragment]);
 };
 
 const InstructionList = styled.ol`

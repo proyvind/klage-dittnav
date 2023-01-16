@@ -146,6 +146,7 @@ export const nb = {
         'Legg ved vedleggene.',
         'Send via post til ',
       ],
+      steg_simple: ['Skriv ut klagen.', 'Signer klagen.', 'Legg ved vedleggene.', 'Send via post til '],
     },
   },
   klageskjema: {
@@ -298,6 +299,7 @@ export const nb = {
         'Legg ved vedleggene.',
         'Send via post til ',
       ],
+      steg_simple: ['Skriv ut anken.', 'Signer anken.', 'Legg ved vedleggene.', 'Send via post til '],
     },
   },
   ankeskjema: {

@@ -145,6 +145,7 @@ export const en: Language = {
         'Add the attachments.',
         'Send by post to ',
       ],
+      steg_simple: ['Print the complaint.', 'Sign the complaint.', 'Add the attachments.', 'Send by post to '],
     },
   },
   klageskjema: {
@@ -293,6 +294,7 @@ export const en: Language = {
         'Add the attachments.',
         'Send by post to ',
       ],
+      steg_simple: ['Print the appeal.', 'Sign the appeal.', 'Add the attachments.', 'Send by post to '],
     },
   },
   ankeskjema: {
