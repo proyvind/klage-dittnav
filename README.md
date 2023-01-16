@@ -23,11 +23,11 @@ npm start
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.
+Spørsmål knyttet til koden eller prosjektet kan også stilles som issues her på GitHub.
 
 ## For NAV-ansatte
 
-Interne henvendelser kan sendes via Slack i kanalen #team-digital-klage.
+Interne henvendelser kan sendes via Slack i kanalen [#team-digital-klage](https://nav-it.slack.com/archives/C01L59AQVQA).
 
 
 Bruk og integrasjon
@@ -61,10 +61,19 @@ I tillegg til `tema` og `tittel` kan `saksnummer` også settes i query.
 Eksempler på fullstendige URL-er til klageskjema på norsk og engelsk:
 
 ```
-https://klage.nav.no/nb/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/nb/klage/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
 ```
 ```
-https://klage.nav.no/en/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/en/klage/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+```
+
+Eksempler på fullstendige URL-er til ankeskjema på norsk og engelsk:
+
+```
+https://klage.nav.no/nb/anke/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+```
+```
+https://klage.nav.no/en/anke/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
 ```
 
 ## Legge til ny tittel
@@ -72,21 +81,6 @@ https://klage.nav.no/en/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
 Om ingen av titlene som støttes passer deres behov er det mulig å opprette en PR i `klage-dittnav-api`-prosjektet eller kontakte teamet på Slack i kanalen `#team-digital-klage`.
 
 > Merk at alle titler må legges inn på norsk og engelsk.
-
-## Fullmakt
-
-Det er også støtte for å oppgi fullmaktsgiver i URLen med query-parameteret `fullmaktsgiver` sammen med de andre parameterne.
-
-Dette parameteret må være fødselsnummeret til personen som har gitt fullmakten til brukeren som skal sende inn klagen (fullmaktsgiver).
-
-Om fullmakten ikke er gyldig blir bruker møtt med en feilmelding. Om fullmakten er gyldig vil bruker få en tydelig infoboks gjennom hele skjemaet om at de klager på vegne av den andre.
-
-Ved hjelp av dette parameteret kan vi i tillegg gi brukere muligheten til å klage på vegne av fullmaktsgiver gjennom et GUI.
-
-Under visse ytelser vil inngangen for klage gi bruker muligheten til å trykke på en knapp "Klage på vegne av andre" som tar bruker til en skjerm der de kan skrive inn fødselsnummer. Når de trykker søk vil systemet enten:
-
-1. Bekrefte at bruker har fullmakt fra person med oppgitt fødselsnummer. Da kan bruker gå videre til skjemaet der `fullmaktsgiver`-queryen automatisk blir satt til oppgitt fødselsnummer.
-2. Ikke bekrefte og gi bruker en feilmelding. Ingen informasjon rundt oppgitt fødselsnummer blir vist til bruker.
 
 ## Fortsette på påbegynt klage
 
@@ -103,6 +97,23 @@ Klager som ikke er sendt inn vil kunne redigeres og sendes inn.
 Klager som er sendt inn vil kun vise en oppsummering og lenke til innsendt klage som PDF.
 
 > Vedlegg vil være en del av PDFen og ikke eksistere som frittstående filer etter klagen er innsendt.
+
+## Fullmakt
+
+> Under utvikling. Ikke bruk.
+
+Det er også støtte for å oppgi fullmaktsgiver i URLen med query-parameteret `fullmaktsgiver` sammen med de andre parameterne.
+
+Dette parameteret må være fødselsnummeret til personen som har gitt fullmakten til brukeren som skal sende inn klagen (fullmaktsgiver).
+
+Om fullmakten ikke er gyldig blir bruker møtt med en feilmelding. Om fullmakten er gyldig vil bruker få en tydelig infoboks gjennom hele skjemaet om at de klager på vegne av den andre.
+
+Ved hjelp av dette parameteret kan vi i tillegg gi brukere muligheten til å klage på vegne av fullmaktsgiver gjennom et GUI.
+
+Under visse ytelser vil inngangen for klage gi bruker muligheten til å trykke på en knapp "Klage på vegne av andre" som tar bruker til en skjerm der de kan skrive inn fødselsnummer. Når de trykker søk vil systemet enten:
+
+1. Bekrefte at bruker har fullmakt fra person med oppgitt fødselsnummer. Da kan bruker gå videre til skjemaet der `fullmaktsgiver`-queryen automatisk blir satt til oppgitt fødselsnummer.
+2. Ikke bekrefte og gi bruker en feilmelding. Ingen informasjon rundt oppgitt fødselsnummer blir vist til bruker.
 
 ## Videre flyt
 
