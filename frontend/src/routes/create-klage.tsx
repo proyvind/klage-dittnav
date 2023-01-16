@@ -11,11 +11,11 @@ import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
 import { AppEventEnum } from '../logging/error-report/action';
 import { addAppEvent } from '../logging/error-report/error-report';
-import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../redux-api/case/klage/api';
-import { useGetFullmaktsgiverQuery } from '../redux-api/user/api';
 import { useAppDispatch } from '../redux/configure-store';
 import { createSessionKlage } from '../redux/session/klage/helpers';
 import { deleteSessionKlage, setSessionKlage } from '../redux/session/session';
+import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../redux-api/case/klage/api';
+import { useGetFullmaktsgiverQuery } from '../redux-api/user/api';
 import { TemaKey, ensureStringIsTema } from '../tema/tema';
 
 export const CreateKlage = () => {

@@ -10,10 +10,10 @@ import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
 import { AppEventEnum } from '../logging/error-report/action';
 import { addAppEvent } from '../logging/error-report/error-report';
-import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '../redux-api/case/anke/api';
 import { useAppDispatch } from '../redux/configure-store';
 import { createSessionAnke } from '../redux/session/anke/helpers';
 import { deleteSessionAnke, setSessionAnke } from '../redux/session/session';
+import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '../redux-api/case/anke/api';
 import { ensureStringIsTema } from '../tema/tema';
 
 export const CreateAnke = () => {
