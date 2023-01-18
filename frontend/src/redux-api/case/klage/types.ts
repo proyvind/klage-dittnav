@@ -12,9 +12,8 @@ export enum Reason {
 
 export interface NewKlage {
   readonly tema: TemaKey;
+  readonly titleKey: string | null;
   readonly internalSaksnummer: string | null;
-  readonly titleKey?: string;
-  readonly ytelse?: string;
   readonly fullmaktsgiver: string | null;
 }
 

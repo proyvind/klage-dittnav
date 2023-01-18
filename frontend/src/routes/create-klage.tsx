@@ -146,7 +146,7 @@ export const CreateKlage = () => {
     addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
     resumeOrCreateKlage({
       tema: temaKey,
-      titleKey: titleKey ?? undefined,
+      titleKey,
       internalSaksnummer: saksnummer,
       fullmaktsgiver,
     })

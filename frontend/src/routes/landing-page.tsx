@@ -7,12 +7,7 @@ import { useTranslation } from '../language/use-translation';
 import { TemaKey } from '../tema/tema';
 import { InngangInnsending } from './inngang/inngang-innsendingsvalg';
 
-export const LandingPage = (
-  temaKey: TemaKey,
-  titleKey: string | null,
-  ytelse: string | null,
-  saksnummer: string | null = null
-) => {
+export const LandingPage = (temaKey: TemaKey, titleKey: string, saksnummer: string | null = null) => {
   const { data: user, isLoading } = useUser();
   const { landing_page } = useTranslation();
 
@@ -29,7 +24,6 @@ export const LandingPage = (
   const query = queryStringify({
     tema: temaKey,
     tittel: titleKey,
-    ytelse,
     saksnummer,
   });
 

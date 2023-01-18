@@ -2,6 +2,7 @@ import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAddress } from '../../../../hooks/use-address';
 import { Data, useErrors } from '../../../../hooks/use-errors';
 import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';
@@ -94,35 +95,35 @@ const useTexts = ({
   const { klageskjema_post, ankeskjema_post, common } = useTranslation();
   const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
   const { title, steg, steg_simple } = skjema_post.innsending;
-  const { steps, title_fragment, page_title } = isKlage ? klageskjema_post.common : ankeskjema_post.common;
-  const titleKey = type === 'klage' || type === 'session-klage' ? caseData.titleKey : null;
+  const { steps, title_fragment, page_title } = skjema_post.common;
+  const address = useAddress(caseData.titleKey);
 
   return useMemo(() => {
-    switch (titleKey) {
+    switch (caseData.titleKey) {
       case 'LONNSGARANTI':
         return {
           stepTexts: steg_simple,
-          address: ['NAV Arbeid og ytelser Kristiania', 'Postboks 6683 St. Olavs plass', '0129 Oslo'],
+          address,
           title,
           page_title,
           title_fragment,
-          titleKey,
+          titleKey: caseData.titleKey,
           common,
           steps,
         };
       default:
         return {
           stepTexts: steg,
-          address: ['NAV skanning', 'Postboks 1400', '0109 Oslo'],
+          address,
           title,
           page_title,
           title_fragment,
-          titleKey,
+          titleKey: caseData.titleKey,
           common,
           steps,
         };
     }
-  }, [common, page_title, steg, steg_simple, steps, title, titleKey, title_fragment]);
+  }, [address, caseData.titleKey, common, page_title, steg, steg_simple, steps, title, title_fragment]);
 };
 
 const InstructionList = styled.ol`

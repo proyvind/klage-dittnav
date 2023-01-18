@@ -14,14 +14,13 @@ export const RootWithQuery = () => {
     return <InngangHovedkategorier />;
   }
 
-  const titleKey = getQueryValue(tittel);
-  const ytelseKey = getQueryValue(ytelse);
+  const titleKey = getQueryValue(tittel) ?? getQueryValue(ytelse);
 
-  if (titleKey === null && ytelseKey === null) {
+  if (titleKey === null) {
     return <InngangHovedkategorier />;
   }
 
   const saksnummerValue = getQueryValue(saksnummer);
 
-  return LandingPage(temaKey, titleKey, ytelseKey, saksnummerValue);
+  return LandingPage(temaKey, titleKey, saksnummerValue);
 };

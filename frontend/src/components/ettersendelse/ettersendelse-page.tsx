@@ -1,5 +1,6 @@
 import { GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
+import { useAddress } from '../../hooks/use-address';
 import { useErrors } from '../../hooks/use-errors';
 import { useTemaName } from '../../hooks/use-titles';
 import { useIsAuthenticated, useUser } from '../../hooks/use-user';
@@ -19,9 +20,10 @@ import { IEttersendelse } from './types';
 
 interface Props {
   tema: TemaKey;
+  titleKey: string;
 }
 
-export const EttersendelsePage = ({ tema }: Props) => {
+export const EttersendelsePage = ({ tema, titleKey }: Props) => {
   const temaName = useTemaName(tema);
   const { ettersendelse } = useTranslation();
   const language = useLanguage();
@@ -32,6 +34,7 @@ export const EttersendelsePage = ({ tema }: Props) => {
 
   const caseData: IEttersendelse = {
     tema,
+    titleKey,
     foedselsnummer:
       authenticated ?? false ? user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '' : foedselsnummer,
     enhetsnummer,
@@ -45,6 +48,8 @@ export const EttersendelsePage = ({ tema }: Props) => {
 
   const { title, guide_text } = ettersendelse;
 
+  const [line1, line2, line3] = useAddress(titleKey);
+
   return (
     <FormMainContainer>
       <FormTitleContainer tittel={title} undertittel={temaName} />
@@ -52,11 +57,11 @@ export const EttersendelsePage = ({ tema }: Props) => {
         <GuidePanel>
           {guide_text}
           <address>
-            NAV skanning
+            {line1}
             <br />
-            Postboks 1400
+            {line2}
             <br />
-            0109 Oslo
+            {line3}
           </address>
         </GuidePanel>
         <FnrDnr

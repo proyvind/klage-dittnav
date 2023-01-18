@@ -121,7 +121,10 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
             />
           }
         />
-        <Route path={`ettersendelse/${kategori.temaKey}`} element={<EttersendelsePage tema={kategori.temaKey} />} />
+        <Route
+          path={`ettersendelse/${kategori.temaKey}/${kategori.titleKey}`}
+          element={<EttersendelsePage tema={kategori.temaKey} titleKey={kategori.titleKey} />}
+        />
       </React.Fragment>
     );
   })

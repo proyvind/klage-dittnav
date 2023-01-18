@@ -26,7 +26,7 @@ import { CenteredHeading, InngangPanel, PanelContainer } from './styled-componen
 
 interface Props {
   temaKey: TemaKey;
-  titleKey: string | null;
+  titleKey: string;
   internalSaksnummer?: string | null;
   inngangkategori?: InngangKategori | null;
   digitalKlageFullmakt?: boolean;
@@ -46,7 +46,7 @@ export const InngangInnsending = React.memo(
     supportsDigitalKlage = false,
     supportsDigitalAnke = false,
   }: Props) => {
-    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, titleKey ?? temaKey);
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, titleKey);
     const [title] = useTitleOrTemaName(temaKey, titleKey);
     const lang = useLanguage();
     const { inngang } = useTranslation();
@@ -80,7 +80,7 @@ export const InngangInnsending = React.memo(
               />
             </Optional>
 
-            <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}`} border icon={<Document />}>
+            <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}/${titleKey}`} border icon={<Document />}>
               <LinkPanel.Title>{inngang.innsendingsvalg.ettersendelse.title}</LinkPanel.Title>
               <LinkPanel.Description>{inngang.innsendingsvalg.ettersendelse.description}</LinkPanel.Description>
             </IconLinkPanel>
@@ -99,7 +99,7 @@ InngangInnsending.displayName = 'InngangInnsending';
 
 interface LinksProps {
   temaKey: TemaKey;
-  titleKey: string | null;
+  titleKey: string;
   saksnummerValue: string | null;
   digitalKlageFullmakt: boolean;
   supportsDigitalKlage: boolean;
