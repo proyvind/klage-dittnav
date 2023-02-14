@@ -18,7 +18,7 @@ import { Section } from '../../../../styled-components/summary';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
 import { SummaryPagePost } from '../../../case/common/post/summary-post';
 import { DownloadButton } from '../../../case/innlogget/summary/download-button';
-import { FinalizeDigital } from '../../../case/innlogget/summary/finalize-digital';
+import { FinalizeDigitalAnke } from '../../../case/innlogget/summary/finalize-digital';
 import { PdfLink } from '../../../case/innlogget/summary/pdf-link';
 import { InformationPointBox } from '../../../information-point-box/information-point-box';
 import { Optional } from '../../../optional/optional';
@@ -30,7 +30,7 @@ import { AnkeLoader } from '../anke-loader';
 export const AnkeoppsummeringPage = () => <AnkeLoader Component={Wrapper} />;
 
 const Wrapper = ({ anke }: { anke: Anke }) => {
-  const supportsDigital = useSupportsDigitalAnke(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
   const { data: user, isLoading: userIsLoading } = useUser();
   const { user_loader } = useTranslation();
 
@@ -63,13 +63,13 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
 
   useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigitalAnke(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;
   }
 
-  const FinalizeButton = supportsDigital ? FinalizeDigital : DownloadButton;
+  const FinalizeButton = supportsDigital ? FinalizeDigitalAnke : DownloadButton;
 
   const incompleteStatus = anke.status === CaseStatus.DRAFT || anke.status === CaseStatus.DOWNLOADED;
 

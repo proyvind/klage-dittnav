@@ -19,7 +19,7 @@ import { DigitalFormContainer } from '../../../case/common/digital/digital-form-
 import { SummaryPagePost } from '../../../case/common/post/summary-post';
 import { SummaryReasons } from '../../../case/common/summary-reasons';
 import { DownloadButton } from '../../../case/innlogget/summary/download-button';
-import { FinalizeDigital } from '../../../case/innlogget/summary/finalize-digital';
+import { FinalizeDigitalKlage } from '../../../case/innlogget/summary/finalize-digital';
 import { PdfLink } from '../../../case/innlogget/summary/pdf-link';
 import { InformationPointBox } from '../../../information-point-box/information-point-box';
 import { Optional } from '../../../optional/optional';
@@ -70,7 +70,7 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
     return null;
   }
 
-  const FinalizeButton = supportsDigital ? FinalizeDigital : DownloadButton;
+  const FinalizeButton = supportsDigital ? FinalizeDigitalKlage : DownloadButton;
 
   const incompleteStatus = klage.status === CaseStatus.DRAFT || klage.status === CaseStatus.DOWNLOADED;
 

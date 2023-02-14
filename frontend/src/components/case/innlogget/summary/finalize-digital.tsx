@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from '../../../../hooks/use-user';
+import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';
 import { AppEventEnum } from '../../../../logging/error-report/action';
 import { addAppEvent } from '../../../../logging/error-report/error-report';
+import { useFinalizeAnkeMutation } from '../../../../redux-api/case/anke/api';
 import { useFinalizeKlageMutation } from '../../../../redux-api/case/klage/api';
 import { CaseStatus } from '../../../../redux-api/case/types';
 import { login } from '../../../../user/login';
@@ -18,10 +20,29 @@ interface Props {
   fritekst: string;
 }
 
-export const FinalizeDigital = ({ setError, status, id, fritekst }: Props) => {
+export const FinalizeDigitalKlage = (props: Props) => {
+  const { klageskjema } = useTranslation();
+  const finalizeMutation = useFinalizeKlageMutation();
+
+  return <FinalizeDigital {...props} translations={klageskjema} finalizeMutation={finalizeMutation} />;
+};
+
+export const FinalizeDigitalAnke = (props: Props) => {
+  const { ankeskjema } = useTranslation();
+  const finalizeMutation = useFinalizeAnkeMutation();
+
+  return <FinalizeDigital {...props} translations={ankeskjema} finalizeMutation={finalizeMutation} />;
+};
+
+interface FinalizeDigitalProps extends Props {
+  finalizeMutation: ReturnType<typeof useFinalizeKlageMutation | typeof useFinalizeAnkeMutation>;
+  translations: Language['klageskjema' | 'ankeskjema'];
+}
+
+const FinalizeDigital = ({ setError, status, id, fritekst, finalizeMutation, translations }: FinalizeDigitalProps) => {
   const navigate = useNavigate();
-  const { klageskjema, common } = useTranslation();
-  const [finalizeKlage] = useFinalizeKlageMutation();
+  const { common } = useTranslation();
+  const [finalizeKlage] = finalizeMutation;
   const [loading, setIsLoading] = useState<boolean>(false);
   const { data: isAuthenticated } = useIsAuthenticated();
 
@@ -58,7 +79,7 @@ export const FinalizeDigital = ({ setError, status, id, fritekst }: Props) => {
       if (e instanceof Error) {
         setError(e.message);
       } else {
-        setError(klageskjema.summary.submit_error);
+        setError(translations.summary.submit_error);
       }
 
       setIsLoading(false);
@@ -74,7 +95,7 @@ export const FinalizeDigital = ({ setError, status, id, fritekst }: Props) => {
       disabled={loading || fritekst.length === 0}
       loading={loading}
     >
-      {klageskjema.summary.next(status)}
+      {translations.summary.next(status)}
     </Button>
   );
 };

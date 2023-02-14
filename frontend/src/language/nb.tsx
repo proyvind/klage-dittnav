@@ -387,7 +387,7 @@ export const nb = {
         },
       },
       back: 'Tilbake',
-      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Last ned / skriv ut' : 'Se innsendt anke'),
+      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt anke'),
       post_link: 'Last ned hvis du heller ønsker å sende via post',
     },
     kvittering: {
