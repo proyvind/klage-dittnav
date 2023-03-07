@@ -49,7 +49,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, null);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteAnke, { isLoading }] = useDeleteAnkeMutation();
 

@@ -24,7 +24,7 @@ interface Props {
 const RenderAnkekvitteringPage = ({ anke }: Props) => {
   const language = useLanguage();
   const { ankeskjema, ankeskjema_post } = useTranslation();
-  const supportsDigital = useSupportsDigitalAnke(anke.tema);
+  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
 
   useLogPageView(PageIdentifier.ANKESKJEMA_KVITTERING);
 
