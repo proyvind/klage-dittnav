@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Language } from '../../../../language/language';
 import { useGetAnkeQuery } from '../../../../redux-api/case/anke/api';
 import { useGetKlageQuery } from '../../../../redux-api/case/klage/api';
+import { Kvittering } from './kvittering';
 import { KvitteringLoading } from './kvittering-loading';
 
 interface Props {
@@ -12,21 +13,30 @@ interface Props {
 }
 
 export const KvitteringPageLoader = ({ caseId, translations, children, useGetCaseQuery }: Props) => {
-  const [isSlow, setIsSlow] = useState<boolean>(false);
+  const [showStillWorking, setShowStillWorking] = useState<boolean>(false);
+  const [showKvittering, setShowKvittering] = useState<boolean>(false);
+
   const { data } = useGetCaseQuery(caseId);
 
   const isJournalfoert = typeof data?.journalpostId === 'string' && data.journalpostId.length !== 0;
 
   useEffect(() => {
-    // Melding om at den fortsatt jobber etter 8 sek.
-    const timer = setTimeout(() => setIsSlow(true), 8000);
+    const stillWorkingTimer = setTimeout(() => setShowStillWorking(true), 8000);
+    const showKvitteringTimer = setTimeout(() => setShowKvittering(true), 15000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(stillWorkingTimer);
+      clearTimeout(showKvitteringTimer);
+    };
   }, []);
 
   if (isJournalfoert) {
-    return children;
+    return <Kvittering translations={translations}>{children}</Kvittering>;
   }
 
-  return <KvitteringLoading informStillWorking={isSlow} translations={translations} />;
+  if (showKvittering) {
+    return <Kvittering translations={translations}></Kvittering>;
+  }
+
+  return <KvitteringLoading informStillWorking={showStillWorking} translations={translations} />;
 };

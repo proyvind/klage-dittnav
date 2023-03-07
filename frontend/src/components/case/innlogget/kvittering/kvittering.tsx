@@ -13,14 +13,12 @@ import { CenteredHeading } from '../../../../styled-components/page-title';
 import { ExternalLink } from '../../../link/link';
 
 interface Props {
-  caseId: string;
-  finalizedDate: ISODate | null;
   translations: Language['klageskjema' | 'ankeskjema'];
-  basePath: string;
   showFullmaktInfo?: boolean;
+  children?: React.ReactNode;
 }
 
-export const Kvittering = ({ caseId, finalizedDate, translations, basePath }: Props) => {
+export const Kvittering = ({ translations, children }: Props) => {
   const { kvittering } = useTranslation();
 
   return (
@@ -32,15 +30,7 @@ export const Kvittering = ({ caseId, finalizedDate, translations, basePath }: Pr
         </CenteredHeading>
       </div>
 
-      <BodyShort>
-        <ExternalLink href={`${basePath}/${caseId}/pdf`} onClick={() => addAppEvent(AppEventEnum.DOWNLOAD)}>
-          <FileContent />
-          <span>{translations.kvittering.download}</span>
-        </ExternalLink>
-      </BodyShort>
-      <BodyShort>
-        {translations.kvittering.sent}: {isoDateToPretty(finalizedDate)}
-      </BodyShort>
+      {children}
 
       <Alert variant="success">
         <Heading spacing size="small" level="3">
@@ -60,6 +50,28 @@ export const Kvittering = ({ caseId, finalizedDate, translations, basePath }: Pr
     </>
   );
 };
+
+interface JournalpostProps {
+  caseId: string;
+  finalizedDate: ISODate | null;
+  translations: Language['klageskjema' | 'ankeskjema'];
+  basePath: string;
+  showFullmaktInfo?: boolean;
+}
+
+export const Journalpost = ({ caseId, finalizedDate, translations, basePath }: JournalpostProps) => (
+  <>
+    <BodyShort>
+      <ExternalLink href={`${basePath}/${caseId}/pdf`} onClick={() => addAppEvent(AppEventEnum.DOWNLOAD)}>
+        <FileContent />
+        <span>{translations.kvittering.download}</span>
+      </ExternalLink>
+    </BodyShort>
+    <BodyShort>
+      {translations.kvittering.sent}: {isoDateToPretty(finalizedDate)}
+    </BodyShort>
+  </>
+);
 
 const Icon = styled(Envelope)`
   display: block;

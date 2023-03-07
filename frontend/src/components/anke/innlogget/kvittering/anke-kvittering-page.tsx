@@ -11,7 +11,7 @@ import { CaseStatus } from '../../../../redux-api/case/types';
 import { API_PATH } from '../../../../redux-api/common';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
 import { PostFormContainer } from '../../../case/common/post/post-form-container';
-import { Kvittering } from '../../../case/innlogget/kvittering/kvittering';
+import { Journalpost } from '../../../case/innlogget/kvittering/kvittering';
 import { KvitteringPageLoader } from '../../../case/innlogget/kvittering/kvittering-page-loader';
 import { AnkeLoader } from '../anke-loader';
 
@@ -48,7 +48,7 @@ const RenderAnkekvitteringPage = ({ anke }: Props) => {
       titleKey={anke.titleKey}
     >
       <KvitteringPageLoader caseId={anke.id} translations={ankeskjema} useGetCaseQuery={useGetAnkeQuery}>
-        <Kvittering
+        <Journalpost
           caseId={anke.id}
           finalizedDate={anke.finalizedDate}
           basePath={`${API_PATH}/anker`}
