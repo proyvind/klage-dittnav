@@ -1,4 +1,5 @@
 import { ISODate, ISODateTime } from '../../domain/date/date';
+import { Languages } from '../../language/types';
 
 export interface UploadAttachmentParams {
   file: File;
@@ -34,6 +35,7 @@ export interface Case {
   readonly vedtakDate: ISODate | null;
   readonly vedlegg: Attachment[];
   readonly hasVedlegg: boolean;
+  readonly language: Languages;
 }
 
 export interface Attachment {

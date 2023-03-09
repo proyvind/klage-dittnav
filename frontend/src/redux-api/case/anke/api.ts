@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { API_BASE_QUERY, API_PATH } from '../../common';
 import { ServerSentEventManager, ServerSentEventType } from '../../server-sent-events';
 import { Attachment, Case, CaseStatus, DeleteAttachmentParams, FinalizedCase, UploadAttachmentParams } from '../types';
-import { Anke, AnkeUpdate, AvailableAnke, NewAnke } from './types';
+import { Anke, AnkeUpdate, AvailableAnke, NewAnke, ResumeAnke } from './types';
 
 type BaseUpdateResponse = Pick<Case, 'modifiedByUser'>;
 
@@ -56,7 +56,7 @@ export const ankeApi = createApi({
         dispatch(ankeApi.util.updateQueryData('getAnker', undefined, (anker) => addAnke(anker, data)));
       },
     }),
-    resumeOrCreateAnke: builder.mutation<Anke, NewAnke>({
+    resumeOrCreateAnke: builder.mutation<Anke, ResumeAnke>({
       query: (body) => ({
         method: 'PUT',
         url: '/anker',
@@ -68,7 +68,7 @@ export const ankeApi = createApi({
         dispatch(ankeApi.util.updateQueryData('getAnker', undefined, (anker) => addAnke(anker, data)));
       },
     }),
-    createAnke: builder.mutation<Anke, Partial<Anke>>({
+    createAnke: builder.mutation<Anke, NewAnke>({
       query: (body) => ({
         method: 'POST',
         url: '/anker',

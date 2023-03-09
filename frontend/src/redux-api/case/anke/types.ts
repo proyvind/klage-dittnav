@@ -1,12 +1,19 @@
 import { TemaKey } from '../../../tema/tema';
 import { Case, CaseStatus } from '../types';
 
-export interface NewAnke {
+export interface ResumeAnke {
   readonly tema: TemaKey;
-  readonly titleKey: string | null;
+  readonly titleKey: string;
+  readonly internalSaksnummer: string | null;
 }
 
-export interface Anke extends Case, NewAnke {
+export interface NewAnke
+  extends Pick<Case, 'fritekst' | 'vedtakDate' | 'hasVedlegg' | 'userSaksnummer' | 'language'>,
+    ResumeAnke {
+  readonly enhetsnummer: string | null;
+}
+
+export interface Anke extends Case, ResumeAnke {
   enhetsnummer: string | null;
 }
 

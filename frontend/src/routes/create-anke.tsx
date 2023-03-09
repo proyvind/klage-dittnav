@@ -122,10 +122,15 @@ export const CreateAnke = () => {
     ) {
       addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
       createAnke({
-        fritekst: sessionAnke.fritekst,
-        hasVedlegg: sessionAnke.hasVedlegg,
         tema: sessionAnke.tema,
-        vedtakDate: sessionAnke.vedtakDate ?? undefined,
+        titleKey: sessionAnke.titleKey ?? sessionAnke.tema,
+        userSaksnummer: sessionAnke.userSaksnummer,
+        language: sessionAnke.language,
+        vedtakDate: sessionAnke.vedtakDate,
+        internalSaksnummer: saksnummer,
+        fritekst: sessionAnke.fritekst,
+        enhetsnummer: sessionAnke.enhetsnummer,
+        hasVedlegg: sessionAnke.hasVedlegg,
       })
         .unwrap()
         .then((anke) => {
@@ -137,7 +142,7 @@ export const CreateAnke = () => {
     }
 
     addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
-    resumeOrCreateAnke({ tema: temaKey, titleKey })
+    resumeOrCreateAnke({ tema: temaKey, titleKey: titleKey ?? temaKey, internalSaksnummer: saksnummer })
       .unwrap()
       .then((anke) => navigate(`/${language}/anke/${anke.id}/begrunnelse`, { replace: true }));
   }, [

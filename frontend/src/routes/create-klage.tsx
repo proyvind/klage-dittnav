@@ -125,13 +125,14 @@ export const CreateKlage = () => {
       addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
       createKlage({
         tema: sessionKlage.tema,
-        titleKey: sessionKlage.titleKey ?? undefined,
+        titleKey: sessionKlage.titleKey ?? sessionKlage.tema,
         checkboxesSelected: sessionKlage.checkboxesSelected,
         userSaksnummer: sessionKlage.userSaksnummer,
         language: sessionKlage.language,
         vedtakDate: sessionKlage.vedtakDate,
         internalSaksnummer: saksnummer,
         fritekst: sessionKlage.fritekst,
+        hasVedlegg: sessionKlage.hasVedlegg,
         fullmaktsgiver,
       })
         .unwrap()
@@ -146,7 +147,7 @@ export const CreateKlage = () => {
     addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
     resumeOrCreateKlage({
       tema: temaKey,
-      titleKey,
+      titleKey: titleKey ?? temaKey,
       internalSaksnummer: saksnummer,
       fullmaktsgiver,
     })

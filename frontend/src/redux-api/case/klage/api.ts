@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { API_BASE_QUERY, API_PATH } from '../../common';
 import { ServerSentEventManager, ServerSentEventType } from '../../server-sent-events';
 import { Attachment, Case, CaseStatus, DeleteAttachmentParams, FinalizedCase, UploadAttachmentParams } from '../types';
-import { Klage, KlageUpdate, NewKlage } from './types';
+import { Klage, KlageUpdate, NewKlage, ResumeKlage } from './types';
 
 type BaseUpdateResponse = Pick<Case, 'modifiedByUser'>;
 
@@ -53,7 +53,7 @@ export const klageApi = createApi({
         dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
-    resumeOrCreateKlage: builder.mutation<Klage, NewKlage>({
+    resumeOrCreateKlage: builder.mutation<Klage, ResumeKlage>({
       query: (body) => ({
         method: 'PUT',
         url: '/klager',
@@ -65,7 +65,7 @@ export const klageApi = createApi({
         dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
-    createKlage: builder.mutation<Klage, Partial<Klage>>({
+    createKlage: builder.mutation<Klage, NewKlage>({
       query: (body) => ({
         method: 'POST',
         url: '/klager',

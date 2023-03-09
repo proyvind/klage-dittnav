@@ -10,14 +10,22 @@ export enum Reason {
   UENIG_I_NOE_ANNET = 'UENIG_I_NOE_ANNET',
 }
 
-export interface NewKlage {
+export interface ResumeKlage {
   readonly tema: TemaKey;
   readonly titleKey: string | null;
   readonly internalSaksnummer: string | null;
   readonly fullmaktsgiver: string | null;
 }
 
-export interface Klage extends NewKlage, Case {
+export interface NewKlage extends Pick<Case, 'fritekst' | 'vedtakDate' | 'hasVedlegg' | 'userSaksnummer' | 'language'> {
+  readonly tema: TemaKey;
+  readonly titleKey: string;
+  readonly internalSaksnummer: string | null;
+  readonly fullmaktsgiver: string | null;
+  readonly checkboxesSelected: Reason[];
+}
+
+export interface Klage extends ResumeKlage, Case {
   readonly title: StringValue;
   readonly language: Languages;
   readonly checkboxesSelected: Reason[];
