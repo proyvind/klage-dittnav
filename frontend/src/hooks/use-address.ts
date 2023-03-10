@@ -1,3 +1,5 @@
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
+
 type AddressLines = [string, string, string];
 
 const ADDRESSES: [AddressLines, AddressLines] = [
@@ -5,8 +7,8 @@ const ADDRESSES: [AddressLines, AddressLines] = [
   ['NAV Arbeid og ytelser Kristiania', 'Postboks 6683 St. Olavs plass', '0129 Oslo'],
 ];
 
-export const useAddress = (titleKey: string | null): AddressLines => {
-  switch (titleKey) {
+export const useAddress = (innsendingsytelse: Innsendingsytelse | null): AddressLines => {
+  switch (innsendingsytelse) {
     case 'LONNSGARANTI':
       return ADDRESSES[1];
     default:

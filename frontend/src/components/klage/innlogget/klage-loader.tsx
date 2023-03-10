@@ -46,7 +46,7 @@ export const KlageLoader = ({ Component }: Props) => {
     }
 
     if (klage.fullmaktsgiver !== null) {
-      getFullmaktsgiver({ temaKey: klage.tema, fullmaktsgiver: klage.fullmaktsgiver });
+      getFullmaktsgiver({ innsendingsytelse: klage.innsendingsytelse, fullmaktsgiver: klage.fullmaktsgiver });
     }
   }, [klageId, klage, klage_loader, updateKlage, getFullmaktsgiver, isLoading]);
 

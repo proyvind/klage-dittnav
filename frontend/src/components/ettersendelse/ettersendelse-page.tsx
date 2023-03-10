@@ -2,15 +2,15 @@ import { GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useAddress } from '../../hooks/use-address';
 import { useErrors } from '../../hooks/use-errors';
-import { useTemaName } from '../../hooks/use-titles';
+import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
 import { useIsAuthenticated, useUser } from '../../hooks/use-user';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { FormTitleContainer } from '../../routes/form-title-container';
 import { CenteredContainer } from '../../styled-components/common';
 import { ContentContainer } from '../../styled-components/content-container';
 import { FormMainContainer } from '../../styled-components/main-container';
-import { TemaKey } from '../../tema/tema';
 import { Errors } from '../case/common/errors';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 import { DownloadButton } from '../case/uinnlogget/summary/download-button';
@@ -19,12 +19,11 @@ import { KaEnhet } from './ka-enhet';
 import { IEttersendelse } from './types';
 
 interface Props {
-  tema: TemaKey;
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
 }
 
-export const EttersendelsePage = ({ tema, titleKey }: Props) => {
-  const temaName = useTemaName(tema);
+export const EttersendelsePage = ({ innsendingsytelse }: Props) => {
+  const [undertittel] = useInnsendingsytelseName(innsendingsytelse);
   const { ettersendelse } = useTranslation();
   const language = useLanguage();
   const { data: user, isLoading } = useUser();
@@ -33,8 +32,7 @@ export const EttersendelsePage = ({ tema, titleKey }: Props) => {
   const { data: authenticated } = useIsAuthenticated();
 
   const caseData: IEttersendelse = {
-    tema,
-    titleKey,
+    innsendingsytelse,
     foedselsnummer:
       authenticated ?? false ? user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '' : foedselsnummer,
     enhetsnummer,
@@ -48,11 +46,11 @@ export const EttersendelsePage = ({ tema, titleKey }: Props) => {
 
   const { title, guide_text } = ettersendelse;
 
-  const [line1, line2, line3] = useAddress(titleKey);
+  const [line1, line2, line3] = useAddress(innsendingsytelse);
 
   return (
     <FormMainContainer>
-      <FormTitleContainer tittel={title} undertittel={temaName} />
+      <FormTitleContainer tittel={title} undertittel={undertittel} />
       <ContentContainer>
         <GuidePanel>
           {guide_text}

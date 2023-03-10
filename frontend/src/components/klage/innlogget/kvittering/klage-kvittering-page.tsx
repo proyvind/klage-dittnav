@@ -24,7 +24,7 @@ interface Props {
 const RenderKlagekvitteringPage = ({ klage }: Props) => {
   const language = useLanguage();
   const { klageskjema } = useTranslation();
-  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_KVITTERING);
 
@@ -43,9 +43,8 @@ const RenderKlagekvitteringPage = ({ klage }: Props) => {
       klageOrAnke={klage}
       page_title={page_title}
       steps={steps}
-      temaKey={klage.tema}
+      innsendingsytelse={klage.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={klage.titleKey}
     >
       <KvitteringPageLoader caseId={klage.id} translations={klageskjema} useGetCaseQuery={useGetKlageQuery}>
         <Journalpost

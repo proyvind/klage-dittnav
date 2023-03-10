@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useErrors } from '../../../../hooks/use-errors';
 import { useSessionKlageUpdate } from '../../../../hooks/use-session-klage-update';
 import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
+import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -26,14 +27,20 @@ import { DeleteCaseButton } from '../../../delete-case-button/delete-case-button
 import { KlageSessionLoader } from '../klage-session-loader';
 import { ISessionKlage } from '../types';
 
-export const SessionKlagebegrunnelsePage = () => <KlageSessionLoader Component={RenderKlagebegrunnelsePage} />;
+interface IProps {
+  innsendingsytelse: Innsendingsytelse;
+}
+
+export const SessionKlagebegrunnelsePage = (props: IProps) => (
+  <KlageSessionLoader Component={RenderKlagebegrunnelsePage} {...props} />
+);
 
 interface Props {
   klage: ISessionKlage;
 }
 
 const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
-  const updateKlage = useSessionKlageUpdate();
+  const updateKlage = useSessionKlageUpdate(klage.innsendingsytelse);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const language = useLanguage();
@@ -42,7 +49,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const { klageskjema, klageskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
 
   const { errors, isValid, isEverythingValid, setError } = useErrors({
     type: 'session-klage',
@@ -63,7 +70,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    dispatch(deleteSessionKlage({ temaKey: klage.tema, titleKey: klage.titleKey }));
+    dispatch(deleteSessionKlage(klage.innsendingsytelse));
     navigate(`/${language}`, { replace: true });
   };
 
@@ -75,9 +82,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       isValid={isValid}
       page_title={page_title}
       steps={steps}
-      temaKey={klage.tema}
+      innsendingsytelse={klage.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={klage.titleKey}
     >
       <GuidePanel>
         <BodyLong>
@@ -126,7 +132,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       <CenteredContainer>
         <DeleteCaseButton isLoading={false} onDelete={deleteAndReturn} title={klageskjema.begrunnelse.delete_title} />
 
-        <Button as={Link} variant="primary" onClick={submitKlage} to="../oppsummering">
+        <Button as={Link} variant="primary" onClick={submitKlage} to="../oppsummering" relative="path">
           {klageskjema.begrunnelse.next_button}
         </Button>
       </CenteredContainer>

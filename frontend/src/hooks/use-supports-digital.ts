@@ -1,30 +1,26 @@
 import { useMemo } from 'react';
 import { ENVIRONMENT } from '../environment/environment';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
-import { TemaKey } from '../tema/tema';
 
-export const useSupportsDigitalKlage = (temaKey: TemaKey, titleKey: string | null) =>
-  useMemo(() => {
-    if (titleKey === null) {
-      return false;
-    }
+export const useSupportsDigitalKlage = (innsendingsytelse: Innsendingsytelse) =>
+  useMemo(
+    () =>
+      INNGANG_KATEGORIER.some(({ kategorier }) =>
+        kategorier.some(
+          (k) => k.innsendingsytelse === innsendingsytelse && k.digitalKlage.includes(ENVIRONMENT.environment)
+        )
+      ),
+    [innsendingsytelse]
+  );
 
-    return INNGANG_KATEGORIER.some(({ kategorier }) =>
-      kategorier.some(
-        (k) => k.temaKey === temaKey && k.titleKey === titleKey && k.digitalKlage.includes(ENVIRONMENT.environment)
-      )
-    );
-  }, [temaKey, titleKey]);
-
-export const useSupportsDigitalAnke = (temaKey: TemaKey, titleKey: string | null) =>
-  useMemo(() => {
-    if (titleKey === null) {
-      return false;
-    }
-
-    return INNGANG_KATEGORIER.some(({ kategorier }) =>
-      kategorier.some(
-        (k) => k.temaKey === temaKey && k.titleKey === titleKey && k.digitalAnke.includes(ENVIRONMENT.environment)
-      )
-    );
-  }, [temaKey, titleKey]);
+export const useSupportsDigitalAnke = (innsendingsytelse: Innsendingsytelse) =>
+  useMemo(
+    () =>
+      INNGANG_KATEGORIER.some(({ kategorier }) =>
+        kategorier.some(
+          (k) => k.innsendingsytelse === innsendingsytelse && k.digitalAnke.includes(ENVIRONMENT.environment)
+        )
+      ),
+    [innsendingsytelse]
+  );

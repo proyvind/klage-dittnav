@@ -1,7 +1,7 @@
 import { ISODate } from '../../../domain/date/date';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { Languages } from '../../../language/types';
 import { IName } from '../../../redux-api/user/types';
-import { TemaKey } from '../../../tema/tema';
 
 export interface ISessionAnke {
   readonly foedselsnummer: string;
@@ -11,8 +11,7 @@ export interface ISessionAnke {
   readonly userSaksnummer: string | null;
   readonly vedtakDate: ISODate | null;
   readonly enhetsnummer: string | null;
-  readonly titleKey: string | null;
-  readonly tema: TemaKey;
+  readonly innsendingsytelse: Innsendingsytelse;
   readonly language: Languages;
   readonly hasVedlegg: boolean;
   readonly modifiedByUser: ISODate;

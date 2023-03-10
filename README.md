@@ -33,68 +33,115 @@ Interne henvendelser kan sendes via Slack i kanalen [#team-digital-klage](https:
 Bruk og integrasjon
 ===================
 
-## Hvordan kommer bruker seg til en digital klage?
+## Hvordan kommer bruker seg til en digital klage/anke?
 
-Det er to måter for en bruker å komme seg til en digital klage på.
-Enten via klageløsningens egen inngang eller sendt direkte til klageskjemaet fra en annen tjeneste.
+Det er to måter for en bruker å komme seg til en digital klage/anke på.
+Enten via denne løsningens egen inngang eller sendt direkte til skjemaet fra en annen tjeneste.
 
-### Klageløsningen sin egen inngang
+### Denne løsningen sin egen inngang
 
-Brukere kan navigere seg frem til riktig tema og tittel/ytelse via [klage.nav.no](https://klage.nav.no).
-Innlogging kreves ikke før bruker forsøker å gå til klageskjemaet.
+Brukere kan navigere seg frem til riktig ytelse via [klage.nav.no](https://klage.nav.no).
+Innlogging er ikke påkrevd, men oppfordret til.
+Bruker må være logget inn for å kunne sende inn digitalt. Uten å logge inn er kun post mulig.
 
 ### Direkte lenke
 
-Brukere kan være logget inn i en tjeneste som har nødvendig informasjon for å sende brukeren direkte til klageskjemaet, f.eks. en vedtaksløsning (selvbetjeningsløsning).
+Brukere kan være logget inn i en tjeneste som har nødvendig informasjon for å sende brukeren direkte til skjemaet, f.eks. en vedtaksløsning (selvbetjeningsløsning).
 
 1. Bruker ser vedtak i selvbetjeningsløsning.
 2. Bruker trykker på knappen `Klag på vedtak`.
 3. Bruker sendes til klageskjema.
 
-For å lenke direkte til klageskjemaet må `tema` være satt i URL-en som query parametere.
+For å lenke direkte til klageskjemaet må `innsendingsytelse` være satt i URL-en.
 
-`tittel` må være en nøkkel som kan oversettes til tekst av klageløsningen. Om `tittel` ikke er satt faller den tilbake på `tema`.
+#### Saksnummer
+`saksnummer` er valgfritt og kan settes som et query parameter i URL-en.
+Saksnummeret settes i klagen/anken, men bruker kan **ikke** endre det.
+Dersom dette ikke er oppgitt som query parameter, får bruker mulighet til å fylle inn saksnummer selv.
 
-I tillegg til `tema` og `tittel` kan `saksnummer` også settes i query.
-`saksnummer` settes i klagen, men bruker kan **ikke** endre det. Saksnummer er valgfritt.
+URLen må være på følgende format:
+```
+https://klage.nav.no/{språk}/{type}/ny/{innsendingsytelse}?saksnummer={saksnummer}
+```
 
 Eksempler på fullstendige URL-er til klageskjema på norsk og engelsk:
 
 ```
-https://klage.nav.no/nb/klage/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/nb/klage/ny/DAGPENGER?saksnummer=12345
 ```
 ```
-https://klage.nav.no/en/klage/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/en/klage/ny/DAGPENGER?saksnummer=12345
 ```
 
 Eksempler på fullstendige URL-er til ankeskjema på norsk og engelsk:
 
 ```
-https://klage.nav.no/nb/anke/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/nb/anke/ny/DAGPENGER?saksnummer=12345
 ```
 ```
-https://klage.nav.no/en/anke/ny?tema=FOR&tittel=NAV_LOVEN_14A&saksnummer=12345
+https://klage.nav.no/en/anke/ny/DAGPENGER?saksnummer=12345
 ```
 
-## Legge til ny tittel
+## Tilgjengelige ytelser
+| Key   | Norsk | Engelsk |
+|-------|-------|---------|
+| ALDERSPENSJON | Alderspensjon | Old-age pension |
+| ARBEIDSAVKLARINGSPENGER | Arbeidsavklaringspenger (AAP) | Work assessment allowance (AAP) |
+| AVTALEFESTET_PENSJON_SPK | Avtalefestet pensjon (AFP) fra Statens pensjonskasse | Contractual early retirement pension (AFP) in the public sector |
+| AVTALEFESTET_PENSJON_PRIVAT | Avtalefestet pensjon (AFP) i privat sektor | Contractual early retirement pension (AFP) in the private sector |
+| BARNEBIDRAG_OG_BIDRAGSFORSKUDD | Barnebidrag og bidragsforskudd | Child support (Barnebidrag) and advance payments of child support (Bidragsforskudd) |
+| BARNEPENSJON | Barnepensjon | Children's pension (Barnepensjon) |
+| BARNETRYGD | Barnetrygd | Child benefit (Barnetrygd) |
+| BILSTONAD | Stønad til bil og spesialutstyr til kjøretøy | Vehicle and special equipment for vehicles benefit |
+| DAGPENGER | Dagpenger | Unemployment benefits (Dagpenger) |
+| DAGPENGER_FERIEPENGER | Feriepenger av dagpenger | Holiday pay and unemployment benefits (Feriepenger av dagpenger) |
+| DAGPENGER_TILBAKEBETALING_FORSKUDD | Tilbakebetaling av forskudd på dagpenger | Repayment of advance payment of unemployment benefits (Tilbakebetaling av forskudd på dagpenger) |
+| EKTEFELLEBIDRAG | Ektefellebidrag | Spousal support (Ektefellebidrag) |
+| ENGANGSSTONAD | Engangsstønad | Lump-sum grant (Engangsstønad) |
+| ENSLIG_MOR_ELLER_FAR | Enslig mor eller far | Single mother or father |
+| FORELDREPENGER | Foreldrepenger | Parental benefit (Foreldrepenger) |
+| GJENLEVENDE | Pensjon til gjenlevende ektefelle eller samboer | Pension to surviving spouse or cohabitant |
+| GRAVFERDSSTONAD | Gravferdsstønad | Funeral grant (Gravferdsstønad) |
+| GRUNN_OG_HJELPESTONAD | Grunnstønad og hjelpestønad | Basic benefit (Grunnstønad) and attendance benefit (Hjelpestønad) |
+| HJELPEMIDLER | Hjelpemidler og tilrettelegging ved nedsatt funksjonsevne | Assistive technology and facilitation for impaired functional ability |
+| KONTANTSTOTTE | Kontantstøtte | Cash-for-care benefit (Kontantstøtte) |
+| KRIGSPENSJON | Krigspensjon | War pension (Krigspensjon) |
+| LONNSGARANTI | Lønnsgaranti ved konkurs hos arbeidsgiver | Salary guarantee upon bankruptcy of employer |
+| LONNSKOMPENSASJON | Lønnskompensasjon for permitterte | Salary compensation for persons who are laid-off |
+| MIDLERTIDIG_KOMPENSASJON | Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere | Temporary compensation for self-employed and freelancers |
+| NAV_LOVEN_14A | Vurdering av behov for bistand etter NAV-loven § 14 a | Assessment of need for assistance according to Section 14 a of the NAV Act |
+| OPPFOSTRINGSBIDRAG | Oppfostringsbidrag | Upbringing support (Oppfostringsbidrag) |
+| OPPHOLD_ELLER_ARBEID_I_NORGE | Opphold eller arbeid i Norge | Residence or work in Norway |
+| OPPHOLD_ELLER_ARBEID_UTENFOR_NORGE | Opphold eller arbeid utenfor Norge | Residence or work outside Norway |
+| SUPPLERENDE_STONAD | Supplerende stønad til personer over 67 år med kort botid i Norge | Supplementary benefit for persons over 67 who have only lived a short period of time in Norway |
+| SUPPLERENDE_STONAD_UFORE_FLYKTNINGER | Supplerende stønad til uføre flyktninger | Supplementary benefit for disabled refugees |
+| SVANGERSKAPSPENGER | Svangerskapspenger | Pregnancy benefit (Svangerskapspenger) |
+| SYKDOM_I_FAMILIEN | Omsorgspenger, opplæringspenger, pleiepenger | Care benefit (Omsorgspenger), training allowance (Opplæringspenger), attendance allowance (Pleiepenger) |
+| SYKEPENGER | Sykepenger | Sickness benefit (Sykepenger) |
+| TIDLIGERE_FAMILIEPLEIER | Ytelser til tidligere familiepleier | Benefits to former family caregivers |
+| TILTAKSPENGER | Tiltakspenger for arbeidsmarkedstiltak | Benefits (Tiltakspenger) while participating in employment schemes |
+| UFORETRYGD | Uføretrygd | Disability benefit (Uføretrygd) |
+| YRKESSKADE | Yrkesskade | Occupational injury (Yrkesskade) |
 
-Om ingen av titlene som støttes passer deres behov er det mulig å opprette en PR i `klage-dittnav-api`-prosjektet eller kontakte teamet på Slack i kanalen `#team-digital-klage`.
+## Legge til ny ytelse
 
-> Merk at alle titler må legges inn på norsk og engelsk.
+Om ingen av ytelse som støttes passer deres behov er det mulig å opprette en PR i `klage-dittnav-api`-prosjektet eller kontakte teamet på Slack i kanalen `#team-digital-klage`.
 
-## Fortsette på påbegynt klage
+> Merk at alle ytelser må legges inn på norsk og engelsk.
 
-Når brukere oppretter klager ved å gå til klageskjemaet, men ikke sender inn klagene, blir de liggende som uferdige klager.
+## Fortsette på påbegynt klage/anke
 
-Dersom en bruker går til klageskjemaet med samme parametere igjen senere, vil bruker fortsette på den uferdige klagen.
+Når brukere oppretter klager/anker ved å gå til skjemaet, men ikke sender inn, blir de liggende som påbegynte klager/anker.
 
-## Permanente lenker til klageskjemaer
+Dersom en bruker går til skjemaet med samme parametere igjen senere, vil bruker fortsette på den uferdige klagen/anken.
 
-Alle klager blir opprettet med en unik ID som vises i URL-en. Dvs. at en bruker kan ta vare på lenken til en spesifikk klage og bruke den senere.
+## Permanente lenker til skjemaer
 
-Klager som ikke er sendt inn vil kunne redigeres og sendes inn.
+Alle klager/anker blir opprettet med en unik ID som vises i URL-en. Dvs. at en bruker kan ta vare på lenken til en spesifikk klage/anke og bruke den senere.
 
-Klager som er sendt inn vil kun vise en oppsummering og lenke til innsendt klage som PDF.
+Klager/anker som ikke er sendt inn vil kunne redigeres og sendes inn.
+
+Klager/anker som er sendt inn vil kun vise en oppsummering og lenke til innsendt klage/anke som PDF.
 
 > Vedlegg vil være en del av PDFen og ikke eksistere som frittstående filer etter klagen er innsendt.
 

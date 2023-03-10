@@ -1,5 +1,5 @@
 import amplitude from 'amplitude-js';
-import { TemaKey } from '../tema/tema';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 
 const APP_NAME = 'klage-dittnav';
 
@@ -35,7 +35,7 @@ client.init('default', '', {
 
 interface ExtraEventData {
   page: PageIdentifier;
-  temaKey?: TemaKey;
+  innsendingsytelse?: Innsendingsytelse;
   title?: string;
 }
 
@@ -62,9 +62,9 @@ const logAmplitudeEvent = async (eventName: AmplitudeEvent, eventProperties: Ext
     });
   });
 
-export const logPageView = (page: PageIdentifier, temaKey?: TemaKey, title?: string) =>
+export const logPageView = (page: PageIdentifier, innsendingsytelse?: Innsendingsytelse, title?: string) =>
   logAmplitudeEvent(AmplitudeEvent.PAGE_VIEW, {
     page,
     title,
-    temaKey,
+    innsendingsytelse,
   });

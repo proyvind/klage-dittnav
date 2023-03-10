@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { ankeApi } from '../redux-api/case/anke/api';
 import { klageApi } from '../redux-api/case/klage/api';
-import { titlesApi } from '../redux-api/titles';
+import { innsendingsytelserApi } from '../redux-api/innsendingsytelser';
 import { userApi } from '../redux-api/user/api';
 import { sessionSlice } from './session/session';
 
 export const rootReducer = combineReducers({
-  [titlesApi.reducerPath]: titlesApi.reducer,
+  [innsendingsytelserApi.reducerPath]: innsendingsytelserApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [klageApi.reducerPath]: klageApi.reducer,
   [ankeApi.reducerPath]: ankeApi.reducer,

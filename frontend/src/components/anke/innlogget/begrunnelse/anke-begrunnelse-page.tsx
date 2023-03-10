@@ -49,7 +49,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteAnke, { isLoading }] = useDeleteAnkeMutation();
 
@@ -110,8 +110,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
     <Container
       activeStep={1}
       isValid={isValid}
-      temaKey={anke.tema}
-      titleKey={anke.titleKey}
+      innsendingsytelse={anke.innsendingsytelse}
       klageOrAnke={anke}
       steps={steps}
       title_fragment={title_fragment}

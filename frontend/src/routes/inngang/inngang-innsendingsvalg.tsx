@@ -6,10 +6,11 @@ import { IconLinkPanel } from '../../components/icon-link-panel/icon-link-panel'
 import { ExternalLink } from '../../components/link/link';
 import { Optional } from '../../components/optional/optional';
 import { queryStringify } from '../../functions/query-string';
+import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
 import { usePageInit } from '../../hooks/use-page-init';
-import { useTitleOrTemaName } from '../../hooks/use-titles';
 import { useIsAuthenticated } from '../../hooks/use-user';
 import { Document } from '../../icons/document';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
@@ -17,7 +18,6 @@ import { useTranslation } from '../../language/use-translation';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { InngangMainContainer } from '../../styled-components/main-container';
-import { TemaKey } from '../../tema/tema';
 import { InngangGuidePanel } from './guide-panel';
 import { AnkeLinkPanel } from './klage-anke-knapper/anke-link-panel';
 import { KlageDigitaltFullmaktKnapp } from './klage-anke-knapper/klage-digitalt-fullmakt-knapp';
@@ -25,8 +25,7 @@ import { KlageLinkPanel } from './klage-anke-knapper/klage-link-panel';
 import { CenteredHeading, InngangPanel, PanelContainer } from './styled-components/panels';
 
 interface Props {
-  temaKey: TemaKey;
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
   internalSaksnummer?: string | null;
   inngangkategori?: InngangKategori | null;
   digitalKlageFullmakt?: boolean;
@@ -37,8 +36,7 @@ interface Props {
 
 export const InngangInnsending = React.memo(
   ({
-    temaKey,
-    titleKey,
+    innsendingsytelse,
     internalSaksnummer = null,
     inngangkategori = null,
     digitalKlageFullmakt = false,
@@ -46,8 +44,8 @@ export const InngangInnsending = React.memo(
     supportsDigitalKlage = false,
     supportsDigitalAnke = false,
   }: Props) => {
-    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, temaKey, titleKey);
-    const [title] = useTitleOrTemaName(temaKey, titleKey);
+    useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, innsendingsytelse);
+    const [title] = useInnsendingsytelseName(innsendingsytelse);
     const lang = useLanguage();
     const { inngang } = useTranslation();
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
@@ -65,22 +63,20 @@ export const InngangInnsending = React.memo(
 
           <InngangPanel as="section">
             <Links
-              temaKey={temaKey}
-              titleKey={titleKey}
+              innsendingsytelse={innsendingsytelse}
               saksnummerValue={internalSaksnummer}
               digitalKlageFullmakt={digitalKlageFullmakt}
               supportsDigitalKlage={supportsDigitalKlage}
             />
             <Optional show={allowsAnke === true}>
               <AnkeLinkPanel
-                temaKey={temaKey}
-                titleKey={titleKey}
+                innsendingsytelse={innsendingsytelse}
                 saksnummer={internalSaksnummer}
                 digital={supportsDigitalAnke}
               />
             </Optional>
 
-            <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${temaKey}/${titleKey}`} border icon={<Document />}>
+            <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${innsendingsytelse}`} border icon={<Document />}>
               <LinkPanel.Title>{inngang.innsendingsvalg.ettersendelse.title}</LinkPanel.Title>
               <LinkPanel.Description>{inngang.innsendingsvalg.ettersendelse.description}</LinkPanel.Description>
             </IconLinkPanel>
@@ -90,34 +86,27 @@ export const InngangInnsending = React.memo(
     );
   },
   (prevProps, nextProps) =>
-    prevProps.temaKey === nextProps.temaKey &&
-    prevProps.internalSaksnummer === nextProps.internalSaksnummer &&
-    prevProps.titleKey === nextProps.titleKey
+    prevProps.innsendingsytelse === nextProps.innsendingsytelse &&
+    prevProps.internalSaksnummer === nextProps.internalSaksnummer
 );
 
 InngangInnsending.displayName = 'InngangInnsending';
 
 interface LinksProps {
-  temaKey: TemaKey;
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
   saksnummerValue: string | null;
   digitalKlageFullmakt: boolean;
   supportsDigitalKlage: boolean;
 }
 
-const Links = ({ temaKey, titleKey, saksnummerValue, digitalKlageFullmakt, supportsDigitalKlage }: LinksProps) => {
+const Links = ({ innsendingsytelse, saksnummerValue, digitalKlageFullmakt, supportsDigitalKlage }: LinksProps) => {
   const { saksnummer } = useParams();
   const { fullmakt, inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
 
   const query = useMemo(
-    () =>
-      queryStringify({
-        tema: temaKey,
-        tittel: titleKey,
-        saksnummer: saksnummerValue ?? getQueryValue(saksnummer),
-      }),
-    [temaKey, titleKey, saksnummerValue, saksnummer]
+    () => queryStringify({ saksnummer: saksnummerValue ?? getQueryValue(saksnummer) }),
+    [saksnummerValue, saksnummer]
   );
 
   return (
@@ -132,7 +121,7 @@ const Links = ({ temaKey, titleKey, saksnummerValue, digitalKlageFullmakt, suppo
         </Alert>
       </Optional>
 
-      <KlageLinkPanel query={query} supportsDigitalKlage={supportsDigitalKlage} />
+      <KlageLinkPanel innsendingsytelse={innsendingsytelse} query={query} supportsDigitalKlage={supportsDigitalKlage} />
 
       <Optional show={digitalKlageFullmakt}>
         <KlageDigitaltFullmaktKnapp />

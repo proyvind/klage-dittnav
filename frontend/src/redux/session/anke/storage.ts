@@ -8,7 +8,7 @@ export const readSessionAnke = (key: SessionKey): ISessionAnke | undefined => {
   return json === null ? undefined : JSON.parse(json);
 };
 
-export const saveSessionAnke = (anke: ISessionAnke | null, key: SessionKey): string => {
+export const saveSessionAnke = (key: SessionKey, anke: ISessionAnke | null): string => {
   if (anke === null) {
     const sessionAnkeKey = getSessionAnkeKey(key);
     window.sessionStorage.removeItem(sessionAnkeKey);
@@ -16,8 +16,8 @@ export const saveSessionAnke = (anke: ISessionAnke | null, key: SessionKey): str
     return sessionAnkeKey;
   }
 
-  if (typeof key !== 'string' && (key.temaKey !== anke.tema || key.titleKey !== anke.titleKey)) {
-    throw new Error('TemaKey and titleKey must match');
+  if (key !== anke.innsendingsytelse) {
+    throw new Error('Innsendingsytelse must match');
   }
 
   const sessionAnkeKey = getSessionAnkeKey(key);

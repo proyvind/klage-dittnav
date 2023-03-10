@@ -1,21 +1,20 @@
 import React from 'react';
 import { useBreadcrumbs } from '../../../../breadcrumbs/use-breadcrumbs';
+import { useInnsendingsytelseName } from '../../../../hooks/use-innsendingsytelser';
 import { usePageInit } from '../../../../hooks/use-page-init';
-import { useTitleOrTemaName } from '../../../../hooks/use-titles';
 import { useIsAuthenticated } from '../../../../hooks/use-user';
+import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
 import { Anke } from '../../../../redux-api/case/anke/types';
 import { Klage } from '../../../../redux-api/case/klage/types';
 import { CaseStatus } from '../../../../redux-api/case/types';
 import { FormTitleContainer } from '../../../../routes/form-title-container';
 import { ContentContainer } from '../../../../styled-components/content-container';
 import { FormMainContainer } from '../../../../styled-components/main-container';
-import { TemaKey } from '../../../../tema/tema';
 import { LogoutWarning } from '../../../logout-warning/logout-warning';
 import { StepProps, Steps } from '../../../steps/steps';
 
 interface Props {
-  temaKey: TemaKey;
-  titleKey?: string | null;
+  innsendingsytelse: Innsendingsytelse;
   activeStep: number;
   isValid: boolean;
   children: React.ReactNode;
@@ -26,8 +25,7 @@ interface Props {
 }
 
 export const DigitalFormContainer = ({
-  temaKey,
-  titleKey,
+  innsendingsytelse,
   activeStep,
   isValid,
   klageOrAnke,
@@ -36,7 +34,7 @@ export const DigitalFormContainer = ({
   title_fragment,
   page_title,
 }: Props) => {
-  const [undertittel] = useTitleOrTemaName(temaKey, titleKey);
+  const [undertittel] = useInnsendingsytelseName(innsendingsytelse);
   const { data: isAuthenticated } = useIsAuthenticated();
 
   usePageInit(`${steps[activeStep - 1] ?? ''} \u2013 ${title_fragment}`);

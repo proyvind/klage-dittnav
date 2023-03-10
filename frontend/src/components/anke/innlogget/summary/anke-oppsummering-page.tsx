@@ -30,7 +30,7 @@ import { AnkeLoader } from '../anke-loader';
 export const AnkeoppsummeringPage = () => <AnkeLoader Component={Wrapper} />;
 
 const Wrapper = ({ anke }: { anke: Anke }) => {
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
   const { data: user, isLoading: userIsLoading } = useUser();
   const { user_loader } = useTranslation();
 
@@ -63,7 +63,7 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
 
   useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;
@@ -80,9 +80,8 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
       klageOrAnke={anke}
       page_title={ankeskjema.common.page_title}
       steps={ankeskjema.common.steps}
-      temaKey={anke.tema}
+      innsendingsytelse={anke.innsendingsytelse}
       title_fragment={ankeskjema.common.title_fragment}
-      titleKey={anke.titleKey}
     >
       <div>
         <Icon />

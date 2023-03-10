@@ -1,10 +1,15 @@
 import { Alert } from '@navikt/ds-react';
 import React from 'react';
 import { LoadingPage } from '../../components/loading-page/loading-page';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { useKlage } from './use-klage';
 
-export const CreateKlage = () => {
-  const { error, loading } = useKlage();
+interface Props {
+  innsendingsytelse: Innsendingsytelse;
+}
+
+export const CreateKlage = ({ innsendingsytelse }: Props) => {
+  const { error, loading } = useKlage(innsendingsytelse);
 
   if (error !== null) {
     return <Alert variant="error">{error}</Alert>;

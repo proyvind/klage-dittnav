@@ -1,7 +1,6 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
 import { addSessionEvent } from '../../../logging/error-report/error-report';
 import { SessionKey, State } from '../types';
 import { getSessionKlageKey } from './helpers';
@@ -37,23 +36,18 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
 
   const { key, update } = payload;
 
-  if (key.temaKey === null) {
-    throw new Error('TemaKey must be defined');
-  }
-
   const klageKey = getSessionKlageKey(key);
-
   const klage = state.klager[klageKey];
 
   if (typeof klage === 'undefined' || klage === null) {
     throw new Error('Klage does not exist');
   }
 
-  if (key.temaKey !== klage.tema || key.titleKey !== klage.titleKey) {
-    throw new Error('TemaKey and titleKey must match');
+  if (key !== klage.innsendingsytelse) {
+    throw new Error('Innsendingsytelse must match');
   }
 
-  const updated: ISessionKlage = { ...klage, ...update, modifiedByUser: dayjs().utc(true).toISOString() };
+  const updated = { ...klage, ...update, modifiedByUser: dayjs().utc(true).toISOString() };
 
   saveSessionKlage(key, updated);
 
@@ -62,17 +56,18 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
   return state;
 };
 
+// Read from session storage if it exists, otherwise save to session storage.
 const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
   addSessionEvent('Load session klage');
 
   const { key, klage } = payload;
 
-  const savedKlage = readSessionKlage(key);
   const sessionKey = getSessionKlageKey(key);
+  const savedKlage = readSessionKlage(sessionKey);
 
   if (typeof savedKlage === 'undefined') {
     if (klage === null) {
-      state.klager[sessionKey] = null;
+      delete state.klager[sessionKey];
 
       return state;
     }

@@ -17,6 +17,7 @@ import { SessionKlagebegrunnelsePage } from '../components/klage/uinnlogget/begr
 import { SessionKlageinnsendingPage } from '../components/klage/uinnlogget/innsending/klage-innsending-page';
 import { SessionKlageoppsummeringPage } from '../components/klage/uinnlogget/summary/klage-oppsummering-page';
 import { ENVIRONMENT } from '../environment/environment';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
 import { LanguageComponent } from '../language/component';
 import { Languages } from '../language/types';
@@ -25,10 +26,11 @@ import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { InngangInnsending } from './inngang/inngang-innsendingsvalg';
 import { InngangKategorier } from './inngang/inngang-kategorier';
+import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
-import { LoginIfUnauthorized, RedirectIfAuthorized, UpgradeSession } from './redirects';
-import { RootWithQuery } from './root-with-query';
+import { QueryParamsHandler } from './query-params-handler';
+import { LoginIfUnauthorized, UpgradeSession } from './redirects';
 import { SentryFallback } from './sentry-fallback';
 
 const SentryRoutes = withSentryReactRouterV6Routing(Routes);
@@ -40,20 +42,27 @@ export const Router = () => (
         <LanguageComponent>
           <ErrorBoundary fallback={SentryFallback}>
             <SentryRoutes>
-              <Route path="ny" element={<CreateKlage />} />
               <Route path="/:lang" element={<UpgradeSession />}>
+                <Route index element={<LandingPage />} />
+
+                <Route path="ny">
+                  <Route index element={<QueryParamsHandler type="klage" />} />
+                  {getCaseRoutes({ component: CreateKlage })}
+                </Route>
+
                 {innsendingsRoutes}
                 {kategoriRoutes}
 
                 <Route path="klage">
-                  <Route path="ny" element={<CreateKlage />} />
+                  <Route path="ny">
+                    <Route index element={<QueryParamsHandler type="klage" />} />
+                    {getCaseRoutes({ component: CreateKlage })}
+                  </Route>
 
-                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="klage" />}>
-                    <Route path=":temaKey/:titleKey">
-                      <Route path="begrunnelse" element={<SessionKlagebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<SessionKlageoppsummeringPage />} />
-                      <Route path="innsending" element={<SessionKlageinnsendingPage />} />
-                    </Route>
+                  <Route path="uinnlogget">
+                    {getCaseRoutes({ component: SessionKlagebegrunnelsePage, pathSuffix: 'begrunnelse' })}
+                    {getCaseRoutes({ component: SessionKlageoppsummeringPage, pathSuffix: 'oppsummering' })}
+                    {getCaseRoutes({ component: SessionKlageinnsendingPage, pathSuffix: 'innsending' })}
                   </Route>
 
                   <Route path=":klageId" element={<LoginIfUnauthorized />}>
@@ -65,14 +74,15 @@ export const Router = () => (
                 </Route>
 
                 <Route path="anke">
-                  <Route path="ny" element={<CreateAnke />} />
+                  <Route path="ny">
+                    <Route index element={<QueryParamsHandler type="anke" />} />
+                    {getCaseRoutes({ component: CreateAnke })}
+                  </Route>
 
-                  <Route path="uinnlogget" element={<RedirectIfAuthorized type="anke" />}>
-                    <Route path=":temaKey/:titleKey">
-                      <Route path="begrunnelse" element={<SessionAnkebegrunnelsePage />} />
-                      <Route path="oppsummering" element={<SessionAnkeoppsummeringPage />} />
-                      <Route path="innsending" element={<SessionAnkeinnsendingPage />} />
-                    </Route>
+                  <Route path="uinnlogget">
+                    {getCaseRoutes({ component: SessionAnkebegrunnelsePage, pathSuffix: 'begrunnelse' })}
+                    {getCaseRoutes({ component: SessionAnkeoppsummeringPage, pathSuffix: 'oppsummering' })}
+                    {getCaseRoutes({ component: SessionAnkeinnsendingPage, pathSuffix: 'innsending' })}
                   </Route>
 
                   <Route path=":ankeId" element={<LoginIfUnauthorized />}>
@@ -82,11 +92,11 @@ export const Router = () => (
                     <Route path="innsending" element={<AnkeinnsendingPage />} />
                   </Route>
                 </Route>
-
-                <Route path="" element={<RootWithQuery />} />
-                <Route path="" element={<Navigate to={`/${Languages.nb}`} />} />
               </Route>
-              <Route path="/" element={<Navigate to={`/${Languages.nb}`} />} />
+              <Route
+                index
+                element={<Navigate to={`/${Languages.nb}${location.pathname}${location.search}${location.hash}`} />}
+              />
               <Route path="*" element={<NotFoundPage />} />
             </SentryRoutes>
           </ErrorBoundary>
@@ -107,6 +117,8 @@ const kategoriRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
   inngangkategori.kategorier.map((kategori) => {
     const kategoriPath = `${inngangkategori.path}/${kategori.path}`;
+    const supportsDigitalKlage = kategori.digitalKlage.includes(ENVIRONMENT.environment);
+    const supportsDigitalAnke = kategori.digitalAnke.includes(ENVIRONMENT.environment);
 
     return (
       <React.Fragment key={kategoriPath}>
@@ -116,16 +128,48 @@ const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
             <InngangInnsending
               {...kategori}
               inngangkategori={inngangkategori}
-              supportsDigitalKlage={kategori.digitalKlage.includes(ENVIRONMENT.environment)}
-              supportsDigitalAnke={kategori.digitalAnke.includes(ENVIRONMENT.environment)}
+              supportsDigitalKlage={supportsDigitalKlage}
+              supportsDigitalAnke={supportsDigitalAnke}
             />
           }
         />
         <Route
-          path={`ettersendelse/${kategori.temaKey}/${kategori.titleKey}`}
-          element={<EttersendelsePage tema={kategori.temaKey} titleKey={kategori.titleKey} />}
+          path={`ettersendelse/${kategori.innsendingsytelse}`}
+          element={<EttersendelsePage innsendingsytelse={kategori.innsendingsytelse} />}
         />
       </React.Fragment>
     );
   })
 );
+
+interface YtelseComponentProps {
+  innsendingsytelse: Innsendingsytelse;
+}
+
+type YtelseComponent = (props: YtelseComponentProps) => JSX.Element;
+
+interface Props {
+  component: YtelseComponent;
+  pathSuffix?: string | null;
+}
+
+const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props): JSX.Element[] =>
+  INNGANG_KATEGORIER.flatMap((inngangkategori) =>
+    inngangkategori.kategorier.map((kategori) => {
+      if (pathSuffix === null) {
+        return (
+          <Route
+            key={kategori.innsendingsytelse}
+            path={kategori.innsendingsytelse}
+            element={<Component innsendingsytelse={kategori.innsendingsytelse} />}
+          />
+        );
+      }
+
+      return (
+        <Route key={kategori.innsendingsytelse} path={kategori.innsendingsytelse}>
+          <Route path={pathSuffix} element={<Component innsendingsytelse={kategori.innsendingsytelse} />} />
+        </Route>
+      );
+    })
+  );

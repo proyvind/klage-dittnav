@@ -2,14 +2,14 @@ import { Heading } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React, { useMemo } from 'react';
 import { useIsAuthenticated } from '../../hooks/use-user';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { useTranslation } from '../../language/use-translation';
 import { useGetAnkerQuery } from '../../redux-api/case/anke/api';
 import { InngangPanel } from '../../routes/inngang/styled-components/panels';
-import { TemaKey } from '../../tema/tema';
 import { ApiAnke } from './draft-anke';
 
 interface Props {
-  temaAndTitleKeyList: [TemaKey, string | null][];
+  innsendingsytelser: Innsendingsytelse[];
 }
 
 export const DraftAnker = (props: Props) => {
@@ -31,19 +31,15 @@ export const DraftAnker = (props: Props) => {
   );
 };
 
-const useApiAnker = ({ temaAndTitleKeyList }: Props) => {
+const useApiAnker = ({ innsendingsytelser }: Props) => {
   const { data: isAuthenticated } = useIsAuthenticated();
   const { data, isLoading } = useGetAnkerQuery(isAuthenticated === true ? undefined : skipToken);
 
-  const hasFilter = temaAndTitleKeyList.length !== 0;
+  const hasFilter = innsendingsytelser.length !== 0;
 
   const filtered = useMemo(
-    () =>
-      data?.filter(
-        (anke) =>
-          !hasFilter || temaAndTitleKeyList.some(([tema, title]) => anke.tema === tema && anke.titleKey === title)
-      ) ?? [],
-    [data, hasFilter, temaAndTitleKeyList]
+    () => data?.filter((anke) => !hasFilter || innsendingsytelser.includes(anke.innsendingsytelse)) ?? [],
+    [data, hasFilter, innsendingsytelser]
   );
 
   if (isLoading || typeof data === 'undefined' || data.length === 0) {

@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { setTokenExpires } from '../../logging/error-report/error-report';
-import { TemaKey } from '../../tema/tema';
 import { API_BASE_QUERY } from '../common';
 import { IAuthResponse, IUser } from './types';
 
 interface GetFullmaktsgiverParams {
-  temaKey: TemaKey;
+  innsendingsytelse: Innsendingsytelse;
   fullmaktsgiver: string;
 }
 
@@ -27,7 +27,7 @@ export const userApi = createApi({
     }),
     // Get another user's data. Only possible if that user has granted "fullmakt".
     getFullmaktsgiver: builder.query<IUser, GetFullmaktsgiverParams>({
-      query: ({ temaKey, fullmaktsgiver }) => `/fullmaktsgiver/${temaKey}/${fullmaktsgiver}`,
+      query: ({ innsendingsytelse, fullmaktsgiver }) => `/fullmaktsgiver/${innsendingsytelse}/${fullmaktsgiver}`,
     }),
     isAuthenticated: builder.query<IAuthResponse, void>({
       query: () => '/bruker/authenticated',

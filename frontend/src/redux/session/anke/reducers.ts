@@ -17,14 +17,14 @@ const setSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (s
   const ankeKey = getSessionAnkeKey(key);
 
   if (anke === null) {
-    saveSessionAnke(null, key);
+    saveSessionAnke(key, null);
 
     delete state.anker[ankeKey];
 
     return state;
   }
 
-  saveSessionAnke(anke, key);
+  saveSessionAnke(key, anke);
 
   state.anker[ankeKey] = anke;
 
@@ -43,15 +43,20 @@ const updateSessionAnke: CaseReducer<State, PayloadAction<SessionAnkeUpdate>> = 
     throw new Error('Anke does not exist');
   }
 
+  if (key !== anke.innsendingsytelse) {
+    throw new Error('Innsendingsytelse must match');
+  }
+
   const updated = { ...anke, ...update, modifiedByUser: dayjs().utc(true).toISOString() };
 
-  saveSessionAnke(updated, key);
+  saveSessionAnke(key, updated);
 
   state.anker[ankeKey] = updated;
 
   return state;
 };
 
+// Read from session storage if it exists, otherwise save to session storage.
 const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (state, { payload }) => {
   addSessionEvent('Load session anke');
 
@@ -62,12 +67,12 @@ const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (
 
   if (typeof savedAnke === 'undefined') {
     if (anke === null) {
-      state.anker[sessionKey] = null;
+      delete state.anker[sessionKey];
 
       return state;
     }
 
-    saveSessionAnke(anke, key);
+    saveSessionAnke(key, anke);
 
     state.anker[sessionKey] = anke;
 
@@ -82,7 +87,7 @@ const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (
 const deleteSessionAnke: CaseReducer<State, PayloadAction<SessionKey>> = (state, { payload }) => {
   addSessionEvent('Delete session anke');
 
-  const key = saveSessionAnke(null, payload);
+  const key = saveSessionAnke(payload, null);
 
   delete state.anker[key];
 

@@ -21,7 +21,7 @@ export const RenderCaseinnsendingPage = (props: Props) => {
   useLogPageView(pageIdentifier);
   const navigate = useNavigate();
 
-  const { page_title, title_fragment, steps, titleKey, title, stepTexts, address, common } = useTexts(props);
+  const { page_title, title_fragment, steps, title, stepTexts, address, common } = useTexts(props);
 
   const { isValid } = useErrors(props);
 
@@ -41,9 +41,8 @@ export const RenderCaseinnsendingPage = (props: Props) => {
       isValid
       page_title={page_title}
       steps={steps}
-      temaKey={caseData.tema}
+      innsendingsytelse={caseData.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={titleKey}
     >
       <Heading level="1" size="xlarge">
         {title}
@@ -78,28 +77,26 @@ export const RenderCaseinnsendingPage = (props: Props) => {
   );
 };
 
-const useTexts = ({
-  caseData,
-  type,
-}: Props): {
+interface Texts {
   title: string;
   page_title: string;
   title_fragment: string;
-  titleKey: string | null | undefined;
   common: Language['common'];
   steps: string[];
   stepTexts: string[];
   address: [string, string, string];
-} => {
+}
+
+const useTexts = ({ caseData, type }: Props): Texts => {
   const isKlage = type === 'klage' || type === 'session-klage';
   const { klageskjema_post, ankeskjema_post, common } = useTranslation();
   const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
   const { title, steg, steg_simple } = skjema_post.innsending;
   const { steps, title_fragment, page_title } = skjema_post.common;
-  const address = useAddress(caseData.titleKey);
+  const address = useAddress(caseData.innsendingsytelse);
 
   return useMemo(() => {
-    switch (caseData.titleKey) {
+    switch (caseData.innsendingsytelse) {
       case 'LONNSGARANTI':
         return {
           stepTexts: steg_simple,
@@ -107,7 +104,6 @@ const useTexts = ({
           title,
           page_title,
           title_fragment,
-          titleKey: caseData.titleKey,
           common,
           steps,
         };
@@ -118,12 +114,11 @@ const useTexts = ({
           title,
           page_title,
           title_fragment,
-          titleKey: caseData.titleKey,
           common,
           steps,
         };
     }
-  }, [address, caseData.titleKey, common, page_title, steg, steg_simple, steps, title, title_fragment]);
+  }, [address, caseData.innsendingsytelse, common, page_title, steg, steg_simple, steps, title, title_fragment]);
 };
 
 const InstructionList = styled.ol`

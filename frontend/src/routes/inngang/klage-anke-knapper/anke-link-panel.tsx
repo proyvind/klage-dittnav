@@ -5,26 +5,25 @@ import { IconLinkPanel } from '../../../components/icon-link-panel/icon-link-pan
 import { queryStringify } from '../../../functions/query-string';
 import { useIsAuthenticated } from '../../../hooks/use-user';
 import { LawBook } from '../../../icons/law-book';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../../language/use-language';
 import { useTranslation } from '../../../language/use-translation';
-import { TemaKey } from '../../../tema/tema';
 
 interface Props {
   saksnummer: string | null;
-  temaKey: TemaKey;
-  titleKey: string | null;
+  innsendingsytelse: Innsendingsytelse;
   digital: boolean;
 }
 
-export const AnkeLinkPanel = ({ saksnummer, temaKey, titleKey, digital = false }: Props) => {
+export const AnkeLinkPanel = ({ saksnummer, innsendingsytelse, digital = false }: Props) => {
   const lang = useLanguage();
   const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
 
-  const query = queryStringify({ saksnummer, tema: temaKey, tittel: titleKey });
+  const query = queryStringify({ saksnummer });
 
   return (
-    <IconLinkPanel icon={<LawBook />} as={Link} to={`/${lang}/anke/ny${query}`} border>
+    <IconLinkPanel icon={<LawBook />} as={Link} to={`/${lang}/anke/ny/${innsendingsytelse}${query}`} border>
       <LinkPanel.Title>{inngang.innsendingsvalg.anke.title}</LinkPanel.Title>
       <Description isAuthenticated={isAuthenticated} supportsDigitalAnke={digital} />
     </IconLinkPanel>

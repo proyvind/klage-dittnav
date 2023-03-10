@@ -1,18 +1,17 @@
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React from 'react';
 import { useBreadcrumbs } from '../../../../breadcrumbs/use-breadcrumbs';
+import { useInnsendingsytelseName } from '../../../../hooks/use-innsendingsytelser';
 import { usePageInit } from '../../../../hooks/use-page-init';
-import { useTitleOrTemaName } from '../../../../hooks/use-titles';
 import { useIsAuthenticated } from '../../../../hooks/use-user';
+import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
 import { FormTitleContainer } from '../../../../routes/form-title-container';
 import { ContentContainer } from '../../../../styled-components/content-container';
 import { FormMainContainer } from '../../../../styled-components/main-container';
-import { TemaKey } from '../../../../tema/tema';
 import { StepProps, Steps } from '../../../steps/steps';
 
 interface Props {
-  temaKey: TemaKey;
-  titleKey?: string | null;
+  innsendingsytelse: Innsendingsytelse;
   activeStep: number;
   children: React.ReactNode;
   isValid: boolean;
@@ -23,8 +22,7 @@ interface Props {
 }
 
 export const PostFormContainer = ({
-  temaKey,
-  titleKey,
+  innsendingsytelse,
   activeStep,
   isValid,
   children,
@@ -33,7 +31,7 @@ export const PostFormContainer = ({
   page_title,
   loginRequired = false,
 }: Props) => {
-  const [undertittel] = useTitleOrTemaName(temaKey, titleKey);
+  const [undertittel] = useInnsendingsytelseName(innsendingsytelse);
   const { data: isAuthenticated } = useIsAuthenticated(loginRequired ? undefined : skipToken);
 
   usePageInit(`${steps[activeStep - 1] ?? ''} \u2013 ${title_fragment}`);

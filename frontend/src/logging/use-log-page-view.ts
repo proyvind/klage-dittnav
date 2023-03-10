@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { TemaKey } from '../tema/tema';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { PageIdentifier, logPageView } from './amplitude';
 
-export const useLogPageView = (page: PageIdentifier, temaKey?: TemaKey, title?: string) => {
+export const useLogPageView = (page: PageIdentifier, innsendingsytelse?: Innsendingsytelse, title?: string) => {
   useEffect(() => {
-    logPageView(page, temaKey, title);
-  }, [page, temaKey, title]);
+    logPageView(page, innsendingsytelse, title);
+  }, [page, innsendingsytelse, title]);
 };

@@ -4,21 +4,23 @@ import { Link } from 'react-router-dom';
 import { IconLinkPanel } from '../../../components/icon-link-panel/icon-link-panel';
 import { useIsAuthenticated } from '../../../hooks/use-user';
 import { LetterOpened } from '../../../icons/letter-opened';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../../language/use-language';
 import { useTranslation } from '../../../language/use-translation';
 
 interface Props {
+  innsendingsytelse: Innsendingsytelse;
   query: string;
   supportsDigitalKlage: boolean;
 }
 
-export const KlageLinkPanel = ({ query, supportsDigitalKlage }: Props) => {
+export const KlageLinkPanel = ({ innsendingsytelse, query, supportsDigitalKlage }: Props) => {
   const lang = useLanguage();
   const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
 
   return (
-    <IconLinkPanel icon={<LetterOpened />} as={Link} to={`/${lang}/klage/ny${query}`} border>
+    <IconLinkPanel icon={<LetterOpened />} as={Link} to={`/${lang}/klage/ny/${innsendingsytelse}${query}`} border>
       <LinkPanel.Title>{inngang.innsendingsvalg.klage.title}</LinkPanel.Title>
       <Description isAuthenticated={isAuthenticated} supportsDigitalKlage={supportsDigitalKlage} />
     </IconLinkPanel>

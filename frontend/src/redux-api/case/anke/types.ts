@@ -1,9 +1,8 @@
-import { TemaKey } from '../../../tema/tema';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { Case, CaseStatus } from '../types';
 
 export interface ResumeAnke {
-  readonly tema: TemaKey;
-  readonly titleKey: string;
+  readonly innsendingsytelse: Innsendingsytelse;
   readonly internalSaksnummer: string | null;
 }
 
@@ -48,8 +47,8 @@ export interface AvailableAnke {
   readonly id: string;
   readonly ankeStatus: AvailableAnkeStatus;
   readonly innsendtDate: string;
-  readonly tema: TemaKey;
-  readonly titleKey: string;
+  readonly innsendingsytelse: Innsendingsytelse;
+
   readonly utfall: Utfall;
   readonly vedtakDate: string;
 }

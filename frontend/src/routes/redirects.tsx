@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { LoadingPage } from '../components/loading-page/loading-page';
-import { queryStringify } from '../functions/query-string';
 import { useIsAuthenticated } from '../hooks/use-user';
-import { useLanguage } from '../language/use-language';
 import { useTranslation } from '../language/use-translation';
 import { AppEventEnum } from '../logging/error-report/action';
 import { addAppEvent } from '../logging/error-report/error-report';
@@ -47,23 +45,4 @@ export const UpgradeSession = () => {
   }
 
   return <Outlet />;
-};
-
-export const RedirectIfAuthorized = ({ type }: { type: 'klage' | 'anke' }) => {
-  const { data } = useIsAuthenticated();
-  const lang = useLanguage();
-  const { user_loader } = useTranslation();
-  const { temaKey, titleKey } = useParams();
-
-  if (data === false) {
-    return <Outlet />;
-  }
-
-  if (data === true) {
-    const query = queryStringify({ tema: temaKey, tittel: titleKey });
-
-    return <Navigate to={`/${lang}/${type}/ny${query}`} replace />;
-  }
-
-  return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
 };

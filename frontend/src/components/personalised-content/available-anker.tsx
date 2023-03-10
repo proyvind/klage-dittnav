@@ -3,22 +3,22 @@ import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { isoDateTimeToPretty } from '../../domain/date/date';
-import { useTitle } from '../../hooks/use-titles';
+import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
 import { useIsAuthenticated } from '../../hooks/use-user';
 import { LawBook } from '../../icons/law-book';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { useGetAvailableAnkerQuery } from '../../redux-api/case/anke/api';
 import { AvailableAnke } from '../../redux-api/case/anke/types';
 import { InngangPanel } from '../../routes/inngang/styled-components/panels';
-import { TemaKey } from '../../tema/tema';
 import { IconLinkPanel } from '../icon-link-panel/icon-link-panel';
 
 interface Props {
-  temaAndTitleKeyList: [TemaKey, string | null][];
+  innsendingsytelser: Innsendingsytelse[];
 }
 
-export const AvailableAnker = ({ temaAndTitleKeyList }: Props) => {
+export const AvailableAnker = ({ innsendingsytelser }: Props) => {
   const { data: isAuthenticated } = useIsAuthenticated();
   const { data, isLoading } = useGetAvailableAnkerQuery(isAuthenticated === true ? undefined : skipToken);
   const { personalised } = useTranslation();
@@ -27,10 +27,13 @@ export const AvailableAnker = ({ temaAndTitleKeyList }: Props) => {
     return null;
   }
 
-  const hasFilter = temaAndTitleKeyList.length !== 0;
+  const hasFilter = innsendingsytelser.length !== 0;
 
   const anker = data
-    .filter((anke) => !hasFilter || temaAndTitleKeyList.some(([tema]) => anke.tema === tema))
+    .filter(
+      (anke) =>
+        !hasFilter || innsendingsytelser.some((innsendingsytelse) => anke.innsendingsytelse === innsendingsytelse)
+    )
     .map((anke) => <Anke key={anke.id} {...anke} />);
 
   if (anker.length === 0) {
@@ -51,7 +54,7 @@ const Anke = (anke: AvailableAnke) => {
   const lang = useLanguage();
   const { personalised } = useTranslation();
 
-  const [title] = useTitle(anke.titleKey);
+  const [title] = useInnsendingsytelseName(anke.innsendingsytelse);
 
   return (
     <IconLinkPanel icon={<LawBook aria-hidden />} as={Link} to={`/${lang}/anke/${anke.id}/begrunnelse`} border>

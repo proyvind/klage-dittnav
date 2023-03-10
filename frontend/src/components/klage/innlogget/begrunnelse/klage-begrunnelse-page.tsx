@@ -49,7 +49,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const { klageskjema, klageskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey ?? null);
+  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteKlage, { isLoading }] = useDeleteKlageMutation();
 
@@ -114,9 +114,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       klageOrAnke={klage}
       page_title={page_title}
       steps={steps}
-      temaKey={klage.tema}
+      innsendingsytelse={klage.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={klage.titleKey}
     >
       <PersonligeOpplysningerSummary
         {...user?.navn}

@@ -3,10 +3,10 @@ import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { ExternalLink } from '../components/link/link';
 import { displayBytes, displayFnr } from '../functions/display';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
 import { CaseStatus } from '../redux-api/case/types';
-import { TemaKey } from '../tema/tema';
 
 export type Language = typeof nb;
 
@@ -47,7 +47,7 @@ export const nb = {
     },
     hovedkategorier: {
       title: 'Klage eller anke på vedtak',
-      chooseTema: 'Hvilket tema gjelder saken?',
+      chooseInnsendingsytelse: 'Hvilket tema gjelder saken?',
     },
     kategorier: {
       title: 'Hvilken tjeneste eller ytelse gjelder saken?',
@@ -98,8 +98,8 @@ export const nb = {
         who: 'Hvem klager du på vegne av?',
         nin: 'Fødselsnummer, D-nummer eller NPID for den du har fullmakt til (11 siffer)',
         search: 'Søk',
-        no_fullmakt: (fnr: string, temaName: string) =>
-          `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${temaName}.`,
+        no_fullmakt: (fnr: string, innsendingsytelseName: string) =>
+          `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${innsendingsytelseName}.`,
       },
       ettersendelse: {
         title: 'Ettersendelse til klage eller anke',
@@ -425,26 +425,26 @@ export const nb = {
     },
   },
   klage_create: {
-    invalid_tema: (tema = 'Ukjent') => `Ugyldig tema "${tema}".`,
-    format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+    invalid_innsendingsytelse: (innsendingsytelse = 'Ukjent') => `Ugyldig ytelse "${innsendingsytelse}".`,
+    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
       if (saksnummer === null) {
-        return `Klarte ikke opprette klage med tema "${tema}" og tittel "${ytelse}".`;
+        return `Klarte ikke opprette klage med ytelse "${innsendingsytelse}".`;
       }
 
-      return `Klarte ikke opprette klage med tema "${tema}", tittel "${ytelse}" og saksnummer "${saksnummer}".`;
+      return `Klarte ikke opprette klage med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
     },
     create_error: 'Klarte ikke opprette klage',
     finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
     creating: 'Oppretter klage...',
   },
   anke_create: {
-    invalid_tema: (tema = 'Ukjent') => `Ugyldig tema "${tema}".`,
-    format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+    invalid_innsendingsytelse: (innsendingsytelseName = 'Ukjent') => `Ugyldig tema "${innsendingsytelseName}".`,
+    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
       if (saksnummer === null) {
-        return `Klarte ikke opprette anke med tema "${tema}" og tittel "${ytelse}".`;
+        return `Klarte ikke opprette anke med ytelse "${innsendingsytelse}".`;
       }
 
-      return `Klarte ikke opprette anke med tema "${tema}", tittel "${ytelse}" og saksnummer "${saksnummer}".`;
+      return `Klarte ikke opprette anke med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
     },
     create_error: 'Klarte ikke opprette anke',
     finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
@@ -515,6 +515,7 @@ export const nb = {
     },
   },
   common: {
+    loading: 'Laster...',
     logged_out: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
     log_in: 'Logg inn',
     retry: 'Prøv på nytt',

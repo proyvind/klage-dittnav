@@ -24,7 +24,7 @@ interface Props {
 const RenderAnkekvitteringPage = ({ anke }: Props) => {
   const language = useLanguage();
   const { ankeskjema, ankeskjema_post } = useTranslation();
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
 
   useLogPageView(PageIdentifier.ANKESKJEMA_KVITTERING);
 
@@ -43,9 +43,8 @@ const RenderAnkekvitteringPage = ({ anke }: Props) => {
       klageOrAnke={anke}
       page_title={page_title}
       steps={steps}
-      temaKey={anke.tema}
+      innsendingsytelse={anke.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={anke.titleKey}
     >
       <KvitteringPageLoader caseId={anke.id} translations={ankeskjema} useGetCaseQuery={useGetAnkeQuery}>
         <Journalpost

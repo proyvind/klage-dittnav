@@ -52,16 +52,13 @@ export const SummaryPagePost = ({ children, ...props }: Props) => {
 
   const navn = isSessionCase(caseData) ? caseData.navn : user?.navn;
 
-  const titleKey = type === 'klage' || type === 'session-klage' ? caseData.titleKey : null;
-
   const { steps, title_fragment, page_title } =
     type === 'klage' || type === 'session-klage' ? klageskjema_post.common : ankeskjema_post.common;
 
   return (
     <PostFormContainer
-      temaKey={caseData.tema}
+      innsendingsytelse={caseData.innsendingsytelse}
       activeStep={2}
-      titleKey={titleKey}
       isValid={isValid}
       steps={steps}
       title_fragment={title_fragment}

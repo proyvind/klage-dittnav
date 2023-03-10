@@ -7,7 +7,8 @@ import { displayFnr, getFullName } from '../../functions/display';
 import { isApiError } from '../../functions/is-api-error';
 import { queryStringify } from '../../functions/query-string';
 import { usePageInit } from '../../hooks/use-page-init';
-import { useTemaName, useTitle, useTitleOrTemaName } from '../../hooks/use-titles';
+import { useInnsendingsytelseName, useTitle } from '../../hooks/use-titles';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { InngangKategori, Kategori } from '../../kategorier/kategorier';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
@@ -31,8 +32,8 @@ const FieldWithButton = styled.div`
 
 // eslint-disable-next-line import/no-unused-modules
 export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
-  const { titleKey, temaKey } = kategori;
-  const [title] = useTitleOrTemaName(temaKey, titleKey);
+  const { innsendingsytelse } = kategori;
+  const [title] = useInnsendingsytelseName(innsendingsytelse);
   const lang = useLanguage();
   const { inngang } = useTranslation();
   usePageInit(`${title} \u2013 ${inngang.innsendingsvalg.fullmakt.title_postfix}`);
@@ -44,29 +45,23 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
     useLazyGetFullmaktsgiverQuery();
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const temaName = useTemaName(temaKey);
 
   const { no_fullmakt } = inngang.innsendingsvalg.fullmakt;
 
   const query = useMemo(
-    () =>
-      queryStringify({
-        tema: temaKey,
-        titleKey,
-        fullmaktsgiver: fodselsnummer,
-      }),
-    [temaKey, titleKey, fodselsnummer]
+    () => queryStringify({ innsendingsytelse, fullmaktsgiver: fodselsnummer }),
+    [innsendingsytelse, fodselsnummer]
   );
 
   const handleSubmit = () => {
-    getFullmaktsgiver({ temaKey, fullmaktsgiver: fodselsnummer });
+    getFullmaktsgiver({ innsendingsytelse, fullmaktsgiver: fodselsnummer });
   };
 
   useEffect(() => {
     if (isApiError(error) && error.data.status === 404) {
-      setErrorMessage(no_fullmakt(fodselsnummer, temaName));
+      setErrorMessage(no_fullmakt(fodselsnummer, title));
     }
-  }, [error, fodselsnummer, no_fullmakt, temaName]);
+  }, [error, fodselsnummer, no_fullmakt, title]);
 
   const onChangeFoedselsnummer = (value: string) => {
     if (fodselsnummer !== value) {
@@ -105,7 +100,11 @@ export const InngangFullmakt = ({ kategori, inngangkategori }: Props) => {
 
           <ErrorMessage errorMessage={errorMessage} />
 
-          <Fullmakt selectedFullmaktsgiver={selectedFullmaktsgiver} query={query} />
+          <Fullmakt
+            selectedFullmaktsgiver={selectedFullmaktsgiver}
+            innsendingsytelse={kategori.innsendingsytelse}
+            query={query}
+          />
         </InngangPanel>
       </PanelContainer>
     </InngangMainContainer>
@@ -125,17 +124,18 @@ const ErrorMessage = ({ errorMessage }: ErrorMessageProps) =>
 
 interface FullmaktProps {
   selectedFullmaktsgiver?: IUser;
+  innsendingsytelse: Innsendingsytelse;
   query: string;
 }
 
-const Fullmakt = ({ selectedFullmaktsgiver, query }: FullmaktProps) => {
+const Fullmakt = ({ selectedFullmaktsgiver, innsendingsytelse, query }: FullmaktProps) => {
   if (typeof selectedFullmaktsgiver === 'undefined') {
     return null;
   }
 
   return (
     <MarginTopContainer>
-      <LinkPanel href={`/klage/ny?${query}`} border>
+      <LinkPanel href={`/klage/ny/${innsendingsytelse}?${query}`} border>
         <LinkPanel.Description>
           {`${getFullName(selectedFullmaktsgiver)} (${displayFnr(
             selectedFullmaktsgiver.folkeregisteridentifikator?.identifikasjonsnummer ?? ''
@@ -147,7 +147,7 @@ const Fullmakt = ({ selectedFullmaktsgiver, query }: FullmaktProps) => {
 };
 
 const useCreateBreadcrumbs = (inngangkategori: InngangKategori, kategori: Kategori, lang: Languages): Breadcrumb[] => {
-  const [title] = useTitle(kategori.titleKey);
+  const [title] = useTitle(kategori.innsendingsytelse);
 
   return useMemo(
     () => [

@@ -1,9 +1,8 @@
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { Languages } from '../../language/types';
-import { TemaKey } from '../../tema/tema';
 
 export interface IEttersendelse {
-  tema: TemaKey;
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
   foedselsnummer: string;
   enhetsnummer: string | null;
   language: Languages;

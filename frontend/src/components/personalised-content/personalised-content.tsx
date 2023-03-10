@@ -1,21 +1,21 @@
 import React from 'react';
-import { TemaKey } from '../../tema/tema';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { AvailableAnker } from './available-anker';
 import { DraftAnker } from './draft-anker';
 import { DraftKlager } from './draft-klager';
 
 interface Props {
-  temaAndTitleKeyList?: [TemaKey, string | null][];
+  innsendingsytelser?: Innsendingsytelse[];
 }
 
-export const DraftKlageAndAnkeLists = ({ temaAndTitleKeyList = [] }: Props) => (
+export const DraftKlageAndAnkeLists = ({ innsendingsytelser = [] }: Props) => (
   <>
-    <DraftKlager temaAndTitleKeyList={temaAndTitleKeyList} />
-    <DraftAnker temaAndTitleKeyList={temaAndTitleKeyList} />
+    <DraftKlager innsendingsytelser={innsendingsytelser} />
+    <DraftAnker innsendingsytelser={innsendingsytelser} />
   </>
 );
 
 // eslint-disable-next-line import/no-unused-modules
-export const AvailableAnkerList = ({ temaAndTitleKeyList = [] }: Props) => (
-  <AvailableAnker temaAndTitleKeyList={temaAndTitleKeyList} />
+export const AvailableAnkerList = ({ innsendingsytelser = [] }: Props) => (
+  <AvailableAnker innsendingsytelser={innsendingsytelser} />
 );

@@ -1,23 +1,20 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ISessionAnke } from '../../../components/anke/uinnlogget/types';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { Languages } from '../../../language/types';
-import { TemaKey } from '../../../tema/tema';
 import { SessionKey } from '../types';
 
 dayjs.extend(utc);
 
-export const getSessionAnkeKey = (key: SessionKey): string =>
-  `anke-${key.temaKey.toString()}-${key.titleKey ?? 'none'}`;
+export const getSessionAnkeKey = (key: SessionKey): string => `anke-${key}`;
 
 export const createSessionAnke = (
   language: Languages,
-  tema: TemaKey,
-  titleKey: string | null = null,
+  innsendingsytelse: Innsendingsytelse,
   internalSaksnummer: string | null = null
 ): ISessionAnke => ({
-  tema,
-  titleKey,
+  innsendingsytelse,
   foedselsnummer: '',
   navn: {
     fornavn: '',

@@ -1,23 +1,20 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { Languages } from '../../../language/types';
-import { TemaKey } from '../../../tema/tema';
 import { SessionKey } from '../types';
 
 dayjs.extend(utc);
 
-export const getSessionKlageKey = (key: SessionKey): string =>
-  `klage-${key.temaKey.toString()}-${key.titleKey ?? 'none'}`;
+export const getSessionKlageKey = (key: SessionKey): string => `klage-${key}`;
 
 export const createSessionKlage = (
   language: Languages,
-  tema: TemaKey,
-  titleKey: string | null = null,
+  innsendingsytelse: Innsendingsytelse,
   internalSaksnummer: string | null = null
 ): ISessionKlage => ({
-  tema,
-  titleKey,
+  innsendingsytelse,
   foedselsnummer: '',
   navn: {
     fornavn: '',

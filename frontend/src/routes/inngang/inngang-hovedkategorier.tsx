@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { DraftKlageAndAnkeLists } from '../../components/personalised-content/personalised-content';
 import { TextLoader } from '../../components/text-loader/text-loader';
+import { useInnsendingsytelserNames } from '../../hooks/use-innsendingsytelser';
 import { usePageInit } from '../../hooks/use-page-init';
-import { useTitles } from '../../hooks/use-titles';
 import { INNGANG_KATEGORIER, InngangKategori } from '../../kategorier/kategorier';
 import { Languages } from '../../language/types';
 import { useLanguage } from '../../language/use-language';
@@ -38,7 +38,7 @@ export const InngangHovedkategorier = () => {
 
         <InngangPanel as="section">
           <Heading spacing level="2" size="large">
-            {inngang.hovedkategorier.chooseTema}
+            {inngang.hovedkategorier.chooseInnsendingsytelse}
           </Heading>
           <LinkContainer>{getLinks(language)}</LinkContainer>
         </InngangPanel>
@@ -70,7 +70,7 @@ const ExternalHovedkategoriLink = ({ title, beskrivelse, externalUrl }: External
 
 const KategoriLink = ({ title, path, beskrivelse, externalUrl, kategorier }: InngangKategori) => {
   const lang = useLanguage();
-  const [titles, isLoading] = useTitles(kategorier.map(({ titleKey }) => titleKey));
+  const [titles, isLoading] = useInnsendingsytelserNames(kategorier.map(({ innsendingsytelse }) => innsendingsytelse));
 
   if (externalUrl && typeof externalUrl[lang] === 'string') {
     return (

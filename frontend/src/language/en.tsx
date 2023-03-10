@@ -3,10 +3,10 @@ import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { ExternalLink } from '../components/link/link';
 import { displayBytes, displayFnr } from '../functions/display';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
 import { CaseStatus } from '../redux-api/case/types';
-import { TemaKey } from '../tema/tema';
 import { Language } from './nb';
 
 export const en: Language = {
@@ -44,7 +44,7 @@ export const en: Language = {
     },
     hovedkategorier: {
       title: 'Complain or appeal against decision',
-      chooseTema: 'Select topic',
+      chooseInnsendingsytelse: 'Select topic',
     },
     kategorier: {
       title: 'Which service or benefit is applicable?',
@@ -92,10 +92,10 @@ export const en: Language = {
         who: 'On whose behalf are you lodging a complaint?',
         nin: 'National identification number, D number or NPID of the person you have power of attorney for',
         search: 'Search',
-        no_fullmakt: (fnr: string, temaName: string) =>
+        no_fullmakt: (fnr: string, innsendingsytelseName: string) =>
           `You do not have power of attorney for the person with national identity number ${displayFnr(
             fnr
-          )} for the topic ${temaName}.`,
+          )} for the topic ${innsendingsytelseName}.`,
       },
       ettersendelse: {
         title: 'Submit additional documentation to a complaint or appeal',
@@ -415,13 +415,13 @@ export const en: Language = {
     },
   },
   klage_create: {
-    invalid_tema: (tema = 'Unknown') => `Invalid topic "${tema}".`,
-    format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+    invalid_innsendingsytelse: (innsendingsytelse = 'Unknown') => `Invalid topic "${innsendingsytelse}".`,
+    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
       if (saksnummer === null) {
-        return `Failed to create complaint with topic "${tema}" and title "${ytelse}".`;
+        return `Failed to create complaint with topic "${innsendingsytelse}".`;
       }
 
-      return `Failed to create complaint with topic "${tema}", title "${ytelse}" and case number "${saksnummer}".`;
+      return `Failed to create complaint with topic "${innsendingsytelse}" and case number "${saksnummer}".`;
     },
     create_error: 'Could not create complaint',
     finne_fullmaktsgiver_error: (nin: string) =>
@@ -429,13 +429,13 @@ export const en: Language = {
     creating: 'Creating complaint...',
   },
   anke_create: {
-    invalid_tema: (tema = 'Unknown') => `Invalid topic "${tema}".`,
-    format_error: (tema: TemaKey, ytelse: string, saksnummer: string | null): string => {
+    invalid_innsendingsytelse: (innsendingsytelse = 'Unknown') => `Invalid topic "${innsendingsytelse}".`,
+    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
       if (saksnummer === null) {
-        return `Failed to create appeal with topic "${tema}" and title "${ytelse}".`;
+        return `Failed to create appeal with topic "${innsendingsytelse}".`;
       }
 
-      return `Failed to create appeal with topic "${tema}", title "${ytelse}" and case number "${saksnummer}".`;
+      return `Failed to create appeal with topic "${innsendingsytelse}" and case number "${saksnummer}".`;
     },
     create_error: 'Could not create appeal',
     finne_fullmaktsgiver_error: (nin: string) =>
@@ -508,6 +508,7 @@ export const en: Language = {
     },
   },
   common: {
+    loading: 'Loading...',
     logged_out: 'You have been logged out. To continue, you just need to log in again.',
     log_in: 'Log in',
     retry: 'Retry',

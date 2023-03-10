@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useErrors } from '../../../../hooks/use-errors';
 import { useSessionAnkeUpdate } from '../../../../hooks/use-session-anke-update';
 import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
+import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../../../../language/use-language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -26,14 +27,20 @@ import { AnkeSessionLoader } from '../anke-session-loader';
 import { ISessionAnke } from '../types';
 import { KaEnhet } from './ka-enhet';
 
-export const SessionAnkebegrunnelsePage = () => <AnkeSessionLoader Component={RenderAnkebegrunnelsePage} />;
+interface IProps {
+  innsendingsytelse: Innsendingsytelse;
+}
+
+export const SessionAnkebegrunnelsePage = (props: IProps) => (
+  <AnkeSessionLoader Component={RenderAnkebegrunnelsePage} {...props} />
+);
 
 interface Props {
   anke: ISessionAnke;
 }
 
 const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
-  const updateAnke = useSessionAnkeUpdate();
+  const updateAnke = useSessionAnkeUpdate(anke.innsendingsytelse);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const language = useLanguage();
@@ -42,7 +49,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalAnke(anke.tema, anke.titleKey);
+  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
 
   const { errors, isValid, isEverythingValid, setError } = useErrors({
     type: 'session-anke',
@@ -63,7 +70,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   };
 
   const deleteAndReturn = () => {
-    dispatch(deleteSessionAnke({ temaKey: anke.tema, titleKey: anke.titleKey }));
+    dispatch(deleteSessionAnke(anke.innsendingsytelse));
     navigate(`/${language}`, { replace: true });
   };
 
@@ -75,9 +82,8 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
       isValid={isValid}
       page_title={page_title}
       steps={steps}
-      temaKey={anke.tema}
+      innsendingsytelse={anke.innsendingsytelse}
       title_fragment={title_fragment}
-      titleKey={anke.titleKey}
     >
       <GuidePanel>
         <BodyLong>{supportsDigital ? ankeskjema_post.should_log_in_digital : ankeskjema_post.post_guidetext}</BodyLong>

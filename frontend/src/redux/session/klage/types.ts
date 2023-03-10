@@ -3,7 +3,7 @@ import { SessionKey } from '../types';
 
 export interface SessionKlagePayload {
   key: SessionKey;
-  klage: ISessionKlage | null;
+  klage: ISessionKlage;
 }
 
 export interface SessionKlageUpdate {

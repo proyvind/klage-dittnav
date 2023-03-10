@@ -2,8 +2,8 @@ import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
 import { SessionKey } from '../types';
 import { getSessionKlageKey } from './helpers';
 
-export const readSessionKlage = (key: SessionKey): ISessionKlage | undefined => {
-  const json = window.sessionStorage.getItem(getSessionKlageKey(key));
+export const readSessionKlage = (key: string): ISessionKlage | undefined => {
+  const json = window.sessionStorage.getItem(key);
 
   return json === null ? undefined : JSON.parse(json);
 };
@@ -16,8 +16,8 @@ export const saveSessionKlage = (key: SessionKey, klage: ISessionKlage | null): 
     return keyString;
   }
 
-  if (key.temaKey !== klage.tema || key.titleKey !== klage.titleKey) {
-    throw new Error('TemaKey and titleKey must match');
+  if (key !== klage.innsendingsytelse) {
+    throw new Error('Innsendingsytelse must match');
   }
 
   const keyString = getSessionKlageKey(key);

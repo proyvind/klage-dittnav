@@ -31,7 +31,7 @@ import { KlageLoader } from '../klage-loader';
 export const KlageoppsummeringPage = () => <KlageLoader Component={Wrapper} />;
 
 const Wrapper = ({ klage }: { klage: Klage }) => {
-  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
   const { data: user, isLoading: userIsLoading } = useUser();
   const { user_loader } = useTranslation();
 
@@ -64,7 +64,7 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigitalKlage(klage.tema, klage.titleKey);
+  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;
@@ -81,9 +81,8 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
       klageOrAnke={klage}
       page_title={klageskjema.common.page_title}
       steps={klageskjema.common.steps}
-      temaKey={klage.tema}
+      innsendingsytelse={klage.innsendingsytelse}
       title_fragment={klageskjema.common.title_fragment}
-      titleKey={klage.titleKey}
     >
       <div>
         <Icon />

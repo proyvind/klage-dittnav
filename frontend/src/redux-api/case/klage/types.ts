@@ -1,6 +1,6 @@
+import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { StringValue } from '../../../kategorier/kategorier';
 import { Languages } from '../../../language/types';
-import { TemaKey } from '../../../tema/tema';
 import { Case } from '../types';
 
 export enum Reason {
@@ -11,18 +11,16 @@ export enum Reason {
 }
 
 export interface ResumeKlage {
-  readonly tema: TemaKey;
-  readonly titleKey: string | null;
+  readonly innsendingsytelse: Innsendingsytelse;
   readonly internalSaksnummer: string | null;
   readonly fullmaktsgiver: string | null;
 }
 
-export interface NewKlage extends Pick<Case, 'fritekst' | 'vedtakDate' | 'hasVedlegg' | 'userSaksnummer' | 'language'> {
-  readonly tema: TemaKey;
-  readonly titleKey: string;
-  readonly internalSaksnummer: string | null;
-  readonly fullmaktsgiver: string | null;
+export interface NewKlage
+  extends Pick<Case, 'fritekst' | 'vedtakDate' | 'hasVedlegg' | 'userSaksnummer' | 'internalSaksnummer' | 'language'> {
+  readonly innsendingsytelse: Innsendingsytelse;
   readonly checkboxesSelected: Reason[];
+  readonly fullmaktsgiver: string | null;
 }
 
 export interface Klage extends ResumeKlage, Case {

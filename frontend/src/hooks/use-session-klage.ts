@@ -1,32 +1,39 @@
-import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { useEffect, useMemo } from 'react';
 import { ISessionKlage } from '../components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '../language/use-language';
 import { useAppDispatch, useAppSelector } from '../redux/configure-store';
-import { getSessionKlageKey } from '../redux/session/klage/helpers';
+import { createSessionKlage, getSessionKlageKey } from '../redux/session/klage/helpers';
 import { loadSessionKlage } from '../redux/session/session';
-import { SessionKey } from '../redux/session/types';
 
-export const useSessionKlage = (key: SessionKey | typeof skipToken): ISessionKlage | undefined | null => {
+export const useSessionKlage = (
+  innsendingsytelse: Innsendingsytelse,
+  internalSaksnummer: string | null
+): [ISessionKlage, false] | [undefined, true] => {
   const dispatch = useAppDispatch();
   const sessionKlageMap = useAppSelector((state) => state.session.klager);
   const language = useLanguage();
 
   const klage = useMemo(() => {
-    if (key === skipToken) {
-      return undefined;
-    }
-
-    const klageKey = getSessionKlageKey(key);
+    const klageKey = getSessionKlageKey(innsendingsytelse);
 
     return sessionKlageMap[klageKey];
-  }, [key, sessionKlageMap]);
+  }, [innsendingsytelse, sessionKlageMap]);
 
   useEffect(() => {
-    if (key !== skipToken && typeof klage === 'undefined') {
-      dispatch(loadSessionKlage({ key, klage: null }));
+    if (klage === undefined) {
+      dispatch(
+        loadSessionKlage({
+          key: innsendingsytelse,
+          klage: createSessionKlage(language, innsendingsytelse, internalSaksnummer),
+        })
+      );
     }
-  }, [dispatch, key, klage, language]);
+  }, [dispatch, innsendingsytelse, internalSaksnummer, klage, language]);
 
-  return klage;
+  if (klage === undefined) {
+    return [undefined, true];
+  }
+
+  return [klage, false];
 };

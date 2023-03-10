@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useTitle } from '../../../../hooks/use-titles';
+import { useInnsendingsytelseName } from '../../../../hooks/use-innsendingsytelser';
 import { useTranslation } from '../../../../language/use-translation';
 import { AppEventEnum } from '../../../../logging/error-report/action';
 import {
@@ -20,7 +20,6 @@ import { ISessionKlage } from '../../../klage/uinnlogget/types';
 
 interface Props {
   caseData: ISessionKlage | ISessionAnke | IEttersendelse;
-  titleKey?: string | null;
   type: 'klage' | 'anke' | 'ettersendelse';
   validForm?: () => boolean;
 }
@@ -31,10 +30,10 @@ const TYPE_NAMES = {
   ettersendelse: 'Ettersendelse',
 };
 
-export const DownloadButton = ({ caseData, titleKey, type, validForm }: Props) => {
+export const DownloadButton = ({ caseData, type, validForm }: Props) => {
   const { common } = useTranslation();
   const [pdfLoading, setpdfLoading] = useState(false);
-  const [title] = useTitle(titleKey);
+  const [title] = useInnsendingsytelseName(caseData.innsendingsytelse);
   const navigate = useNavigate();
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

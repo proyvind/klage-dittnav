@@ -31,6 +31,7 @@ export interface Case {
   readonly status: CaseStatus;
   readonly journalpostId: string | null;
   readonly userSaksnummer: string | null;
+  readonly internalSaksnummer: string | null;
   readonly fritekst: string;
   readonly vedtakDate: ISODate | null;
   readonly vedlegg: Attachment[];

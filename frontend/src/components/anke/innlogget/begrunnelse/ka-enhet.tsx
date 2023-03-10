@@ -32,7 +32,7 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
 
   const NoneSelected = () =>
     enhet === null ? (
-      <option value={NONE} disabled selected>
+      <option value={NONE} disabled>
         {ankeskjema.begrunnelse.klageenhet.not_specified}
       </option>
     ) : null;
@@ -42,7 +42,7 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
       id={FormFieldsIds.KLAGEENHET_ANKE}
       label={ankeskjema.begrunnelse.klageenhet.title}
       disabled={isLoading}
-      value={enhet ?? undefined}
+      value={enhet ?? NONE}
       onChange={({ target }) => onChange(target.value)}
       error={error}
     >

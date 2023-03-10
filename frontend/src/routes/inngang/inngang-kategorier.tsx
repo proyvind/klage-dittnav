@@ -5,13 +5,13 @@ import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { DraftKlageAndAnkeLists } from '../../components/personalised-content/personalised-content';
 import { TitleLoader } from '../../components/text-loader/title-loader';
 import { usePageInit } from '../../hooks/use-page-init';
+import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
 import { InngangKategori } from '../../kategorier/kategorier';
 import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { PageIdentifier } from '../../logging/amplitude';
 import { useLogPageView } from '../../logging/use-log-page-view';
 import { InngangMainContainer } from '../../styled-components/main-container';
-import { TemaKey } from '../../tema/tema';
 import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
 
@@ -28,8 +28,8 @@ export const InngangKategorier = React.memo(
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
     useBreadcrumbs([], title);
 
-    const temaAndTitleKeyList: [TemaKey, string][] = useMemo(
-      () => inngangkategori.kategorier.map(({ temaKey, titleKey }) => [temaKey, titleKey]),
+    const innsendingsytelser: Innsendingsytelse[] = useMemo(
+      () => inngangkategori.kategorier.map(({ innsendingsytelse }) => innsendingsytelse),
       [inngangkategori.kategorier]
     );
 
@@ -42,7 +42,7 @@ export const InngangKategorier = React.memo(
 
           <InngangGuidePanel />
 
-          <DraftKlageAndAnkeLists temaAndTitleKeyList={temaAndTitleKeyList} />
+          <DraftKlageAndAnkeLists innsendingsytelser={innsendingsytelser} />
 
           <InngangPanel as="section">
             <Heading spacing level="2" size="large">
@@ -68,13 +68,19 @@ const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
         const externalUrl = kategori.externalUrl ? kategori.externalUrl[lang] : null;
 
         if (typeof externalUrl === 'string') {
-          return <ExternalKategoriLink key={externalUrl} titleKey={kategori.titleKey} externalUrl={externalUrl} />;
+          return (
+            <ExternalKategoriLink
+              key={externalUrl}
+              innsendingsytelse={kategori.innsendingsytelse}
+              externalUrl={externalUrl}
+            />
+          );
         }
 
         return (
           <KategoriLink
-            key={kategori.titleKey}
-            titleKey={kategori.titleKey}
+            key={kategori.innsendingsytelse}
+            innsendingsytelse={kategori.innsendingsytelse}
             path={`/${lang}/${path}/${kategori.path}`}
           />
         );
@@ -84,27 +90,27 @@ const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
 };
 
 interface KategoriLinkProps {
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
   path: string;
 }
 
-const KategoriLink = ({ titleKey, path }: KategoriLinkProps) => (
+const KategoriLink = ({ innsendingsytelse, path }: KategoriLinkProps) => (
   <LinkPanel as={Link} to={path} border>
     <LinkPanel.Title>
-      <TitleLoader titleKey={titleKey} />
+      <TitleLoader innsendingsytelse={innsendingsytelse} />
     </LinkPanel.Title>
   </LinkPanel>
 );
 
 interface ExternalKategoriProps {
-  titleKey: string;
+  innsendingsytelse: Innsendingsytelse;
   externalUrl: string;
 }
 
-const ExternalKategoriLink = ({ titleKey, externalUrl }: ExternalKategoriProps) => (
+const ExternalKategoriLink = ({ innsendingsytelse, externalUrl }: ExternalKategoriProps) => (
   <LinkPanel href={externalUrl} border>
     <LinkPanel.Title>
-      <TitleLoader titleKey={titleKey} />
+      <TitleLoader innsendingsytelse={innsendingsytelse} />
     </LinkPanel.Title>
   </LinkPanel>
 );

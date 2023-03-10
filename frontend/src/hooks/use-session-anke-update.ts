@@ -1,18 +1,10 @@
 import { ISessionAnke } from '../components/anke/uinnlogget/types';
+import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { useAppDispatch } from '../redux/configure-store';
 import { updateSessionAnke } from '../redux/session/session';
-import { SessionKey } from '../redux/session/types';
-import { useSessionKey } from './use-session-key';
 
-export const useSessionAnkeUpdate = () => {
+export const useSessionAnkeUpdate = (key: Innsendingsytelse) => {
   const dispatch = useAppDispatch();
-  const { temaKey, titleKey } = useSessionKey();
-
-  if (temaKey === null) {
-    throw new Error('TemaKey is null');
-  }
-
-  const key: SessionKey = { temaKey, titleKey };
 
   return (update: Partial<ISessionAnke>) => dispatch(updateSessionAnke({ key, update }));
 };
