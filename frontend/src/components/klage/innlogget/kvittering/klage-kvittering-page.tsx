@@ -52,7 +52,6 @@ const RenderKlagekvitteringPage = ({ klage }: Props) => {
           finalizedDate={klage.finalizedDate}
           basePath={`${API_PATH}/klager`}
           translations={klageskjema}
-          showFullmaktInfo
         />
       </KvitteringPageLoader>
     </Container>

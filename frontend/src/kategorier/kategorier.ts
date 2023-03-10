@@ -15,13 +15,12 @@ export interface InngangKategori {
   externalUrl?: StringValue;
 }
 
-export interface Kategori {
+interface Kategori {
   innsendingsytelse: Innsendingsytelse;
   allowsAnke: boolean;
   showAnkeList: EnvString[];
   digitalKlage: EnvString[];
   digitalAnke: EnvString[];
-  digitalKlageFullmakt: boolean;
   path: string;
   externalUrl?: StringValue;
 }
@@ -44,7 +43,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'dagpenger-feriepenger',
       },
       {
@@ -53,7 +51,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'dagpenger-tilbakebetaling-forskudd',
       },
       {
@@ -62,7 +59,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'lonnskompensasjon',
       },
       {
@@ -71,7 +67,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'midlertidig-kompensasjon',
       },
     ],
@@ -94,7 +89,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'dagpenger',
       },
       {
@@ -103,7 +97,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'dagpenger-feriepenger',
       },
       {
@@ -112,7 +105,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'dagpenger-tilbakebetaling-forskudd',
       },
       {
@@ -121,7 +113,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'arbeidsavklaringspenger',
       },
       {
@@ -130,7 +121,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'lonnsgaranti',
       },
       {
@@ -139,7 +129,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
+
         path: 'tiltakspenger',
       },
       {
@@ -148,7 +138,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'nav-loven-14a',
       },
     ],
@@ -167,7 +156,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [EnvString.DEV, EnvString.LOCAL],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'sykepenger',
       },
       {
@@ -176,7 +164,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'arbeidsavklaringspenger',
       },
       {
@@ -185,7 +172,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'uforetrygd',
       },
       {
@@ -194,7 +180,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'supplerende-stonad-ufore-flyktninger',
       },
       {
@@ -203,7 +188,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'grunn-og-hjelpestonad',
       },
       {
@@ -212,7 +196,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'yrkesskade',
       },
     ],
@@ -231,7 +214,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'foreldrepenger',
       },
       {
@@ -240,7 +222,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'engangsstonad',
       },
       {
@@ -249,7 +230,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'svangerskapspenger',
       },
       {
@@ -258,7 +238,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'kontantstotte',
       },
       {
@@ -267,7 +246,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'barnetrygd',
       },
       {
@@ -276,7 +254,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'barnebidrag-og-bidragsforskudd',
       },
       {
@@ -285,7 +262,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'ektefellebidrag',
       },
       {
@@ -294,7 +270,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'enslig-mor-eller-far',
       },
       {
@@ -303,7 +278,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'gravferdsstonad',
       },
       {
@@ -312,7 +286,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [EnvString.DEV, EnvString.LOCAL],
         digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'sykdom-i-familien',
       },
       {
@@ -321,7 +294,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'oppfostringsbidrag',
       },
     ],
@@ -340,7 +312,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'alderspensjon',
       },
       {
@@ -349,7 +320,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'avtalefestet-pensjon-spk',
       },
       {
@@ -358,7 +328,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'avtalefestet-pensjon-privat',
       },
       {
@@ -367,7 +336,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'barnepensjon',
       },
       {
@@ -376,7 +344,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'krigspensjon',
       },
       {
@@ -385,7 +352,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'gjenlevende',
       },
       {
@@ -394,7 +360,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'supplerende-stonad',
       },
       {
@@ -403,7 +368,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'tidligere-familiepleier',
       },
     ],
@@ -422,7 +386,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'opphold-eller-arbeid-i-norge',
       },
       {
@@ -431,7 +394,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'opphold-eller-arbeid-utenfor-norge',
       },
     ],
@@ -453,7 +415,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'hjelpemidler',
       },
       {
@@ -462,7 +423,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        digitalKlageFullmakt: false,
         path: 'bil',
       },
     ],

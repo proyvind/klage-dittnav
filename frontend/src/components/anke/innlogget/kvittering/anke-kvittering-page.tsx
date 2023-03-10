@@ -52,7 +52,6 @@ const RenderAnkekvitteringPage = ({ anke }: Props) => {
           finalizedDate={anke.finalizedDate}
           basePath={`${API_PATH}/anker`}
           translations={ankeskjema}
-          showFullmaktInfo
         />
       </KvitteringPageLoader>
     </Container>

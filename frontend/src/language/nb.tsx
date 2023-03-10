@@ -2,7 +2,7 @@
 import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { ExternalLink } from '../components/link/link';
-import { displayBytes, displayFnr } from '../functions/display';
+import { displayBytes } from '../functions/display';
 import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
@@ -11,15 +11,6 @@ import { CaseStatus } from '../redux-api/case/types';
 export type Language = typeof nb;
 
 export const nb = {
-  fullmakt: {
-    title: 'Klage på vegne av andre',
-    description: 'Digital innsending av klage når du har fullmakt på vegne av andre.',
-    help: {
-      text: 'Slik gir du fullmakt til andre',
-      url: 'https://www.nav.no/soknader/nb/person/diverse/fullmaktskjema',
-    },
-    loading: 'Sjekker fullmakt...',
-  },
   inngang: {
     title_postfix: 'klage eller anke',
     guide_panel: {
@@ -92,15 +83,6 @@ export const nb = {
           logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
-      fullmakt: {
-        title_postfix: 'klage på vegne av andre',
-        title: 'Klage på vegne av andre',
-        who: 'Hvem klager du på vegne av?',
-        nin: 'Fødselsnummer, D-nummer eller NPID for den du har fullmakt til (11 siffer)',
-        search: 'Søk',
-        no_fullmakt: (fnr: string, innsendingsytelseName: string) =>
-          `Du har ikke fullmakt for person med personnummer ${displayFnr(fnr)} for området ${innsendingsytelseName}.`,
-      },
       ettersendelse: {
         title: 'Ettersendelse til klage eller anke',
         description:
@@ -161,9 +143,6 @@ export const nb = {
       steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
     },
     begrunnelse: {
-      fullmakt: {
-        label: 'Klage på vegne av:',
-      },
       reasons: {
         title: 'Hva gjelder klagen? (valgfri)',
         not_specified: 'Ikke spesifisert.',
@@ -315,9 +294,6 @@ export const nb = {
       steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
     },
     begrunnelse: {
-      fullmakt: {
-        label: 'Anke på vegne av:',
-      },
       vedtak_date: {
         title: 'Klagens vedtaksdato',
       },
@@ -434,7 +410,6 @@ export const nb = {
       return `Klarte ikke opprette klage med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
     },
     create_error: 'Klarte ikke opprette klage',
-    finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
     creating: 'Oppretter klage...',
   },
   anke_create: {
@@ -447,7 +422,6 @@ export const nb = {
       return `Klarte ikke opprette anke med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
     },
     create_error: 'Klarte ikke opprette anke',
-    finne_fullmaktsgiver_error: (fnr: string) => `Klarte ikke finne fullmaktsgiver med fødselsnummer ${fnr}.`,
     creating: 'Oppretter anke...',
   },
   user_loader: {

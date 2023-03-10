@@ -46,14 +46,12 @@ export const handleSessionKlage = ({
 interface IHandleCreate extends IHandler {
   dispatch: AppDispatch;
   sessionKlage: ISessionKlage;
-  fullmaktsgiver: string | null;
   createKlage: ReturnType<typeof useCreateKlageMutation>[0];
 }
 
 export const handleCreateKlage = ({
   sessionKlage,
   internalSaksnummer,
-  fullmaktsgiver,
   innsendingsytelse: key,
   language,
   createKlage,
@@ -61,7 +59,7 @@ export const handleCreateKlage = ({
   navigate,
 }: IHandleCreate) => {
   addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
-  createKlage(getCreatePayload(sessionKlage, internalSaksnummer, fullmaktsgiver))
+  createKlage(getCreatePayload(sessionKlage, internalSaksnummer))
     .unwrap()
     .then(({ id }) => {
       dispatch(deleteSessionKlage(key));
@@ -71,29 +69,23 @@ export const handleCreateKlage = ({
 
 interface IHandleResumeOrCreate extends IHandler {
   resumeOrCreateKlage: ReturnType<typeof useResumeOrCreateKlageMutation>[0];
-  fullmaktsgiver: string | null;
   language: Languages;
 }
 
 export const handleResumeOrCreateKlage = ({
   innsendingsytelse,
   internalSaksnummer,
-  fullmaktsgiver,
   language,
   navigate,
   resumeOrCreateKlage,
 }: IHandleResumeOrCreate) => {
   addAppEvent(AppEventEnum.CREATE_OR_RESUME_CASE);
-  resumeOrCreateKlage({ innsendingsytelse, internalSaksnummer, fullmaktsgiver })
+  resumeOrCreateKlage({ innsendingsytelse, internalSaksnummer })
     .unwrap()
     .then(({ id }) => navigate(`/${language}/klage/${id}/begrunnelse`, { replace: true }));
 };
 
-const getCreatePayload = (
-  sessionKlage: ISessionKlage,
-  internalSaksnummer: string | null,
-  fullmaktsgiver: string | null
-): NewKlage => ({
+const getCreatePayload = (sessionKlage: ISessionKlage, internalSaksnummer: string | null): NewKlage => ({
   innsendingsytelse: sessionKlage.innsendingsytelse,
   checkboxesSelected: sessionKlage.checkboxesSelected,
   userSaksnummer: sessionKlage.userSaksnummer,
@@ -102,5 +94,4 @@ const getCreatePayload = (
   internalSaksnummer,
   fritekst: sessionKlage.fritekst,
   hasVedlegg: sessionKlage.hasVedlegg,
-  fullmaktsgiver,
 });

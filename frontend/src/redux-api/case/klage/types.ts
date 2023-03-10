@@ -13,14 +13,12 @@ export enum Reason {
 export interface ResumeKlage {
   readonly innsendingsytelse: Innsendingsytelse;
   readonly internalSaksnummer: string | null;
-  readonly fullmaktsgiver: string | null;
 }
 
 export interface NewKlage
   extends Pick<Case, 'fritekst' | 'vedtakDate' | 'hasVedlegg' | 'userSaksnummer' | 'internalSaksnummer' | 'language'> {
   readonly innsendingsytelse: Innsendingsytelse;
   readonly checkboxesSelected: Reason[];
-  readonly fullmaktsgiver: string | null;
 }
 
 export interface Klage extends ResumeKlage, Case {

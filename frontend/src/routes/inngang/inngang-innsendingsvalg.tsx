@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { IconLinkPanel } from '../../components/icon-link-panel/icon-link-panel';
-import { ExternalLink } from '../../components/link/link';
 import { Optional } from '../../components/optional/optional';
 import { queryStringify } from '../../functions/query-string';
 import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
@@ -20,7 +19,6 @@ import { useLogPageView } from '../../logging/use-log-page-view';
 import { InngangMainContainer } from '../../styled-components/main-container';
 import { InngangGuidePanel } from './guide-panel';
 import { AnkeLinkPanel } from './klage-anke-knapper/anke-link-panel';
-import { KlageDigitaltFullmaktKnapp } from './klage-anke-knapper/klage-digitalt-fullmakt-knapp';
 import { KlageLinkPanel } from './klage-anke-knapper/klage-link-panel';
 import { CenteredHeading, InngangPanel, PanelContainer } from './styled-components/panels';
 
@@ -28,7 +26,6 @@ interface Props {
   innsendingsytelse: Innsendingsytelse;
   internalSaksnummer?: string | null;
   inngangkategori?: InngangKategori | null;
-  digitalKlageFullmakt?: boolean;
   allowsAnke?: boolean;
   supportsDigitalKlage?: boolean;
   supportsDigitalAnke?: boolean;
@@ -39,7 +36,6 @@ export const InngangInnsending = React.memo(
     innsendingsytelse,
     internalSaksnummer = null,
     inngangkategori = null,
-    digitalKlageFullmakt = false,
     allowsAnke = false,
     supportsDigitalKlage = false,
     supportsDigitalAnke = false,
@@ -65,7 +61,6 @@ export const InngangInnsending = React.memo(
             <Links
               innsendingsytelse={innsendingsytelse}
               saksnummerValue={internalSaksnummer}
-              digitalKlageFullmakt={digitalKlageFullmakt}
               supportsDigitalKlage={supportsDigitalKlage}
             />
             <Optional show={allowsAnke === true}>
@@ -95,13 +90,12 @@ InngangInnsending.displayName = 'InngangInnsending';
 interface LinksProps {
   innsendingsytelse: Innsendingsytelse;
   saksnummerValue: string | null;
-  digitalKlageFullmakt: boolean;
   supportsDigitalKlage: boolean;
 }
 
-const Links = ({ innsendingsytelse, saksnummerValue, digitalKlageFullmakt, supportsDigitalKlage }: LinksProps) => {
+const Links = ({ innsendingsytelse, saksnummerValue, supportsDigitalKlage }: LinksProps) => {
   const { saksnummer } = useParams();
-  const { fullmakt, inngang } = useTranslation();
+  const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
 
   const query = useMemo(
@@ -122,13 +116,6 @@ const Links = ({ innsendingsytelse, saksnummerValue, digitalKlageFullmakt, suppo
       </Optional>
 
       <KlageLinkPanel innsendingsytelse={innsendingsytelse} query={query} supportsDigitalKlage={supportsDigitalKlage} />
-
-      <Optional show={digitalKlageFullmakt}>
-        <KlageDigitaltFullmaktKnapp />
-        <ExternalLink href={fullmakt.help.url} openInSameWindow>
-          {fullmakt.help.text}
-        </ExternalLink>
-      </Optional>
     </>
   );
 };

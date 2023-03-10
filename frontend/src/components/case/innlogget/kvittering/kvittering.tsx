@@ -14,7 +14,6 @@ import { ExternalLink } from '../../../link/link';
 
 interface Props {
   translations: Language['klageskjema' | 'ankeskjema'];
-  showFullmaktInfo?: boolean;
   children?: React.ReactNode;
 }
 
@@ -56,7 +55,6 @@ interface JournalpostProps {
   finalizedDate: ISODate | null;
   translations: Language['klageskjema' | 'ankeskjema'];
   basePath: string;
-  showFullmaktInfo?: boolean;
 }
 
 export const Journalpost = ({ caseId, finalizedDate, translations, basePath }: JournalpostProps) => (

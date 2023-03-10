@@ -1,7 +1,5 @@
-import { skipToken } from '@reduxjs/toolkit/dist/query';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { displayFnr } from '../../functions/display';
 import { getQueryValue } from '../../functions/get-query-value';
 import { useSessionKlage } from '../../hooks/use-session-klage';
 import { useIsAuthenticated, useUser } from '../../hooks/use-user';
@@ -10,7 +8,6 @@ import { useLanguage } from '../../language/use-language';
 import { useTranslation } from '../../language/use-translation';
 import { useAppDispatch } from '../../redux/configure-store';
 import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../../redux-api/case/klage/api';
-import { useGetFullmaktsgiverQuery } from '../../redux-api/user/api';
 import { handleCreateKlage, handleResumeOrCreateKlage, handleSessionKlage } from './handlers';
 
 interface IResult {
@@ -21,15 +18,12 @@ interface IResult {
 export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
   const navigate = useNavigate();
   const language = useLanguage();
-  const { klage_create, klage_loader, fullmakt } = useTranslation();
+  const { klage_create, klage_loader } = useTranslation();
   const [query] = useSearchParams();
   const { isLoading: authIsLoading, data: isAuthenticated } = useIsAuthenticated();
   const { data: user, isLoading: userIsLoading } = useUser();
 
   const internalSaksnummer = getQueryValue(query.get('saksnummer'));
-  const fullmaktsgiver = getQueryValue(query.get('fullmaktsgiver'));
-
-  const [hasFullmaktsgiver, hasFullmaktsgiverIsLoading] = useHasFullmaktsgiver(innsendingsytelse, fullmaktsgiver);
 
   const [createKlage, { isLoading: createIsLoading, isError: createHasFailed, isSuccess: createIsSuccess }] =
     useCreateKlageMutation();
@@ -54,7 +48,7 @@ export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
       return;
     }
 
-    if (hasFullmaktsgiverIsLoading || (fullmaktsgiver !== null && !hasFullmaktsgiver) || user === undefined) {
+    if (user === undefined) {
       return;
     }
 
@@ -65,7 +59,6 @@ export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
       handleCreateKlage({
         createKlage,
         dispatch,
-        fullmaktsgiver,
         internalSaksnummer,
         innsendingsytelse,
         language,
@@ -77,7 +70,6 @@ export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
     }
 
     handleResumeOrCreateKlage({
-      fullmaktsgiver,
       internalSaksnummer,
       innsendingsytelse,
       language,
@@ -87,9 +79,6 @@ export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
   }, [
     createKlage,
     dispatch,
-    fullmaktsgiver,
-    hasFullmaktsgiver,
-    hasFullmaktsgiverIsLoading,
     innsendingsytelse,
     internalSaksnummer,
     isAuthenticated,
@@ -105,30 +94,9 @@ export const useKlage = (innsendingsytelse: Innsendingsytelse): IResult => {
 
   const hasFailed = createHasFailed || resumeHasFailed;
 
-  const error = useMemo<string | null>(() => {
-    if (hasFailed) {
-      return klage_create.create_error;
-    }
+  const error = hasFailed ? klage_create.create_error : null;
 
-    if (fullmaktsgiver !== null && !hasFullmaktsgiver && !hasFullmaktsgiverIsLoading) {
-      return klage_create.finne_fullmaktsgiver_error(displayFnr(fullmaktsgiver));
-    }
-
-    return null;
-  }, [hasFailed, fullmaktsgiver, hasFullmaktsgiver, hasFullmaktsgiverIsLoading, klage_create]);
-
-  const loading = hasFullmaktsgiverIsLoading ? fullmakt.loading : klage_loader.loading_klage;
+  const loading = klage_loader.loading_klage;
 
   return { error, loading };
-};
-
-const useHasFullmaktsgiver = (
-  innsendingsytelse: Innsendingsytelse | null,
-  fullmaktsgiver: string | null
-): [boolean, boolean] => {
-  const query =
-    innsendingsytelse === null || fullmaktsgiver === null ? skipToken : { innsendingsytelse, fullmaktsgiver };
-  const { isLoading, isFetching, isSuccess } = useGetFullmaktsgiverQuery(query);
-
-  return [isSuccess, isLoading || isFetching];
 };

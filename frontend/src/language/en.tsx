@@ -2,7 +2,7 @@
 import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { ExternalLink } from '../components/link/link';
-import { displayBytes, displayFnr } from '../functions/display';
+import { displayBytes } from '../functions/display';
 import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 import { Utfall } from '../redux-api/case/anke/types';
 import { Reason } from '../redux-api/case/klage/types';
@@ -10,15 +10,6 @@ import { CaseStatus } from '../redux-api/case/types';
 import { Language } from './nb';
 
 export const en: Language = {
-  fullmakt: {
-    title: 'Complaint on behalf of others',
-    description: 'Digital submission of complaint when you are authorised on behalf of others.',
-    help: {
-      text: 'How to give power of attorney to others',
-      url: 'https://www.nav.no/soknader/en/person/diverse/fullmaktskjema',
-    },
-    loading: 'Checking power of attorney...',
-  },
   inngang: {
     title_postfix: 'complain or appeal',
     guide_panel: {
@@ -86,17 +77,6 @@ export const en: Language = {
           logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
-      fullmakt: {
-        title_postfix: 'Complain on behalf of others',
-        title: 'Complain on behalf of others',
-        who: 'On whose behalf are you lodging a complaint?',
-        nin: 'National identification number, D number or NPID of the person you have power of attorney for',
-        search: 'Search',
-        no_fullmakt: (fnr: string, innsendingsytelseName: string) =>
-          `You do not have power of attorney for the person with national identity number ${displayFnr(
-            fnr
-          )} for the topic ${innsendingsytelseName}.`,
-      },
       ettersendelse: {
         title: 'Submit additional documentation to a complaint or appeal',
         description:
@@ -160,9 +140,6 @@ export const en: Language = {
       steps: ['Reason', 'Summary', 'Receipt'],
     },
     begrunnelse: {
-      fullmakt: {
-        label: 'Complaint on behalf of:',
-      },
       reasons: {
         title: 'What do you disagree with? (optional)',
         not_specified: 'Not specified.',
@@ -310,9 +287,6 @@ export const en: Language = {
       steps: ['Reason', 'Summary', 'Receipt'],
     },
     begrunnelse: {
-      fullmakt: {
-        label: 'Appeal on behalf of:',
-      },
       vedtak_date: {
         title: 'Date of decision',
       },
@@ -424,8 +398,6 @@ export const en: Language = {
       return `Failed to create complaint with topic "${innsendingsytelse}" and case number "${saksnummer}".`;
     },
     create_error: 'Could not create complaint',
-    finne_fullmaktsgiver_error: (nin: string) =>
-      `Could not find grantor of power of attorney with national identity number ${nin}.`,
     creating: 'Creating complaint...',
   },
   anke_create: {
@@ -438,8 +410,6 @@ export const en: Language = {
       return `Failed to create appeal with topic "${innsendingsytelse}" and case number "${saksnummer}".`;
     },
     create_error: 'Could not create appeal',
-    finne_fullmaktsgiver_error: (nin: string) =>
-      `Could not find grantor of power of attorney with national identity number ${nin}.`,
     creating: 'Creating appeal...',
   },
   user_loader: {

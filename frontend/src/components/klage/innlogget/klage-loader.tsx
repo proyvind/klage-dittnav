@@ -6,7 +6,6 @@ import { useTranslation } from '../../../language/use-translation';
 import { addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
 import { useGetKlageQuery, useUpdateKlageMutation } from '../../../redux-api/case/klage/api';
 import { Klage } from '../../../redux-api/case/klage/types';
-import { useLazyGetFullmaktsgiverQuery } from '../../../redux-api/user/api';
 import { LoadingPage } from '../../loading-page/loading-page';
 
 interface Props {
@@ -20,7 +19,6 @@ export const KlageLoader = ({ Component }: Props) => {
 
   const [updateKlage, { isLoading: isUpdating }] = useUpdateKlageMutation();
   const { data: klage, isLoading } = useGetKlageQuery(klageId ?? skipToken);
-  const [getFullmaktsgiver] = useLazyGetFullmaktsgiverQuery();
 
   useEffect(() => {
     if (typeof klageId !== 'string') {
@@ -41,14 +39,8 @@ export const KlageLoader = ({ Component }: Props) => {
       addErrorEvent(e.message, e.stack);
       sendErrorReport();
       setError(klage_loader.format_error(klageId, e));
-
-      return;
     }
-
-    if (klage.fullmaktsgiver !== null) {
-      getFullmaktsgiver({ innsendingsytelse: klage.innsendingsytelse, fullmaktsgiver: klage.fullmaktsgiver });
-    }
-  }, [klageId, klage, klage_loader, updateKlage, getFullmaktsgiver, isLoading]);
+  }, [klageId, klage, klage_loader, updateKlage, isLoading]);
 
   if (error !== null) {
     return <Alert variant="error">{error}</Alert>;
