@@ -9,6 +9,7 @@ import { useTranslation } from '../../../language/use-translation';
 import { useAppDispatch } from '../../../redux/configure-store';
 import { createSessionAnke } from '../../../redux/session/anke/helpers';
 import { loadSessionAnke } from '../../../redux/session/session';
+import { SessionKey } from '../../../redux/session/types';
 import { ensureStringIsTema } from '../../../tema/tema';
 import { ISessionAnke } from './types';
 
@@ -21,35 +22,25 @@ export const AnkeSessionLoader = ({ Component }: Props) => {
   const [query] = useSearchParams();
   const { temaKey: tema, titleKey = null } = useParams();
   const temaKey = ensureStringIsTema(getQueryValue(tema));
-  const saksnummer = getQueryValue(query.get('saksnummer'));
-
-  const key = useMemo(() => {
-    if (typeof saksnummer === 'string') {
-      return saksnummer;
-    }
-
-    if (temaKey === null) {
-      return skipToken;
-    }
-
-    return { temaKey, titleKey };
-  }, [saksnummer, temaKey, titleKey]);
-
+  const internalSaksnummer = getQueryValue(query.get('saksnummer'));
+  const key = useMemo<SessionKey | typeof skipToken>(
+    () => (temaKey === null ? skipToken : { temaKey, titleKey }),
+    [temaKey, titleKey]
+  );
   const anke = useSessionAnke(key);
-
   const dispatch = useAppDispatch();
   const { anke_loader } = useTranslation();
 
   useEffect(() => {
-    if (typeof anke === 'undefined' && temaKey !== null) {
+    if (key !== skipToken && temaKey !== null && typeof anke === 'undefined') {
       dispatch(
         loadSessionAnke({
-          key: { temaKey, titleKey },
-          anke: createSessionAnke(language, temaKey, titleKey, saksnummer),
+          key,
+          anke: createSessionAnke(language, temaKey, titleKey, internalSaksnummer),
         })
       );
     }
-  }, [dispatch, anke, language, saksnummer, temaKey, titleKey]);
+  }, [dispatch, anke, language, internalSaksnummer, key, temaKey, titleKey]);
 
   if (temaKey === null) {
     return <Navigate to="/" />;

@@ -4,10 +4,10 @@ import { ISessionAnke } from '../components/anke/uinnlogget/types';
 import { useLanguage } from '../language/use-language';
 import { useAppDispatch, useAppSelector } from '../redux/configure-store';
 import { getSessionAnkeKey } from '../redux/session/anke/helpers';
-import { SessionAnkeKey } from '../redux/session/anke/types';
 import { loadSessionAnke } from '../redux/session/session';
+import { SessionKey } from '../redux/session/types';
 
-export const useSessionAnke = (key: SessionAnkeKey | typeof skipToken): ISessionAnke | undefined | null => {
+export const useSessionAnke = (key: SessionKey | typeof skipToken): ISessionAnke | undefined | null => {
   const dispatch = useAppDispatch();
   const sessionAnkeMap = useAppSelector((state) => state.session.anker);
   const language = useLanguage();

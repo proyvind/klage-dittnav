@@ -1,18 +1,12 @@
 import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
-import { TemaKey } from '../../../tema/tema';
-
-export interface SessionKlageKey {
-  temaKey: TemaKey;
-  titleKey: string | null;
-}
+import { SessionKey } from '../types';
 
 export interface SessionKlagePayload {
-  key: SessionKlageKey;
+  key: SessionKey;
   klage: ISessionKlage | null;
 }
 
 export interface SessionKlageUpdate {
-  temaKey: TemaKey | null;
-  titleKey: string | null;
+  key: SessionKey;
   update: Partial<ISessionKlage>;
 }

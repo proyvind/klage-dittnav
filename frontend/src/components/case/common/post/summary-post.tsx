@@ -87,8 +87,8 @@ export const SummaryPagePost = ({ children, ...props }: Props) => {
           </Heading>
           <VedtakSummary
             translations={skjema}
-            internalSaksnummer={null}
-            userSaksnummer={type === 'klage' || type === 'session-klage' ? caseData.userSaksnummer : null}
+            internalSaksnummer={caseData.internalSaksnummer}
+            userSaksnummer={caseData.userSaksnummer}
             vedtakDate={caseData.vedtakDate}
           />
         </Section>

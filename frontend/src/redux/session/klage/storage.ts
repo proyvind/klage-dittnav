@@ -1,27 +1,27 @@
 import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
-import { TemaKey } from '../../../tema/tema';
+import { SessionKey } from '../types';
 import { getSessionKlageKey } from './helpers';
 
-export const readSessionKlage = (temaKey: TemaKey, titleKey: string | null): ISessionKlage | undefined => {
-  const json = window.sessionStorage.getItem(getSessionKlageKey(temaKey, titleKey));
+export const readSessionKlage = (key: SessionKey): ISessionKlage | undefined => {
+  const json = window.sessionStorage.getItem(getSessionKlageKey(key));
 
   return json === null ? undefined : JSON.parse(json);
 };
 
-export const saveSessionKlage = (temaKey: TemaKey, titleKey: string | null, klage: ISessionKlage | null): string => {
+export const saveSessionKlage = (key: SessionKey, klage: ISessionKlage | null): string => {
   if (klage === null) {
-    const key = getSessionKlageKey(temaKey, titleKey);
-    window.sessionStorage.removeItem(key);
+    const keyString = getSessionKlageKey(key);
+    window.sessionStorage.removeItem(keyString);
 
-    return key;
+    return keyString;
   }
 
-  if (temaKey !== klage.tema || titleKey !== klage.titleKey) {
+  if (key.temaKey !== klage.tema || key.titleKey !== klage.titleKey) {
     throw new Error('TemaKey and titleKey must match');
   }
 
-  const key = getSessionKlageKey(temaKey, titleKey);
-  window.sessionStorage.setItem(key, JSON.stringify(klage));
+  const keyString = getSessionKlageKey(key);
+  window.sessionStorage.setItem(keyString, JSON.stringify(klage));
 
-  return key;
+  return keyString;
 };

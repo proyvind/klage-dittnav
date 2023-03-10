@@ -19,11 +19,11 @@ import { Errors } from '../../../case/common/errors';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
 import { PostFormContainer } from '../../../case/common/post/post-form-container';
 import { VedtakDatePost } from '../../../case/common/post/vedtak-date';
-import { UserSaksnummer } from '../../../case/common/saksnummer';
 import { BegrunnelseText } from '../../../case/uinnlogget/begrunnelse/begrunnelse-text';
 import { UserInfo } from '../../../case/uinnlogget/begrunnelse/user-info';
+import { Saksnummer } from '../../../case/uinnlogget/saksnummer';
 import { DeleteCaseButton } from '../../../delete-case-button/delete-case-button';
-import { KlageSessionLoader } from '../klage-loader';
+import { KlageSessionLoader } from '../klage-session-loader';
 import { ISessionKlage } from '../types';
 
 export const SessionKlagebegrunnelsePage = () => <KlageSessionLoader Component={RenderKlagebegrunnelsePage} />;
@@ -100,10 +100,11 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
         error={errors[FormFieldsIds.VEDTAK_DATE]}
       />
 
-      <UserSaksnummer
-        label={klageskjema.begrunnelse.saksnummer.title}
-        value={klage.userSaksnummer}
-        onChange={(userSaksnummer) => updateKlage({ userSaksnummer })}
+      <Saksnummer
+        internalSaksnummer={klage.internalSaksnummer}
+        userSaksnummer={klage.userSaksnummer}
+        onChange={(userSaksnummer) => updateKlage({ userSaksnummer, internalSaksnummer: null })}
+        translations={klageskjema}
       />
 
       <BegrunnelseText

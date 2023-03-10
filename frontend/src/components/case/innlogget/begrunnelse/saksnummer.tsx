@@ -55,7 +55,7 @@ export const UserSaksnummerDigital = ({
   if (internalSaksnummer !== null) {
     return (
       <div>
-        <Label>{translations.begrunnelse.saksnummer.title}</Label>
+        <Label>{translations.begrunnelse.saksnummer.internalTitle}</Label>
         <BodyShort>{internalSaksnummer}</BodyShort>
       </div>
     );
@@ -65,7 +65,7 @@ export const UserSaksnummerDigital = ({
     <div>
       <UserSaksnummer
         label={translations.begrunnelse.saksnummer.title}
-        value={userSaksnummer}
+        userSaksnummer={userSaksnummer}
         onChange={update}
         error={error}
       />

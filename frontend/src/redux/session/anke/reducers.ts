@@ -2,10 +2,10 @@ import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { addSessionEvent } from '../../../logging/error-report/error-report';
-import { State } from '../types';
+import { SessionKey, State } from '../types';
 import { getSessionAnkeKey } from './helpers';
 import { readSessionAnke, saveSessionAnke } from './storage';
-import { SessionAnkeKey, SessionAnkePayload, SessionAnkeUpdate } from './types';
+import { SessionAnkePayload, SessionAnkeUpdate } from './types';
 
 dayjs.extend(utc);
 
@@ -79,7 +79,7 @@ const loadSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (
   return state;
 };
 
-const deleteSessionAnke: CaseReducer<State, PayloadAction<SessionAnkeKey>> = (state, { payload }) => {
+const deleteSessionAnke: CaseReducer<State, PayloadAction<SessionKey>> = (state, { payload }) => {
   addSessionEvent('Delete session anke');
 
   const key = saveSessionAnke(null, payload);

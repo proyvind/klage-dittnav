@@ -1,22 +1,18 @@
-import { useSearchParams } from 'react-router-dom';
 import { ISessionAnke } from '../components/anke/uinnlogget/types';
 import { useAppDispatch } from '../redux/configure-store';
-import { SessionAnkeKey } from '../redux/session/anke/types';
 import { updateSessionAnke } from '../redux/session/session';
-import { useSessionTemaTitle } from './use-session-tema-title';
+import { SessionKey } from '../redux/session/types';
+import { useSessionKey } from './use-session-key';
 
 export const useSessionAnkeUpdate = () => {
   const dispatch = useAppDispatch();
-  const { temaKey, titleKey } = useSessionTemaTitle();
-  const [query] = useSearchParams();
-
-  const saksnummer = query.get('saksnummer');
+  const { temaKey, titleKey } = useSessionKey();
 
   if (temaKey === null) {
     throw new Error('TemaKey is null');
   }
 
-  const key: SessionAnkeKey = saksnummer === null ? { temaKey, titleKey } : saksnummer;
+  const key: SessionKey = { temaKey, titleKey };
 
   return (update: Partial<ISessionAnke>) => dispatch(updateSessionAnke({ key, update }));
 };

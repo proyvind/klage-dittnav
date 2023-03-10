@@ -18,9 +18,9 @@ import { Errors } from '../../../case/common/errors';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
 import { PostFormContainer } from '../../../case/common/post/post-form-container';
 import { VedtakDatePost } from '../../../case/common/post/vedtak-date';
-import { UserSaksnummer } from '../../../case/common/saksnummer';
 import { BegrunnelseText } from '../../../case/uinnlogget/begrunnelse/begrunnelse-text';
 import { UserInfo } from '../../../case/uinnlogget/begrunnelse/user-info';
+import { Saksnummer } from '../../../case/uinnlogget/saksnummer';
 import { DeleteCaseButton } from '../../../delete-case-button/delete-case-button';
 import { AnkeSessionLoader } from '../anke-session-loader';
 import { ISessionAnke } from '../types';
@@ -101,10 +101,11 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
         error={errors[FormFieldsIds.KLAGEENHET_ANKE]}
       />
 
-      <UserSaksnummer
-        label={ankeskjema.begrunnelse.saksnummer.title}
-        value={anke.userSaksnummer}
-        onChange={(userSaksnummer) => updateAnke({ userSaksnummer })}
+      <Saksnummer
+        internalSaksnummer={anke.internalSaksnummer}
+        userSaksnummer={anke.userSaksnummer}
+        onChange={(userSaksnummer) => updateAnke({ userSaksnummer, internalSaksnummer: null })}
+        translations={ankeskjema}
       />
 
       <BegrunnelseText

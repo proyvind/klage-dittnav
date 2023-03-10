@@ -9,6 +9,7 @@ export interface ISessionKlage {
   readonly navn: IName;
   readonly fritekst: string;
   readonly userSaksnummer: string | null;
+  readonly internalSaksnummer: string | null;
   readonly vedtakDate: ISODate | null;
   readonly titleKey: string | null;
   readonly tema: TemaKey;

@@ -87,7 +87,8 @@ export const nb = {
         description: {
           logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
           logged_in_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
-          logged_out_digital: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
+          logged_out_digital:
+            'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
           logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
@@ -179,6 +180,7 @@ export const nb = {
       saksnummer: {
         title: 'Saksnummer (valgfri)',
         internalTitle: 'Saksnummer',
+        change: 'Endre',
       },
       begrunnelse_text: {
         title: 'Hvorfor er du uenig?',
@@ -321,6 +323,8 @@ export const nb = {
       },
       saksnummer: {
         title: 'Saksnummer (valgfri)',
+        internalTitle: 'Saksnummer',
+        change: 'Endre',
       },
       klageenhet: {
         title: 'Klageenhet',

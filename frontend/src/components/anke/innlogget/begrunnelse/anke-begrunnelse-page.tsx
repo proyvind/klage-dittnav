@@ -140,6 +140,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
       <UserSaksnummerDigital
         userSaksnummer={anke.userSaksnummer}
+        internalSaksnummer={anke.internalSaksnummer}
         caseId={anke.id}
         translations={ankeskjema}
         useUpdateMutation={useUpdateAnkeMutation}

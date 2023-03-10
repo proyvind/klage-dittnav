@@ -1,19 +1,12 @@
 import { ISessionAnke } from '../../../components/anke/uinnlogget/types';
-import { TemaKey } from '../../../tema/tema';
-
-export type SessionAnkeKey =
-  | string
-  | {
-      temaKey: TemaKey;
-      titleKey?: string | null;
-    };
+import { SessionKey } from '../types';
 
 export interface SessionAnkePayload {
-  key: SessionAnkeKey;
+  key: SessionKey;
   anke: ISessionAnke | null;
 }
 
 export interface SessionAnkeUpdate {
-  key: SessionAnkeKey;
+  key: SessionKey;
   update: Partial<ISessionAnke>;
 }

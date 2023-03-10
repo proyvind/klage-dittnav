@@ -3,9 +3,9 @@ import React from 'react';
 
 interface UserSaksnummerProps extends Omit<TextFieldProps, 'onChange' | 'value'> {
   onChange: (saksnummer: string) => void;
-  value?: string | null;
+  userSaksnummer?: string | null;
 }
 
-export const UserSaksnummer = ({ onChange, value, ...props }: UserSaksnummerProps) => (
-  <TextField {...props} value={value ?? ''} onChange={({ target }) => onChange(target.value)} />
+export const UserSaksnummer = ({ onChange, userSaksnummer, ...props }: UserSaksnummerProps) => (
+  <TextField {...props} value={userSaksnummer ?? ''} onChange={({ target }) => onChange(target.value)} htmlSize={24} />
 );

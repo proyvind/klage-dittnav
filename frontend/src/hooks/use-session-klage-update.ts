@@ -1,11 +1,18 @@
 import { ISessionKlage } from '../components/klage/uinnlogget/types';
 import { useAppDispatch } from '../redux/configure-store';
 import { updateSessionKlage } from '../redux/session/session';
-import { useSessionTemaTitle } from './use-session-tema-title';
+import { SessionKey } from '../redux/session/types';
+import { useSessionKey } from './use-session-key';
 
 export const useSessionKlageUpdate = () => {
   const dispatch = useAppDispatch();
-  const { temaKey, titleKey } = useSessionTemaTitle();
+  const { temaKey, titleKey } = useSessionKey();
 
-  return (update: Partial<ISessionKlage>) => dispatch(updateSessionKlage({ temaKey, titleKey, update }));
+  if (temaKey === null) {
+    throw new Error('TemaKey is null');
+  }
+
+  const key: SessionKey = { temaKey, titleKey };
+
+  return (update: Partial<ISessionKlage>) => dispatch(updateSessionKlage({ key, update }));
 };

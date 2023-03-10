@@ -1,7 +1,7 @@
 import React from 'react';
 import { SummaryPagePost } from '../../../case/common/post/summary-post';
 import { DownloadButton } from '../../../case/uinnlogget/summary/download-button';
-import { KlageSessionLoader } from '../klage-loader';
+import { KlageSessionLoader } from '../klage-session-loader';
 import { ISessionKlage } from '../types';
 
 export const SessionKlageoppsummeringPage = () => <KlageSessionLoader Component={Wrapper} />;

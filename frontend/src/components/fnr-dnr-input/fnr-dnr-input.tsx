@@ -42,6 +42,7 @@ export const FnrDnrInput = ({ value, onChange, onBlur, onError, error }: Props) 
       value={value}
       onBlur={onInternalBlur}
       minLength={11}
+      htmlSize={11}
       error={error}
       pattern="^[0-9]{11}$"
       inputMode="numeric"

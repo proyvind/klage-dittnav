@@ -3,10 +3,10 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
 import { addSessionEvent } from '../../../logging/error-report/error-report';
-import { State } from '../types';
+import { SessionKey, State } from '../types';
 import { getSessionKlageKey } from './helpers';
 import { readSessionKlage, saveSessionKlage } from './storage';
-import { SessionKlageKey, SessionKlagePayload, SessionKlageUpdate } from './types';
+import { SessionKlagePayload, SessionKlageUpdate } from './types';
 
 dayjs.extend(utc);
 
@@ -15,17 +15,17 @@ const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = 
 
   const { key, klage } = payload;
 
-  const klageKey = getSessionKlageKey(key.temaKey, key.titleKey);
+  const klageKey = getSessionKlageKey(key);
 
   if (klage === null) {
-    saveSessionKlage(key.temaKey, key.titleKey, null);
+    saveSessionKlage(key, null);
 
     delete state.klager[klageKey];
 
     return state;
   }
 
-  saveSessionKlage(key.temaKey, key.titleKey, klage);
+  saveSessionKlage(key, klage);
 
   state.klager[klageKey] = klage;
 
@@ -35,13 +35,13 @@ const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = 
 const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> = (state, { payload }) => {
   addSessionEvent('Update session Klage');
 
-  const { temaKey, titleKey, update } = payload;
+  const { key, update } = payload;
 
-  if (temaKey === null) {
+  if (key.temaKey === null) {
     throw new Error('TemaKey must be defined');
   }
 
-  const klageKey = getSessionKlageKey(temaKey, titleKey);
+  const klageKey = getSessionKlageKey(key);
 
   const klage = state.klager[klageKey];
 
@@ -49,13 +49,13 @@ const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> 
     throw new Error('Klage does not exist');
   }
 
-  if (temaKey !== klage.tema || titleKey !== klage.titleKey) {
+  if (key.temaKey !== klage.tema || key.titleKey !== klage.titleKey) {
     throw new Error('TemaKey and titleKey must match');
   }
 
   const updated: ISessionKlage = { ...klage, ...update, modifiedByUser: dayjs().utc(true).toISOString() };
 
-  saveSessionKlage(temaKey, titleKey, updated);
+  saveSessionKlage(key, updated);
 
   state.klager[klageKey] = updated;
 
@@ -67,9 +67,8 @@ const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> =
 
   const { key, klage } = payload;
 
-  const { temaKey, titleKey } = key;
-  const savedKlage = readSessionKlage(temaKey, titleKey);
-  const sessionKey = getSessionKlageKey(temaKey, titleKey);
+  const savedKlage = readSessionKlage(key);
+  const sessionKey = getSessionKlageKey(key);
 
   if (typeof savedKlage === 'undefined') {
     if (klage === null) {
@@ -78,7 +77,7 @@ const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> =
       return state;
     }
 
-    saveSessionKlage(temaKey, titleKey, klage);
+    saveSessionKlage(key, klage);
 
     state.klager[sessionKey] = klage;
 
@@ -90,12 +89,10 @@ const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> =
   return state;
 };
 
-const deleteSessionKlage: CaseReducer<State, PayloadAction<SessionKlageKey>> = (state, { payload }) => {
+const deleteSessionKlage: CaseReducer<State, PayloadAction<SessionKey>> = (state, { payload }) => {
   addSessionEvent('Delete session klage');
 
-  const { temaKey, titleKey } = payload;
-
-  const key = saveSessionKlage(temaKey, titleKey, null);
+  const key = saveSessionKlage(payload, null);
 
   delete state.klager[key];
 

@@ -18,5 +18,6 @@ export enum AppEventEnum {
   CREATE_OR_RESUME_CASE = 'Create or resume case',
   CREATE_SESSION_CASE = 'Create session case',
   RESUME_SESSION_CASE = 'Resume session case',
+  RESUME_SESSION_CASE_WITH_SAKSNUMMER = 'Resume session case with internal saksnummer',
   UPGRADE_SESSION = 'Upgrade session',
 }

@@ -1,34 +1,32 @@
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { useEffect, useMemo } from 'react';
 import { ISessionKlage } from '../components/klage/uinnlogget/types';
 import { useLanguage } from '../language/use-language';
 import { useAppDispatch, useAppSelector } from '../redux/configure-store';
 import { getSessionKlageKey } from '../redux/session/klage/helpers';
 import { loadSessionKlage } from '../redux/session/session';
-import { TemaKey } from '../tema/tema';
+import { SessionKey } from '../redux/session/types';
 
-export const useSessionKlage = (
-  temaKey: TemaKey | null,
-  titleKey: string | null = null
-): ISessionKlage | undefined | null => {
+export const useSessionKlage = (key: SessionKey | typeof skipToken): ISessionKlage | undefined | null => {
   const dispatch = useAppDispatch();
   const sessionKlageMap = useAppSelector((state) => state.session.klager);
   const language = useLanguage();
 
   const klage = useMemo(() => {
-    if (temaKey === null) {
+    if (key === skipToken) {
       return undefined;
     }
 
-    const klageKey = getSessionKlageKey(temaKey, titleKey);
+    const klageKey = getSessionKlageKey(key);
 
     return sessionKlageMap[klageKey];
-  }, [sessionKlageMap, temaKey, titleKey]);
+  }, [key, sessionKlageMap]);
 
   useEffect(() => {
-    if (typeof klage === 'undefined' && temaKey !== null) {
-      dispatch(loadSessionKlage({ key: { temaKey, titleKey }, klage: null }));
+    if (key !== skipToken && typeof klage === 'undefined') {
+      dispatch(loadSessionKlage({ key, klage: null }));
     }
-  }, [dispatch, klage, language, temaKey, titleKey]);
+  }, [dispatch, key, klage, language]);
 
   return klage;
 };

@@ -7,7 +7,7 @@ export interface ISessionAnke {
   readonly foedselsnummer: string;
   readonly navn: IName;
   readonly fritekst: string;
-  readonly internalSaksnummer?: string;
+  readonly internalSaksnummer: string | null;
   readonly userSaksnummer: string | null;
   readonly vedtakDate: ISODate | null;
   readonly enhetsnummer: string | null;

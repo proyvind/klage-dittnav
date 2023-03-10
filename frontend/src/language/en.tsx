@@ -81,7 +81,8 @@ export const en: Language = {
         description: {
           logged_in_digital: 'You can send your appeal and attachments digitally here.',
           logged_in_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
-          logged_out_digital: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
+          logged_out_digital:
+            'If you log in, you will be able to send the appeal and attachments digitally. You can continue without logging in, but you will have to print your appeal, sign it, and send it by post.',
           logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
@@ -178,6 +179,7 @@ export const en: Language = {
       saksnummer: {
         title: 'Case number (optional)',
         internalTitle: 'Case number',
+        change: 'Change',
       },
       begrunnelse_text: {
         title: 'Why do you disagree?',
@@ -316,6 +318,8 @@ export const en: Language = {
       },
       saksnummer: {
         title: 'Case number (optional)',
+        internalTitle: 'Case number',
+        change: 'Change',
       },
       klageenhet: {
         title: 'Complaint unit',
