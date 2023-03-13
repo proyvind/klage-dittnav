@@ -148,5 +148,9 @@ const logHttpRequest = (data: HttpData) => {
 
   if (data.statusCode >= 400) {
     httpLogger.warn({ msg, data });
+
+    return;
   }
+
+  httpLogger.debug({ msg, data });
 };
