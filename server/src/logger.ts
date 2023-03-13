@@ -110,6 +110,7 @@ export const httpLoggingMiddleware: RequestHandler = (req, res, next) => {
 
   res.once('finish', () => {
     const { method, url } = req;
+    const referrer = req.get('referrer');
 
     if (url.endsWith('/isAlive') || url.endsWith('/isReady')) {
       return;
@@ -123,6 +124,7 @@ export const httpLoggingMiddleware: RequestHandler = (req, res, next) => {
       method,
       url,
       statusCode,
+      referrer,
       responseTime,
     });
   });
@@ -135,6 +137,7 @@ interface HttpData extends AnyObject {
   url: string;
   statusCode: number;
   responseTime: number;
+  referrer?: string;
 }
 
 const logHttpRequest = (data: HttpData) => {
