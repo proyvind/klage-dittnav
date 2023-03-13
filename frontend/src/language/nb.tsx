@@ -53,7 +53,7 @@ export const nb = {
             href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
             inline
           >
-            dine klagerettigheter på våre tema-sider
+            dine klagerettigheter på våre temasider
           </ExternalLink>,
           '.',
         ].map((c, index) => <span key={index}>{c}</span>),
@@ -242,7 +242,7 @@ export const nb = {
           href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
           inline
         >
-          tema-sider om klage og anke
+          temasider om klage og anke
         </ExternalLink>,
         '.',
       ].map((c, index) => <span key={index}>{c}</span>),
