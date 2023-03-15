@@ -38,14 +38,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
     },
     kategorier: [
       {
-        innsendingsytelse: Innsendingsytelse.DAGPENGER_FERIEPENGER,
-        allowsAnke: true,
-        showAnkeList: [],
-        digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
-        digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        path: 'dagpenger-feriepenger',
-      },
-      {
         innsendingsytelse: Innsendingsytelse.DAGPENGER_TILBAKEBETALING_FORSKUDD,
         allowsAnke: false,
         showAnkeList: [],
@@ -90,14 +82,6 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
         path: 'dagpenger',
-      },
-      {
-        innsendingsytelse: Innsendingsytelse.DAGPENGER_FERIEPENGER,
-        allowsAnke: true,
-        showAnkeList: [],
-        digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
-        digitalAnke: [EnvString.DEV, EnvString.LOCAL],
-        path: 'dagpenger-feriepenger',
       },
       {
         innsendingsytelse: Innsendingsytelse.DAGPENGER_TILBAKEBETALING_FORSKUDD,
