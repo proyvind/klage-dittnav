@@ -205,7 +205,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         allowsAnke: true,
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
-        digitalAnke: [EnvString.DEV, EnvString.LOCAL],
+        digitalAnke: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         path: 'engangsstonad',
       },
       {
@@ -213,7 +213,7 @@ export const INNGANG_KATEGORIER: InngangKategori[] = [
         allowsAnke: true,
         showAnkeList: [],
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
-        digitalAnke: [EnvString.DEV, EnvString.LOCAL],
+        digitalAnke: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
         path: 'svangerskapspenger',
       },
       {
