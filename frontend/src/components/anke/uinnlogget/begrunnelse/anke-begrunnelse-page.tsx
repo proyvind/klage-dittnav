@@ -2,7 +2,7 @@ import { BodyLong, Button, Checkbox, GuidePanel } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useErrors } from '../../../../hooks/use-errors';
+import { useSessionAnkeErrors } from '../../../../hooks/use-errors';
 import { useSessionAnkeUpdate } from '../../../../hooks/use-session-anke-update';
 import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
@@ -51,10 +51,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
 
-  const { errors, isValid, isEverythingValid, setError } = useErrors({
-    type: 'session-anke',
-    caseData: anke,
-  });
+  const { errors, isValid, isEverythingValid, setError } = useSessionAnkeErrors(anke);
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();

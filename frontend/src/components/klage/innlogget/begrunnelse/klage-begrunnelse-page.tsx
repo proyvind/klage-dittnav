@@ -1,7 +1,7 @@
 import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useErrors } from '../../../../hooks/use-errors';
+import { useKlageErrors } from '../../../../hooks/use-errors';
 import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { useUser } from '../../../../hooks/use-user';
 import { useLanguage } from '../../../../language/use-language';
@@ -53,10 +53,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteKlage, { isLoading }] = useDeleteKlageMutation();
 
-  const { errors, isValid, isEverythingValid, setError } = useErrors({
-    caseData: klage,
-    type: 'klage',
-  });
+  const { errors, isValid, isEverythingValid, setError } = useKlageErrors(klage);
 
   useEffect(() => {
     if (klage.status !== CaseStatus.DRAFT) {

@@ -2,7 +2,7 @@ import { BodyLong, Button, ErrorMessage, Heading, Panel } from '@navikt/ds-react
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoadingPage } from '../../../../components/loading-page/loading-page';
+import { useAnkeErrors } from '../../../../hooks/use-errors';
 import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '../../../../hooks/use-user';
 import { Clipboard } from '../../../../icons/clipboard';
@@ -16,7 +16,6 @@ import { CenteredContainer } from '../../../../styled-components/common';
 import { CenteredHeading } from '../../../../styled-components/page-title';
 import { Section } from '../../../../styled-components/summary';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
-import { SummaryPagePost } from '../../../case/common/post/summary-post';
 import { DownloadButton } from '../../../case/innlogget/summary/download-button';
 import { FinalizeDigitalAnke } from '../../../case/innlogget/summary/finalize-digital';
 import { PdfLink } from '../../../case/innlogget/summary/pdf-link';
@@ -27,27 +26,7 @@ import { PersonligeOpplysningerSummary } from '../../../summary/personlige-opply
 import { VedtakSummary } from '../../../summary/vedtak-summary';
 import { AnkeLoader } from '../anke-loader';
 
-export const AnkeoppsummeringPage = () => <AnkeLoader Component={Wrapper} />;
-
-const Wrapper = ({ anke }: { anke: Anke }) => {
-  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
-  const { data: user, isLoading: userIsLoading } = useUser();
-  const { user_loader } = useTranslation();
-
-  if (supportsDigital) {
-    return <DigitalAnkeoppsummeringPage anke={anke} />;
-  }
-
-  if (userIsLoading || typeof user === 'undefined') {
-    return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
-  }
-
-  return (
-    <SummaryPagePost caseData={anke} type="anke">
-      <DownloadButton id={anke.id} subPath="anker" />
-    </SummaryPagePost>
-  );
-};
+export const AnkeoppsummeringPage = () => <AnkeLoader Component={DigitalAnkeoppsummeringPage} />;
 
 interface Props {
   anke: Anke;
@@ -65,6 +44,8 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
 
   const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
 
+  const { isValid } = useAnkeErrors(anke);
+
   if (userIsLoading || typeof user === 'undefined') {
     return null;
   }
@@ -76,7 +57,7 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
   return (
     <DigitalFormContainer
       activeStep={2}
-      isValid={anke.fritekst.length !== 0}
+      isValid={isValid}
       klageOrAnke={anke}
       page_title={ankeskjema.common.page_title}
       steps={ankeskjema.common.steps}
@@ -105,7 +86,7 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
           <Heading level="1" size="small" spacing>
             {ankeskjema.summary.sections.case.title}
           </Heading>
-          <VedtakSummary translations={ankeskjema} {...anke} />
+          <VedtakSummary translations={ankeskjema} {...anke} type="anke" />
         </Section>
 
         <Section>

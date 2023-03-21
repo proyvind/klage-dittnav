@@ -1,7 +1,7 @@
 import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useErrors } from '../../../../hooks/use-errors';
+import { useAnkeErrors } from '../../../../hooks/use-errors';
 import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
 import { useUser } from '../../../../hooks/use-user';
 import { useLanguage } from '../../../../language/use-language';
@@ -53,10 +53,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteAnke, { isLoading }] = useDeleteAnkeMutation();
 
-  const { errors, isValid, isEverythingValid, setError } = useErrors({
-    type: 'anke',
-    caseData: anke,
-  });
+  const { errors, isValid, isEverythingValid, setError } = useAnkeErrors(anke);
 
   useEffect(() => {
     if (anke.status !== CaseStatus.DRAFT) {

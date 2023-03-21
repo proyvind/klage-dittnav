@@ -2,7 +2,7 @@ import { BodyLong, Button, Checkbox, GuidePanel } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useErrors } from '../../../../hooks/use-errors';
+import { useSessionKlageErrors } from '../../../../hooks/use-errors';
 import { useSessionKlageUpdate } from '../../../../hooks/use-session-klage-update';
 import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
@@ -51,10 +51,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
 
-  const { errors, isValid, isEverythingValid, setError } = useErrors({
-    type: 'session-klage',
-    caseData: klage,
-  });
+  const { errors, isValid, isEverythingValid, setError } = useSessionKlageErrors(klage);
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();

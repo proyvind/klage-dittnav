@@ -288,7 +288,7 @@ export const en: Language = {
     },
     begrunnelse: {
       vedtak_date: {
-        title: 'Date of decision',
+        title: 'Date of the complaint decision from NAV Klageinstans',
       },
       saksnummer: {
         title: 'Case number (optional)',
@@ -296,13 +296,14 @@ export const en: Language = {
         change: 'Change',
       },
       klageenhet: {
-        title: 'Complaint unit',
-        not_specified: 'No complaint unit selected',
+        title: 'Unit stated in the complaint decision under information on the right to appeal',
+        not_specified: 'No unit selected',
       },
       begrunnelse_text: {
-        title: 'Describe your appeal',
+        title: 'Why do you disagree with the complaint decision?',
         placeholder: 'State your reason here.',
-        description: 'Please state your appeal in your own words. Attach documents that can show NAV why you appeal.',
+        description:
+          'Describe in your own words why you disagree with the complaint decision, and what you want changed. Attach any documents you wish to add to your case to the Social Security Court.',
       },
       autosave: {
         popover: 'We are saving your changes automatically.',
@@ -346,9 +347,10 @@ export const en: Language = {
         },
         case: {
           title: 'Information from the case',
-          vedtak: 'Date of decision from NAV Klageinstans',
+          vedtak: 'Date of the complaint decision from NAV Klageinstans',
           no_date: 'No date entered',
           saksnummer: 'Case number',
+          klageenhet: 'Unit stated in the complaint decision under information on the right to appeal',
           not_specified: 'Not specified.',
           given_by_user: 'Specified by user',
           from_system: 'Obtained from internal system',

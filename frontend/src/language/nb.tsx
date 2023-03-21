@@ -295,7 +295,7 @@ export const nb = {
     },
     begrunnelse: {
       vedtak_date: {
-        title: 'Klagens vedtaksdato',
+        title: 'Dato for klagevedtaket fra NAV Klageinstans',
       },
       saksnummer: {
         title: 'Saksnummer (valgfri)',
@@ -303,13 +303,14 @@ export const nb = {
         change: 'Endre',
       },
       klageenhet: {
-        title: 'Klageenhet',
+        title: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
         not_specified: 'Ingen enhet valgt',
       },
       begrunnelse_text: {
-        title: 'Beskriv din anke',
+        title: 'Hvorfor er du uenig i klagevedtaket?',
         placeholder: 'Skriv inn din begrunnelse her.',
-        description: 'Her kan du skrive inn din anke. Legg ved dokumenter som skal følge saken til Trygderetten.',
+        description:
+          'Forklar med dine egne ord hva som gjør at du er uenig i klagevedtaket og hva du ønsker endret. Legg ved eventuelle dokumenter du ønsker skal følge saken din til Trygderetten',
       },
       autosave: {
         popover: 'Vi lagrer endringene dine automatisk.',
@@ -353,9 +354,10 @@ export const nb = {
         },
         case: {
           title: 'Opplysninger fra saken',
-          vedtak: 'Vedtaksdato fra NAV Klageinstans',
+          vedtak: 'Dato for klagevedtaket fra NAV Klageinstans',
           no_date: 'Ingen dato satt',
           saksnummer: 'Saksnummer',
+          klageenhet: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
           not_specified: 'Ikke angitt',
           given_by_user: 'Oppgitt av bruker',
           from_system: 'Hentet fra internt system',

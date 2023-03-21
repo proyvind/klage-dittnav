@@ -1,9 +1,9 @@
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
-import React, { useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAddress } from '../../../../hooks/use-address';
-import { Data, useErrors } from '../../../../hooks/use-errors';
+import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
 import { Language } from '../../../../language/language';
 import { useTranslation } from '../../../../language/use-translation';
 import { PageIdentifier } from '../../../../logging/amplitude';
@@ -12,28 +12,20 @@ import { CenteredContainer } from '../../../../styled-components/common';
 import { Optional } from '../../../optional/optional';
 import { PostFormContainer } from './post-form-container';
 
-type Props = Data;
+interface Props {
+  pageIdentifier: PageIdentifier;
+  skjema_post: Language['ankeskjema_post'] | Language['klageskjema_post'];
+  innsendingsytelse: Innsendingsytelse;
+  hasVedlegg: boolean;
+}
 
-export const RenderCaseinnsendingPage = (props: Props) => {
-  const { caseData, type } = props;
-  const isKlage = type === 'klage' || type === 'session-klage';
-  const pageIdentifier = isKlage ? PageIdentifier.KLAGESKJEMA_INNSENDING : PageIdentifier.ANKESKJEMA_INNSENDING;
+export const RenderCaseinnsendingPage = ({ pageIdentifier, skjema_post, innsendingsytelse, hasVedlegg }: Props) => {
   useLogPageView(pageIdentifier);
-  const navigate = useNavigate();
 
-  const { page_title, title_fragment, steps, title, stepTexts, address, common } = useTexts(props);
-
-  const { isValid } = useErrors(props);
-
-  useEffect(() => {
-    if (!isValid) {
-      navigate('../begrunnelse', { replace: true });
-    }
-  }, [isValid, navigate]);
-
-  if (type === 'authenticated-ettersendelse' || type === 'unauthenticated-ettersendelse') {
-    return null;
-  }
+  const { page_title, title_fragment, steps, title, stepTexts, address, common } = useTexts({
+    skjema_post,
+    innsendingsytelse,
+  });
 
   return (
     <PostFormContainer
@@ -41,7 +33,7 @@ export const RenderCaseinnsendingPage = (props: Props) => {
       isValid
       page_title={page_title}
       steps={steps}
-      innsendingsytelse={caseData.innsendingsytelse}
+      innsendingsytelse={innsendingsytelse}
       title_fragment={title_fragment}
     >
       <Heading level="1" size="xlarge">
@@ -51,7 +43,7 @@ export const RenderCaseinnsendingPage = (props: Props) => {
         <InstructionList>
           <ListItem>{stepTexts[0]}</ListItem>
           <ListItem>{stepTexts[1]}</ListItem>
-          <Optional show={caseData.hasVedlegg}>
+          <Optional show={hasVedlegg}>
             <ListItem>{stepTexts[2]}</ListItem>
           </Optional>
           <ListItem>
@@ -87,16 +79,19 @@ interface Texts {
   address: [string, string, string];
 }
 
-const useTexts = ({ caseData, type }: Props): Texts => {
-  const isKlage = type === 'klage' || type === 'session-klage';
-  const { klageskjema_post, ankeskjema_post, common } = useTranslation();
-  const skjema_post = isKlage ? klageskjema_post : ankeskjema_post;
+interface UseTextsProps {
+  skjema_post: Props['skjema_post'];
+  innsendingsytelse: Props['innsendingsytelse'];
+}
+
+const useTexts = ({ skjema_post, innsendingsytelse }: UseTextsProps): Texts => {
+  const { common } = useTranslation();
   const { title, steg, steg_simple } = skjema_post.innsending;
   const { steps, title_fragment, page_title } = skjema_post.common;
-  const address = useAddress(caseData.innsendingsytelse);
+  const address = useAddress(innsendingsytelse);
 
   return useMemo(() => {
-    switch (caseData.innsendingsytelse) {
+    switch (innsendingsytelse) {
       case 'LONNSGARANTI':
         return {
           stepTexts: steg_simple,
@@ -118,7 +113,7 @@ const useTexts = ({ caseData, type }: Props): Texts => {
           steps,
         };
     }
-  }, [address, caseData.innsendingsytelse, common, page_title, steg, steg_simple, steps, title, title_fragment]);
+  }, [address, common, innsendingsytelse, page_title, steg, steg_simple, steps, title, title_fragment]);
 };
 
 const InstructionList = styled.ol`

@@ -2,7 +2,6 @@ import { BodyLong, Button, ErrorMessage, Heading, Panel } from '@navikt/ds-react
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoadingPage } from '../../../../components/loading-page/loading-page';
 import { useSupportsDigitalKlage } from '../../../../hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '../../../../hooks/use-user';
 import { Clipboard } from '../../../../icons/clipboard';
@@ -16,7 +15,6 @@ import { CenteredContainer } from '../../../../styled-components/common';
 import { CenteredHeading } from '../../../../styled-components/page-title';
 import { Section } from '../../../../styled-components/summary';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
-import { SummaryPagePost } from '../../../case/common/post/summary-post';
 import { SummaryReasons } from '../../../case/common/summary-reasons';
 import { DownloadButton } from '../../../case/innlogget/summary/download-button';
 import { FinalizeDigitalKlage } from '../../../case/innlogget/summary/finalize-digital';
@@ -28,27 +26,7 @@ import { PersonligeOpplysningerSummary } from '../../../summary/personlige-opply
 import { VedtakSummary } from '../../../summary/vedtak-summary';
 import { KlageLoader } from '../klage-loader';
 
-export const KlageoppsummeringPage = () => <KlageLoader Component={Wrapper} />;
-
-const Wrapper = ({ klage }: { klage: Klage }) => {
-  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
-  const { data: user, isLoading: userIsLoading } = useUser();
-  const { user_loader } = useTranslation();
-
-  if (supportsDigital) {
-    return <DigitalKlageoppsummeringPage klage={klage} />;
-  }
-
-  if (userIsLoading || typeof user === 'undefined') {
-    return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
-  }
-
-  return (
-    <SummaryPagePost caseData={klage} type="klage">
-      <DownloadButton id={klage.id} subPath="klager" />
-    </SummaryPagePost>
-  );
-};
+export const KlageoppsummeringPage = () => <KlageLoader Component={DigitalKlageoppsummeringPage} />;
 
 interface Props {
   klage: Klage;
@@ -107,7 +85,7 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
           <Heading level="1" size="small" spacing>
             {klageskjema.summary.sections.case.title}
           </Heading>
-          <VedtakSummary translations={klageskjema} {...klage} />
+          <VedtakSummary translations={klageskjema} {...klage} type="klage" />
         </Section>
 
         <Section>

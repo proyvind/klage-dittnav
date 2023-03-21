@@ -1,7 +1,11 @@
 import { GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useAddress } from '../../hooks/use-address';
-import { useErrors } from '../../hooks/use-errors';
+import {
+  IErrorsState,
+  useAuthenticatedEttersendelseErrors,
+  useUnauthenticatedEttersendelseErrors,
+} from '../../hooks/use-errors';
 import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
 import { useIsAuthenticated, useUser } from '../../hooks/use-user';
 import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
@@ -15,6 +19,7 @@ import { Errors } from '../case/common/errors';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 import { DownloadButton } from '../case/uinnlogget/summary/download-button';
 import { FnrDnr } from '../fnr-dnr/fnr-dnr';
+import { LoadingPage } from '../loading-page/loading-page';
 import { KaEnhet } from './ka-enhet';
 import { IEttersendelse } from './types';
 
@@ -22,27 +27,45 @@ interface Props {
   innsendingsytelse: Innsendingsytelse;
 }
 
-export const EttersendelsePage = ({ innsendingsytelse }: Props) => {
+export const EttersendelsePage = (props: Props) => {
+  const { data: authenticated, isLoading } = useIsAuthenticated();
+
+  const { user_loader } = useTranslation();
+
+  if (isLoading || typeof authenticated === 'undefined') {
+    return <LoadingPage>{user_loader.loading_user}</LoadingPage>;
+  }
+
+  return (
+    <InternalEttersendelsePage
+      {...props}
+      authenticated={authenticated}
+      useErrors={authenticated ? useAuthenticatedEttersendelseErrors : useUnauthenticatedEttersendelseErrors}
+    />
+  );
+};
+
+interface EttersendelsePageProps extends Props {
+  authenticated: boolean;
+  useErrors: (ettersendelse: IEttersendelse) => IErrorsState;
+}
+
+const InternalEttersendelsePage = ({ innsendingsytelse, authenticated, useErrors }: EttersendelsePageProps) => {
   const [undertittel] = useInnsendingsytelseName(innsendingsytelse);
   const { ettersendelse } = useTranslation();
   const language = useLanguage();
   const { data: user, isLoading } = useUser();
   const [foedselsnummer, setFoedselsnummer] = useState('');
   const [enhetsnummer, setEnhetsnummer] = useState<string | null>(null);
-  const { data: authenticated } = useIsAuthenticated();
 
   const caseData: IEttersendelse = {
     innsendingsytelse,
-    foedselsnummer:
-      authenticated ?? false ? user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '' : foedselsnummer,
+    foedselsnummer: authenticated ? user?.folkeregisteridentifikator?.identifikasjonsnummer ?? '' : foedselsnummer,
     enhetsnummer,
     language,
   };
 
-  const { errors, setError, isEverythingValid } = useErrors({
-    type: authenticated ?? false ? 'authenticated-ettersendelse' : 'unauthenticated-ettersendelse',
-    caseData,
-  });
+  const { errors, setError, isEverythingValid } = useErrors(caseData);
 
   const { title, guide_text } = ettersendelse;
 

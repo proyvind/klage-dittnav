@@ -2,21 +2,54 @@ import { BodyShort } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
 import { ISODate, isoDateToPretty } from '../../domain/date/date';
 import { Language } from '../../language/language';
+import { useTranslation } from '../../language/use-translation';
+import { useKlageenheterForAnke } from '../../simple-api-state/use-kodeverk';
 import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
 import { InformationPointBox } from '../information-point-box/information-point-box';
 
-interface Props extends SaksnummerTextProps {
+interface BaseProps extends SaksnummerTextProps {
   vedtakDate: ISODate | null;
 }
 
-export const VedtakSummary = ({ vedtakDate, internalSaksnummer, translations, userSaksnummer }: Props) => (
+interface KlageProps extends BaseProps {
+  type: 'klage';
+}
+
+interface AnkeProps extends BaseProps {
+  type: 'anke';
+  enhetsnummer: string | null;
+}
+
+export const VedtakSummary = ({
+  vedtakDate,
+  internalSaksnummer,
+  translations,
+  userSaksnummer,
+  ...props
+}: KlageProps | AnkeProps) => (
   <SpaceBetweenFlexListContainer>
     <Saksnummer translations={translations} userSaksnummer={userSaksnummer} internalSaksnummer={internalSaksnummer} />
     <InformationPointBox header={translations.summary.sections.case.vedtak}>
       <BodyShort>{useDateToVedtakText(vedtakDate, translations.summary.sections.case.no_date)}</BodyShort>
     </InformationPointBox>
+    {props.type === 'anke' ? <Klageenhet enhetsnummer={props.enhetsnummer} /> : null}
   </SpaceBetweenFlexListContainer>
 );
+
+interface KlageenhetProps {
+  enhetsnummer: string | null;
+}
+
+const Klageenhet = ({ enhetsnummer }: KlageenhetProps) => {
+  const { ankeskjema } = useTranslation();
+  const name = useKlageenhetName(enhetsnummer);
+
+  return (
+    <InformationPointBox header={ankeskjema.summary.sections.case.klageenhet}>
+      <BodyShort>{name}</BodyShort>
+    </InformationPointBox>
+  );
+};
 
 interface SaksnummerTextProps {
   userSaksnummer?: string | null;
@@ -54,3 +87,18 @@ const useDateToVedtakText = (isoDate: ISODate | null, noDateText: string): strin
 
     return prettyDate;
   }, [isoDate, noDateText]);
+
+const useKlageenhetName = (id: string | null): string => {
+  const { data, isLoading } = useKlageenheterForAnke();
+  const { ankeskjema } = useTranslation();
+
+  if (id === null) {
+    return ankeskjema.summary.sections.case.not_specified;
+  }
+
+  if (isLoading || typeof data === 'undefined') {
+    return '';
+  }
+
+  return data.find((enhet) => enhet.id === id)?.navn ?? id;
+};

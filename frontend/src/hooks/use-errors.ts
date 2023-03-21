@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ISessionAnke } from '../components/anke/uinnlogget/types';
 import { FormFieldsIds } from '../components/case/common/form-fields-ids';
 import {
@@ -89,7 +90,7 @@ type ValidationValues =
   | UnauthenticatedEttersendelseValues
   | AuthenticatedEttersendelseValues;
 
-export type Data =
+type Data =
   | {
       caseData: Klage;
       type: 'klage';
@@ -115,7 +116,35 @@ export type Data =
       type: 'authenticated-ettersendelse';
     };
 
-export const useErrors = (data: Data) => {
+export const useGoToBegrunnelseOnError = (isValid: boolean) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isValid) {
+      navigate('../begrunnelse', { replace: true });
+    }
+  }, [isValid, navigate]);
+};
+
+export const useAnkeErrors = (anke: Anke) => useErrors({ caseData: anke, type: 'anke' });
+export const useKlageErrors = (klage: Klage) => useErrors({ caseData: klage, type: 'klage' });
+export const useSessionKlageErrors = (sessionKlage: ISessionKlage) =>
+  useErrors({ caseData: sessionKlage, type: 'session-klage' });
+export const useSessionAnkeErrors = (sessionAnke: ISessionAnke) =>
+  useErrors({ caseData: sessionAnke, type: 'session-anke' });
+export const useUnauthenticatedEttersendelseErrors = (ettersendelse: IEttersendelse) =>
+  useErrors({ caseData: ettersendelse, type: 'unauthenticated-ettersendelse' });
+export const useAuthenticatedEttersendelseErrors = (ettersendelse: IEttersendelse) =>
+  useErrors({ caseData: ettersendelse, type: 'authenticated-ettersendelse' });
+
+export interface IErrorsState {
+  errors: ErrorState;
+  isValid: boolean;
+  setError: (id: FormFieldsIds, error?: string) => void;
+  isEverythingValid: () => boolean;
+}
+
+const useErrors = (data: Data): IErrorsState => {
   const { error_messages } = useTranslation();
   const [errors, setErrors] = useState(INITIAL_ERRORS);
   const values = useMemo(() => getValues(data), [data]);
