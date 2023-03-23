@@ -6,9 +6,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "env-cmd -f .env node --es-module-specifier-resolution=node --loader ts-node/esm src/server.ts",
+    "start": "env-cmd -f .env node --es-module-specifier-resolution=node dist/server.js",
     "prod": "node --es-module-specifier-resolution=node dist/server.js",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "test": "jest",
     "lint": "eslint src --color",
     "lint-fix": "eslint src --color --fix"
@@ -34,6 +34,7 @@
     "env-cmd": "^10.1.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-prefer-arrow": "^1.2.3",
@@ -42,6 +43,7 @@
     "prettier": "^2.8.3",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.4",
     "typescript": "^4.9.5"
   }
 }
