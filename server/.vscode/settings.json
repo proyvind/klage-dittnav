@@ -1,26 +1,35 @@
 {
-    "files.exclude": {
-        "dist": true,
-        "dist/**": true
-    },
-    "files.watcherExclude": {
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/node_modules/*/**": true,
-        "**/.hg/store/**": true,
-        "dist": true,
-        "dist/**": true
-    },
-    "typescript.validate.enable": true,
-    "eslint.validate": ["javascript", "typescript"],
+    "eslint.validate": [
+        "javascript",
+        "typescript"
+    ],
+    "eslint.run": "onType",
+    "eslint.codeActionsOnSave.mode": "all",
     "editor.formatOnSave": true,
     "eslint.format.enable": true,
+    "editor.linkedEditing": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "prettier.requireConfig": true,
+    "typescript.validate.enable": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "workbench.editor.closeOnFileDelete": true,
     "npm-intellisense.importQuotes": "'",
     "npm-intellisense.importES6": true,
-    "npm-intellisense.showBuildInLibs": true
+    "npm-intellisense.showBuildInLibs": true,
+    "liveshare.autoShareServers": true,
+    "liveshare.openSharedServers": false,
+    "liveshare.languages.allowGuestCommandControl": true,
+    "liveshare.allowGuestDebugControl": true,
+    "liveshare.allowGuestTaskControl": true,
+    "liveshare.notebooks.allowGuestExecuteCells": true,
+    "tslint.enable": false,
+    "prettier.requireConfig": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
