@@ -49,7 +49,7 @@ module.exports = (_env, { mode }) => ({
     compress: false,
     proxy: {
       '/api': {
-        target: 'https://klage.dev.nav.no',
+        target: 'https://klage.intern.dev.nav.no',
         secure: false,
         changeOrigin: true,
         withCredentials: true,

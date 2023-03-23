@@ -12,12 +12,12 @@ npm start
 
 ## Miljøer
 
-- `DEV`: https://klage.dev.nav.no
+- `DEV`: https://klage.intern.dev.nav.no
 - `PROD`: https://klage.nav.no
 
 ## Autentisering for lokal utvikling
 
-1. Gå til https://klage.dev.nav.no.
+1. Gå til https://klage.intern.dev.nav.no.
 2. Logg inn via `TESTID` med fnr. `05906498040`.
 3. Endre domene til `localhost` for følgende cookies: `innloggingsstatus-token` og `io.nais.wonderwall.session`.
 
