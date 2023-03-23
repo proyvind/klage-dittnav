@@ -1,6 +1,6 @@
-import { ENVIRONMENT } from '../../environment/environment';
-import { isNotUndefined } from '../../functions/is-not-type-guards';
-import { parseJSON } from '../../functions/parse-json';
+import { ENVIRONMENT } from '@app/environment/environment';
+import { isNotUndefined } from '@app/functions/is-not-type-guards';
+import { parseJSON } from '@app/functions/parse-json';
 import { AppEventEnum } from './action';
 import { formatEvent, formatSessionTime } from './formatters';
 import { BaseEvent, IErrorReport, UserEvent } from './types';

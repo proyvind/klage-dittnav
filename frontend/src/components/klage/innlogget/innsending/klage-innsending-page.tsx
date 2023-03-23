@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGoToBegrunnelseOnError, useKlageErrors } from '../../../../hooks/use-errors';
-import { useTranslation } from '../../../../language/use-translation';
-import { PageIdentifier } from '../../../../logging/amplitude';
-import { Klage } from '../../../../redux-api/case/klage/types';
+import { useGoToBegrunnelseOnError, useKlageErrors } from '@app/hooks/use-errors';
+import { useTranslation } from '@app/language/use-translation';
+import { PageIdentifier } from '@app/logging/amplitude';
+import { Klage } from '@app/redux-api/case/klage/types';
 import { RenderCaseinnsendingPage } from '../../../case/common/post/innsending-page';
 import { KlageLoader } from '../klage-loader';
 

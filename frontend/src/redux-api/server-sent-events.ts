@@ -1,5 +1,5 @@
-import { AppEventEnum } from '../logging/error-report/action';
-import { addApiEvent, addAppEvent } from '../logging/error-report/error-report';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addApiEvent, addAppEvent } from '@app/logging/error-report/error-report';
 import { userApi } from './user/api';
 
 export enum ServerSentEventType {

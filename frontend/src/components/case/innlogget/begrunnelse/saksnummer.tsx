@@ -1,10 +1,10 @@
 import { BodyShort, Label } from '@navikt/ds-react';
 import React, { useCallback, useState } from 'react';
-import { isApiError, isError } from '../../../../functions/is-api-error';
-import { Language } from '../../../../language/language';
-import { useTranslation } from '../../../../language/use-translation';
-import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
-import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
+import { isApiError, isError } from '@app/functions/is-api-error';
+import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
+import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
 import { AutosaveProgressIndicator } from '../../../autosave-progress/autosave-progress';
 import { LoggedOut } from '../../../logged-out/logged-out';
 import { UserSaksnummer } from '../../common/saksnummer';

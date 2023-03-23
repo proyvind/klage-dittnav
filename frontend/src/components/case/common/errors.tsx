@@ -1,7 +1,7 @@
 import { ErrorSummary } from '@navikt/ds-react';
 import React from 'react';
-import { isNotNull, isNotUndefined } from '../../../functions/is-not-type-guards';
-import { useTranslation } from '../../../language/use-translation';
+import { isNotNull, isNotUndefined } from '@app/functions/is-not-type-guards';
+import { useTranslation } from '@app/language/use-translation';
 import { FormFieldsIds } from './form-fields-ids';
 
 type Props = Record<FormFieldsIds, string | undefined>;

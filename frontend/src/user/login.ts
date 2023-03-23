@@ -1,4 +1,4 @@
-import { currentPath } from '../routes/current-path';
+import { currentPath } from '@app/routes/current-path';
 
 export const getLoginRedirectPath = (): string => {
   const redirectAfter = currentPath(window.location);

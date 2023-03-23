@@ -1,12 +1,12 @@
 import { LinkPanel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IconLinkPanel } from '../../../components/icon-link-panel/icon-link-panel';
-import { useIsAuthenticated } from '../../../hooks/use-user';
-import { LetterOpened } from '../../../icons/letter-opened';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../../language/use-language';
-import { useTranslation } from '../../../language/use-translation';
+import { IconLinkPanel } from '@app/components/icon-link-panel/icon-link-panel';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { LetterOpened } from '@app/icons/letter-opened';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
 
 interface Props {
   innsendingsytelse: Innsendingsytelse;

@@ -2,7 +2,7 @@ import { Edit } from '@navikt/ds-icons';
 import { BodyShort, Button, Label } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { Language } from '../../../language/language';
+import { Language } from '@app/language/language';
 import { UserSaksnummer } from '../common/saksnummer';
 
 interface SaksnummerProps {

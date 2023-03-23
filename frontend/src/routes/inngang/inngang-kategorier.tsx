@@ -1,17 +1,17 @@
 import { Heading, LinkPanel } from '@navikt/ds-react';
 import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
-import { DraftKlageAndAnkeLists } from '../../components/personalised-content/personalised-content';
-import { TitleLoader } from '../../components/text-loader/title-loader';
-import { usePageInit } from '../../hooks/use-page-init';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { InngangKategori } from '../../kategorier/kategorier';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { PageIdentifier } from '../../logging/amplitude';
-import { useLogPageView } from '../../logging/use-log-page-view';
-import { InngangMainContainer } from '../../styled-components/main-container';
+import { useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
+import { DraftKlageAndAnkeLists } from '@app/components/personalised-content/personalised-content';
+import { TitleLoader } from '@app/components/text-loader/title-loader';
+import { usePageInit } from '@app/hooks/use-page-init';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { InngangKategori } from '@app/kategorier/kategorier';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { PageIdentifier } from '@app/logging/amplitude';
+import { useLogPageView } from '@app/logging/use-log-page-view';
+import { InngangMainContainer } from '@app/styled-components/main-container';
 import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
 

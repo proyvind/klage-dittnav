@@ -1,4 +1,4 @@
-import { ISessionAnke } from '../../../components/anke/uinnlogget/types';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
 import { SessionKey } from '../types';
 
 export interface SessionAnkePayload {

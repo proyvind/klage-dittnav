@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { LoadingPage } from '../components/loading-page/loading-page';
-import { useIsAuthenticated } from '../hooks/use-user';
-import { useTranslation } from '../language/use-translation';
-import { AppEventEnum } from '../logging/error-report/action';
-import { addAppEvent } from '../logging/error-report/error-report';
-import { useIsAuthenticatedQuery } from '../redux-api/user/api';
-import { login } from '../user/login';
+import { LoadingPage } from '@app/components/loading-page/loading-page';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { useIsAuthenticatedQuery } from '@app/redux-api/user/api';
+import { login } from '@app/user/login';
 
 export const LoginIfUnauthorized = () => {
   const { user_loader } = useTranslation();

@@ -1,10 +1,10 @@
 import { BodyShort } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
-import { ISODate, isoDateToPretty } from '../../domain/date/date';
-import { Language } from '../../language/language';
-import { useTranslation } from '../../language/use-translation';
-import { useKlageenheterForAnke } from '../../simple-api-state/use-kodeverk';
-import { SpaceBetweenFlexListContainer } from '../../styled-components/common';
+import { ISODate, isoDateToPretty } from '@app/domain/date/date';
+import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
+import { useKlageenheterForAnke } from '@app/simple-api-state/use-kodeverk';
+import { SpaceBetweenFlexListContainer } from '@app/styled-components/common';
 import { InformationPointBox } from '../information-point-box/information-point-box';
 
 interface BaseProps extends SaksnummerTextProps {

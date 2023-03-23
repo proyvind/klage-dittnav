@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { getQueryValue } from '../../../functions/get-query-value';
-import { useSessionKlage } from '../../../hooks/use-session-klage';
-import { useIsAuthenticated } from '../../../hooks/use-user';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../../language/use-language';
-import { useTranslation } from '../../../language/use-translation';
+import { getQueryValue } from '@app/functions/get-query-value';
+import { useSessionKlage } from '@app/hooks/use-session-klage';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
 import { LoadingPage } from '../../loading-page/loading-page';
 import { ISessionKlage } from './types';
 

@@ -1,7 +1,7 @@
 import { LinkPanel, LinkPanelProps } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { device } from '../../styled-components/media-queries';
+import { device } from '@app/styled-components/media-queries';
 
 type Props<T extends React.ElementType> = {
   icon: JSX.Element;

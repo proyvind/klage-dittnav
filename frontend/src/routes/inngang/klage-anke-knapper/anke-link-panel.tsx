@@ -1,13 +1,13 @@
 import { LinkPanel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IconLinkPanel } from '../../../components/icon-link-panel/icon-link-panel';
-import { queryStringify } from '../../../functions/query-string';
-import { useIsAuthenticated } from '../../../hooks/use-user';
-import { LawBook } from '../../../icons/law-book';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../../language/use-language';
-import { useTranslation } from '../../../language/use-translation';
+import { IconLinkPanel } from '@app/components/icon-link-panel/icon-link-panel';
+import { queryStringify } from '@app/functions/query-string';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { LawBook } from '@app/icons/law-book';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
 
 interface Props {
   saksnummer: string | null;

@@ -1,20 +1,20 @@
 import { GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
-import { useAddress } from '../../hooks/use-address';
+import { useAddress } from '@app/hooks/use-address';
 import {
   IErrorsState,
   useAuthenticatedEttersendelseErrors,
   useUnauthenticatedEttersendelseErrors,
-} from '../../hooks/use-errors';
-import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
-import { useIsAuthenticated, useUser } from '../../hooks/use-user';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { FormTitleContainer } from '../../routes/form-title-container';
-import { CenteredContainer } from '../../styled-components/common';
-import { ContentContainer } from '../../styled-components/content-container';
-import { FormMainContainer } from '../../styled-components/main-container';
+} from '@app/hooks/use-errors';
+import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { FormTitleContainer } from '@app/routes/form-title-container';
+import { CenteredContainer } from '@app/styled-components/common';
+import { ContentContainer } from '@app/styled-components/content-container';
+import { FormMainContainer } from '@app/styled-components/main-container';
 import { Errors } from '../case/common/errors';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 import { DownloadButton } from '../case/uinnlogget/summary/download-button';

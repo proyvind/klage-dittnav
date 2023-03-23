@@ -1,6 +1,6 @@
 import { Link, LinkProps } from '@navikt/ds-react';
 import React from 'react';
-import { ExtLink } from '../../icons/external-link';
+import { ExtLink } from '@app/icons/external-link';
 import { Optional } from '../optional/optional';
 
 interface ExternalLinkProps extends Omit<LinkProps, 'target' | 'rel' | 'style'> {

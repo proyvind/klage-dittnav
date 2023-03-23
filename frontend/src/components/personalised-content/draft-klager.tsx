@@ -1,12 +1,12 @@
 import { Heading } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React, { useMemo } from 'react';
-import { useIsAuthenticated } from '../../hooks/use-user';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useTranslation } from '../../language/use-translation';
-import { useGetKlagerQuery } from '../../redux-api/case/klage/api';
-import { Klage } from '../../redux-api/case/klage/types';
-import { InngangPanel } from '../../routes/inngang/styled-components/panels';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useTranslation } from '@app/language/use-translation';
+import { useGetKlagerQuery } from '@app/redux-api/case/klage/api';
+import { Klage } from '@app/redux-api/case/klage/types';
+import { InngangPanel } from '@app/routes/inngang/styled-components/panels';
 import { ApiKlage } from './draft-klage';
 
 interface Props {

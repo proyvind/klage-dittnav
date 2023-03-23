@@ -2,10 +2,10 @@ import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from '../../../language/use-translation';
-import { addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
-import { useGetAnkeQuery, useUpdateAnkeMutation } from '../../../redux-api/case/anke/api';
-import { Anke } from '../../../redux-api/case/anke/types';
+import { useTranslation } from '@app/language/use-translation';
+import { addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
+import { useGetAnkeQuery, useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { Anke } from '@app/redux-api/case/anke/types';
 import { LoadingPage } from '../../loading-page/loading-page';
 
 interface Props {

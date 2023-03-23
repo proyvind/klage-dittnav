@@ -1,11 +1,11 @@
 import { Heading } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React, { useMemo } from 'react';
-import { useIsAuthenticated } from '../../hooks/use-user';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useTranslation } from '../../language/use-translation';
-import { useGetAnkerQuery } from '../../redux-api/case/anke/api';
-import { InngangPanel } from '../../routes/inngang/styled-components/panels';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useTranslation } from '@app/language/use-translation';
+import { useGetAnkerQuery } from '@app/redux-api/case/anke/api';
+import { InngangPanel } from '@app/routes/inngang/styled-components/panels';
 import { ApiAnke } from './draft-anke';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { AvailableAnker } from './available-anker';
 import { DraftAnker } from './draft-anker';
 import { DraftKlager } from './draft-klager';

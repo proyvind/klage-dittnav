@@ -1,12 +1,12 @@
 /* eslint-disable max-lines */
 import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
-import { ExternalLink } from '../components/link/link';
-import { displayBytes } from '../functions/display';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { Utfall } from '../redux-api/case/anke/types';
-import { Reason } from '../redux-api/case/klage/types';
-import { CaseStatus } from '../redux-api/case/types';
+import { ExternalLink } from '@app/components/link/link';
+import { displayBytes } from '@app/functions/display';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Utfall } from '@app/redux-api/case/anke/types';
+import { Reason } from '@app/redux-api/case/klage/types';
+import { CaseStatus } from '@app/redux-api/case/types';
 
 export type Language = typeof nb;
 

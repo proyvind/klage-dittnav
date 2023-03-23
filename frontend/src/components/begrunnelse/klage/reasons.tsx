@@ -1,7 +1,7 @@
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import React from 'react';
-import { useTranslation } from '../../../language/use-translation';
-import { Reason } from '../../../redux-api/case/klage/types';
+import { useTranslation } from '@app/language/use-translation';
+import { Reason } from '@app/redux-api/case/klage/types';
 
 interface Props {
   checkedReasons: Reason[];

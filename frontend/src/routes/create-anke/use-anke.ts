@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getQueryValue } from '../../functions/get-query-value';
-import { useSessionAnke } from '../../hooks/use-session-anke';
-import { useIsAuthenticated, useUser } from '../../hooks/use-user';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { useAppDispatch } from '../../redux/configure-store';
-import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '../../redux-api/case/anke/api';
+import { getQueryValue } from '@app/functions/get-query-value';
+import { useSessionAnke } from '@app/hooks/use-session-anke';
+import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { useAppDispatch } from '@app/redux/configure-store';
+import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '@app/redux-api/case/anke/api';
 import { handleCreateAnke, handleResumeOrCreateAnke, handleSessionAnke } from './handlers';
 
 interface IResult {

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { PageIdentifier, logPageView } from './amplitude';
 
 export const useLogPageView = (page: PageIdentifier, innsendingsytelse?: Innsendingsytelse, title?: string) => {

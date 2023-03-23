@@ -1,7 +1,7 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 import dayjs, { extend } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { addSessionEvent } from '../../../logging/error-report/error-report';
+import { addSessionEvent } from '@app/logging/error-report/error-report';
 import { SessionKey, State } from '../types';
 import { getSessionAnkeKey } from './helpers';
 import { readSessionAnke, saveSessionAnke } from './storage';

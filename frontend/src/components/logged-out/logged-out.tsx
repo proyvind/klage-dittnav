@@ -1,7 +1,7 @@
 import { Link } from '@navikt/ds-react';
 import React from 'react';
-import { useTranslation } from '../../language/use-translation';
-import { getLoginRedirectPath } from '../../user/login';
+import { useTranslation } from '@app/language/use-translation';
+import { getLoginRedirectPath } from '@app/user/login';
 
 export const LoggedOut = () => {
   const { common } = useTranslation();

@@ -1,7 +1,7 @@
 import { Textarea, TextareaProps } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
-import { Language } from '../../../../language/nb';
-import { useTranslation } from '../../../../language/use-translation';
+import { Language } from '@app/language/nb';
+import { useTranslation } from '@app/language/use-translation';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
 import { validateFritekst } from '../../../case/common/validators';
 

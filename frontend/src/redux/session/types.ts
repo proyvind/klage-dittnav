@@ -1,6 +1,6 @@
-import { ISessionAnke } from '../../components/anke/uinnlogget/types';
-import { ISessionKlage } from '../../components/klage/uinnlogget/types';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 
 export interface State {
   klager: Record<string, ISessionKlage>;

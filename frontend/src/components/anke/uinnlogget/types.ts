@@ -1,7 +1,7 @@
-import { ISODate } from '../../../domain/date/date';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../../language/types';
-import { IName } from '../../../redux-api/user/types';
+import { ISODate } from '@app/domain/date/date';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
+import { IName } from '@app/redux-api/user/types';
 
 export interface ISessionAnke {
   readonly foedselsnummer: string;

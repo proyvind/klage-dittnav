@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { getQueryValue } from '../functions/get-query-value';
-import { Innsendingsytelse, ensureStringIsInnsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
+import { getQueryValue } from '@app/functions/get-query-value';
+import { Innsendingsytelse, ensureStringIsInnsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 
 export const useInnsendingsytelseFromQuery = (): Innsendingsytelse | null => {
   const [query] = useSearchParams();

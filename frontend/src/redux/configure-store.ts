@@ -1,9 +1,9 @@
 import { Middleware, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { ankeApi } from '../redux-api/case/anke/api';
-import { klageApi } from '../redux-api/case/klage/api';
-import { innsendingsytelserApi } from '../redux-api/innsendingsytelser';
-import { userApi } from '../redux-api/user/api';
+import { ankeApi } from '@app/redux-api/case/anke/api';
+import { klageApi } from '@app/redux-api/case/klage/api';
+import { innsendingsytelserApi } from '@app/redux-api/innsendingsytelser';
+import { userApi } from '@app/redux-api/user/api';
 import { RootState, rootReducer } from './root';
 
 interface RejectedApiAction {

@@ -2,16 +2,16 @@ import { Heading, LinkPanel } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { isoDateTimeToPretty } from '../../domain/date/date';
-import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
-import { useIsAuthenticated } from '../../hooks/use-user';
-import { LawBook } from '../../icons/law-book';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { useGetAvailableAnkerQuery } from '../../redux-api/case/anke/api';
-import { AvailableAnke } from '../../redux-api/case/anke/types';
-import { InngangPanel } from '../../routes/inngang/styled-components/panels';
+import { isoDateTimeToPretty } from '@app/domain/date/date';
+import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { LawBook } from '@app/icons/law-book';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { useGetAvailableAnkerQuery } from '@app/redux-api/case/anke/api';
+import { AvailableAnke } from '@app/redux-api/case/anke/types';
+import { InngangPanel } from '@app/routes/inngang/styled-components/panels';
 import { IconLinkPanel } from '../icon-link-panel/icon-link-panel';
 
 interface Props {

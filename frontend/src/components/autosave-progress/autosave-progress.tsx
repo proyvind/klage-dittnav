@@ -2,8 +2,8 @@ import { ErrorColored, SuccessColored } from '@navikt/ds-icons';
 import { Popover } from '@navikt/ds-react';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Language } from '../../language/language';
-import { Ellipsis } from '../../styled-components/ellipsis';
+import { Language } from '@app/language/language';
+import { Ellipsis } from '@app/styled-components/ellipsis';
 
 interface StatusProps {
   isLoading: boolean;

@@ -1,14 +1,14 @@
 import { NavigateFunction } from 'react-router-dom';
-import { ISessionKlage } from '../../components/klage/uinnlogget/types';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../language/types';
-import { AppEventEnum } from '../../logging/error-report/action';
-import { addAppEvent } from '../../logging/error-report/error-report';
-import { AppDispatch } from '../../redux/configure-store';
-import { createSessionKlage } from '../../redux/session/klage/helpers';
-import { deleteSessionKlage, setSessionKlage, updateSessionKlage } from '../../redux/session/session';
-import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../../redux-api/case/klage/api';
-import { NewKlage } from '../../redux-api/case/klage/types';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { AppDispatch } from '@app/redux/configure-store';
+import { createSessionKlage } from '@app/redux/session/klage/helpers';
+import { deleteSessionKlage, setSessionKlage, updateSessionKlage } from '@app/redux/session/session';
+import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '@app/redux-api/case/klage/api';
+import { NewKlage } from '@app/redux-api/case/klage/types';
 
 interface IHandler {
   language: Languages;

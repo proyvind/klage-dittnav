@@ -1,7 +1,7 @@
-import { ISessionAnke } from '../components/anke/uinnlogget/types';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { useAppDispatch } from '../redux/configure-store';
-import { updateSessionAnke } from '../redux/session/session';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useAppDispatch } from '@app/redux/configure-store';
+import { updateSessionAnke } from '@app/redux/session/session';
 
 export const useSessionAnkeUpdate = (key: Innsendingsytelse) => {
   const dispatch = useAppDispatch();

@@ -1,7 +1,7 @@
 import { BodyShort, Loader } from '@navikt/ds-react';
 import React from 'react';
-import { displayFnr } from '../../functions/display';
-import { useTranslation } from '../../language/use-translation';
+import { displayFnr } from '@app/functions/display';
+import { useTranslation } from '@app/language/use-translation';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 import { FnrDnrInput } from '../fnr-dnr-input/fnr-dnr-input';
 import { InformationPointBox } from '../information-point-box/information-point-box';

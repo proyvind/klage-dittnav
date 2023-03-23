@@ -1,15 +1,15 @@
 import React from 'react';
-import { useBreadcrumbs } from '../../../../breadcrumbs/use-breadcrumbs';
-import { useInnsendingsytelseName } from '../../../../hooks/use-innsendingsytelser';
-import { usePageInit } from '../../../../hooks/use-page-init';
-import { useIsAuthenticated } from '../../../../hooks/use-user';
-import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
-import { Anke } from '../../../../redux-api/case/anke/types';
-import { Klage } from '../../../../redux-api/case/klage/types';
-import { CaseStatus } from '../../../../redux-api/case/types';
-import { FormTitleContainer } from '../../../../routes/form-title-container';
-import { ContentContainer } from '../../../../styled-components/content-container';
-import { FormMainContainer } from '../../../../styled-components/main-container';
+import { useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
+import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { usePageInit } from '@app/hooks/use-page-init';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Anke } from '@app/redux-api/case/anke/types';
+import { Klage } from '@app/redux-api/case/klage/types';
+import { CaseStatus } from '@app/redux-api/case/types';
+import { FormTitleContainer } from '@app/routes/form-title-container';
+import { ContentContainer } from '@app/styled-components/content-container';
+import { FormMainContainer } from '@app/styled-components/main-container';
 import { LogoutWarning } from '../../../logout-warning/logout-warning';
 import { StepProps, Steps } from '../../../steps/steps';
 

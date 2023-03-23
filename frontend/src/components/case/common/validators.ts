@@ -1,9 +1,9 @@
 import { dnr, fnr } from '@navikt/fnrvalidator';
 import dayjs, { extend } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { validNpid } from '../../../domain/npid/valid-npid';
-import { ENVIRONMENT } from '../../../environment/environment';
-import { Language } from '../../../language/language';
+import { validNpid } from '@app/domain/npid/valid-npid';
+import { ENVIRONMENT } from '@app/environment/environment';
+import { Language } from '@app/language/language';
 
 extend(isSameOrBefore);
 

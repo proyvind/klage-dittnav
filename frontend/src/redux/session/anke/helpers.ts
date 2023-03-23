@@ -1,8 +1,8 @@
 import dayjs, { extend } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { ISessionAnke } from '../../../components/anke/uinnlogget/types';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../../language/types';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
 import { SessionKey } from '../types';
 
 extend(utc);

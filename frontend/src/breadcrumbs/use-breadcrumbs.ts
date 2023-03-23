@@ -1,9 +1,9 @@
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../language/use-language';
-import { useTranslation } from '../language/use-translation';
-import { currentPath } from '../routes/current-path';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { currentPath } from '@app/routes/current-path';
 
 export interface Breadcrumb {
   url: string;

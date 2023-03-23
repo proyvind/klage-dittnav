@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { setTokenExpires } from '../../logging/error-report/error-report';
+import { setTokenExpires } from '@app/logging/error-report/error-report';
 import { API_BASE_QUERY } from '../common';
 import { IAuthResponse, IUser } from './types';
 

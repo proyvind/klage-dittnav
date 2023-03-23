@@ -1,4 +1,4 @@
-import { isNotUndefined } from '../../functions/is-not-type-guards';
+import { isNotUndefined } from '@app/functions/is-not-type-guards';
 import { BaseEvent } from './types';
 
 export const formatSessionTime = (sessionTimeMs: number): string => {
