@@ -1,7 +1,7 @@
 import express from 'express';
-import { frontendDistDirectoryPath } from '../config/config';
-import { getCookie } from '../functions/cookies';
-import { getLogger } from '../logger';
+import { frontendDistDirectoryPath } from '@app/config/config';
+import { getCookie } from '@app/functions/cookies';
+import { getLogger } from '@app/logger';
 import { indexFile } from './index-file';
 
 const log = getLogger('static-routes');

@@ -1,5 +1,5 @@
 import express, { Request } from 'express';
-import { AnyObject, getLogger } from '../logger';
+import { AnyObject, getLogger } from '@app/logger';
 
 const router = express.Router();
 

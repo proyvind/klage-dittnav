@@ -1,11 +1,11 @@
 import path from 'path';
 import { performance } from 'perf_hooks';
 import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr';
-import { frontendDistDirectoryPath } from '../config/config';
-import { ENVIRONMENT, isDeployedToProd } from '../config/env';
-import { VERSION } from '../config/version';
-import { getLogger } from '../logger';
-import { EmojiIcons, sendToSlack } from '../slack';
+import { frontendDistDirectoryPath } from '@app/config/config';
+import { ENVIRONMENT, isDeployedToProd } from '@app/config/env';
+import { VERSION } from '@app/config/version';
+import { getLogger } from '@app/logger';
+import { EmojiIcons, sendToSlack } from '@app/slack';
 
 const log = getLogger('index-file');
 

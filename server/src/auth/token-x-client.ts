@@ -1,8 +1,8 @@
 import { JWK } from 'jose';
 import { Issuer } from 'openid-client';
-import { requiredEnvString, requiredEnvUrl } from '../config/env-var';
-import { parseJSON } from '../functions/parse-json';
-import { getLogger } from '../logger';
+import { requiredEnvString, requiredEnvUrl } from '@app/config/env-var';
+import { parseJSON } from '@app/functions/parse-json';
+import { getLogger } from '@app/logger';
 
 const log = getLogger('auth');
 

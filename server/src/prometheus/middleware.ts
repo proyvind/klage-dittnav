@@ -1,6 +1,6 @@
 import promBundle from 'express-prom-bundle';
-import { NAIS_NAMESPACE } from '../config/env';
-import { VERSION } from '../config/version';
+import { NAIS_NAMESPACE } from '@app/config/env';
+import { VERSION } from '@app/config/version';
 import { normalizePath } from './normalize-path';
 
 const labels: Record<string, string> = {

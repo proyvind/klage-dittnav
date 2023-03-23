@@ -1,4 +1,4 @@
-import { getLogger } from '../logger';
+import { getLogger } from '@app/logger';
 
 const log = getLogger('env-var');
 
@@ -57,9 +57,8 @@ export const requiredEnvNumber = (name: string, defaultValue?: number): number =
   }
 
   log.error({
-    msg: `Could not parse environment variable '${name}' as integer/number. Parsed value: '${
-      envString ?? 'undefined'
-    }'.`,
+    msg: `Could not parse environment variable '${name}' as integer/number. Parsed value: '${envString ?? 'undefined'
+      }'.`,
   });
   process.exit(1);
 };
