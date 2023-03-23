@@ -32,7 +32,19 @@
   ],
   "settings": {
     "react": {
-      "version": "17"
+      "version": "18"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
     }
   },
   "root": true,

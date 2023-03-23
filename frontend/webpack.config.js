@@ -26,6 +26,9 @@ module.exports = (_env, { mode }) => ({
     ],
   },
   resolve: {
+    alias: {
+      '@app': path.resolve(__dirname, 'src'),
+    },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   output: {

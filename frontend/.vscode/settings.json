@@ -16,6 +16,7 @@
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.preferences.importModuleSpecifier": "non-relative",
     "workbench.editor.closeOnFileDelete": true,
     "npm-intellisense.importQuotes": "'",
     "npm-intellisense.importES6": true,

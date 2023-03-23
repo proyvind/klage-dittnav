@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": false,
     "skipLibCheck": false,
     "esModuleInterop": true,
@@ -12,13 +16,23 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react",
     "sourceMap": true,
-    "noUncheckedIndexedAccess": true
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": [
+        "*"
+      ]
+    }
   },
   "outDir": "./dist",
-  "include": ["./src/**/*"],
-  "exclude": ["./dist/**"]
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "./dist/**"
+  ]
 }
