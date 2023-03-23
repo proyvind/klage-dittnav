@@ -1,9 +1,9 @@
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { getOnBehalfOfAccessToken } from '../auth/on-behalf-of';
-import { getTokenXClient } from '../auth/token-x-client';
-import { OBO_CLIENT_IDS, PROXIED_CLIENT_IDS } from '../config/config';
-import { getLogger } from '../logger';
+import { getOnBehalfOfAccessToken } from '@app/auth/on-behalf-of';
+import { getTokenXClient } from '@app/auth/token-x-client';
+import { OBO_CLIENT_IDS, PROXIED_CLIENT_IDS } from '@app/config/config';
+import { getLogger } from '@app/logger';
 
 const log = getLogger('proxy');
 
