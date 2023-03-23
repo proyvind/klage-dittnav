@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = (_env, { mode }) => ({
   mode,
@@ -11,9 +12,8 @@ module.exports = (_env, { mode }) => ({
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        options: {
-          allowTsInNodeModules: true
-        }
+        options: { allowTsInNodeModules: true },
+        options: { transpileOnly: true },
       },
       {
         test: /\.css$/i,
@@ -64,5 +64,6 @@ module.exports = (_env, { mode }) => ({
       'process.env.NODE_ENV': JSON.stringify(mode),
     }),
     new webpack.EnvironmentPlugin({'VERSION': 'dev'}),
+    new ForkTsCheckerWebpackPlugin(),
   ]
 });
