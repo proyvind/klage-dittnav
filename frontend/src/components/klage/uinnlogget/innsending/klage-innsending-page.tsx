@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGoToBegrunnelseOnError, useSessionKlageErrors } from '../../../../hooks/use-errors';
-import { Innsendingsytelse } from '../../../../innsendingsytelser/innsendingsytelser';
-import { useTranslation } from '../../../../language/use-translation';
-import { PageIdentifier } from '../../../../logging/amplitude';
+import { useGoToBegrunnelseOnError, useSessionKlageErrors } from '@app/hooks/use-errors';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useTranslation } from '@app/language/use-translation';
+import { PageIdentifier } from '@app/logging/amplitude';
 import { RenderCaseinnsendingPage } from '../../../case/common/post/innsending-page';
 import { KlageSessionLoader } from '../klage-session-loader';
 import { ISessionKlage } from '../types';

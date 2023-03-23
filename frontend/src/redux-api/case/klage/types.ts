@@ -1,6 +1,6 @@
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { StringValue } from '../../../kategorier/kategorier';
-import { Languages } from '../../../language/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { StringValue } from '@app/kategorier/kategorier';
+import { Languages } from '@app/language/types';
 import { Case } from '../types';
 
 export enum Reason {

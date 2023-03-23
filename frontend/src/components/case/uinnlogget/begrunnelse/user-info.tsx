@@ -1,8 +1,8 @@
 import { TextField } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { ErrorState } from '../../../../hooks/use-errors';
-import { useTranslation } from '../../../../language/use-translation';
+import { ErrorState } from '@app/hooks/use-errors';
+import { useTranslation } from '@app/language/use-translation';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { FnrDnrInput } from '../../../fnr-dnr-input/fnr-dnr-input';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';

@@ -1,5 +1,5 @@
-import { ISODate, ISODateTime } from '../../domain/date/date';
-import { Languages } from '../../language/types';
+import { ISODate, ISODateTime } from '@app/domain/date/date';
+import { Languages } from '@app/language/types';
 
 export interface UploadAttachmentParams {
   file: File;

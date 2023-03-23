@@ -1,4 +1,4 @@
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { Case, CaseStatus } from '../types';
 
 export interface ResumeAnke {

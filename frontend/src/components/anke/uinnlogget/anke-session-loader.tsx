@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { LoadingPage } from '../../../components/loading-page/loading-page';
-import { getQueryValue } from '../../../functions/get-query-value';
-import { useSessionAnke } from '../../../hooks/use-session-anke';
-import { useIsAuthenticated } from '../../../hooks/use-user';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../../language/use-language';
-import { useTranslation } from '../../../language/use-translation';
+import { LoadingPage } from '@app/components/loading-page/loading-page';
+import { getQueryValue } from '@app/functions/get-query-value';
+import { useSessionAnke } from '@app/hooks/use-session-anke';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
 import { ISessionAnke } from './types';
 
 interface Props {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { ENVIRONMENT } from '../environment/environment';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { INNGANG_KATEGORIER } from '../kategorier/kategorier';
+import { ENVIRONMENT } from '@app/environment/environment';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { INNGANG_KATEGORIER } from '@app/kategorier/kategorier';
 
 export const useSupportsDigitalKlage = (innsendingsytelse: Innsendingsytelse) =>
   useMemo(

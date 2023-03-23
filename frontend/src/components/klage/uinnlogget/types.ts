@@ -1,8 +1,8 @@
-import { ISODate } from '../../../domain/date/date';
-import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../../language/types';
-import { Reason } from '../../../redux-api/case/klage/types';
-import { IName } from '../../../redux-api/user/types';
+import { ISODate } from '@app/domain/date/date';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
+import { Reason } from '@app/redux-api/case/klage/types';
+import { IName } from '@app/redux-api/user/types';
 
 export interface ISessionKlage {
   readonly foedselsnummer: string;

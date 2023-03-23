@@ -1,9 +1,9 @@
 import { TextField } from '@navikt/ds-react';
 import { dnr, fnr } from '@navikt/fnrvalidator';
 import React from 'react';
-import { validNpid } from '../../domain/npid/valid-npid';
-import { ENVIRONMENT } from '../../environment/environment';
-import { useTranslation } from '../../language/use-translation';
+import { validNpid } from '@app/domain/npid/valid-npid';
+import { ENVIRONMENT } from '@app/environment/environment';
+import { useTranslation } from '@app/language/use-translation';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 
 interface Props {

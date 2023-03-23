@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { ISessionKlage } from '../components/klage/uinnlogget/types';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../language/use-language';
-import { useAppDispatch, useAppSelector } from '../redux/configure-store';
-import { createSessionKlage, getSessionKlageKey } from '../redux/session/klage/helpers';
-import { loadSessionKlage } from '../redux/session/session';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useAppDispatch, useAppSelector } from '@app/redux/configure-store';
+import { createSessionKlage, getSessionKlageKey } from '@app/redux/session/klage/helpers';
+import { loadSessionKlage } from '@app/redux/session/session';
 
 export const useSessionKlage = (
   innsendingsytelse: Innsendingsytelse,

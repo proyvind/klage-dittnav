@@ -2,10 +2,10 @@ import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/dist/query/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from '../../../language/use-translation';
-import { addErrorEvent, sendErrorReport } from '../../../logging/error-report/error-report';
-import { useGetKlageQuery, useUpdateKlageMutation } from '../../../redux-api/case/klage/api';
-import { Klage } from '../../../redux-api/case/klage/types';
+import { useTranslation } from '@app/language/use-translation';
+import { addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
+import { useGetKlageQuery, useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
+import { Klage } from '@app/redux-api/case/klage/types';
 import { LoadingPage } from '../../loading-page/loading-page';
 
 interface Props {

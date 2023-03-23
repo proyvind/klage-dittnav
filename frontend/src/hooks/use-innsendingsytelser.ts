@@ -1,7 +1,7 @@
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../language/use-language';
-import { useTranslation } from '../language/use-translation';
-import { useGetInnsendingsytelserQuery } from '../redux-api/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { useGetInnsendingsytelserQuery } from '@app/redux-api/innsendingsytelser';
 
 export const useInnsendingsytelseName = (innsendingsytelse: Innsendingsytelse): [string, boolean] => {
   const lang = useLanguage();

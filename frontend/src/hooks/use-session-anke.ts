@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { ISessionAnke } from '../components/anke/uinnlogget/types';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../language/use-language';
-import { useAppDispatch, useAppSelector } from '../redux/configure-store';
-import { createSessionAnke, getSessionAnkeKey } from '../redux/session/anke/helpers';
-import { loadSessionAnke } from '../redux/session/session';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useAppDispatch, useAppSelector } from '@app/redux/configure-store';
+import { createSessionAnke, getSessionAnkeKey } from '@app/redux/session/anke/helpers';
+import { loadSessionAnke } from '@app/redux/session/session';
 
 export const useSessionAnke = (
   innsendingsytelse: Innsendingsytelse,

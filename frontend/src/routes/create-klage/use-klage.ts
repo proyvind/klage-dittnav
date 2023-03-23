@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getQueryValue } from '../../functions/get-query-value';
-import { useSessionKlage } from '../../hooks/use-session-klage';
-import { useIsAuthenticated, useUser } from '../../hooks/use-user';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { useAppDispatch } from '../../redux/configure-store';
-import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '../../redux-api/case/klage/api';
+import { getQueryValue } from '@app/functions/get-query-value';
+import { useSessionKlage } from '@app/hooks/use-session-klage';
+import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { useAppDispatch } from '@app/redux/configure-store';
+import { useCreateKlageMutation, useResumeOrCreateKlageMutation } from '@app/redux-api/case/klage/api';
 import { handleCreateKlage, handleResumeOrCreateKlage, handleSessionKlage } from './handlers';
 
 interface IResult {

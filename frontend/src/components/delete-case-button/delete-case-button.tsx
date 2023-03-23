@@ -1,9 +1,9 @@
 import { Delete } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
 import React, { useState } from 'react';
-import { useTranslation } from '../../language/use-translation';
-import { AppEventEnum } from '../../logging/error-report/action';
-import { addAppEvent } from '../../logging/error-report/error-report';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
 
 interface Props {
   onDelete: () => void;

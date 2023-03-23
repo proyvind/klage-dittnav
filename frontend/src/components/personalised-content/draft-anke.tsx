@@ -1,13 +1,13 @@
 import { LinkPanel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ISODateTime, isoDateTimeToPretty } from '../../domain/date/date';
-import { useInnsendingsytelseName } from '../../hooks/use-innsendingsytelser';
-import { LawBook } from '../../icons/law-book';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useTranslation } from '../../language/use-translation';
-import { Anke } from '../../redux-api/case/anke/types';
+import { ISODateTime, isoDateTimeToPretty } from '@app/domain/date/date';
+import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { LawBook } from '@app/icons/law-book';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { Anke } from '@app/redux-api/case/anke/types';
 import { IconLinkPanel } from '../icon-link-panel/icon-link-panel';
 import { TextLoader } from '../text-loader/text-loader';
 

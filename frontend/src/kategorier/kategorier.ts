@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
-import { EnvString } from '../environment/environment';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../language/types';
+import { EnvString } from '@app/environment/environment';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
 
 export type StringValue = {
   [key in Languages]: string;

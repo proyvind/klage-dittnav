@@ -1,7 +1,7 @@
 import React from 'react';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '../../language/use-language';
-import { useGetInnsendingsytelserQuery } from '../../redux-api/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
+import { useGetInnsendingsytelserQuery } from '@app/redux-api/innsendingsytelser';
 import { TextLoader } from './text-loader';
 
 interface Props {

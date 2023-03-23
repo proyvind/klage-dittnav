@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { useInnsendingsytelseFromQuery } from '../hooks/use-innsendingsytelse-from-query';
-import { useLanguage } from '../language/use-language';
+import { useInnsendingsytelseFromQuery } from '@app/hooks/use-innsendingsytelse-from-query';
+import { useLanguage } from '@app/language/use-language';
 
 interface Props {
   type?: 'klage' | 'anke';

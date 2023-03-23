@@ -4,16 +4,11 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useInnsendingsytelseName } from '../../../../hooks/use-innsendingsytelser';
-import { useTranslation } from '../../../../language/use-translation';
-import { AppEventEnum } from '../../../../logging/error-report/action';
-import {
-  addApiEvent,
-  addAppEvent,
-  addErrorEvent,
-  sendErrorReport,
-} from '../../../../logging/error-report/error-report';
-import { API_PATH } from '../../../../redux-api/common';
+import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addApiEvent, addAppEvent, addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
+import { API_PATH } from '@app/redux-api/common';
 import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { IEttersendelse } from '../../../ettersendelse/types';
 import { ISessionKlage } from '../../../klage/uinnlogget/types';

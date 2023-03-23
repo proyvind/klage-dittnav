@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { ISODate } from '../../../../domain/date/date';
-import { useTranslation } from '../../../../language/use-translation';
+import { ISODate } from '@app/domain/date/date';
+import { useTranslation } from '@app/language/use-translation';
 import { DatePicker } from '../../../date-picker/date-picker';
 import { FormFieldsIds } from '../form-fields-ids';
 import { validateRequiredVedtakDate, validateVedtakDate } from '../validators';

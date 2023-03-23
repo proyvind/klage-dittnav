@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { isApiError, isError } from '../../../../functions/is-api-error';
-import { useTranslation } from '../../../../language/use-translation';
-import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
-import { Reason } from '../../../../redux-api/case/klage/types';
+import { isApiError, isError } from '@app/functions/is-api-error';
+import { useTranslation } from '@app/language/use-translation';
+import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
+import { Reason } from '@app/redux-api/case/klage/types';
 import { AutosaveProgressIndicator } from '../../../autosave-progress/autosave-progress';
 import { Reasons as BaseReasons } from '../../../begrunnelse/klage/reasons';
 import { LoggedOut } from '../../../logged-out/logged-out';

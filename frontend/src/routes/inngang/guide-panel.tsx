@@ -1,7 +1,7 @@
 import { GuidePanel } from '@navikt/ds-react';
 import React from 'react';
-import { useIsAuthenticated } from '../../hooks/use-user';
-import { useTranslation } from '../../language/use-translation';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { useTranslation } from '@app/language/use-translation';
 
 export const InngangGuidePanel = () => {
   const { data } = useIsAuthenticated();

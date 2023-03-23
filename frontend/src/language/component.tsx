@@ -1,8 +1,8 @@
 import { onLanguageSelect, setAvailableLanguages, setParams } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LANGUAGE_KEYS } from '../language/language';
-import { currentPath } from '../routes/current-path';
+import { LANGUAGE_KEYS } from '@app/language/language';
+import { currentPath } from '@app/routes/current-path';
 
 interface Props {
   children: JSX.Element;

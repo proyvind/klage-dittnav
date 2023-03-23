@@ -1,8 +1,8 @@
 import { Select } from '@navikt/ds-react';
 import React, { useCallback, useMemo } from 'react';
-import { useTranslation } from '../../../../language/use-translation';
-import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
-import { useKlageenheterForAnke } from '../../../../simple-api-state/use-kodeverk';
+import { useTranslation } from '@app/language/use-translation';
+import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { useKlageenheterForAnke } from '@app/simple-api-state/use-kodeverk';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
 import { validateKlageenhetAnke } from '../../../case/common/validators';
 

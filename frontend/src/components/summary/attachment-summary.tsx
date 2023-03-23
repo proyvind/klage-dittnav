@@ -1,10 +1,10 @@
 import { Heading } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { displayBytes } from '../../functions/display';
-import { Language } from '../../language/language';
-import { Attachment, CaseStatus } from '../../redux-api/case/types';
-import { Section } from '../../styled-components/summary';
+import { displayBytes } from '@app/functions/display';
+import { Language } from '@app/language/language';
+import { Attachment, CaseStatus } from '@app/redux-api/case/types';
+import { Section } from '@app/styled-components/summary';
 import { FileIcon } from '../attachments/file-icon';
 import { ExternalLink } from '../link/link';
 

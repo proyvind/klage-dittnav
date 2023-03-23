@@ -1,8 +1,8 @@
 import { Radio, RadioGroup, Select } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from '../../language/use-translation';
-import { useKlageenheterForAnke } from '../../simple-api-state/use-kodeverk';
+import { useTranslation } from '@app/language/use-translation';
+import { useKlageenheterForAnke } from '@app/simple-api-state/use-kodeverk';
 import { FormFieldsIds } from '../case/common/form-fields-ids';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { ISessionKlage } from '../../../components/klage/uinnlogget/types';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
 import { SessionKey } from '../types';
 import { getSessionKlageKey } from './helpers';
 

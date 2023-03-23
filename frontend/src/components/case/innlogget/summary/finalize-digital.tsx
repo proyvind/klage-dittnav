@@ -3,15 +3,15 @@ import { Button } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from '../../../../hooks/use-user';
-import { Language } from '../../../../language/language';
-import { useTranslation } from '../../../../language/use-translation';
-import { AppEventEnum } from '../../../../logging/error-report/action';
-import { addAppEvent } from '../../../../logging/error-report/error-report';
-import { useFinalizeAnkeMutation } from '../../../../redux-api/case/anke/api';
-import { useFinalizeKlageMutation } from '../../../../redux-api/case/klage/api';
-import { CaseStatus } from '../../../../redux-api/case/types';
-import { login } from '../../../../user/login';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { useFinalizeAnkeMutation } from '@app/redux-api/case/anke/api';
+import { useFinalizeKlageMutation } from '@app/redux-api/case/klage/api';
+import { CaseStatus } from '@app/redux-api/case/types';
+import { login } from '@app/user/login';
 
 interface Props {
   setError: (error: string | null) => void;

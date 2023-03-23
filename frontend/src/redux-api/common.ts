@@ -1,6 +1,6 @@
 import { FetchArgs, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
-import { isNotUndefined } from '../functions/is-not-type-guards';
-import { addApiEvent, sendErrorReport } from '../logging/error-report/error-report';
+import { isNotUndefined } from '@app/functions/is-not-type-guards';
+import { addApiEvent, sendErrorReport } from '@app/logging/error-report/error-report';
 
 const IS_LOCALHOST = window.location.hostname === 'localhost';
 

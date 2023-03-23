@@ -1,8 +1,8 @@
 import { Checkbox } from '@navikt/ds-react';
 import React from 'react';
-import { Language } from '../../../../language/language';
-import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
-import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
+import { Language } from '@app/language/language';
+import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
 
 interface Props {
   caseId: string;

@@ -1,7 +1,7 @@
-import { ISessionKlage } from '../components/klage/uinnlogget/types';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
-import { useAppDispatch } from '../redux/configure-store';
-import { updateSessionKlage } from '../redux/session/session';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { useAppDispatch } from '@app/redux/configure-store';
+import { updateSessionKlage } from '@app/redux/session/session';
 
 export const useSessionKlageUpdate = (key: Innsendingsytelse) => {
   const dispatch = useAppDispatch();

@@ -2,14 +2,14 @@ import { FileContent } from '@navikt/ds-icons';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
 import styled from 'styled-components';
-import { ISODate, isoDateToPretty } from '../../../../domain/date/date';
-import { Envelope } from '../../../../icons/envelope';
-import { Language } from '../../../../language/language';
-import { useTranslation } from '../../../../language/use-translation';
-import { AppEventEnum } from '../../../../logging/error-report/action';
-import { addAppEvent } from '../../../../logging/error-report/error-report';
-import { CenteredContainer } from '../../../../styled-components/common';
-import { CenteredHeading } from '../../../../styled-components/page-title';
+import { ISODate, isoDateToPretty } from '@app/domain/date/date';
+import { Envelope } from '@app/icons/envelope';
+import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { CenteredContainer } from '@app/styled-components/common';
+import { CenteredHeading } from '@app/styled-components/page-title';
 import { ExternalLink } from '../../../link/link';
 
 interface Props {

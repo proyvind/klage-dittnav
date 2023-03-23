@@ -1,10 +1,10 @@
 import React from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { LoadingPage } from '../components/loading-page/loading-page';
-import { useInnsendingsytelseFromQuery } from '../hooks/use-innsendingsytelse-from-query';
-import { useUser } from '../hooks/use-user';
-import { innsendingsytelsePath } from '../kategorier/kategorier';
-import { useTranslation } from '../language/use-translation';
+import { LoadingPage } from '@app/components/loading-page/loading-page';
+import { useInnsendingsytelseFromQuery } from '@app/hooks/use-innsendingsytelse-from-query';
+import { useUser } from '@app/hooks/use-user';
+import { innsendingsytelsePath } from '@app/kategorier/kategorier';
+import { useTranslation } from '@app/language/use-translation';
 import { InngangHovedkategorier } from './inngang/inngang-hovedkategorier';
 
 export const LandingPage = () => {

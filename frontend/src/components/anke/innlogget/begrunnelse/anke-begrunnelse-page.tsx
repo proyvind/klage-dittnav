@@ -1,25 +1,25 @@
 import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAnkeErrors } from '../../../../hooks/use-errors';
-import { useSupportsDigitalAnke } from '../../../../hooks/use-supports-digital';
-import { useUser } from '../../../../hooks/use-user';
-import { useLanguage } from '../../../../language/use-language';
-import { useTranslation } from '../../../../language/use-translation';
-import { PageIdentifier } from '../../../../logging/amplitude';
-import { AppEventEnum } from '../../../../logging/error-report/action';
-import { addAppEvent } from '../../../../logging/error-report/error-report';
-import { useLogPageView } from '../../../../logging/use-log-page-view';
+import { useAnkeErrors } from '@app/hooks/use-errors';
+import { useSupportsDigitalAnke } from '@app/hooks/use-supports-digital';
+import { useUser } from '@app/hooks/use-user';
+import { useLanguage } from '@app/language/use-language';
+import { useTranslation } from '@app/language/use-translation';
+import { PageIdentifier } from '@app/logging/amplitude';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { useLogPageView } from '@app/logging/use-log-page-view';
 import {
   useDeleteAnkeMutation,
   useDeleteAttachmentMutation,
   useUpdateAnkeMutation,
   useUploadAttachmentMutation,
-} from '../../../../redux-api/case/anke/api';
-import { Anke } from '../../../../redux-api/case/anke/types';
-import { CaseStatus } from '../../../../redux-api/case/types';
-import { API_PATH } from '../../../../redux-api/common';
-import { CenteredContainer } from '../../../../styled-components/common';
+} from '@app/redux-api/case/anke/api';
+import { Anke } from '@app/redux-api/case/anke/types';
+import { CaseStatus } from '@app/redux-api/case/types';
+import { API_PATH } from '@app/redux-api/common';
+import { CenteredContainer } from '@app/styled-components/common';
 import { AttachmentsSection } from '../../../attachments/attachments';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
 import { VedtakDateDigital } from '../../../case/common/digital/vedtak-date';

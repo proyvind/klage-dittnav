@@ -1,8 +1,8 @@
 import { BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Envelope } from '../../../../icons/envelope';
-import { Language } from '../../../../language/language';
+import { Envelope } from '@app/icons/envelope';
+import { Language } from '@app/language/language';
 import { Optional } from '../../../optional/optional';
 
 interface Props {

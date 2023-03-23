@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ISessionAnke } from '../components/anke/uinnlogget/types';
-import { FormFieldsIds } from '../components/case/common/form-fields-ids';
+import { ISessionAnke } from '@app/components/anke/uinnlogget/types';
+import { FormFieldsIds } from '@app/components/case/common/form-fields-ids';
 import {
   ValidatorFactory,
   validateEtternavn,
@@ -12,12 +12,12 @@ import {
   validateKlageenhetEttersendelse,
   validateRequiredVedtakDate,
   validateVedtakDate,
-} from '../components/case/common/validators';
-import { IEttersendelse } from '../components/ettersendelse/types';
-import { ISessionKlage } from '../components/klage/uinnlogget/types';
-import { useTranslation } from '../language/use-translation';
-import { Anke } from '../redux-api/case/anke/types';
-import { Klage } from '../redux-api/case/klage/types';
+} from '@app/components/case/common/validators';
+import { IEttersendelse } from '@app/components/ettersendelse/types';
+import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { useTranslation } from '@app/language/use-translation';
+import { Anke } from '@app/redux-api/case/anke/types';
+import { Klage } from '@app/redux-api/case/klage/types';
 
 export type ErrorState = Record<FormFieldsIds, string | undefined>;
 

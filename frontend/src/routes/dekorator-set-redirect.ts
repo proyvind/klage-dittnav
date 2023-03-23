@@ -1,7 +1,7 @@
 import { setParams } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { LOGGED_IN_PATH } from '../environment/environment';
+import { LOGGED_IN_PATH } from '@app/environment/environment';
 import { currentPath } from './current-path';
 
 interface Props {

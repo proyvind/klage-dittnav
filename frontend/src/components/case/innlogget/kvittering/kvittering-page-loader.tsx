@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Language } from '../../../../language/language';
-import { useGetAnkeQuery } from '../../../../redux-api/case/anke/api';
-import { useGetKlageQuery } from '../../../../redux-api/case/klage/api';
+import { Language } from '@app/language/language';
+import { useGetAnkeQuery } from '@app/redux-api/case/anke/api';
+import { useGetKlageQuery } from '@app/redux-api/case/klage/api';
 import { Kvittering } from './kvittering';
 import { KvitteringLoading } from './kvittering-loading';
 

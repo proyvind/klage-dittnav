@@ -3,9 +3,9 @@ import { Button, Heading } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useTranslation } from '../language/use-translation';
-import { PageIdentifier } from '../logging/amplitude';
-import { useLogPageView } from '../logging/use-log-page-view';
+import { useTranslation } from '@app/language/use-translation';
+import { PageIdentifier } from '@app/logging/amplitude';
+import { useLogPageView } from '@app/logging/use-log-page-view';
 
 export const NotFoundPage = () => {
   useLogPageView(PageIdentifier.NOT_FOUND);

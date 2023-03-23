@@ -1,11 +1,11 @@
 import { Textarea, TextareaProps } from '@navikt/ds-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { isApiError, isError } from '../../../../functions/is-api-error';
-import { useOnUnmount } from '../../../../hooks/use-on-unmount';
-import { Language } from '../../../../language/nb';
-import { useTranslation } from '../../../../language/use-translation';
-import { useUpdateAnkeMutation } from '../../../../redux-api/case/anke/api';
-import { useUpdateKlageMutation } from '../../../../redux-api/case/klage/api';
+import { isApiError, isError } from '@app/functions/is-api-error';
+import { useOnUnmount } from '@app/hooks/use-on-unmount';
+import { Language } from '@app/language/nb';
+import { useTranslation } from '@app/language/use-translation';
+import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
 import { AutosaveProgressIndicator } from '../../../autosave-progress/autosave-progress';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
 import { validateFritekst } from '../../../case/common/validators';

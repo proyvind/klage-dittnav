@@ -1,7 +1,7 @@
 import { Alert, BodyShort } from '@navikt/ds-react';
 import { FallbackRender } from '@sentry/react';
 import React from 'react';
-import { addErrorEvent, sendErrorReport } from '../logging/error-report/error-report';
+import { addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
 
 export const SentryFallback: FallbackRender = ({ error, componentStack }) => {
   addErrorEvent(error.message, error.stack, componentStack ?? undefined);

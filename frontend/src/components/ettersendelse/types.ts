@@ -1,5 +1,5 @@
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../language/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
 
 export interface IEttersendelse {
   innsendingsytelse: Innsendingsytelse;

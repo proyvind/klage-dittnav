@@ -1,13 +1,13 @@
 import { NavigateFunction } from 'react-router';
-import { Innsendingsytelse } from '../../innsendingsytelser/innsendingsytelser';
-import { Languages } from '../../language/types';
-import { AppEventEnum } from '../../logging/error-report/action';
-import { addAppEvent } from '../../logging/error-report/error-report';
-import { AppDispatch } from '../../redux/configure-store';
-import { createSessionAnke } from '../../redux/session/anke/helpers';
-import { deleteSessionAnke, setSessionAnke, updateSessionAnke } from '../../redux/session/session';
-import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '../../redux-api/case/anke/api';
-import { NewAnke } from '../../redux-api/case/anke/types';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { Languages } from '@app/language/types';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { AppDispatch } from '@app/redux/configure-store';
+import { createSessionAnke } from '@app/redux/session/anke/helpers';
+import { deleteSessionAnke, setSessionAnke, updateSessionAnke } from '@app/redux/session/session';
+import { useCreateAnkeMutation, useResumeOrCreateAnkeMutation } from '@app/redux-api/case/anke/api';
+import { NewAnke } from '@app/redux-api/case/anke/types';
 import { ISessionAnke } from './../../components/anke/uinnlogget/types';
 
 interface IHandler {

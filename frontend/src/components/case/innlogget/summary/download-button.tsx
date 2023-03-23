@@ -2,12 +2,12 @@ import { Download, Login } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useIsAuthenticated } from '../../../../hooks/use-user';
-import { useTranslation } from '../../../../language/use-translation';
-import { AppEventEnum } from '../../../../logging/error-report/action';
-import { addAppEvent } from '../../../../logging/error-report/error-report';
-import { API_PATH } from '../../../../redux-api/common';
-import { login } from '../../../../user/login';
+import { useIsAuthenticated } from '@app/hooks/use-user';
+import { useTranslation } from '@app/language/use-translation';
+import { AppEventEnum } from '@app/logging/error-report/action';
+import { addAppEvent } from '@app/logging/error-report/error-report';
+import { API_PATH } from '@app/redux-api/common';
+import { login } from '@app/user/login';
 
 interface Props {
   id: string;
