@@ -1,4 +1,4 @@
-import compression from 'compression';
+import compression, { filter } from 'compression';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { DOMAIN, isDeployed, isDeployedToProd } from './config/env';
@@ -33,7 +33,7 @@ const shouldCompress = (req: Request, res: Response) => {
     return false;
   }
 
-  return compression.filter(req, res);
+  return filter(req, res);
 };
 
 server.use(compression({ filter: shouldCompress }));

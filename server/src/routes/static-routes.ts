@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router, static as expressStatic } from 'express';
 import { frontendDistDirectoryPath } from '@app/config/config';
 import { getCookie } from '@app/functions/cookies';
 import { getLogger } from '@app/logger';
@@ -6,7 +6,7 @@ import { indexFile } from './index-file';
 
 const log = getLogger('static-routes');
 
-const router = express.Router();
+const router = Router();
 
 export const setupStaticRoutes = () => {
   router.get(['/nb*', '/en*'], async (req, res) => {
@@ -21,7 +21,7 @@ export const setupStaticRoutes = () => {
     }
   });
 
-  router.use(express.static(frontendDistDirectoryPath, { index: false }));
+  router.use(expressStatic(frontendDistDirectoryPath, { index: false }));
 
   router.get('*', (req, res) => {
     const decoratorLanguage = getCookie('decorator-language', req);

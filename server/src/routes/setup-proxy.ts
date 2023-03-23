@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { getOnBehalfOfAccessToken } from '@app/auth/on-behalf-of';
 import { getTokenXClient } from '@app/auth/token-x-client';
@@ -9,7 +9,7 @@ const log = getLogger('proxy');
 
 export const setupProxy = async () => {
   const authClient = await getTokenXClient();
-  const router = express.Router();
+  const router = Router();
 
   OBO_CLIENT_IDS.forEach((appName) => {
     const route = `/api/${appName}`;

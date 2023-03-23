@@ -1,12 +1,12 @@
-import express, { Request } from 'express';
+import { Request, Router, json } from 'express';
 import { AnyObject, getLogger } from '@app/logger';
 
-const router = express.Router();
+const router = Router();
 
 const log = getLogger('frontend-error-reporter');
 
 export const errorReporter = () => {
-  router.post('/error-report', express.json(), (req: Request<never, never, AnyObject>, res) => {
+  router.post('/error-report', json(), (req: Request<never, never, AnyObject>, res) => {
     log.warn({ msg: 'Error report', data: req.body });
     res.status(200).send();
   });
