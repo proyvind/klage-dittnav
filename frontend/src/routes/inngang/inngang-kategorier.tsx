@@ -1,5 +1,5 @@
 import { Heading, LinkPanel } from '@navikt/ds-react';
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { DraftKlageAndAnkeLists } from '../../components/personalised-content/personalised-content';
@@ -19,7 +19,7 @@ interface Props {
   inngangkategori: InngangKategori;
 }
 
-export const InngangKategorier = React.memo(
+export const InngangKategorier = memo(
   ({ inngangkategori }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
     const lang = useLanguage();

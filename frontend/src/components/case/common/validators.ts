@@ -1,11 +1,11 @@
 import { dnr, fnr } from '@navikt/fnrvalidator';
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { validNpid } from '../../../domain/npid/valid-npid';
 import { ENVIRONMENT } from '../../../environment/environment';
 import { Language } from '../../../language/language';
 
-dayjs.extend(isSameOrBefore);
+extend(isSameOrBefore);
 
 export type Validator = (value: string | null) => string | undefined;
 export type ValidatorFactory = (errorMessages: Language['error_messages']) => Validator;

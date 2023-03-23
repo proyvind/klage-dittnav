@@ -1,5 +1,5 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { addSessionEvent } from '../../../logging/error-report/error-report';
 import { SessionKey, State } from '../types';
@@ -7,7 +7,7 @@ import { getSessionKlageKey } from './helpers';
 import { readSessionKlage, saveSessionKlage } from './storage';
 import { SessionKlagePayload, SessionKlageUpdate } from './types';
 
-dayjs.extend(utc);
+extend(utc);
 
 const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
   addSessionEvent('Set session klage');

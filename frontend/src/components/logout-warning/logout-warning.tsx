@@ -1,5 +1,5 @@
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import en from 'dayjs/locale/en';
 import nb from 'dayjs/locale/nb';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -15,9 +15,9 @@ import { addAppEvent } from '../../logging/error-report/error-report';
 import { LoginButton } from '../../styled-components/login-button';
 import { login } from '../../user/login';
 
-dayjs.extend(utc);
-dayjs.extend(relative);
-dayjs.extend(isSameOrBefore);
+extend(utc);
+extend(relative);
+extend(isSameOrBefore);
 
 const MINUTES_TO_WARN = 10;
 

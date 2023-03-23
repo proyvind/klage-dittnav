@@ -1,5 +1,5 @@
 import amplitude from 'amplitude-js';
-import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 
 const APP_NAME = 'klage-dittnav';
 
