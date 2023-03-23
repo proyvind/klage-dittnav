@@ -1,11 +1,11 @@
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { ISessionAnke } from '../../../components/anke/uinnlogget/types';
 import { Innsendingsytelse } from '../../../innsendingsytelser/innsendingsytelser';
 import { Languages } from '../../../language/types';
 import { SessionKey } from '../types';
 
-dayjs.extend(utc);
+extend(utc);
 
 export const getSessionAnkeKey = (key: SessionKey): string => `anke-${key}`;
 

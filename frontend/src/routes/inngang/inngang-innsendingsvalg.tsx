@@ -1,5 +1,5 @@
 import { Alert, Heading, LinkPanel } from '@navikt/ds-react';
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '../../breadcrumbs/use-breadcrumbs';
 import { IconLinkPanel } from '../../components/icon-link-panel/icon-link-panel';
@@ -31,7 +31,7 @@ interface Props {
   supportsDigitalAnke?: boolean;
 }
 
-export const InngangInnsending = React.memo(
+export const InngangInnsending = memo(
   ({
     innsendingsytelse,
     internalSaksnummer = null,

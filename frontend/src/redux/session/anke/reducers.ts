@@ -1,5 +1,5 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { addSessionEvent } from '../../../logging/error-report/error-report';
 import { SessionKey, State } from '../types';
@@ -7,7 +7,7 @@ import { getSessionAnkeKey } from './helpers';
 import { readSessionAnke, saveSessionAnke } from './storage';
 import { SessionAnkePayload, SessionAnkeUpdate } from './types';
 
-dayjs.extend(utc);
+extend(utc);
 
 const setSessionAnke: CaseReducer<State, PayloadAction<SessionAnkePayload>> = (state, { payload }) => {
   addSessionEvent('Set session anke');

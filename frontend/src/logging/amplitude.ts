@@ -1,4 +1,4 @@
-import amplitude from 'amplitude-js';
+import { getInstance } from 'amplitude-js';
 import { Innsendingsytelse } from '../innsendingsytelser/innsendingsytelser';
 
 const APP_NAME = 'klage-dittnav';
@@ -23,7 +23,7 @@ export enum PageIdentifier {
   NOT_FOUND = 'NOT_FOUND',
 }
 
-const client = amplitude.getInstance();
+const client = getInstance();
 
 client.init('default', '', {
   apiEndpoint: 'amplitude.nav.no/collect-auto',
