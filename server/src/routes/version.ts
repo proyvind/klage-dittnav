@@ -1,7 +1,7 @@
-import express from 'express';
+import { Router } from 'express';
 import { VERSION } from '@app/config/version';
 
-const router = express.Router();
+const router = Router();
 
 const HEADERS = {
   'Content-Type': 'text/event-stream',
