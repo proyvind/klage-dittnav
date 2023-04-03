@@ -1,0 +1,29 @@
+name: Manual E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      e2e_tag:
+        description: "Tag of E2E image to run"
+        required: false
+        default: latest
+        type: string
+
+run-name: E2E (${{ inputs.e2e_tag }})
+
+jobs:
+  e2e_tests:
+    name: E2E
+    runs-on: ubuntu-latest
+    if: false # TODO: Remove this line when E2E tests are available
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: E2E
+        uses: navikt/klage-dittnav-e2e-tests/.github/actions/run@main
+        with:
+          e2e_tag: ${{ inputs.e2e_tag }}
+          nais_deploy_api_key: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          nais_management_project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          nais_workload_identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

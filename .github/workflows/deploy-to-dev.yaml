@@ -1,0 +1,142 @@
+name: Manual deploy to dev
+
+on:
+  workflow_call:
+    inputs:
+      e2e_tag:
+        description: "Tag of E2E image to run"
+        required: false
+        default: latest
+        type: string
+    secrets:
+      NAIS_DEPLOY_API_KEY:
+        description: "API key for nais/deploy"
+        required: true
+      NAIS_WORKLOAD_IDENTITY_PROVIDER:
+        description: "Identity provider for nais/docker-build-push"
+        required: true
+  workflow_dispatch:
+    inputs:
+      e2e_tag:
+        description: "Tag of E2E image to run"
+        required: false
+        default: latest
+        type: string
+
+run-name: Dev deploy of ${{ github.ref_name }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            server/package-lock.json
+      
+      - name: Install frontend dependencies
+        shell: bash
+        run: |
+          cd frontend
+          npm ci
+      
+      - name: Build frontend
+        shell: bash
+        env:
+          VERSION: ${{ github.sha }}
+        run: |
+          cd frontend
+          npm run build
+      
+      - name: Test frontend
+        shell: bash
+        run: |
+          cd frontend
+          npm test
+      
+      - name: Install server dependencies
+        shell: bash
+        run: |
+          cd server
+          npm ci
+      
+      - name: Build server
+        shell: bash
+        run: |
+          cd server
+          npm run build
+      
+      - name: Test server
+        shell: bash
+        run: |
+          cd server
+          npm test
+
+      - name: Build & push Docker image
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: klage # required
+          tag: ${{ github.sha }} # optional
+          push_image: true # optional, default true
+          dockerfile: Dockerfile # optional, default Dockerfile
+          docker_context: . # optional, default .
+          image_suffix: frontend # optional, default empty
+          cache_from: type=gha # optional, default type=gha
+          cache_to: type=gha,mode=max # optional, default type=gha,mode=max
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # required, but is defined as an organization secret
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # required, but is defined as an organization variable
+          build_args: |
+            VERSION=${{ github.sha }}
+  
+  deploy_to_dev:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Deploy to dev
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          TEAM: klage
+          CLUSTER: dev-gcp
+          VARS: nais/dev.yaml
+          RESOURCE: nais/nais.yaml
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          VAR: image=${{ needs.build.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+  e2e_test:
+    name: E2E
+    needs: deploy_to_dev
+    if: false # TODO: Remove this line when E2E tests are available
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: E2E
+        uses: navikt/klage-dittnav-e2e-tests/.github/actions/run@main
+        with:
+          e2e_tag: ${{ inputs.e2e_tag }}
+          nais_deploy_api_key: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          nais_management_project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          nais_workload_identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

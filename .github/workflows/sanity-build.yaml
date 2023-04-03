@@ -3,57 +3,39 @@ name: Sanity Build
 on: [pull_request]
 
 jobs:
-  frontend-sanity-build:
+  sanity-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        apps: [frontend, server]
+    name: ${{ matrix.apps }} Sanity Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
-          cache-dependency-path: 'frontend/package-lock.json'
-      - name: Install frontend dependencies
+          node-version: 18
+          cache: npm
+          cache-dependency-path: ${{ matrix.apps }}/package-lock.json
+      - name: Install ${{ matrix.apps }} dependencies
+        shell: bash
         run: |
-          cd frontend
-          npm ci
-      - name: Lint frontend
+          cd ${{ matrix.apps }}
+          npm ci --prefer-offline
+      - name: Lint ${{ matrix.apps }}
+        shell: bash
         run: |
-          cd frontend
+          cd ${{ matrix.apps }}
           npm run lint
-      - name: Test frontend
+      - name: Test ${{ matrix.apps }}
+        shell: bash
         run: |
-          cd frontend
+          cd ${{ matrix.apps }}
           npm test
-      - name: Build frontend
+      - name: Build ${{ matrix.apps }}
+        shell: bash
         run: |
-          cd frontend
-          npm run build
-  server-sanity-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: Setup Node.js
-        uses: actions/setup-node@main
-        with:
-          node-version: '16'
-          cache: 'npm'
-          cache-dependency-path: 'server/package-lock.json'
-      - name: Install server dependencies
-        run: |
-          cd server
-          npm ci
-      - name: Lint server
-        run: |
-          cd server
-          npm run lint
-      - name: Test server
-        run: |
-          cd server
-          npm test
-      - name: Build server
-        run: |
-          cd server
+          cd ${{ matrix.apps }}
           npm run build

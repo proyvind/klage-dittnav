@@ -1,0 +1,51 @@
+name: Manual deploy to prod
+
+on:
+  workflow_call:
+    secrets:
+      NAIS_DEPLOY_API_KEY:
+        description: "API key for nais/deploy"
+        required: true
+      NAIS_WORKLOAD_IDENTITY_PROVIDER:
+        description: "Identity provider for nais/docker-build-push"
+        required: true
+  workflow_dispatch:
+
+run-name: Prod deploy of ${{ github.ref_name }}
+
+jobs:
+  deploy_to_prod:
+    name: Deploy
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Get image registry
+        id: image-registry
+        uses: nais/login@v0
+        with:
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          team: klage
+
+      - name: Generate image name
+        id: image
+        shell: bash
+        run: echo "image=${{ steps.image-registry.outputs.registry }}/klage-dittnav-frontend:${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Deploy to prod
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          TEAM: klage
+          CLUSTER: prod-gcp
+          VARS: nais/prod.yaml
+          RESOURCE: nais/nais.yaml
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          VAR: image=${{ steps.image.outputs.image }}
+          IMAGE: ${{ steps.image.outputs.image }}
+        timeout-minutes: 3
