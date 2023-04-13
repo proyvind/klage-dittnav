@@ -1,2 +1,1 @@
-ingresses:
-    - https://klage.intern.dev.nav.no
+ingress: https://klage.intern.dev.nav.no

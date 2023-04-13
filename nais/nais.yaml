@@ -25,6 +25,11 @@ spec:
     enabled: true
   idporten:
     enabled: true
+    clientURI: {{ingress}}
+    postLogoutRedirectURIs:
+      - {{ingress}}
+    accessTokenLifetime: 3600
+    sessionLifetime: 7200
     sidecar:
       enabled: true
   prometheus:
@@ -35,9 +40,7 @@ spec:
         - application: klage-dittnav-api
         - application: klage-kodeverk-api
   ingresses:
-  {{#each ingresses as |url|}}
-    - {{url}}
-  {{/each}}
+    - {{ingress}}
   envFrom:
     - secret: amplitude
     - secret: slack-url
