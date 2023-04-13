@@ -43,10 +43,14 @@ class IndexFile {
       const indexHtml = await injectDecoratorServerSide({
         env: isDeployedToProd ? 'prod' : 'dev',
         filePath: this.INDEX_HTML_PATH,
-        simple: true,
-        chatbot: true,
-        redirectToApp: false,
-        logoutUrl: '/oauth2/logout',
+        params: {
+          simple: true,
+          chatbot: true,
+          redirectToApp: false,
+          logoutUrl: '/oauth2/logout',
+          context: 'privatperson',
+          level: 'Level4',
+        },
       });
 
       const end = performance.now();
