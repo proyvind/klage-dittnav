@@ -39,6 +39,8 @@ spec:
       rules:
         - application: klage-dittnav-api
         - application: klage-kodeverk-api
+        - application: nav-dekoratoren
+          namespace: personbruker
   ingresses:
     - {{ingress}}
   envFrom:
