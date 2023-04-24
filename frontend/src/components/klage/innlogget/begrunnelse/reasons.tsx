@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { isApiError, isError } from '@app/functions/is-api-error';
+import { isErrorMessageKey } from '@app/language/error-messages';
 import { useTranslation } from '@app/language/use-translation';
 import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
 import { Reason } from '@app/redux-api/case/klage/types';
@@ -29,7 +30,7 @@ export const Reasons = ({ checkedReasons, caseId }: Props) => {
             return;
           }
 
-          if (isApiError(e)) {
+          if (isApiError(e) && isErrorMessageKey(e.data.detail)) {
             setError(error_messages[e.data.detail]);
 
             return;

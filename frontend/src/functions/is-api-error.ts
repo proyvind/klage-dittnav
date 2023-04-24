@@ -16,9 +16,12 @@ export const isApiError = (error: unknown): error is ApiError => {
     if (
       error['data'] !== null &&
       typeof error['data'] === 'object' &&
-      Number.isInteger(error.data['status']) &&
-      typeof error.data['detail'] === 'string' &&
-      typeof error.data['title'] === 'string'
+      'status' in error.data &&
+      Number.isInteger(error.data.status) &&
+      'detail' in error.data &&
+      typeof error.data.detail === 'string' &&
+      'title' in error.data &&
+      typeof error.data.title === 'string'
     ) {
       return true;
     }
@@ -29,7 +32,7 @@ export const isApiError = (error: unknown): error is ApiError => {
 
 export const isError = (error: unknown): error is FetchBaseQueryError => {
   if (error !== null && typeof error === 'object') {
-    if (typeof error['status'] === 'string' || typeof error['status'] === 'number') {
+    if ('status' in error && (typeof error.status === 'string' || typeof error.status === 'number')) {
       return true;
     }
   }

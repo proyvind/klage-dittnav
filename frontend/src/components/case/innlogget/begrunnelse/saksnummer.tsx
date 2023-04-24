@@ -1,6 +1,7 @@
 import { BodyShort, Label } from '@navikt/ds-react';
 import React, { useCallback, useState } from 'react';
 import { isApiError, isError } from '@app/functions/is-api-error';
+import { isErrorMessageKey } from '@app/language/error-messages';
 import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
 import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
@@ -40,7 +41,7 @@ export const UserSaksnummerDigital = ({
             return;
           }
 
-          if (isApiError(e)) {
+          if (isApiError(e) && isErrorMessageKey(e.data.detail)) {
             setError(error_messages[e.data.detail]);
 
             return;

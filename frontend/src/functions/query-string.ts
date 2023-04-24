@@ -5,16 +5,14 @@ export const queryStringify = (query: unknown): string => {
     return '';
   }
 
-  const keys = Object.keys(query);
+  const entries: [string, unknown][] = Object.entries(query);
 
-  if (keys.length === 0) {
+  if (entries.length === 0) {
     return '';
   }
 
-  const params = keys
-    .map((key) => {
-      const value: unknown = query[key];
-
+  const params = entries
+    .map(([key, value]) => {
       if (value === null || value === undefined) {
         return null;
       }

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ISODate } from '@app/domain/date/date';
 import { isApiError, isError } from '@app/functions/is-api-error';
+import { isErrorMessageKey } from '@app/language/error-messages';
 import { Language } from '@app/language/nb';
 import { useTranslation } from '@app/language/use-translation';
 import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
@@ -51,7 +52,7 @@ export const VedtakDateDigital = ({
             }
 
             if (isApiError(e)) {
-              onError(id, error_messages[e.data.detail]);
+              onError(id, isErrorMessageKey(e.data.detail) ? error_messages[e.data.detail] : undefined);
 
               return;
             }

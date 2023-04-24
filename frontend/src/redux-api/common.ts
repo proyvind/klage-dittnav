@@ -18,11 +18,18 @@ const staggeredBaseQuery = (baseUrl: string) => {
       const result = await fetch(args, api, extraOptions);
 
       const argsIsString = typeof args === 'string';
+
+      const data = result.error?.data;
+      const hasData = typeof data === 'object' && data !== null;
+
+      const title = hasData ? 'title' in data && data.title : undefined;
+      const detail = hasData ? 'detail' in data && data.detail : undefined;
+
       addApiEvent(
         argsIsString ? args : args.url,
         argsIsString ? 'GET' : args.method ?? 'GET',
         result.meta?.response?.status ?? result.error?.status,
-        [result.error?.data?.['title'], result.error?.data?.['detail']].filter(isNotUndefined).join(' - ')
+        [title, detail].filter(isNotUndefined).join(' - ')
       );
 
       if (result.meta?.response?.ok !== true) {

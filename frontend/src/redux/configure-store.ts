@@ -18,7 +18,13 @@ interface RejectedApiAction {
 }
 
 const isRejectedWithValue = (action: unknown): action is RejectedApiAction =>
-  typeof action === 'object' && action !== null && action?.['meta']?.['rejectedWithValue'] === true;
+  typeof action === 'object' &&
+  action !== null &&
+  'meta' in action &&
+  typeof action.meta === 'object' &&
+  action.meta !== null &&
+  'rejectedWithValue' in action.meta &&
+  action.meta.rejectedWithValue === true;
 
 const rtkQueryErrorLogger: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {

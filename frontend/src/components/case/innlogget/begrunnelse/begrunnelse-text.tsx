@@ -2,6 +2,7 @@ import { Textarea, TextareaProps } from '@navikt/ds-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { isApiError, isError } from '@app/functions/is-api-error';
 import { useOnUnmount } from '@app/hooks/use-on-unmount';
+import { isErrorMessageKey } from '@app/language/error-messages';
 import { Language } from '@app/language/nb';
 import { useTranslation } from '@app/language/use-translation';
 import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
@@ -45,7 +46,10 @@ export const BegrunnelseTextDigital = ({
           }
 
           if (isApiError(e)) {
-            onError(FormFieldsIds.FRITEKST, error_messages[e.data.detail]);
+            onError(
+              FormFieldsIds.FRITEKST,
+              isErrorMessageKey(e.data.detail) ? error_messages[e.data.detail] : undefined
+            );
 
             return;
           }

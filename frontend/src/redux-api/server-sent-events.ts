@@ -116,4 +116,4 @@ export class ServerSentEventManager {
   }
 }
 
-const isServerSentEvent = (event: Event): event is ServerSentEvent => typeof event['data'] !== 'undefined';
+const isServerSentEvent = (event: Event): event is ServerSentEvent => 'data' in event && typeof event.data === 'string';

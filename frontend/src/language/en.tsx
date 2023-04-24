@@ -4,6 +4,7 @@ import React from 'react';
 import { ExternalLink } from '@app/components/link/link';
 import { displayBytes } from '@app/functions/display';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { ErrorMessageKeys } from '@app/language/error-messages';
 import { Utfall } from '@app/redux-api/case/anke/types';
 import { Reason } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
@@ -460,12 +461,12 @@ export const en: Language = {
     ].map((c, index) => <span key={index}>{c}</span>),
   },
   error_messages: {
-    TOO_LARGE: 'The file size cannot be larger than 8 MB.',
-    TOTAL_TOO_LARGE: 'Total file size cannot exceed 32 MB.',
-    ENCRYPTED: 'We suspect that your file is encrypted, therefore it cannot be included.',
-    EMPTY: 'You cannot include an empty file.',
-    VIRUS: 'We suspect that your file contains a virus, therefore is cannot be included.',
-    FILE_COULD_NOT_BE_CONVERTED:
+    [ErrorMessageKeys.TOO_LARGE]: 'The file size cannot be larger than 8 MB.',
+    [ErrorMessageKeys.TOTAL_TOO_LARGE]: 'Total file size cannot exceed 32 MB.',
+    [ErrorMessageKeys.ENCRYPTED]: 'We suspect that your file is encrypted, therefore it cannot be included.',
+    [ErrorMessageKeys.EMPTY]: 'You cannot include an empty file.',
+    [ErrorMessageKeys.VIRUS]: 'We suspect that your file contains a virus, therefore is cannot be included.',
+    [ErrorMessageKeys.FILE_COULD_NOT_BE_CONVERTED]:
       'You have tried to include an attachment with a format we do not support. Attachments are limited to til PNG, JPEG, and PDF.',
     skjema: {
       title: 'Form is not complete',

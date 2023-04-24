@@ -4,6 +4,7 @@ import React from 'react';
 import { ExternalLink } from '@app/components/link/link';
 import { displayBytes } from '@app/functions/display';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { ErrorMessageKeys } from '@app/language/error-messages';
 import { Utfall } from '@app/redux-api/case/anke/types';
 import { Reason } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
@@ -471,12 +472,12 @@ export const nb = {
     ].map((c, index) => <span key={index}>{c}</span>),
   },
   error_messages: {
-    TOO_LARGE: 'Filstørrelsen kan ikke være større enn 8 MB.',
-    TOTAL_TOO_LARGE: 'Total filstørrelse kan ikke være større enn 32 MB.',
-    ENCRYPTED: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med.',
-    EMPTY: 'Du kan ikke sende med en tom fil.',
-    VIRUS: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med.',
-    FILE_COULD_NOT_BE_CONVERTED:
+    [ErrorMessageKeys.TOO_LARGE]: 'Filstørrelsen kan ikke være større enn 8 MB.',
+    [ErrorMessageKeys.TOTAL_TOO_LARGE]: 'Total filstørrelse kan ikke være større enn 32 MB.',
+    [ErrorMessageKeys.ENCRYPTED]: 'Vi mistenker at filen din er kryptert, den kan derfor ikke sendes med.',
+    [ErrorMessageKeys.EMPTY]: 'Du kan ikke sende med en tom fil.',
+    [ErrorMessageKeys.VIRUS]: 'Vi mistenker at filen din inneholder et virus, den kan derfor ikke sendes med.',
+    [ErrorMessageKeys.FILE_COULD_NOT_BE_CONVERTED]:
       'Du har prøvd å legge til et vedlegg med et format vi ikke støtter. Vedlegg er begrenset til PNG, JPEG, og PDF.',
     skjema: {
       title: 'Feil i skjema',

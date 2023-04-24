@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { displayBytes } from '@app/functions/display';
 import { isApiError, isError } from '@app/functions/is-api-error';
+import { isErrorMessageKey } from '@app/language/error-messages';
 import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
@@ -149,7 +150,7 @@ const useErrorMessages = (errors: FetchBaseQueryError[]): string[] => {
 
   return errors.map((error): string => {
     if (isApiError(error)) {
-      return error_messages[error.data.detail] ?? common.generic_error;
+      return isErrorMessageKey(error.data.detail) ? error_messages[error.data.detail] : common.generic_error;
     }
 
     if (isError(error)) {
