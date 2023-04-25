@@ -25,18 +25,10 @@ import { CenteredHeading, InngangPanel, PanelContainer } from './styled-componen
 
 interface Props extends IKategori {
   inngangkategori?: ITemaWithKategorier | null;
-  internalSaksnummer?: string | null;
 }
 
 export const Kategori = memo(
-  ({
-    innsendingsytelse,
-    internalSaksnummer = null,
-    inngangkategori = null,
-    allowsAnke = false,
-    digitalKlage,
-    digitalAnke,
-  }: Props) => {
+  ({ innsendingsytelse, inngangkategori = null, allowsAnke = false, digitalKlage, digitalAnke }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, innsendingsytelse);
     const [title] = useInnsendingsytelseName(innsendingsytelse);
     const lang = useLanguage();
@@ -57,17 +49,9 @@ export const Kategori = memo(
           <InngangGuidePanel />
 
           <InngangPanel as="section">
-            <Links
-              innsendingsytelse={innsendingsytelse}
-              saksnummerValue={internalSaksnummer}
-              supportsDigitalKlage={supportsDigitalKlage}
-            />
+            <Links innsendingsytelse={innsendingsytelse} supportsDigitalKlage={supportsDigitalKlage} />
             <Optional show={allowsAnke === true}>
-              <AnkeLinkPanel
-                innsendingsytelse={innsendingsytelse}
-                saksnummer={internalSaksnummer}
-                digital={supportsDigitalAnke}
-              />
+              <AnkeLinkPanel innsendingsytelse={innsendingsytelse} digital={supportsDigitalAnke} />
             </Optional>
 
             <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${innsendingsytelse}`} border icon={<Document />}>
@@ -79,28 +63,22 @@ export const Kategori = memo(
       </InngangMainContainer>
     );
   },
-  (prevProps, nextProps) =>
-    prevProps.innsendingsytelse === nextProps.innsendingsytelse &&
-    prevProps.internalSaksnummer === nextProps.internalSaksnummer
+  (prevProps, nextProps) => prevProps.innsendingsytelse === nextProps.innsendingsytelse
 );
 
 Kategori.displayName = 'InngangInnsending';
 
 interface LinksProps {
   innsendingsytelse: Innsendingsytelse;
-  saksnummerValue: string | null;
   supportsDigitalKlage: boolean;
 }
 
-const Links = ({ innsendingsytelse, saksnummerValue, supportsDigitalKlage }: LinksProps) => {
+const Links = ({ innsendingsytelse, supportsDigitalKlage }: LinksProps) => {
   const { saksnummer } = useParams();
   const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
 
-  const query = useMemo(
-    () => queryStringify({ saksnummer: saksnummerValue ?? getQueryValue(saksnummer) }),
-    [saksnummerValue, saksnummer]
-  );
+  const query = useMemo(() => queryStringify({ saksnummer }), [saksnummer]);
 
   return (
     <>
@@ -131,12 +109,4 @@ const getBreadcrumbs = (inngangkategori: ITemaWithKategorier | null, lang: Langu
       handleInApp: true,
     },
   ];
-};
-
-const getQueryValue = (queryValue: string | string[] | null | undefined) => {
-  if (typeof queryValue === 'string' && queryValue.length !== 0) {
-    return queryValue;
-  }
-
-  return null;
 };
