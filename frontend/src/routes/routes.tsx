@@ -23,7 +23,7 @@ import { Languages } from '@app/language/types';
 import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
-import { Kategori } from './inngang/inngang-innsendingsvalg';
+import { Kategori } from './inngang/kategori';
 import { Tema } from './inngang/tema';
 import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';

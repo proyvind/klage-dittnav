@@ -12,12 +12,12 @@ import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { PageIdentifier } from '@app/logging/amplitude';
 import { useLogPageView } from '@app/logging/use-log-page-view';
-import { KategoriLink } from '@app/routes/inngang/inngang-kategorier';
+import { KategoriLink } from '@app/routes/inngang/tema-with-kategorier';
 import { InngangMainContainer } from '@app/styled-components/main-container';
 import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
 
-export const InngangHovedkategorier = () => {
+export const Temaer = () => {
   useLogPageView(PageIdentifier.INNGANG_HOVEDKATEGORIER);
   const { inngang } = useTranslation();
   const { title } = inngang.hovedkategorier;

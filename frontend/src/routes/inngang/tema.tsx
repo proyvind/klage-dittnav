@@ -1,6 +1,6 @@
 import React from 'react';
 import { ITema } from '@app/kategorier/kategorier';
-import { TemaWithKategorier } from '@app/routes/inngang/inngang-kategorier';
+import { TemaWithKategorier } from '@app/routes/inngang/tema-with-kategorier';
 import { Temakategori } from '@app/routes/inngang/temakategori';
 
 interface Props {

@@ -5,7 +5,7 @@ import { useInnsendingsytelseFromQuery } from '@app/hooks/use-innsendingsytelse-
 import { useUser } from '@app/hooks/use-user';
 import { innsendingsytelsePath } from '@app/kategorier/kategorier';
 import { useTranslation } from '@app/language/use-translation';
-import { InngangHovedkategorier } from './inngang/inngang-hovedkategorier';
+import { Temaer } from './inngang/temaer';
 
 export const LandingPage = () => {
   const [query] = useSearchParams();
@@ -20,7 +20,7 @@ export const LandingPage = () => {
   const path = innsendingsytelsePath(innsendingsytelse);
 
   if (path === null) {
-    return <InngangHovedkategorier />;
+    return <Temaer />;
   }
 
   query.delete('tema');
