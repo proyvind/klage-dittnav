@@ -119,6 +119,7 @@ https://klage.nav.no/en/anke/ny/DAGPENGER?saksnummer=12345
 | SYKDOM_I_FAMILIEN | Omsorgspenger, opplæringspenger, pleiepenger | Care benefit (Omsorgspenger), training allowance (Opplæringspenger), attendance allowance (Pleiepenger) |
 | SYKEPENGER | Sykepenger | Sickness benefit (Sykepenger) |
 | TIDLIGERE_FAMILIEPLEIER | Ytelser til tidligere familiepleier | Benefits to former family caregivers |
+| TILLEGGSSTONAD | Tilleggsstønader | Supplemental benefits |
 | TILTAKSPENGER | Tiltakspenger for arbeidsmarkedstiltak | Benefits (Tiltakspenger) while participating in employment schemes |
 | UFORETRYGD | Uføretrygd | Disability benefit (Uføretrygd) |
 | YRKESSKADE | Yrkesskade | Occupational injury (Yrkesskade) |
