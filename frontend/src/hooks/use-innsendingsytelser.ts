@@ -12,7 +12,7 @@ export const useInnsendingsytelseName = (innsendingsytelse: Innsendingsytelse): 
     return [common.loading, true];
   }
 
-  return [data[innsendingsytelse] ?? `${lang}_YTELSE_${innsendingsytelse}`, false];
+  return [data[innsendingsytelse] ?? innsendingsytelse, false];
 };
 
 export const useInnsendingsytelserNames = (innsendingsytelser: Innsendingsytelse[]): [string[], boolean] => {

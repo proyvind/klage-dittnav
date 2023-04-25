@@ -7,12 +7,12 @@ import { DraftKlageAndAnkeLists } from '@app/components/personalised-content/per
 import { TextLoader } from '@app/components/text-loader/text-loader';
 import { useInnsendingsytelserNames } from '@app/hooks/use-innsendingsytelser';
 import { usePageInit } from '@app/hooks/use-page-init';
-import { INNGANG_KATEGORIER, InngangKategori } from '@app/kategorier/kategorier';
-import { Languages } from '@app/language/types';
+import { INNGANG_KATEGORIER, ITema, ITemaWithKategorier } from '@app/kategorier/kategorier';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { PageIdentifier } from '@app/logging/amplitude';
 import { useLogPageView } from '@app/logging/use-log-page-view';
+import { KategoriLink } from '@app/routes/inngang/inngang-kategorier';
 import { InngangMainContainer } from '@app/styled-components/main-container';
 import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
@@ -23,7 +23,6 @@ export const InngangHovedkategorier = () => {
   const { title } = inngang.hovedkategorier;
   usePageInit(title);
   useBreadcrumbs([], null);
-  const language = useLanguage();
 
   return (
     <InngangMainContainer>
@@ -40,20 +39,14 @@ export const InngangHovedkategorier = () => {
           <Heading spacing level="2" size="large">
             {inngang.hovedkategorier.chooseInnsendingsytelse}
           </Heading>
-          <LinkContainer>{getLinks(language)}</LinkContainer>
+          <LinkContainer>{getLinks()}</LinkContainer>
         </InngangPanel>
       </PanelContainer>
     </InngangMainContainer>
   );
 };
 
-const getLinks = (lang: Languages) =>
-  INNGANG_KATEGORIER.map((kategori) => (
-    <KategoriLink
-      {...kategori}
-      key={typeof kategori.externalUrl?.[lang] === 'string' ? kategori.externalUrl[lang] : kategori.title[lang]}
-    />
-  ));
+const getLinks = () => INNGANG_KATEGORIER.map((kategori) => <TemaLink {...kategori} key={kategori.path} />);
 
 interface ExternalKategoriProps {
   title: string;
@@ -68,7 +61,7 @@ const ExternalHovedkategoriLink = ({ title, beskrivelse, externalUrl }: External
   </LinkPanel>
 );
 
-const KategoriLink = ({ title, path, beskrivelse, externalUrl, kategorier }: InngangKategori) => {
+const InngangKategoriLink = ({ title, path, beskrivelse, externalUrl, kategorier }: ITemaWithKategorier) => {
   const lang = useLanguage();
   const [titles, isLoading] = useInnsendingsytelserNames(kategorier.map(({ innsendingsytelse }) => innsendingsytelse));
 
@@ -88,6 +81,14 @@ const KategoriLink = ({ title, path, beskrivelse, externalUrl, kategorier }: Inn
       </LinkPanel>
     </StyledWrapper>
   );
+};
+
+const TemaLink = (tema: ITema) => {
+  if ('kategorier' in tema) {
+    return <InngangKategoriLink {...tema} />;
+  }
+
+  return <KategoriLink innsendingsytelse={tema.innsendingsytelse} path={tema.path} />;
 };
 
 const EllipsisDescription = styled(LinkPanel.Description)`

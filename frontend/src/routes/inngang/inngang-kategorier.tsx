@@ -6,7 +6,7 @@ import { DraftKlageAndAnkeLists } from '@app/components/personalised-content/per
 import { TitleLoader } from '@app/components/text-loader/title-loader';
 import { usePageInit } from '@app/hooks/use-page-init';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { InngangKategori } from '@app/kategorier/kategorier';
+import { ITemaWithKategorier } from '@app/kategorier/kategorier';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { PageIdentifier } from '@app/logging/amplitude';
@@ -16,21 +16,21 @@ import { InngangGuidePanel } from './guide-panel';
 import { CenteredHeading, InngangPanel, LinkContainer, PanelContainer } from './styled-components/panels';
 
 interface Props {
-  inngangkategori: InngangKategori;
+  tema: ITemaWithKategorier;
 }
 
-export const InngangKategorier = memo(
-  ({ inngangkategori }: Props) => {
+export const TemaWithKategorier = memo(
+  ({ tema }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_KATEGORIER);
     const lang = useLanguage();
-    const title = inngangkategori.title[lang];
+    const title = tema.title[lang];
     const { inngang } = useTranslation();
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
     useBreadcrumbs([], title);
 
     const innsendingsytelser: Innsendingsytelse[] = useMemo(
-      () => inngangkategori.kategorier.map(({ innsendingsytelse }) => innsendingsytelse),
-      [inngangkategori.kategorier]
+      () => tema.kategorier.map(({ innsendingsytelse }) => innsendingsytelse),
+      [tema]
     );
 
     return (
@@ -48,18 +48,18 @@ export const InngangKategorier = memo(
             <Heading spacing level="2" size="large">
               {inngang.kategorier.title}
             </Heading>
-            <KategoriLenker {...inngangkategori} />
+            <Kategorilenker {...tema} />
           </InngangPanel>
         </PanelContainer>
       </InngangMainContainer>
     );
   },
-  (prevProps, nextProps) => prevProps.inngangkategori === nextProps.inngangkategori
+  (prevProps, nextProps) => prevProps.tema === nextProps.tema
 );
 
-InngangKategorier.displayName = 'InngangKategorier';
+TemaWithKategorier.displayName = 'TemaWithKategorier';
 
-const KategoriLenker = ({ kategorier, path }: InngangKategori) => {
+const Kategorilenker = ({ kategorier, path }: ITemaWithKategorier) => {
   const lang = useLanguage();
 
   return (
@@ -94,7 +94,7 @@ interface KategoriLinkProps {
   path: string;
 }
 
-const KategoriLink = ({ innsendingsytelse, path }: KategoriLinkProps) => (
+export const KategoriLink = ({ innsendingsytelse, path }: KategoriLinkProps) => (
   <LinkPanel as={Link} to={path} border>
     <LinkPanel.Title>
       <TitleLoader innsendingsytelse={innsendingsytelse} />

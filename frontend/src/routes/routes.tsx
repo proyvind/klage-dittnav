@@ -16,16 +16,15 @@ import { KlageoppsummeringPage } from '@app/components/klage/innlogget/summary/k
 import { SessionKlagebegrunnelsePage } from '@app/components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page';
 import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/innsending/klage-innsending-page';
 import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
-import { ENVIRONMENT } from '@app/environment/environment';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { INNGANG_KATEGORIER } from '@app/kategorier/kategorier';
+import { IKategori, INNGANG_KATEGORIER, ITemaWithKategorier, ITemakategori } from '@app/kategorier/kategorier';
 import { LanguageComponent } from '@app/language/component';
 import { Languages } from '@app/language/types';
 import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
-import { InngangInnsending } from './inngang/inngang-innsendingsvalg';
-import { InngangKategorier } from './inngang/inngang-kategorier';
+import { Kategori } from './inngang/inngang-innsendingsvalg';
+import { Tema } from './inngang/tema';
 import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
@@ -51,7 +50,7 @@ export const Router = () => (
                 </Route>
 
                 {innsendingsRoutes}
-                {kategoriRoutes}
+                {temaRoutes}
 
                 <Route path="klage">
                   <Route path="ny">
@@ -106,41 +105,32 @@ export const Router = () => (
   </BrowserRouter>
 );
 
-const kategoriRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
-  <Route
-    key={inngangkategori.path}
-    path={inngangkategori.path}
-    element={<InngangKategorier inngangkategori={inngangkategori} />}
-  />
+const temaRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
+  <Route key={inngangkategori.path} path={inngangkategori.path} element={<Tema tema={inngangkategori} />} />
 ));
 
-const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) =>
-  inngangkategori.kategorier.map((kategori) => {
-    const kategoriPath = `${inngangkategori.path}/${kategori.path}`;
-    const supportsDigitalKlage = kategori.digitalKlage.includes(ENVIRONMENT.environment);
-    const supportsDigitalAnke = kategori.digitalAnke.includes(ENVIRONMENT.environment);
-
-    return (
-      <React.Fragment key={kategoriPath}>
-        <Route
-          path={kategoriPath}
-          element={
-            <InngangInnsending
-              {...kategori}
-              inngangkategori={inngangkategori}
-              supportsDigitalKlage={supportsDigitalKlage}
-              supportsDigitalAnke={supportsDigitalAnke}
-            />
-          }
-        />
-        <Route
-          path={`ettersendelse/${kategori.innsendingsytelse}`}
-          element={<EttersendelsePage innsendingsytelse={kategori.innsendingsytelse} />}
-        />
-      </React.Fragment>
-    );
-  })
+const getInnsendingRoute = (
+  kategoriPath: string,
+  kategori: ITemakategori | IKategori,
+  inngangkategori?: ITemaWithKategorier
+) => (
+  <React.Fragment key={kategoriPath}>
+    <Route path={kategoriPath} element={<Kategori {...kategori} inngangkategori={inngangkategori} />} />
+    <Route
+      path={`ettersendelse/${kategori.innsendingsytelse}`}
+      element={<EttersendelsePage innsendingsytelse={kategori.innsendingsytelse} />}
+    />
+  </React.Fragment>
 );
+const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) => {
+  if ('kategorier' in inngangkategori) {
+    return inngangkategori.kategorier.map((kategori) =>
+      getInnsendingRoute(`${inngangkategori.path}/${kategori.path}`, kategori, inngangkategori)
+    );
+  }
+
+  return getInnsendingRoute(inngangkategori.path, inngangkategori);
+});
 
 interface YtelseComponentProps {
   innsendingsytelse: Innsendingsytelse;
@@ -153,23 +143,31 @@ interface Props {
   pathSuffix?: string | null;
 }
 
-const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props): JSX.Element[] =>
-  INNGANG_KATEGORIER.flatMap((inngangkategori) =>
-    inngangkategori.kategorier.map((kategori) => {
-      if (pathSuffix === null) {
-        return (
-          <Route
-            key={kategori.innsendingsytelse}
-            path={kategori.innsendingsytelse}
-            element={<Component innsendingsytelse={kategori.innsendingsytelse} />}
-          />
-        );
-      }
-
-      return (
-        <Route key={kategori.innsendingsytelse} path={kategori.innsendingsytelse}>
-          <Route path={pathSuffix} element={<Component innsendingsytelse={kategori.innsendingsytelse} />} />
-        </Route>
+const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props) =>
+  INNGANG_KATEGORIER.flatMap((inngangkategori) => {
+    if ('kategorier' in inngangkategori) {
+      return inngangkategori.kategorier.map((kategori) =>
+        getCaseRoute(Component, kategori.innsendingsytelse, pathSuffix)
       );
-    })
+    }
+
+    return getCaseRoute(Component, inngangkategori.innsendingsytelse, pathSuffix);
+  });
+
+const getCaseRoute = (Component: YtelseComponent, innsendingsytelse: Innsendingsytelse, pathSuffix: string | null) => {
+  if (pathSuffix === null) {
+    return (
+      <Route
+        key={innsendingsytelse}
+        path={innsendingsytelse}
+        element={<Component innsendingsytelse={innsendingsytelse} />}
+      />
+    );
+  }
+
+  return (
+    <Route key={innsendingsytelse} path={innsendingsytelse}>
+      <Route path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
+    </Route>
   );
+};

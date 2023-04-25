@@ -4,13 +4,14 @@ import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
 import { IconLinkPanel } from '@app/components/icon-link-panel/icon-link-panel';
 import { Optional } from '@app/components/optional/optional';
+import { ENVIRONMENT } from '@app/environment/environment';
 import { queryStringify } from '@app/functions/query-string';
 import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
 import { usePageInit } from '@app/hooks/use-page-init';
 import { useIsAuthenticated } from '@app/hooks/use-user';
 import { Document } from '@app/icons/document';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { InngangKategori } from '@app/kategorier/kategorier';
+import { IKategori, ITemaWithKategorier } from '@app/kategorier/kategorier';
 import { Languages } from '@app/language/types';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -22,23 +23,19 @@ import { AnkeLinkPanel } from './klage-anke-knapper/anke-link-panel';
 import { KlageLinkPanel } from './klage-anke-knapper/klage-link-panel';
 import { CenteredHeading, InngangPanel, PanelContainer } from './styled-components/panels';
 
-interface Props {
-  innsendingsytelse: Innsendingsytelse;
+interface Props extends IKategori {
+  inngangkategori?: ITemaWithKategorier | null;
   internalSaksnummer?: string | null;
-  inngangkategori?: InngangKategori | null;
-  allowsAnke?: boolean;
-  supportsDigitalKlage?: boolean;
-  supportsDigitalAnke?: boolean;
 }
 
-export const InngangInnsending = memo(
+export const Kategori = memo(
   ({
     innsendingsytelse,
     internalSaksnummer = null,
     inngangkategori = null,
     allowsAnke = false,
-    supportsDigitalKlage = false,
-    supportsDigitalAnke = false,
+    digitalKlage,
+    digitalAnke,
   }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, innsendingsytelse);
     const [title] = useInnsendingsytelseName(innsendingsytelse);
@@ -47,6 +44,8 @@ export const InngangInnsending = memo(
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
     const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, lang), [inngangkategori, lang]);
     useBreadcrumbs(breadcrumbs, title);
+    const supportsDigitalKlage = digitalKlage.includes(ENVIRONMENT.environment);
+    const supportsDigitalAnke = digitalAnke.includes(ENVIRONMENT.environment);
 
     return (
       <InngangMainContainer>
@@ -85,7 +84,7 @@ export const InngangInnsending = memo(
     prevProps.internalSaksnummer === nextProps.internalSaksnummer
 );
 
-InngangInnsending.displayName = 'InngangInnsending';
+Kategori.displayName = 'InngangInnsending';
 
 interface LinksProps {
   innsendingsytelse: Innsendingsytelse;
@@ -120,7 +119,7 @@ const Links = ({ innsendingsytelse, saksnummerValue, supportsDigitalKlage }: Lin
   );
 };
 
-const getBreadcrumbs = (inngangkategori: InngangKategori | null, lang: Languages): Breadcrumb[] => {
+const getBreadcrumbs = (inngangkategori: ITemaWithKategorier | null, lang: Languages): Breadcrumb[] => {
   if (inngangkategori === null) {
     return [];
   }
