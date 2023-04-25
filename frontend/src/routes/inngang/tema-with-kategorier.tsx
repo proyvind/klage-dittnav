@@ -29,7 +29,7 @@ export const TemaWithKategorier = memo(
     useBreadcrumbs([], title);
 
     const innsendingsytelser: Innsendingsytelse[] = useMemo(
-      () => tema.kategorier.map(({ innsendingsytelse }) => innsendingsytelse),
+      () => tema.innsendingsytelser.map(({ innsendingsytelse }) => innsendingsytelse),
       [tema]
     );
 
@@ -59,32 +59,18 @@ export const TemaWithKategorier = memo(
 
 TemaWithKategorier.displayName = 'TemaWithKategorier';
 
-const Kategorilenker = ({ kategorier, path }: ITemaWithKategorier) => {
+const Kategorilenker = ({ innsendingsytelser: kategorier, path }: ITemaWithKategorier) => {
   const lang = useLanguage();
 
   return (
     <LinkContainer>
-      {kategorier.map((kategori) => {
-        const externalUrl = kategori.externalUrl ? kategori.externalUrl[lang] : null;
-
-        if (typeof externalUrl === 'string') {
-          return (
-            <ExternalKategoriLink
-              key={externalUrl}
-              innsendingsytelse={kategori.innsendingsytelse}
-              externalUrl={externalUrl}
-            />
-          );
-        }
-
-        return (
-          <KategoriLink
-            key={kategori.innsendingsytelse}
-            innsendingsytelse={kategori.innsendingsytelse}
-            path={`/${lang}/${path}/${kategori.path}`}
-          />
-        );
-      })}
+      {kategorier.map((kategori) => (
+        <KategoriLink
+          key={kategori.innsendingsytelse}
+          innsendingsytelse={kategori.innsendingsytelse}
+          path={`/${lang}/${path}/${kategori.path}`}
+        />
+      ))}
     </LinkContainer>
   );
 };
@@ -96,19 +82,6 @@ interface KategoriLinkProps {
 
 export const KategoriLink = ({ innsendingsytelse, path }: KategoriLinkProps) => (
   <LinkPanel as={Link} to={path} border>
-    <LinkPanel.Title>
-      <TitleLoader innsendingsytelse={innsendingsytelse} />
-    </LinkPanel.Title>
-  </LinkPanel>
-);
-
-interface ExternalKategoriProps {
-  innsendingsytelse: Innsendingsytelse;
-  externalUrl: string;
-}
-
-const ExternalKategoriLink = ({ innsendingsytelse, externalUrl }: ExternalKategoriProps) => (
-  <LinkPanel href={externalUrl} border>
     <LinkPanel.Title>
       <TitleLoader innsendingsytelse={innsendingsytelse} />
     </LinkPanel.Title>

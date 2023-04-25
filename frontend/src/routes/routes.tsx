@@ -17,14 +17,14 @@ import { SessionKlagebegrunnelsePage } from '@app/components/klage/uinnlogget/be
 import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/innsending/klage-innsending-page';
 import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { IKategori, INNGANG_KATEGORIER, ITemaWithKategorier, ITemakategori } from '@app/kategorier/kategorier';
+import { IInnsendingsytelse, INNGANG_KATEGORIER, ITemaWithKategorier, TemaType } from '@app/kategorier/kategorier';
 import { LanguageComponent } from '@app/language/component';
 import { Languages } from '@app/language/types';
+import { TemaWithKategorier } from '@app/routes/inngang/tema-with-kategorier';
 import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { Kategori } from './inngang/kategori';
-import { Tema } from './inngang/tema';
 import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
@@ -105,31 +105,43 @@ export const Router = () => (
   </BrowserRouter>
 );
 
-const temaRoutes = INNGANG_KATEGORIER.map((inngangkategori) => (
-  <Route key={inngangkategori.path} path={inngangkategori.path} element={<Tema tema={inngangkategori} />} />
-));
+const temaRoutes = INNGANG_KATEGORIER.map((tema) => {
+  if (tema.type === TemaType.TEMA) {
+    return <Route key={tema.path} path={tema.path} element={<TemaWithKategorier tema={tema} />} />;
+  }
+
+  if (tema.type === TemaType.INNSENDINGSYTELSE) {
+    return <Route key={tema.path} path={tema.path} element={<Kategori {...tema} />} />;
+  }
+
+  return null;
+});
 
 const getInnsendingRoute = (
   kategoriPath: string,
-  kategori: ITemakategori | IKategori,
+  kategori: IInnsendingsytelse,
   inngangkategori?: ITemaWithKategorier
 ) => (
   <React.Fragment key={kategoriPath}>
-    <Route path={kategoriPath} element={<Kategori {...kategori} inngangkategori={inngangkategori} />} />
+    <Route path={kategoriPath} element={<Kategori {...kategori} tema={inngangkategori} />} />
     <Route
       path={`ettersendelse/${kategori.innsendingsytelse}`}
       element={<EttersendelsePage innsendingsytelse={kategori.innsendingsytelse} />}
     />
   </React.Fragment>
 );
-const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((inngangkategori) => {
-  if ('kategorier' in inngangkategori) {
-    return inngangkategori.kategorier.map((kategori) =>
-      getInnsendingRoute(`${inngangkategori.path}/${kategori.path}`, kategori, inngangkategori)
+const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((tema) => {
+  if (tema.type === TemaType.TEMA) {
+    return tema.innsendingsytelser.map((innsendingsytelse) =>
+      getInnsendingRoute(`${tema.path}/${innsendingsytelse.path}`, innsendingsytelse, tema)
     );
   }
 
-  return getInnsendingRoute(inngangkategori.path, inngangkategori);
+  if (tema.type === TemaType.EXTERNAL) {
+    return null;
+  }
+
+  return getInnsendingRoute(tema.path, tema);
 });
 
 interface YtelseComponentProps {
@@ -144,14 +156,16 @@ interface Props {
 }
 
 const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props) =>
-  INNGANG_KATEGORIER.flatMap((inngangkategori) => {
-    if ('kategorier' in inngangkategori) {
-      return inngangkategori.kategorier.map((kategori) =>
-        getCaseRoute(Component, kategori.innsendingsytelse, pathSuffix)
-      );
+  INNGANG_KATEGORIER.flatMap((tema) => {
+    if (tema.type === TemaType.TEMA) {
+      return tema.innsendingsytelser.map((kategori) => getCaseRoute(Component, kategori.innsendingsytelse, pathSuffix));
     }
 
-    return getCaseRoute(Component, inngangkategori.innsendingsytelse, pathSuffix);
+    if (tema.type === TemaType.EXTERNAL) {
+      return null;
+    }
+
+    return getCaseRoute(Component, tema.innsendingsytelse, pathSuffix);
   });
 
 const getCaseRoute = (Component: YtelseComponent, innsendingsytelse: Innsendingsytelse, pathSuffix: string | null) => {

@@ -7,50 +7,47 @@ export type StringValue = {
   [key in Languages]: string;
 };
 
-interface BaseTema {
-  path: string;
-  externalUrl?: StringValue;
-  beskrivelse: StringValue;
+export enum TemaType {
+  TEMA = 'TEMA',
+  INNSENDINGSYTELSE = 'INNSENDINGSYTELSE',
+  EXTERNAL = 'EXTERNAL',
 }
 
-interface IBaseKategori {
+export interface IExternalTema {
+  type: TemaType.EXTERNAL;
+  title: StringValue;
+  externalUrl: StringValue;
+}
+
+export interface ITemaWithKategorier {
+  type: TemaType.TEMA;
+  path: string;
+  title: StringValue;
+  innsendingsytelser: IInnsendingsytelse[];
+}
+
+export interface IInnsendingsytelse {
+  type: TemaType.INNSENDINGSYTELSE;
+  path: string;
   innsendingsytelse: Innsendingsytelse;
   allowsAnke: boolean;
   digitalKlage: EnvString[];
   digitalAnke: EnvString[];
 }
 
-// Rendered
-export interface ITemakategori extends BaseTema, IBaseKategori {}
-
-// Rendered
-export interface ITemaWithKategorier extends BaseTema {
-  title: StringValue;
-  kategorier: IKategori[];
-}
-
-// Rendered
-export interface IKategori extends IBaseKategori {
-  path: string;
-  externalUrl?: StringValue;
-}
-
-export type ITema = ITemakategori | ITemaWithKategorier;
+export type ITema = ITemaWithKategorier | IInnsendingsytelse | IExternalTema;
 
 export const INNGANG_KATEGORIER: ITema[] = [
   {
+    type: TemaType.TEMA,
     title: {
       [Languages.nb]: 'Arbeid',
       [Languages.en]: 'Work',
     },
     path: 'arbeid',
-    beskrivelse: {
-      [Languages.nb]: 'Dagpenger, AAP, tiltakspenger',
-      [Languages.en]:
-        'Unemployment benefit (dagpenger), work assessment allowance (AAP), benefits while participating in employment schemes (tiltakspenger)',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.DAGPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -58,6 +55,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'dagpenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.DAGPENGER_TILBAKEBETALING_FORSKUDD,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -65,6 +63,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'dagpenger-tilbakebetaling-forskudd',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.ARBEIDSAVKLARINGSPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -72,6 +71,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'arbeidsavklaringspenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.LONNSGARANTI,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -79,6 +79,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'lonnsgaranti',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.TILTAKSPENGER,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -87,6 +88,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'tiltakspenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.NAV_LOVEN_14A,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -96,14 +98,12 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
+    type: TemaType.TEMA,
     title: { [Languages.nb]: 'Helse', [Languages.en]: 'Health' },
     path: 'helse',
-    beskrivelse: {
-      [Languages.nb]: 'Sykepenger, uføre, yrkesskade',
-      [Languages.en]: 'Sickness benefit (sykepenger), disability (uføre), occupational injury (yrkesskade)',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.SYKEPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -111,6 +111,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'sykepenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.ARBEIDSAVKLARINGSPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -118,6 +119,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'arbeidsavklaringspenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.UFORETRYGD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -125,6 +127,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'uforetrygd',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.SUPPLERENDE_STONAD_UFORE_FLYKTNINGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -132,6 +135,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'supplerende-stonad-ufore-flyktninger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.GRUNN_OG_HJELPESTONAD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -139,6 +143,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'grunn-og-hjelpestonad',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.YRKESSKADE,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -148,14 +153,12 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
+    type: TemaType.TEMA,
     title: { [Languages.nb]: 'Familie', [Languages.en]: 'Family' },
     path: 'familie',
-    beskrivelse: {
-      [Languages.nb]: 'Foreldrepenger, pleie- og omsorgspenger',
-      [Languages.en]: 'Parental benefit (foreldrepenger), care (omsorg) and attendance (pleie)',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.FORELDREPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -163,6 +166,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'foreldrepenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.ENGANGSSTONAD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -170,6 +174,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'engangsstonad',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.SVANGERSKAPSPENGER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -177,6 +182,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'svangerskapspenger',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.KONTANTSTOTTE,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -184,6 +190,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'kontantstotte',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.BARNETRYGD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -191,6 +198,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'barnetrygd',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.BARNEBIDRAG_OG_BIDRAGSFORSKUDD,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -198,6 +206,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'barnebidrag-og-bidragsforskudd',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.EKTEFELLEBIDRAG,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -205,6 +214,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'ektefellebidrag',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.ENSLIG_MOR_ELLER_FAR,
         allowsAnke: true,
         digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
@@ -212,6 +222,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'enslig-mor-eller-far',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.GRAVFERDSSTONAD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -219,6 +230,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'gravferdsstonad',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.SYKDOM_I_FAMILIEN,
         allowsAnke: true,
         digitalKlage: [EnvString.DEV, EnvString.LOCAL, EnvString.PROD],
@@ -226,6 +238,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'sykdom-i-familien',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.OPPFOSTRINGSBIDRAG,
         allowsAnke: false,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -235,14 +248,12 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
+    type: TemaType.TEMA,
     title: { [Languages.nb]: 'Pensjon', [Languages.en]: 'Pension' },
     path: 'pensjon',
-    beskrivelse: {
-      [Languages.nb]: 'Alderspensjon og andre typer pensjon',
-      [Languages.en]: 'Old-age pension (alderspensjon) and other types of pensions',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.ALDERSPENSJON,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -250,6 +261,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'alderspensjon',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.AVTALEFESTET_PENSJON_SPK,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -257,6 +269,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'avtalefestet-pensjon-spk',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.AVTALEFESTET_PENSJON_PRIVAT,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -264,6 +277,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'avtalefestet-pensjon-privat',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.BARNEPENSJON,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -271,6 +285,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'barnepensjon',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.KRIGSPENSJON,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -278,6 +293,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'krigspensjon',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.GJENLEVENDE,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -285,6 +301,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'gjenlevende',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.SUPPLERENDE_STONAD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -292,6 +309,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'supplerende-stonad',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.TIDLIGERE_FAMILIEPLEIER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -301,14 +319,12 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
+    type: TemaType.TEMA,
     title: { [Languages.nb]: 'Til eller fra Norge', [Languages.en]: 'To and from Norway' },
     path: 'til-eller-fra-norge',
-    beskrivelse: {
-      [Languages.nb]: 'Medlemskap i folketrygden og trygdeavgift',
-      [Languages.en]: 'Membership of National Insurance Act',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.OPPHOLD_ELLER_ARBEID_I_NORGE,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -316,6 +332,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'opphold-eller-arbeid-i-norge',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.OPPHOLD_ELLER_ARBEID_UTENFOR_NORGE,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -325,17 +342,15 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
+    type: TemaType.TEMA,
     title: {
       [Languages.nb]: 'Hjelpemidler og tilrettelegging',
       [Languages.en]: 'Assistive technology and facilitation',
     },
     path: 'hjelpemidler-og-tilrettelegging',
-    beskrivelse: {
-      [Languages.nb]: 'Hjelpemidler, tilrettelegging, bil',
-      [Languages.en]: 'Assistive technology, facilitation, vehicle',
-    },
-    kategorier: [
+    innsendingsytelser: [
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.HJELPEMIDLER,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -343,6 +358,7 @@ export const INNGANG_KATEGORIER: ITema[] = [
         path: 'hjelpemidler',
       },
       {
+        type: TemaType.INNSENDINGSYTELSE,
         innsendingsytelse: Innsendingsytelse.BILSTONAD,
         allowsAnke: true,
         digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
@@ -352,25 +368,16 @@ export const INNGANG_KATEGORIER: ITema[] = [
     ],
   },
   {
-    // title: { [Languages.nb]: 'Tilleggsstønader', [Languages.en]: 'Supplemental benefit' },
-    path: 'tilleggstonader',
-    beskrivelse: {
-      [Languages.nb]: '',
-      [Languages.en]: '',
-    },
+    type: TemaType.INNSENDINGSYTELSE,
+    path: 'tilleggsstonader',
     innsendingsytelse: Innsendingsytelse.TILLEGGSSTONADER,
     allowsAnke: true,
     digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
     digitalAnke: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
   },
   {
+    type: TemaType.EXTERNAL,
     title: { [Languages.nb]: 'Økonomisk sosialhjelp', [Languages.en]: 'Financial social assistance' },
-    path: 'sosiale-tjenester',
-    beskrivelse: {
-      [Languages.nb]: '',
-      [Languages.en]: '',
-    },
-    kategorier: [],
     externalUrl: {
       [Languages.nb]: 'https://www.nav.no/sosialhjelp/klage',
       [Languages.en]: 'https://www.nav.no/sosialhjelp/klage?lang=en',
@@ -384,14 +391,16 @@ export const innsendingsytelsePath = (innsendingsytelse: Innsendingsytelse | nul
   }
 
   for (const tema of INNGANG_KATEGORIER) {
-    if (!('kategorier' in tema)) {
-      return tema.path;
+    if (tema.type === TemaType.TEMA) {
+      const kategori = tema.innsendingsytelser.find((k) => k.innsendingsytelse === innsendingsytelse);
+
+      if (kategori !== undefined) {
+        return `${tema.path}/${kategori.path}`;
+      }
     }
 
-    const kategori = tema.kategorier.find((k) => k.innsendingsytelse === innsendingsytelse);
-
-    if (kategori !== undefined) {
-      return `${tema.path}/${kategori.path}`;
+    if (tema.type === TemaType.INNSENDINGSYTELSE) {
+      return tema.path;
     }
   }
 

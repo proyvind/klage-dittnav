@@ -11,7 +11,7 @@ import { usePageInit } from '@app/hooks/use-page-init';
 import { useIsAuthenticated } from '@app/hooks/use-user';
 import { Document } from '@app/icons/document';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { IKategori, ITemaWithKategorier } from '@app/kategorier/kategorier';
+import { IInnsendingsytelse, ITemaWithKategorier } from '@app/kategorier/kategorier';
 import { Languages } from '@app/language/types';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -23,18 +23,18 @@ import { AnkeLinkPanel } from './klage-anke-knapper/anke-link-panel';
 import { KlageLinkPanel } from './klage-anke-knapper/klage-link-panel';
 import { CenteredHeading, InngangPanel, PanelContainer } from './styled-components/panels';
 
-interface Props extends IKategori {
-  inngangkategori?: ITemaWithKategorier | null;
+interface Props extends IInnsendingsytelse {
+  tema?: ITemaWithKategorier | null;
 }
 
 export const Kategori = memo(
-  ({ innsendingsytelse, inngangkategori = null, allowsAnke = false, digitalKlage, digitalAnke }: Props) => {
+  ({ innsendingsytelse, tema = null, allowsAnke = false, digitalKlage, digitalAnke }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, innsendingsytelse);
     const [title] = useInnsendingsytelseName(innsendingsytelse);
     const lang = useLanguage();
     const { inngang } = useTranslation();
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
-    const breadcrumbs = useMemo(() => getBreadcrumbs(inngangkategori, lang), [inngangkategori, lang]);
+    const breadcrumbs = useMemo(() => getBreadcrumbs(tema, lang), [tema, lang]);
     useBreadcrumbs(breadcrumbs, title);
     const supportsDigitalKlage = digitalKlage.includes(ENVIRONMENT.environment);
     const supportsDigitalAnke = digitalAnke.includes(ENVIRONMENT.environment);
