@@ -15,6 +15,9 @@ on:
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
         description: "Identity provider for nais/docker-build-push"
         required: true
+      READER_TOKEN:
+        description: "Token for @navikt NPM registry (@navikt/nav-dekoratoren-moduler)"
+        required: true
   workflow_dispatch:
     inputs:
       e2e_tag:
