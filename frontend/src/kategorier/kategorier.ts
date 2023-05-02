@@ -245,6 +245,14 @@ export const INNGANG_KATEGORIER: ITema[] = [
         digitalAnke: [EnvString.DEV, EnvString.LOCAL],
         path: 'oppfostringsbidrag',
       },
+      {
+        type: TemaType.INNSENDINGSYTELSE,
+        innsendingsytelse: Innsendingsytelse.REISEKOSTNADER_VED_SAMVAER,
+        allowsAnke: true,
+        digitalKlage: [EnvString.PROD, EnvString.DEV, EnvString.LOCAL],
+        digitalAnke: [EnvString.DEV, EnvString.LOCAL],
+        path: 'reisekostnader-ved-samvaer',
+      },
     ],
   },
   {
