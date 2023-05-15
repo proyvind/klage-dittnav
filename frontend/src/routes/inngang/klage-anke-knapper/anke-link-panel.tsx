@@ -11,10 +11,9 @@ import { useTranslation } from '@app/language/use-translation';
 
 interface Props {
   innsendingsytelse: Innsendingsytelse;
-  digital: boolean;
 }
 
-export const AnkeLinkPanel = ({ innsendingsytelse, digital = false }: Props) => {
+export const AnkeLinkPanel = ({ innsendingsytelse }: Props) => {
   const { saksnummer } = useParams();
   const lang = useLanguage();
   const { inngang } = useTranslation();
@@ -25,40 +24,21 @@ export const AnkeLinkPanel = ({ innsendingsytelse, digital = false }: Props) => 
   return (
     <IconLinkPanel icon={<LawBook />} as={Link} to={`/${lang}/anke/ny/${innsendingsytelse}${query}`} border>
       <LinkPanel.Title>{inngang.innsendingsvalg.anke.title}</LinkPanel.Title>
-      <Description isAuthenticated={isAuthenticated} supportsDigitalAnke={digital} />
+      <Description isAuthenticated={isAuthenticated} />
     </IconLinkPanel>
   );
 };
 
 interface DescriptionProps {
   isAuthenticated?: boolean;
-  supportsDigitalAnke: boolean;
 }
 
-const Description = ({ isAuthenticated, supportsDigitalAnke }: DescriptionProps) => {
+const Description = ({ isAuthenticated }: DescriptionProps) => {
   const { inngang } = useTranslation();
 
   if (isAuthenticated === true) {
-    if (supportsDigitalAnke === true) {
-      return (
-        <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_in_digital}</LinkPanel.Description>
-      );
-    }
-
-    if (supportsDigitalAnke === false) {
-      return <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_in_post}</LinkPanel.Description>;
-    }
-  } else {
-    if (supportsDigitalAnke === false) {
-      return <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_out_post}</LinkPanel.Description>;
-    }
-
-    if (supportsDigitalAnke === true) {
-      return (
-        <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_out_digital}</LinkPanel.Description>
-      );
-    }
+    return <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_in_digital}</LinkPanel.Description>;
   }
 
-  return null;
+  return <LinkPanel.Description>{inngang.innsendingsvalg.anke.description.logged_out_digital}</LinkPanel.Description>;
 };

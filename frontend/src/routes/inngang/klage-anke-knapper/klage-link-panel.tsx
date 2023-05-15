@@ -11,10 +11,9 @@ import { useTranslation } from '@app/language/use-translation';
 interface Props {
   innsendingsytelse: Innsendingsytelse;
   query: string;
-  supportsDigitalKlage: boolean;
 }
 
-export const KlageLinkPanel = ({ innsendingsytelse, query, supportsDigitalKlage }: Props) => {
+export const KlageLinkPanel = ({ innsendingsytelse, query }: Props) => {
   const lang = useLanguage();
   const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
@@ -22,40 +21,21 @@ export const KlageLinkPanel = ({ innsendingsytelse, query, supportsDigitalKlage 
   return (
     <IconLinkPanel icon={<LetterOpened />} as={Link} to={`/${lang}/klage/ny/${innsendingsytelse}${query}`} border>
       <LinkPanel.Title>{inngang.innsendingsvalg.klage.title}</LinkPanel.Title>
-      <Description isAuthenticated={isAuthenticated} supportsDigitalKlage={supportsDigitalKlage} />
+      <Description isAuthenticated={isAuthenticated} />
     </IconLinkPanel>
   );
 };
 
 interface DescriptionProps {
   isAuthenticated?: boolean;
-  supportsDigitalKlage: boolean;
 }
 
-const Description = ({ isAuthenticated, supportsDigitalKlage }: DescriptionProps) => {
+const Description = ({ isAuthenticated }: DescriptionProps) => {
   const { inngang } = useTranslation();
 
   if (isAuthenticated === true) {
-    if (supportsDigitalKlage === true) {
-      return (
-        <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_in_digital}</LinkPanel.Description>
-      );
-    }
-
-    if (supportsDigitalKlage === false) {
-      return <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_in_post}</LinkPanel.Description>;
-    }
-  } else {
-    if (supportsDigitalKlage === false) {
-      return <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_out_post}</LinkPanel.Description>;
-    }
-
-    if (supportsDigitalKlage === true) {
-      return (
-        <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_out_digital}</LinkPanel.Description>
-      );
-    }
+    return <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_in_digital}</LinkPanel.Description>;
   }
 
-  return null;
+  return <LinkPanel.Description>{inngang.innsendingsvalg.klage.description.logged_out_digital}</LinkPanel.Description>;
 };

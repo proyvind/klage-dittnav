@@ -1,6 +1,6 @@
 export const LOGGED_IN_PATH = '/loggedin-redirect';
 
-export enum EnvString {
+enum EnvString {
   PROD = 'production',
   DEV = 'development',
   LOCAL = 'local',

@@ -62,20 +62,16 @@ export const en: Language = {
         title: 'Complain on decision from NAV',
         description: {
           logged_in_digital: 'You can send your complaint and attachments digitally here.',
-          logged_in_post: 'Here you can fill out a complaint form. It has to be signed, printed, and sent by post.',
           logged_out_digital:
             'If you log in, you will be able to send the complaint and attachments digitally. You can continue without logging in, but you will have to print your complaint, sign it, and send it by post.',
-          logged_out_post: 'Here you can fill out a complaint form. It has to be signed, printed, and sent by post.',
         },
       },
       anke: {
         title: 'Appeal on decision from NAV Klageinstans',
         description: {
           logged_in_digital: 'You can send your appeal and attachments digitally here.',
-          logged_in_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
           logged_out_digital:
             'If you log in, you will be able to send the appeal and attachments digitally. You can continue without logging in, but you will have to print your appeal, sign it, and send it by post.',
-          logged_out_post: 'Here you can fill out an appeal form. It has to be signed, printed, and sent by post.',
         },
       },
       ettersendelse: {

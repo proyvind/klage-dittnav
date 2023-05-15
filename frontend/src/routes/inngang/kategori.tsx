@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
 import { IconLinkPanel } from '@app/components/icon-link-panel/icon-link-panel';
 import { Optional } from '@app/components/optional/optional';
-import { ENVIRONMENT } from '@app/environment/environment';
 import { queryStringify } from '@app/functions/query-string';
 import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
 import { usePageInit } from '@app/hooks/use-page-init';
@@ -28,7 +27,7 @@ interface Props extends IInnsendingsytelse {
 }
 
 export const Kategori = memo(
-  ({ innsendingsytelse, tema = null, allowsAnke = false, digitalKlage, digitalAnke }: Props) => {
+  ({ innsendingsytelse, tema = null, allowsAnke = false }: Props) => {
     useLogPageView(PageIdentifier.INNGANG_INNSENDING_DIGITAL, innsendingsytelse);
     const [title] = useInnsendingsytelseName(innsendingsytelse);
     const lang = useLanguage();
@@ -36,8 +35,6 @@ export const Kategori = memo(
     usePageInit(`${title} \u2013 ${inngang.title_postfix}`);
     const breadcrumbs = useMemo(() => getBreadcrumbs(tema, lang), [tema, lang]);
     useBreadcrumbs(breadcrumbs, title);
-    const supportsDigitalKlage = digitalKlage.includes(ENVIRONMENT.environment);
-    const supportsDigitalAnke = digitalAnke.includes(ENVIRONMENT.environment);
 
     return (
       <InngangMainContainer>
@@ -49,9 +46,9 @@ export const Kategori = memo(
           <InngangGuidePanel />
 
           <InngangPanel as="section">
-            <Links innsendingsytelse={innsendingsytelse} supportsDigitalKlage={supportsDigitalKlage} />
+            <Links innsendingsytelse={innsendingsytelse} />
             <Optional show={allowsAnke === true}>
-              <AnkeLinkPanel innsendingsytelse={innsendingsytelse} digital={supportsDigitalAnke} />
+              <AnkeLinkPanel innsendingsytelse={innsendingsytelse} />
             </Optional>
 
             <IconLinkPanel as={Link} to={`/${lang}/ettersendelse/${innsendingsytelse}`} border icon={<Document />}>
@@ -70,10 +67,9 @@ Kategori.displayName = 'InngangInnsending';
 
 interface LinksProps {
   innsendingsytelse: Innsendingsytelse;
-  supportsDigitalKlage: boolean;
 }
 
-const Links = ({ innsendingsytelse, supportsDigitalKlage }: LinksProps) => {
+const Links = ({ innsendingsytelse }: LinksProps) => {
   const { saksnummer } = useParams();
   const { inngang } = useTranslation();
   const { data: isAuthenticated } = useIsAuthenticated();
@@ -92,7 +88,7 @@ const Links = ({ innsendingsytelse, supportsDigitalKlage }: LinksProps) => {
         </Alert>
       </Optional>
 
-      <KlageLinkPanel innsendingsytelse={innsendingsytelse} query={query} supportsDigitalKlage={supportsDigitalKlage} />
+      <KlageLinkPanel innsendingsytelse={innsendingsytelse} query={query} />
     </>
   );
 };

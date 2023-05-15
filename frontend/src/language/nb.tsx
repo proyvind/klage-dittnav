@@ -68,20 +68,16 @@ export const nb = {
         title: 'Klage på vedtak fra NAV',
         description: {
           logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
-          logged_in_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
           logged_out_digital:
             'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
-          logged_out_post: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
         },
       },
       anke: {
         title: 'Anke på vedtak fra NAV Klageinstans',
         description: {
           logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
-          logged_in_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
           logged_out_digital:
             'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
-          logged_out_post: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
         },
       },
       ettersendelse: {
