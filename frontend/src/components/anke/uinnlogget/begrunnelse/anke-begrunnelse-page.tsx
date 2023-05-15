@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useSessionAnkeErrors } from '@app/hooks/use-errors';
 import { useSessionAnkeUpdate } from '@app/hooks/use-session-anke-update';
-import { useSupportsDigitalAnke } from '@app/hooks/use-supports-digital';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -49,8 +48,6 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
-
   const { errors, isValid, isEverythingValid, setError } = useSessionAnkeErrors(anke);
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -83,7 +80,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
       title_fragment={title_fragment}
     >
       <GuidePanel>
-        <BodyLong>{supportsDigital ? ankeskjema_post.should_log_in_digital : ankeskjema_post.post_guidetext}</BodyLong>
+        <BodyLong>{ankeskjema_post.should_log_in_digital}</BodyLong>
       </GuidePanel>
 
       <UserInfo klageOrAnke={anke} update={updateAnke} onError={setError} errors={errors} />

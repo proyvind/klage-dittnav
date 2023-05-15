@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSupportsDigitalAnke } from '@app/hooks/use-supports-digital';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { PageIdentifier } from '@app/logging/amplitude';
@@ -10,7 +9,6 @@ import { Anke } from '@app/redux-api/case/anke/types';
 import { CaseStatus } from '@app/redux-api/case/types';
 import { API_PATH } from '@app/redux-api/common';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
-import { PostFormContainer } from '../../../case/common/post/post-form-container';
 import { Journalpost } from '../../../case/innlogget/kvittering/kvittering';
 import { KvitteringPageLoader } from '../../../case/innlogget/kvittering/kvittering-page-loader';
 import { AnkeLoader } from '../anke-loader';
@@ -23,8 +21,7 @@ interface Props {
 
 const RenderAnkekvitteringPage = ({ anke }: Props) => {
   const language = useLanguage();
-  const { ankeskjema, ankeskjema_post } = useTranslation();
-  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
+  const { ankeskjema } = useTranslation();
 
   useLogPageView(PageIdentifier.ANKESKJEMA_KVITTERING);
 
@@ -32,12 +29,10 @@ const RenderAnkekvitteringPage = ({ anke }: Props) => {
     return <Navigate to={`/${language}/anke/${anke.id}/oppsummering`} replace />;
   }
 
-  const Container = supportsDigital ? DigitalFormContainer : PostFormContainer;
-
-  const { steps, title_fragment, page_title } = supportsDigital ? ankeskjema.common : ankeskjema_post.common;
+  const { steps, title_fragment, page_title } = ankeskjema.common;
 
   return (
-    <Container
+    <DigitalFormContainer
       activeStep={3}
       isValid
       klageOrAnke={anke}
@@ -54,6 +49,6 @@ const RenderAnkekvitteringPage = ({ anke }: Props) => {
           translations={ankeskjema}
         />
       </KvitteringPageLoader>
-    </Container>
+    </DigitalFormContainer>
   );
 };

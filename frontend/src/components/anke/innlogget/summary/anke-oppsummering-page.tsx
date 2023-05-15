@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAnkeErrors } from '@app/hooks/use-errors';
-import { useSupportsDigitalAnke } from '@app/hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
 import { Clipboard } from '@app/icons/clipboard';
 import { useTranslation } from '@app/language/use-translation';
@@ -16,7 +15,6 @@ import { CenteredContainer } from '@app/styled-components/common';
 import { CenteredHeading } from '@app/styled-components/page-title';
 import { Section } from '@app/styled-components/summary';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
-import { DownloadButton } from '../../../case/innlogget/summary/download-button';
 import { FinalizeDigitalAnke } from '../../../case/innlogget/summary/finalize-digital';
 import { PdfLink } from '../../../case/innlogget/summary/pdf-link';
 import { InformationPointBox } from '../../../information-point-box/information-point-box';
@@ -42,15 +40,11 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
 
   useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
-
   const { isValid } = useAnkeErrors(anke);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;
   }
-
-  const FinalizeButton = supportsDigital ? FinalizeDigitalAnke : DownloadButton;
 
   const incompleteStatus = anke.status === CaseStatus.DRAFT || anke.status === CaseStatus.DOWNLOADED;
 
@@ -123,11 +117,11 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
             {common.back}
           </Button>
         </Optional>
-        <FinalizeButton {...anke} id={anke.id} setError={setError} subPath="anker" />
+        <FinalizeDigitalAnke {...anke} id={anke.id} setError={setError} />
       </CenteredContainer>
 
       <PdfLink
-        show={supportsDigital && incompleteStatus}
+        show={incompleteStatus}
         text={ankeskjema.summary.post_link}
         href={`${API_PATH}/anker/${anke.id}/pdf/innsending`}
         id={anke.id}

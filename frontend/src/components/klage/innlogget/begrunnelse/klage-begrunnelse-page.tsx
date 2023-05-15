@@ -2,7 +2,6 @@ import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useKlageErrors } from '@app/hooks/use-errors';
-import { useSupportsDigitalKlage } from '@app/hooks/use-supports-digital';
 import { useUser } from '@app/hooks/use-user';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -25,9 +24,7 @@ import { DigitalFormContainer } from '../../../case/common/digital/digital-form-
 import { VedtakDateDigital } from '../../../case/common/digital/vedtak-date';
 import { Errors } from '../../../case/common/errors';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
-import { PostFormContainer } from '../../../case/common/post/post-form-container';
 import { BegrunnelseTextDigital } from '../../../case/innlogget/begrunnelse/begrunnelse-text';
-import { HasVedleggCheckbox } from '../../../case/innlogget/begrunnelse/has-vedlegg';
 import { UserSaksnummerDigital } from '../../../case/innlogget/begrunnelse/saksnummer';
 import { DeleteCaseButton } from '../../../delete-case-button/delete-case-button';
 import { PersonligeOpplysningerSummary } from '../../../summary/personlige-opplysninger-summary';
@@ -47,9 +44,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
 
-  const { klageskjema, klageskjema_post } = useTranslation();
+  const { klageskjema } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteKlage, { isLoading }] = useDeleteKlageMutation();
 
@@ -80,32 +76,10 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));
 
-  const Attachments = supportsDigital
-    ? () => (
-        <AttachmentsSection
-          attachments={klage.vedlegg}
-          caseId={klage.id}
-          translations={klageskjema}
-          basePath={`${API_PATH}/klager`}
-          onDelete={deleteAttachment}
-          useUploadAttachment={useUploadAttachmentMutation}
-        />
-      )
-    : () => (
-        <HasVedleggCheckbox
-          caseId={klage.id}
-          hasVedlegg={klage.hasVedlegg}
-          translations={klageskjema_post}
-          useUpdateMutation={useUpdateKlageMutation}
-        />
-      );
-
-  const Container = supportsDigital ? DigitalFormContainer : PostFormContainer;
-
-  const { steps, title_fragment, page_title } = supportsDigital ? klageskjema.common : klageskjema_post.common;
+  const { steps, title_fragment, page_title } = klageskjema.common;
 
   return (
-    <Container
+    <DigitalFormContainer
       activeStep={1}
       isValid={isValid}
       klageOrAnke={klage}
@@ -149,7 +123,14 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
         error={errors[FormFieldsIds.FRITEKST]}
       />
 
-      <Attachments />
+      <AttachmentsSection
+        attachments={klage.vedlegg}
+        caseId={klage.id}
+        translations={klageskjema}
+        basePath={`${API_PATH}/klager`}
+        onDelete={deleteAttachment}
+        useUploadAttachment={useUploadAttachmentMutation}
+      />
 
       <Errors {...errors} />
 
@@ -170,7 +151,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
           {klageskjema.begrunnelse.next_button}
         </Button>
       </CenteredContainer>
-    </Container>
+    </DigitalFormContainer>
   );
 };
 

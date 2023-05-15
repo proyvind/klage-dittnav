@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useSessionKlageErrors } from '@app/hooks/use-errors';
 import { useSessionKlageUpdate } from '@app/hooks/use-session-klage-update';
-import { useSupportsDigitalKlage } from '@app/hooks/use-supports-digital';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -49,8 +48,6 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const { klageskjema, klageskjema_post } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
-
   const { errors, isValid, isEverythingValid, setError } = useSessionKlageErrors(klage);
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -83,9 +80,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       title_fragment={title_fragment}
     >
       <GuidePanel>
-        <BodyLong>
-          {supportsDigital ? klageskjema_post.should_log_in_digital : klageskjema_post.post_guidetext}
-        </BodyLong>
+        <BodyLong>{klageskjema_post.should_log_in_digital}</BodyLong>
       </GuidePanel>
 
       <UserInfo klageOrAnke={klage} update={updateKlage} onError={setError} errors={errors} />

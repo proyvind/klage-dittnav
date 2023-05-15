@@ -2,7 +2,6 @@ import { Button } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAnkeErrors } from '@app/hooks/use-errors';
-import { useSupportsDigitalAnke } from '@app/hooks/use-supports-digital';
 import { useUser } from '@app/hooks/use-user';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
@@ -25,9 +24,7 @@ import { DigitalFormContainer } from '../../../case/common/digital/digital-form-
 import { VedtakDateDigital } from '../../../case/common/digital/vedtak-date';
 import { Errors } from '../../../case/common/errors';
 import { FormFieldsIds } from '../../../case/common/form-fields-ids';
-import { PostFormContainer } from '../../../case/common/post/post-form-container';
 import { BegrunnelseTextDigital } from '../../../case/innlogget/begrunnelse/begrunnelse-text';
-import { HasVedleggCheckbox } from '../../../case/innlogget/begrunnelse/has-vedlegg';
 import { UserSaksnummerDigital } from '../../../case/innlogget/begrunnelse/saksnummer';
 import { DeleteCaseButton } from '../../../delete-case-button/delete-case-button';
 import { PersonligeOpplysningerSummary } from '../../../summary/personlige-opplysninger-summary';
@@ -47,9 +44,8 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   useLogPageView(PageIdentifier.ANKESKJEMA_BEGRUNNElSE);
 
-  const { ankeskjema, ankeskjema_post } = useTranslation();
+  const { ankeskjema } = useTranslation();
 
-  const supportsDigital = useSupportsDigitalAnke(anke.innsendingsytelse);
   const [deleteAttachment] = useDeleteAttachmentMutation();
   const [deleteAnke, { isLoading }] = useDeleteAnkeMutation();
 
@@ -79,32 +75,10 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
       .unwrap()
       .then(() => navigate(`/${language}`, { replace: true }));
 
-  const Attachments = supportsDigital
-    ? () => (
-        <AttachmentsSection
-          attachments={anke.vedlegg}
-          caseId={anke.id}
-          translations={ankeskjema}
-          basePath={`${API_PATH}/anker`}
-          onDelete={deleteAttachment}
-          useUploadAttachment={useUploadAttachmentMutation}
-        />
-      )
-    : () => (
-        <HasVedleggCheckbox
-          caseId={anke.id}
-          hasVedlegg={anke.hasVedlegg}
-          translations={ankeskjema_post}
-          useUpdateMutation={useUpdateAnkeMutation}
-        />
-      );
-
-  const Container = supportsDigital ? DigitalFormContainer : PostFormContainer;
-
-  const { steps, title_fragment, page_title } = supportsDigital ? ankeskjema.common : ankeskjema_post.common;
+  const { steps, title_fragment, page_title } = ankeskjema.common;
 
   return (
-    <Container
+    <DigitalFormContainer
       activeStep={1}
       isValid={isValid}
       innsendingsytelse={anke.innsendingsytelse}
@@ -153,7 +127,14 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
         error={errors[FormFieldsIds.FRITEKST]}
       />
 
-      <Attachments />
+      <AttachmentsSection
+        attachments={anke.vedlegg}
+        caseId={anke.id}
+        translations={ankeskjema}
+        basePath={`${API_PATH}/anker`}
+        onDelete={deleteAttachment}
+        useUploadAttachment={useUploadAttachmentMutation}
+      />
 
       <Errors {...errors} />
 
@@ -174,7 +155,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
           {ankeskjema.begrunnelse.next_button}
         </Button>
       </CenteredContainer>
-    </Container>
+    </DigitalFormContainer>
   );
 };
 

@@ -2,7 +2,6 @@ import { BodyLong, Button, ErrorMessage, Heading, Panel } from '@navikt/ds-react
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSupportsDigitalKlage } from '@app/hooks/use-supports-digital';
 import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
 import { Clipboard } from '@app/icons/clipboard';
 import { useTranslation } from '@app/language/use-translation';
@@ -16,7 +15,6 @@ import { CenteredHeading } from '@app/styled-components/page-title';
 import { Section } from '@app/styled-components/summary';
 import { DigitalFormContainer } from '../../../case/common/digital/digital-form-container';
 import { SummaryReasons } from '../../../case/common/summary-reasons';
-import { DownloadButton } from '../../../case/innlogget/summary/download-button';
 import { FinalizeDigitalKlage } from '../../../case/innlogget/summary/finalize-digital';
 import { PdfLink } from '../../../case/innlogget/summary/pdf-link';
 import { InformationPointBox } from '../../../information-point-box/information-point-box';
@@ -42,13 +40,9 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
 
   useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
-  const supportsDigital = useSupportsDigitalKlage(klage.innsendingsytelse);
-
   if (userIsLoading || typeof user === 'undefined') {
     return null;
   }
-
-  const FinalizeButton = supportsDigital ? FinalizeDigitalKlage : DownloadButton;
 
   const incompleteStatus = klage.status === CaseStatus.DRAFT || klage.status === CaseStatus.DOWNLOADED;
 
@@ -125,11 +119,11 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
             {common.back}
           </Button>
         </Optional>
-        <FinalizeButton {...klage} id={klage.id} setError={setError} subPath="klager" />
+        <FinalizeDigitalKlage {...klage} id={klage.id} setError={setError} />
       </CenteredContainer>
 
       <PdfLink
-        show={supportsDigital && incompleteStatus}
+        show={incompleteStatus}
         text={klageskjema.summary.post_link}
         href={`${API_PATH}/klager/${klage.id}/pdf/innsending`}
         id={klage.id}

@@ -2,8 +2,6 @@
 import { BodyShort, Link } from '@navikt/ds-react';
 import React from 'react';
 import { ExternalLink } from '@app/components/link/link';
-import { displayBytes } from '@app/functions/display';
-import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { ErrorMessageKeys } from '@app/language/error-messages';
 import { Utfall } from '@app/redux-api/case/anke/types';
 import { Reason } from '@app/redux-api/case/klage/types';
@@ -47,22 +45,7 @@ export const nb = {
     innsendingsvalg: {
       title: 'Hva vil du?',
       common: {
-        read_more: [
-          'Les mer om ',
-          <ExternalLink
-            key="klagerettigheter"
-            href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-            inline
-          >
-            dine klagerettigheter på våre temasider
-          </ExternalLink>,
-          '.',
-        ].map((c, index) => <span key={index}>{c}</span>),
         warning: 'Klagen eller anken din lagres i nettleseren inntil fanen lukkes, selv om du ikke er logget inn.',
-        elektronisk_id: {
-          text: 'Slik skaffer du deg elektronisk ID.',
-          url: 'https://www.norge.no/elektronisk-id',
-        },
       },
       klage: {
         title: 'Klage på vedtak fra NAV',
@@ -109,15 +92,8 @@ export const nb = {
       page_title: 'Klage på vedtak',
     },
     has_attachments_label: 'Jeg skal sende med vedlegg.',
-    send_by_post_text: 'Du må laste ned klagen din her, skrive den ut, signere den og sende den inn via post til NAV.',
-    download: 'Last ned PDF',
-    post_guidetext: 'Du kan fylle ut klagen her. Klagen må skrives ut, signeres og sendes via post.',
     should_log_in_digital:
       'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
-    logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
-    summary: {
-      title: 'Se over før du skriver ut',
-    },
     innsending: {
       title: 'Hva gjør du nå?',
       steg: [
@@ -133,10 +109,6 @@ export const nb = {
     common: {
       title_fragment: 'klage',
       page_title: 'Klage på vedtak',
-      logged_out: {
-        text: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
-        log_in: 'Logg inn',
-      },
       steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
     },
     begrunnelse: {
@@ -174,8 +146,6 @@ export const nb = {
         clear_errors: 'Fjern feilmeldinger',
         title: 'Vedlegg',
         upload_button_text: 'Last opp nytt vedlegg',
-        upload_error: ({ name, type, size }: File, reason = 'Ukjent årsak.') =>
-          `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${displayBytes(size)}. ${reason}`,
         description: 'Har du informasjon du ønsker å legge ved, laster du det opp her.',
         supported_types: [
           'Filtyper som støttes: ',
@@ -188,10 +158,6 @@ export const nb = {
         ].map((c, index) => <span key={index}>{c}</span>),
         size_limit:
           'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.',
-      },
-      attachments_preview: {
-        delete_error: (name: string, id: string, reason = 'Ukjent årsak.') =>
-          `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`,
       },
       next_button: 'Gå videre',
       delete_title: 'Slett klagen og returner til hovedsiden',
@@ -210,7 +176,6 @@ export const nb = {
           no_date: 'Ingen dato satt',
           saksnummer: 'Saksnummer',
           not_specified: 'Ikke angitt',
-          given_by_user: 'Oppgitt av bruker',
           from_system: 'Hentet fra internt system',
         },
         begrunnelse: {
@@ -260,15 +225,8 @@ export const nb = {
       page_title: 'Anke på vedtak',
     },
     has_attachments_label: 'Jeg skal sende med vedlegg.',
-    send_by_post_text: 'Du må laste ned anken din her, skrive den ut, signere den og sende den inn via post til NAV.',
-    download: 'Last ned PDF',
-    post_guidetext: 'Du kan fylle ut anken her. Anken må skrives ut, signeres og sendes via post.',
     should_log_in_digital:
       'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
-    logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
-    summary: {
-      title: 'Se over før du skriver ut',
-    },
     innsending: {
       title: 'Hva gjør du nå?',
       steg: [
@@ -284,10 +242,6 @@ export const nb = {
     common: {
       title_fragment: 'anke',
       page_title: 'Anke på vedtak',
-      logged_out: {
-        text: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
-        log_in: 'Logg inn',
-      },
       steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
     },
     begrunnelse: {
@@ -318,8 +272,6 @@ export const nb = {
       attachments: {
         title: 'Vedlegg',
         upload_button_text: 'Last opp nytt vedlegg',
-        upload_error: ({ name, type, size }: File, reason = 'Ukjent årsak.') =>
-          `Kunne ikke laste opp vedlegg "${name}" med type "${type}" på ${size} byte. ${reason}`,
         description: 'Har du informasjon du ønsker å legge ved, laster du det opp her.',
         supported_types: [
           'Filtyper som støttes: ',
@@ -333,10 +285,6 @@ export const nb = {
         size_limit:
           'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.',
         clear_errors: 'Fjern feilmeldinger',
-      },
-      attachments_preview: {
-        delete_error: (name: string, id: string, reason = 'Ukjent årsak.') =>
-          `Kunne ikke slette vedlegg "${name}" med ID "${id}". ${reason}`,
       },
       next_button: 'Gå videre',
       delete_title: 'Slett anken og returner til hovedsiden',
@@ -356,7 +304,6 @@ export const nb = {
           saksnummer: 'Saksnummer',
           klageenhet: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
           not_specified: 'Ikke angitt',
-          given_by_user: 'Oppgitt av bruker',
           from_system: 'Hentet fra internt system',
         },
         begrunnelse: {
@@ -365,7 +312,6 @@ export const nb = {
           documents: 'Vedlagte dokumenter',
         },
       },
-      back: 'Tilbake',
       next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt anke'),
       post_link: 'Last ned hvis du heller ønsker å sende via post',
     },
@@ -400,44 +346,20 @@ export const nb = {
     },
   },
   klage_create: {
-    invalid_innsendingsytelse: (innsendingsytelse = 'Ukjent') => `Ugyldig ytelse "${innsendingsytelse}".`,
-    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
-      if (saksnummer === null) {
-        return `Klarte ikke opprette klage med ytelse "${innsendingsytelse}".`;
-      }
-
-      return `Klarte ikke opprette klage med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
-    },
     create_error: 'Klarte ikke opprette klage',
-    creating: 'Oppretter klage...',
   },
   anke_create: {
-    invalid_innsendingsytelse: (innsendingsytelseName = 'Ukjent') => `Ugyldig tema "${innsendingsytelseName}".`,
-    format_error: (innsendingsytelse: Innsendingsytelse, saksnummer: string | null): string => {
-      if (saksnummer === null) {
-        return `Klarte ikke opprette anke med ytelse "${innsendingsytelse}".`;
-      }
-
-      return `Klarte ikke opprette anke med ytelse "${innsendingsytelse}" og saksnummer "${saksnummer}".`;
-    },
     create_error: 'Klarte ikke opprette anke',
-    creating: 'Oppretter anke...',
   },
   user_loader: {
     loading_user: 'Laster bruker...',
-    network_error: 'Kunne ikke laste brukeren, fordi nettleseren din ikke kan nå NAV. Har du fortsatt internett?',
-    other_error: 'Kunne ikke laste brukeren, vennligst prøv igjen senere.',
-    error_message: (message: string) => `Feilmelding: "${message}"`,
-    log_in: 'Logg inn',
   },
   klage_loader: {
     loading_klage: 'Laster klage...',
-    restoring: 'Gjenoppretter klage...',
     format_error: (klageId: string, error: Error) => `Klarte ikke hente klage med ID "${klageId}". ${error.message}`,
   },
   anke_loader: {
     loading_anke: 'Laster anke...',
-    restoring: 'Gjenoppretter anke...',
     format_error: (ankeInternalSaksnummer: string, error: Error) =>
       `Klarte ikke hente anke med ID "${ankeInternalSaksnummer}". ${error.message}`,
   },
@@ -477,7 +399,6 @@ export const nb = {
       'Du har prøvd å legge til et vedlegg med et format vi ikke støtter. Vedlegg er begrenset til PNG, JPEG, og PDF.',
     skjema: {
       title: 'Feil i skjema',
-      fnr: 'Fødselsnummer er ikke gyldig.',
       fnr_dnr_or_npid: 'Ugyldig fødselsnummer, D-nummer eller NPID.',
       vedtak_date: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden, eller tom.',
       vedtak_date_required: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden.',
@@ -491,19 +412,12 @@ export const nb = {
     loading: 'Laster...',
     logged_out: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
     log_in: 'Logg inn',
-    retry: 'Prøv på nytt',
     generic_error: 'Noe gikk galt. Vennligst prøv igjen senere.',
     fnr_dnr_or_npid: 'Fødselsnummer, D-nummer eller NPID',
     fornavn: 'For- og mellomnavn',
     etternavn: 'Etternavn',
-    address: 'Adresse',
-    phone_number: 'Telefonnummer',
     download: 'Last ned / skriv ut',
-    optional_suffix: ' (valgfri)',
-    klage: 'Klage',
-    anke: 'Anke',
     back: 'Tilbake',
-    close_confirm: 'Er du sikker på at du vil lukke denne nettsiden?',
     last_changed: 'Sist endret',
     delete: 'Slett',
     cancel: 'Avbryt',
@@ -517,7 +431,6 @@ export const nb = {
     },
     draft_anker: {
       title: 'Påbegynte anker',
-      item_title: 'Påbegynt anke',
     },
     available_anker: {
       title: 'Avslåtte klager',
