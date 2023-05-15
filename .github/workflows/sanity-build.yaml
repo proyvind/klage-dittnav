@@ -26,7 +26,7 @@ jobs:
           cd ${{ matrix.apps }}
           npm ci --prefer-offline
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}   
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Lint ${{ matrix.apps }}
         shell: bash
         run: |
