@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const KaEnhet = ({ enhet, onChange, error }: Props) => {
-  const [hasReceived, setHasReceived] = useState(false);
+  const [hasReceived, setHasReceived] = useState<boolean | null>(null);
   const { common, ettersendelse } = useTranslation();
 
   return (
@@ -39,7 +39,7 @@ export const KaEnhet = ({ enhet, onChange, error }: Props) => {
           </Radio>
         </HorizontalButtons>
       </RadioGroup>
-      <KaEnhetSelect enhet={enhet} onChange={onChange} error={error} show={hasReceived} />
+      <KaEnhetSelect enhet={enhet} onChange={onChange} error={error} show={hasReceived === true} />
     </>
   );
 };
