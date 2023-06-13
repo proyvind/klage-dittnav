@@ -80,7 +80,8 @@ export const nb = {
       <BodyShort key="2">Send via post til:</BodyShort>,
     ],
     enhet: {
-      radio_title: 'Har du mottatt brev fra NAV Klageinstans?',
+      radio_title:
+        'Har du mottatt et brev fra NAV Klageinstans eller et brev fra en annen enhet i NAV om at saken din er sendt til NAV Klageinstans?',
       select_title: 'Hvilken enhet mottok du brevet fra?',
       none: 'Velg enhet',
     },

@@ -80,7 +80,8 @@ export const en: Language = {
       </BodyShort>,
     ],
     enhet: {
-      radio_title: 'Have you received a letter from NAV Klageinstans?',
+      radio_title:
+        'Have you received a letter from NAV Klageinstans, or a letter from another unit within NAV that says that your case has been sent to NAV Klageinstans?',
       select_title: 'Which NAV office did you receive the letter from?',
       none: 'Select office',
     },
