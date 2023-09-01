@@ -8,6 +8,9 @@ on:
 jobs:
   deploy_to_dev:
     name: Dev
+    permissions:
+      contents: write
+      id-token: write
     uses: ./.github/workflows/deploy-to-dev.yaml
     secrets:
       NAIS_DEPLOY_API_KEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
@@ -16,6 +19,9 @@ jobs:
   
   deploy_to_prod:
     name: Prod
+    permissions:
+      contents: write
+      id-token: write
     needs: deploy_to_dev
     uses: ./.github/workflows/deploy-to-prod.yaml
     secrets:
