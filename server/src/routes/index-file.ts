@@ -50,6 +50,7 @@ class IndexFile {
           logoutUrl: '/oauth2/logout',
           context: 'privatperson',
           level: 'Level4',
+          logoutWarning: true,
         },
       });
 

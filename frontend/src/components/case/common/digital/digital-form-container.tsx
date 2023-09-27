@@ -10,7 +10,6 @@ import { CaseStatus } from '@app/redux-api/case/types';
 import { FormTitleContainer } from '@app/routes/form-title-container';
 import { ContentContainer } from '@app/styled-components/content-container';
 import { FormMainContainer } from '@app/styled-components/main-container';
-import { LogoutWarning } from '../../../logout-warning/logout-warning';
 import { StepProps, Steps } from '../../../steps/steps';
 
 interface Props {
@@ -64,7 +63,6 @@ export const DigitalFormContainer = ({
     <FormMainContainer>
       <FormTitleContainer tittel={page_title} undertittel={undertittel} />
       <ContentContainer>
-        <LogoutWarning />
         <Steps activeStep={activeStep} steps={stepperSteps} />
         {children}
       </ContentContainer>

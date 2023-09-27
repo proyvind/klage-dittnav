@@ -15,6 +15,7 @@ if (ENVIRONMENT.isLocal) {
       chatbot: true,
       redirectToApp: false,
       logoutUrl: '/oauth2/logout',
+      logoutWarning: true,
     },
   });
 }
