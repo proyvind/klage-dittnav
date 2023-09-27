@@ -39,7 +39,7 @@ const useApiAnker = ({ innsendingsytelser }: Props) => {
 
   const filtered = useMemo(
     () => data?.filter((anke) => !hasFilter || innsendingsytelser.includes(anke.innsendingsytelse)) ?? [],
-    [data, hasFilter, innsendingsytelser]
+    [data, hasFilter, innsendingsytelser],
   );
 
   if (isLoading || typeof data === 'undefined' || data.length === 0) {

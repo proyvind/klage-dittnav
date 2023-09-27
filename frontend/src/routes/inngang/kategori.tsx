@@ -60,7 +60,7 @@ export const Kategori = memo(
       </InngangMainContainer>
     );
   },
-  (prevProps, nextProps) => prevProps.innsendingsytelse === nextProps.innsendingsytelse
+  (prevProps, nextProps) => prevProps.innsendingsytelse === nextProps.innsendingsytelse,
 );
 
 Kategori.displayName = 'InngangInnsending';

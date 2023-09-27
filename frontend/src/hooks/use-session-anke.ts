@@ -8,7 +8,7 @@ import { loadSessionAnke } from '@app/redux/session/session';
 
 export const useSessionAnke = (
   innsendingsytelse: Innsendingsytelse,
-  internalSaksnummer: string | null
+  internalSaksnummer: string | null,
 ): [ISessionAnke, false] | [undefined, true] => {
   const dispatch = useAppDispatch();
   const sessionAnkeMap = useAppSelector((state) => state.session.anker);
@@ -26,7 +26,7 @@ export const useSessionAnke = (
         loadSessionAnke({
           key: innsendingsytelse,
           anke: createSessionAnke(language, innsendingsytelse, internalSaksnummer),
-        })
+        }),
       );
     }
   }, [dispatch, anke, language, innsendingsytelse, internalSaksnummer]);

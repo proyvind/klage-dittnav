@@ -1,6 +1,6 @@
 import { Heading } from '@navikt/ds-react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 const TitleContainer = styled.div`
   background-color: #cce1f3;

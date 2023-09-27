@@ -30,7 +30,7 @@ export const TemaWithKategorier = memo(
 
     const innsendingsytelser: Innsendingsytelse[] = useMemo(
       () => tema.innsendingsytelser.map(({ innsendingsytelse }) => innsendingsytelse),
-      [tema]
+      [tema],
     );
 
     return (
@@ -54,7 +54,7 @@ export const TemaWithKategorier = memo(
       </InngangMainContainer>
     );
   },
-  (prevProps, nextProps) => prevProps.tema === nextProps.tema
+  (prevProps, nextProps) => prevProps.tema === nextProps.tema,
 );
 
 TemaWithKategorier.displayName = 'TemaWithKategorier';

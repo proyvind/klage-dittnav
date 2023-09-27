@@ -1,6 +1,6 @@
 import { BodyLong, Loader } from '@navikt/ds-react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { CenteredContainer } from '@app/styled-components/common';
 import { Optional } from '../optional/optional';
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { desktopHeight } from './media-queries';
 
 const MainContainer = styled.main`

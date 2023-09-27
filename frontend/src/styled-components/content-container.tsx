@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { device } from './media-queries';
 
 export const ContentContainer = styled.div`

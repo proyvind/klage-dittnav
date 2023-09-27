@@ -85,12 +85,12 @@ export const klageApi = createApi({
       }),
       onQueryStarted: async ({ id, key, value }, { dispatch, queryFulfilled }) => {
         const patchResult = dispatch(
-          klageApi.util.updateQueryData('getKlage', id, (draft) => ({ ...draft, [key]: value }))
+          klageApi.util.updateQueryData('getKlage', id, (draft) => ({ ...draft, [key]: value })),
         );
         const klagerPatchResult = dispatch(
           klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-            klager.map((klage) => (klage.id === id ? { ...klage, [key]: value } : klage))
-          )
+            klager.map((klage) => (klage.id === id ? { ...klage, [key]: value } : klage)),
+          ),
         );
 
         try {
@@ -98,8 +98,8 @@ export const klageApi = createApi({
           dispatch(klageApi.util.updateQueryData('getKlage', id, (draft) => ({ ...draft, ...data })));
           dispatch(
             klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-              klager.map((klage) => (klage.id === id ? { ...klage, ...data } : klage))
-            )
+              klager.map((klage) => (klage.id === id ? { ...klage, ...data } : klage)),
+            ),
           );
         } catch {
           patchResult.undo();
@@ -117,8 +117,8 @@ export const klageApi = createApi({
         dispatch(klageApi.util.updateQueryData('getKlage', klageId, () => undefined));
         dispatch(
           klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-            klager.filter((klage) => klage.id !== klageId)
-          )
+            klager.filter((klage) => klage.id !== klageId),
+          ),
         );
       },
     }),
@@ -134,7 +134,7 @@ export const klageApi = createApi({
             ...draft,
             ...data,
             status: CaseStatus.DONE,
-          }))
+          })),
         );
         dispatch(
           klageApi.util.updateQueryData('getKlager', undefined, (klager) => {
@@ -151,7 +151,7 @@ export const klageApi = createApi({
             });
 
             return updatedKlager;
-          })
+          }),
         );
       },
     }),
@@ -169,7 +169,7 @@ export const klageApi = createApi({
           klageApi.util.updateQueryData('getKlage', caseId, (draft) => ({
             ...draft,
             vedlegg: [...draft.vedlegg, data],
-          }))
+          })),
         );
       },
     }),
@@ -183,7 +183,7 @@ export const klageApi = createApi({
           klageApi.util.updateQueryData('getKlage', caseId, (draft) => ({
             ...draft,
             vedlegg: draft.vedlegg.filter((attachment) => attachment.id !== attachmentId),
-          }))
+          })),
         );
 
         try {

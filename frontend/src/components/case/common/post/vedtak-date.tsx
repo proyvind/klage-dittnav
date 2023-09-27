@@ -21,7 +21,7 @@ export const VedtakDatePost = ({ title, value, onChange, onError, error, require
 
   const validator = useMemo(
     () => (required ? validateRequiredVedtakDate : validateVedtakDate)(error_messages),
-    [error_messages, required]
+    [error_messages, required],
   );
 
   const onInternalChange = (date: string | null) => {

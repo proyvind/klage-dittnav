@@ -39,7 +39,7 @@ export const Reasons = ({ checkedReasons, caseId }: Props) => {
           setError(common.generic_error);
         });
     },
-    [updateReasons, caseId, common.generic_error, error_messages]
+    [updateReasons, caseId, common.generic_error, error_messages],
   );
 
   return (

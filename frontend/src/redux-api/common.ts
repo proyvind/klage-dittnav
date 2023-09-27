@@ -29,7 +29,7 @@ const staggeredBaseQuery = (baseUrl: string) => {
         argsIsString ? args : args.url,
         argsIsString ? 'GET' : args.method ?? 'GET',
         result.meta?.response?.status ?? result.error?.status,
-        [title, detail].filter(isNotUndefined).join(' - ')
+        [title, detail].filter(isNotUndefined).join(' - '),
       );
 
       if (result.meta?.response?.ok !== true) {
@@ -60,7 +60,7 @@ const staggeredBaseQuery = (baseUrl: string) => {
 
       return result;
     },
-    { maxRetries: 3 }
+    { maxRetries: 3 },
   );
 };
 

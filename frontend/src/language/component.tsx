@@ -33,7 +33,7 @@ export const LanguageComponent = (props: Props) => {
         locale: l,
         url: `/${l}${languageIndependentPath}`,
         handleInApp: true,
-      }))
+      })),
     );
   }, [navigate, location]);
 

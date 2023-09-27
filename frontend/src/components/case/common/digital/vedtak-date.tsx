@@ -36,7 +36,7 @@ export const VedtakDateDigital = ({
   const id = required ? FormFieldsIds.VEDTAK_DATE_REQUIRED : FormFieldsIds.VEDTAK_DATE;
   const validator = useMemo(
     () => (required ? validateRequiredVedtakDate : validateVedtakDate)(error_messages),
-    [error_messages, required]
+    [error_messages, required],
   );
 
   const update = useCallback(
@@ -61,7 +61,7 @@ export const VedtakDateDigital = ({
           });
       }
     },
-    [updateVedtakDate, caseId, onError, id, common.generic_error, common.logged_out, error_messages]
+    [updateVedtakDate, caseId, onError, id, common.generic_error, common.logged_out, error_messages],
   );
 
   const onInternalChange = (value: string | null) => {

@@ -11,6 +11,6 @@ export const useOnUnmount = (fn: () => void): void => {
     () => () => {
       onUnmount.current();
     },
-    []
+    [],
   );
 };

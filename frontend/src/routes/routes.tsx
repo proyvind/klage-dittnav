@@ -120,7 +120,7 @@ const temaRoutes = INNGANG_KATEGORIER.map((tema) => {
 const getInnsendingRoute = (
   kategoriPath: string,
   kategori: IInnsendingsytelse,
-  inngangkategori?: ITemaWithKategorier
+  inngangkategori?: ITemaWithKategorier,
 ) => (
   <React.Fragment key={kategoriPath}>
     <Route path={kategoriPath} element={<Kategori {...kategori} tema={inngangkategori} />} />
@@ -133,7 +133,7 @@ const getInnsendingRoute = (
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((tema) => {
   if (tema.type === TemaType.TEMA) {
     return tema.innsendingsytelser.map((innsendingsytelse) =>
-      getInnsendingRoute(`${tema.path}/${innsendingsytelse.path}`, innsendingsytelse, tema)
+      getInnsendingRoute(`${tema.path}/${innsendingsytelse.path}`, innsendingsytelse, tema),
     );
   }
 

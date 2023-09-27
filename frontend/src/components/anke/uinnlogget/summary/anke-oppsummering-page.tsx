@@ -1,7 +1,7 @@
 import { BodyLong, BodyShort, Button, Heading, Panel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useSessionAnkeErrors } from '@app/hooks/use-errors';
 import { Clipboard } from '@app/icons/clipboard';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';

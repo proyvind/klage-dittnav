@@ -27,7 +27,7 @@ interface ColumnOptions {
 
 export const formatEvent = (
   { session_time, timestamp, count, route, msg, stack }: LogEvent,
-  { maxRouteLength, maxCount }: ColumnOptions
+  { maxRouteLength, maxCount }: ColumnOptions,
 ): string => {
   const time = formatTime(session_time);
   const formattedRoute = formatRoute(route, maxRouteLength);

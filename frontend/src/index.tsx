@@ -10,10 +10,12 @@ import { ENVIRONMENT } from './environment/environment';
 if (ENVIRONMENT.isLocal) {
   injectDecoratorClientSide({
     env: 'dev',
-    simple: true,
-    chatbot: true,
-    redirectToApp: false,
-    logoutUrl: '/oauth2/logout',
+    params: {
+      simple: true,
+      chatbot: true,
+      redirectToApp: false,
+      logoutUrl: '/oauth2/logout',
+    },
   });
 }
 
@@ -26,7 +28,7 @@ Sentry.init({
         useLocation,
         useNavigationType,
         createRoutesFromChildren,
-        matchRoutes
+        matchRoutes,
       ),
     }),
   ],

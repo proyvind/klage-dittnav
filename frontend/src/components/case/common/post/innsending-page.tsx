@@ -1,7 +1,7 @@
 import { Button, GuidePanel, Heading } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useAddress } from '@app/hooks/use-address';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { Language } from '@app/language/language';

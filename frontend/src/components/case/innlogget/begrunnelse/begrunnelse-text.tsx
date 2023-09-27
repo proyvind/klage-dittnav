@@ -48,7 +48,7 @@ export const BegrunnelseTextDigital = ({
           if (isApiError(e)) {
             onError(
               FormFieldsIds.FRITEKST,
-              isErrorMessageKey(e.data.detail) ? error_messages[e.data.detail] : undefined
+              isErrorMessageKey(e.data.detail) ? error_messages[e.data.detail] : undefined,
             );
 
             return;

@@ -1,6 +1,6 @@
 import { BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 import { Envelope } from '@app/icons/envelope';
 import { Language } from '@app/language/language';
 import { Optional } from '../../../optional/optional';

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 
 interface Props extends PlaceholderProps {
   children: React.ReactNode;

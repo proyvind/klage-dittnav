@@ -1,7 +1,7 @@
 import { BodyLong, Button, ErrorMessage, Heading, Panel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
 import { Clipboard } from '@app/icons/clipboard';
 import { useTranslation } from '@app/language/use-translation';

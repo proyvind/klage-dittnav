@@ -3,7 +3,7 @@ import { Button } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { captureException } from '@sentry/react';
 import React, { useRef } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { isError } from '@app/functions/is-api-error';
 import { Language } from '@app/language/language';
 import { AppEventEnum } from '@app/logging/error-report/action';

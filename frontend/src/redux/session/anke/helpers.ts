@@ -12,7 +12,7 @@ export const getSessionAnkeKey = (key: SessionKey): string => `anke-${key}`;
 export const createSessionAnke = (
   language: Languages,
   innsendingsytelse: Innsendingsytelse,
-  internalSaksnummer: string | null = null
+  internalSaksnummer: string | null = null,
 ): ISessionAnke => ({
   innsendingsytelse,
   foedselsnummer: '',

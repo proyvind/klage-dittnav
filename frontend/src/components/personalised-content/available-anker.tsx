@@ -32,7 +32,7 @@ export const AvailableAnker = ({ innsendingsytelser }: Props) => {
   const anker = data
     .filter(
       (anke) =>
-        !hasFilter || innsendingsytelser.some((innsendingsytelse) => anke.innsendingsytelse === innsendingsytelse)
+        !hasFilter || innsendingsytelser.some((innsendingsytelse) => anke.innsendingsytelse === innsendingsytelse),
     )
     .map((anke) => <Anke key={anke.id} {...anke} />);
 

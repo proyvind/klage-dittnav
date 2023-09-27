@@ -1,7 +1,7 @@
 import { Heading, LinkPanel } from '@navikt/ds-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
 import { DraftKlageAndAnkeLists } from '@app/components/personalised-content/personalised-content';
 import { TextLoader } from '@app/components/text-loader/text-loader';

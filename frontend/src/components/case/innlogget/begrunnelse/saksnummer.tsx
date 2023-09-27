@@ -50,7 +50,7 @@ export const UserSaksnummerDigital = ({
           setError(common.generic_error);
         });
     },
-    [caseId, common.generic_error, error_messages, updateCase]
+    [caseId, common.generic_error, error_messages, updateCase],
   );
 
   if (internalSaksnummer !== null) {

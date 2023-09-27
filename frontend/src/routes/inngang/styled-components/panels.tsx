@@ -1,5 +1,5 @@
 import { Heading, Panel } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 export const PanelContainer = styled(Panel)`
   display: flex;

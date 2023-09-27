@@ -19,7 +19,10 @@ export class SimpleApiState<T> {
   private error: Error | undefined;
   private listeners: Listener<T>[] = [];
 
-  constructor(private url: string, private prefetch = false) {
+  constructor(
+    private url: string,
+    private prefetch = false,
+  ) {
     if (this.prefetch) {
       this.fetchData();
     }

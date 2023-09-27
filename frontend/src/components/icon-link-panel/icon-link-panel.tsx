@@ -1,6 +1,6 @@
 import { LinkPanel, LinkPanelProps } from '@navikt/ds-react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { device } from '@app/styled-components/media-queries';
 
 type Props<T extends React.ElementType> = {

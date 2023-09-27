@@ -88,12 +88,12 @@ export const ankeApi = createApi({
       }),
       onQueryStarted: async ({ id, key, value }, { dispatch, queryFulfilled }) => {
         const patchResult = dispatch(
-          ankeApi.util.updateQueryData('getAnke', id, (draft) => ({ ...draft, [key]: value }))
+          ankeApi.util.updateQueryData('getAnke', id, (draft) => ({ ...draft, [key]: value })),
         );
         const ankerPatchResult = dispatch(
           ankeApi.util.updateQueryData('getAnker', undefined, (anker) =>
-            anker.map((anke) => (anke.id === id ? { ...anke, [key]: value } : anke))
-          )
+            anker.map((anke) => (anke.id === id ? { ...anke, [key]: value } : anke)),
+          ),
         );
 
         try {
@@ -101,8 +101,8 @@ export const ankeApi = createApi({
           dispatch(ankeApi.util.updateQueryData('getAnke', id, (draft) => ({ ...draft, ...data })));
           dispatch(
             ankeApi.util.updateQueryData('getAnker', undefined, (anker) =>
-              anker.map((anke) => (anke.id === id ? { ...anke, ...data } : anke))
-            )
+              anker.map((anke) => (anke.id === id ? { ...anke, ...data } : anke)),
+            ),
           );
         } catch {
           patchResult.undo();
@@ -119,7 +119,7 @@ export const ankeApi = createApi({
         await queryFulfilled;
         dispatch(ankeApi.util.updateQueryData('getAnke', ankeId, () => undefined));
         dispatch(
-          ankeApi.util.updateQueryData('getAnker', undefined, (anker) => anker.filter((anke) => anke.id !== ankeId))
+          ankeApi.util.updateQueryData('getAnker', undefined, (anker) => anker.filter((anke) => anke.id !== ankeId)),
         );
       },
     }),
@@ -135,7 +135,7 @@ export const ankeApi = createApi({
             ...draft,
             ...data,
             status: CaseStatus.DONE,
-          }))
+          })),
         );
         dispatch(
           ankeApi.util.updateQueryData('getAnker', undefined, (anker) => {
@@ -152,7 +152,7 @@ export const ankeApi = createApi({
             });
 
             return updatedAnker;
-          })
+          }),
         );
       },
     }),
@@ -169,7 +169,7 @@ export const ankeApi = createApi({
           ankeApi.util.updateQueryData('getAnke', caseId, (draft) => ({
             ...draft,
             vedlegg: [...draft.vedlegg, data],
-          }))
+          })),
         );
       },
     }),
@@ -183,7 +183,7 @@ export const ankeApi = createApi({
           ankeApi.util.updateQueryData('getAnke', caseId, (draft) => ({
             ...draft,
             vedlegg: draft.vedlegg.filter((attachment) => attachment.id !== attachmentId),
-          }))
+          })),
         );
 
         try {

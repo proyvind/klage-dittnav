@@ -1,6 +1,6 @@
 import { Heading } from '@navikt/ds-react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { displayBytes } from '@app/functions/display';
 import { Language } from '@app/language/language';
 import { Attachment, CaseStatus } from '@app/redux-api/case/types';

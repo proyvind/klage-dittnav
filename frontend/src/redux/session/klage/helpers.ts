@@ -12,7 +12,7 @@ export const getSessionKlageKey = (key: SessionKey): string => `klage-${key}`;
 export const createSessionKlage = (
   language: Languages,
   innsendingsytelse: Innsendingsytelse,
-  internalSaksnummer: string | null = null
+  internalSaksnummer: string | null = null,
 ): ISessionKlage => ({
   innsendingsytelse,
   foedselsnummer: '',

@@ -1,7 +1,7 @@
 import { FileContent } from '@navikt/ds-icons';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { ISODate, isoDateToPretty } from '@app/domain/date/date';
 import { Envelope } from '@app/icons/envelope';
 import { Language } from '@app/language/language';

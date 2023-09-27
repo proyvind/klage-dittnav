@@ -8,7 +8,7 @@ import { loadSessionKlage } from '@app/redux/session/session';
 
 export const useSessionKlage = (
   innsendingsytelse: Innsendingsytelse,
-  internalSaksnummer: string | null
+  internalSaksnummer: string | null,
 ): [ISessionKlage, false] | [undefined, true] => {
   const dispatch = useAppDispatch();
   const sessionKlageMap = useAppSelector((state) => state.session.klager);
@@ -26,7 +26,7 @@ export const useSessionKlage = (
         loadSessionKlage({
           key: innsendingsytelse,
           klage: createSessionKlage(language, innsendingsytelse, internalSaksnummer),
-        })
+        }),
       );
     }
   }, [dispatch, innsendingsytelse, internalSaksnummer, klage, language]);

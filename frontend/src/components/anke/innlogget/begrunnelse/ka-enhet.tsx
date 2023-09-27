@@ -27,7 +27,7 @@ export const KaEnhet = ({ caseId, enhet, onError, error }: Props) => {
       const value = e === undefined ? v : null;
       update({ key: 'enhetsnummer', value, id: caseId });
     },
-    [caseId, onError, update, validator]
+    [caseId, onError, update, validator],
   );
 
   const NoneSelected = () =>

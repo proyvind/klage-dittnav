@@ -2,7 +2,7 @@ import { Close, Delete } from '@navikt/ds-icons';
 import { Alert, BodyLong, Button, ErrorSummary, Label, Loader } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { displayBytes } from '@app/functions/display';
 import { isApiError, isError } from '@app/functions/is-api-error';
 import { isErrorMessageKey } from '@app/language/error-messages';
