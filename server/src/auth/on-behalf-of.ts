@@ -8,7 +8,7 @@ const log = getLogger('auth');
 export const getOnBehalfOfAccessToken = async (
   authClient: Client,
   access_token: string,
-  appName: string
+  appName: string,
 ): Promise<string> => {
   const cacheKey = `${access_token}-${appName}`;
 

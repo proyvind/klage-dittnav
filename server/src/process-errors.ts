@@ -11,7 +11,7 @@ export const processErrors = () => {
       promise.catch((error: unknown) => log.error({ error, msg: `Uncaught error` }));
     })
     .on('uncaughtException', (error) =>
-      log.error({ error, msg: `Process ${process.pid} received a uncaughtException signal` })
+      log.error({ error, msg: `Process ${process.pid} received a uncaughtException signal` }),
     )
     .on('SIGTERM', (signal) => {
       log.info({ msg: `Process ${process.pid} received a ${signal} signal.` });

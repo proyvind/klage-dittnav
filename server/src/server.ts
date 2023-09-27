@@ -73,12 +73,12 @@ server.use(
       'X-Requested-With',
     ],
     origin: isDeployedToProd ? DOMAIN : [DOMAIN, /https?:\/\/localhost:\d{4,}/],
-  })
+  }),
 );
 
 server.get('/isAlive', (req, res) => res.status(200).send('Alive'));
 server.get('/isReady', (req, res) =>
-  res.status(indexFile.isReady ? 200 : 418).send(indexFile.isReady ? 'Ready' : 'Not ready')
+  res.status(indexFile.isReady ? 200 : 418).send(indexFile.isReady ? 'Ready' : 'Not ready'),
 );
 
 init(server);
