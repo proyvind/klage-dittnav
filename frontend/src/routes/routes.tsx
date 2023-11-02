@@ -55,8 +55,7 @@ export const Router = () => (
           <strong>02.11.2023</strong> mellom kl. <strong>19:00</strong> og <strong>20:00</strong>.
         </BodyShort>
         <BodyShort spacing>
-          Hvis du er logget inn, vil alle påbegynte klager og anker vil forbli lagret og kan fullføres etter
-          vedlikeholdet.
+          Hvis du er logget inn, vil alle påbegynte klager og anker forbli lagret og kan fullføres etter vedlikeholdet.
         </BodyShort>
         <BodyShort spacing style={{ fontStyle: 'italic' }}>
           It will not be possible to create, edit or submit complaints, appeals and additional documentation Thursday{' '}
