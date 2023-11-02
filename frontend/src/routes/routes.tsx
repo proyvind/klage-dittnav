@@ -1,4 +1,3 @@
-import { Alert, BodyShort, Heading, Modal } from '@navikt/ds-react';
 import { ErrorBoundary, withSentryReactRouterV6Routing } from '@sentry/react';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
@@ -37,31 +36,6 @@ const SentryRoutes = withSentryReactRouterV6Routing(Routes);
 
 export const Router = () => (
   <BrowserRouter>
-    <Modal open onBeforeClose={() => false}>
-      <Modal.Body>
-        <Alert variant="warning" size="medium">
-          <Heading level="1" size="small">
-            Teknisk vedlikehold / <i>Technical maintenance</i>
-          </Heading>
-          <BodyShort spacing>
-            Det vil ikke være mulig å opprette, endre eller sende inn klager, anker og ettersendelser torsdag{' '}
-            <strong>02.11.2023</strong> mellom kl. <strong>19:00</strong> og <strong>20:00</strong>.
-          </BodyShort>
-          <BodyShort spacing>
-            Hvis du er logget inn, vil alle påbegynte klager og anker forbli lagret og kan fullføres etter
-            vedlikeholdet.
-          </BodyShort>
-          <BodyShort spacing style={{ fontStyle: 'italic' }}>
-            It will not be possible to create, edit or submit complaints, appeals and additional documentation Thursday{' '}
-            <strong>02.11.2023</strong> between <strong>19:00</strong> and <strong>20:00</strong>.
-          </BodyShort>
-          <BodyShort spacing style={{ fontStyle: 'italic' }}>
-            If you are logged in, all unfinished complaints and appeals will remain saved and can be completed after
-            maintenance.
-          </BodyShort>
-        </Alert>
-      </Modal.Body>
-    </Modal>
     <NavigationLogger>
       <DekoratorSetRedirect>
         <LanguageComponent>
