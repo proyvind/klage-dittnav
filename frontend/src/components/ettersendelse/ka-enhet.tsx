@@ -20,7 +20,7 @@ export const KaEnhet = ({ enhet, onChange, error }: Props) => {
       <RadioGroup value={hasReceived} legend={ettersendelse.enhet.radio_title}>
         <HorizontalButtons>
           <Radio
-            value={true}
+            value
             onChange={() => {
               setHasReceived(true);
               onChange(NONE);

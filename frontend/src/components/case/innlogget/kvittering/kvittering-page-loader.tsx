@@ -35,7 +35,7 @@ export const KvitteringPageLoader = ({ caseId, translations, children, useGetCas
   }
 
   if (showKvittering) {
-    return <Kvittering translations={translations}></Kvittering>;
+    return <Kvittering translations={translations} />;
   }
 
   return <KvitteringLoading informStillWorking={showStillWorking} translations={translations} />;
