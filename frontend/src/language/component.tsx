@@ -16,6 +16,8 @@ export const LanguageComponent = (props: Props) => {
     onLanguageSelect((language) => {
       if (typeof language.url === 'string') {
         navigate(language.url);
+
+        document.documentElement.lang = language.locale;
       }
     });
 
