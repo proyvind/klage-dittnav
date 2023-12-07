@@ -1,6 +1,8 @@
 /* eslint-disable max-lines */
 import { BodyShort, Link } from '@navikt/ds-react';
+import { format } from 'date-fns';
 import React from 'react';
+import { PRETTY_FORMAT } from '@app/components/date-picker/constants';
 import { ExternalLink } from '@app/components/link/link';
 import { ErrorMessageKeys } from '@app/language/error-messages';
 import { Utfall } from '@app/redux-api/case/anke/types';
@@ -391,13 +393,18 @@ export const en: Language = {
       'You have tried to include an attachment with a format we do not support. Attachments are limited to til PNG, JPEG, and PDF.',
     skjema: {
       title: 'Form is not complete',
-      fnr_dnr_or_npid: 'Invalid national identity numbe, D number or NPID.',
-      vedtak_date: 'Decision date must be a valid date that is not in the future, or empty.',
-      vedtak_date_required: 'Decision date must be a valid date that is not in the future.',
-      fornavn: 'First and middle name can not be empty.',
-      etternavn: 'Surname can not be empty.',
+      fnr_dnr_or_npid: 'You must input a valid national identity number, D number or NPID.',
+      vedtak_date: 'You must either leave the field empty, or input a valid date that is not in the future.',
+      vedtak_date_required: 'You must input a valid date that is not in the future.',
+      fornavn: 'You must input a first and middle name.',
+      etternavn: 'You must input a surname.',
       begrunnelse: 'You must state a reason before continuing.',
       enhet: 'You must select a unit.',
+    },
+    date: {
+      invalid_format: 'You must input a valid date.',
+      invalid_range: (from: Date, to: Date) =>
+        `You must input a date that is between ${format(from, PRETTY_FORMAT)} and ${format(to, PRETTY_FORMAT)}.`,
     },
   },
   common: {

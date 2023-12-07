@@ -1,6 +1,8 @@
 /* eslint-disable max-lines */
 import { BodyShort, Link } from '@navikt/ds-react';
+import { format } from 'date-fns';
 import React from 'react';
+import { PRETTY_FORMAT } from '@app/components/date-picker/constants';
 import { ExternalLink } from '@app/components/link/link';
 import { ErrorMessageKeys } from '@app/language/error-messages';
 import { Utfall } from '@app/redux-api/case/anke/types';
@@ -400,13 +402,19 @@ export const nb = {
       'Du har prøvd å legge til et vedlegg med et format vi ikke støtter. Vedlegg er begrenset til PNG, JPEG, og PDF.',
     skjema: {
       title: 'Feil i skjema',
-      fnr_dnr_or_npid: 'Ugyldig fødselsnummer, D-nummer eller NPID.',
-      vedtak_date: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden, eller tom.',
-      vedtak_date_required: 'Vedtaksdato må være en gyldig dato som ikke er i fremtiden.',
+      fnr_dnr_or_npid: 'Du må fylle inn et gyldig fødselsnummer, D-nummer eller NPID.',
+      vedtak_date:
+        'Du må enten la feltet stå tomt, eller fylle inn en dato som er en gyldig dato, og som ikke er i fremtiden.',
+      vedtak_date_required: 'Du må fylle inn en dato som er en gyldig dato og som ikke er i fremtiden.',
       fornavn: 'Du må fylle inn fornavn og mellomnavn.',
       etternavn: 'Du må fylle inn etternavn.',
       begrunnelse: 'Du må skrive en begrunnelse før du går videre.',
       enhet: 'Du må velge en enhet.',
+    },
+    date: {
+      invalid_format: 'Du må velge en gyldig dato.',
+      invalid_range: (from: Date, to: Date) =>
+        `Du må velge en dato som er mellom ${format(from, PRETTY_FORMAT)} og ${format(to, PRETTY_FORMAT)}`,
     },
   },
   common: {

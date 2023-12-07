@@ -2,6 +2,7 @@ import { DatePicker as DatePickerInternal } from '@navikt/ds-react';
 import { addYears, format, isAfter, isBefore, isValid, parse, subDays, subYears } from 'date-fns';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { isoDateToPretty } from '@app/domain/date/date';
+import { useTranslation } from '@app/language/use-translation';
 import { FORMAT, PRETTY_FORMAT } from './constants';
 
 interface Props {
@@ -31,6 +32,7 @@ export const DatePicker = ({
 }: Props) => {
   const [inputError, setInputError] = useState<string>();
   const [input, setInput] = useState<string>(value === null ? '' : isoDateToPretty(value) ?? '');
+  const { error_messages } = useTranslation();
 
   useEffect(() => {
     setInput(value === null ? '' : isoDateToPretty(value) ?? '');
@@ -58,13 +60,13 @@ export const DatePicker = ({
       const validRange = isAfter(date, subDays(fromDate, 1)) && isBefore(date, toDate);
 
       if (!validFormat) {
-        setInputError('Ugyldig dato');
+        setInputError(error_messages.date.invalid_format);
 
         return;
       }
 
       if (!validRange) {
-        setInputError(`Dato må være mellom ${format(fromDate, PRETTY_FORMAT)} og ${format(toDate, PRETTY_FORMAT)}`);
+        setInputError(error_messages.date.invalid_range(fromDate, toDate));
 
         return;
       }
@@ -72,7 +74,7 @@ export const DatePicker = ({
       setInputError(undefined);
       onChange(format(date, FORMAT));
     },
-    [fromDate, onChange, toDate],
+    [error_messages.date, fromDate, onChange, toDate],
   );
 
   const onInputChange = useCallback(() => {
