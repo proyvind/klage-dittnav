@@ -1,4 +1,4 @@
-import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { skipToken } from '@reduxjs/toolkit/query';
 import React from 'react';
 import { useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
 import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';

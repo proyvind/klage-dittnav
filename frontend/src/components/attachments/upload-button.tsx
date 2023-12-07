@@ -1,6 +1,6 @@
 import { Upload } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { captureException } from '@sentry/react';
 import React, { useRef } from 'react';
 import { styled } from 'styled-components';

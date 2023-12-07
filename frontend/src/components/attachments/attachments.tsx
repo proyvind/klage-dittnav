@@ -1,6 +1,6 @@
 import { Close, Delete } from '@navikt/ds-icons';
 import { Alert, BodyLong, Button, ErrorSummary, Label, Loader } from '@navikt/ds-react';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { displayBytes } from '@app/functions/display';

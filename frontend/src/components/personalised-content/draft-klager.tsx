@@ -1,5 +1,5 @@
 import { Heading } from '@navikt/ds-react';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { skipToken } from '@reduxjs/toolkit/query';
 import React, { useMemo } from 'react';
 import { useIsAuthenticated } from '@app/hooks/use-user';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';

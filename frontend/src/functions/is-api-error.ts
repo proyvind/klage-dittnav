@@ -1,4 +1,4 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 interface ApiError {
   status: number;
