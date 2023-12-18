@@ -80,7 +80,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       title_fragment={title_fragment}
     >
       <GuidePanel>
-        <BodyLong>{klageskjema_post.should_log_in_digital}</BodyLong>
+        <BodyLong spacing>{klageskjema_post.should_log_in_digital}</BodyLong>
+        <BodyLong>{klageskjema_post.employer_info}</BodyLong>
       </GuidePanel>
 
       <UserInfo klageOrAnke={klage} update={updateKlage} onError={setError} errors={errors} />

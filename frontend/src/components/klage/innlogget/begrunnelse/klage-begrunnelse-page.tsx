@@ -1,4 +1,4 @@
-import { Button } from '@navikt/ds-react';
+import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useKlageErrors } from '@app/hooks/use-errors';
@@ -88,6 +88,10 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
       innsendingsytelse={klage.innsendingsytelse}
       title_fragment={title_fragment}
     >
+      <GuidePanel>
+        <BodyLong>{klageskjema.employer_info}</BodyLong>
+      </GuidePanel>
+
       <PersonligeOpplysningerSummary
         {...user?.navn}
         f_or_d_number={user?.folkeregisteridentifikator?.identifikasjonsnummer}

@@ -1,4 +1,4 @@
-import { Button } from '@navikt/ds-react';
+import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAnkeErrors } from '@app/hooks/use-errors';
@@ -87,6 +87,10 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
       title_fragment={title_fragment}
       page_title={page_title}
     >
+      <GuidePanel>
+        <BodyLong>{ankeskjema.employer_info}</BodyLong>
+      </GuidePanel>
+
       <PersonligeOpplysningerSummary
         {...user?.navn}
         f_or_d_number={user?.folkeregisteridentifikator?.identifikasjonsnummer}

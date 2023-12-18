@@ -1,4 +1,4 @@
-import { GuidePanel } from '@navikt/ds-react';
+import { BodyLong, BodyShort, GuidePanel } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useAddress } from '@app/hooks/use-address';
 import {
@@ -67,7 +67,7 @@ const InternalEttersendelsePage = ({ innsendingsytelse, authenticated, useErrors
 
   const { errors, setError, isEverythingValid } = useErrors(caseData);
 
-  const { title, guide_text } = ettersendelse;
+  const { title, guide_text, send_by_post, employer_info_logged_in, employer_info_logged_out } = ettersendelse;
 
   const [line1, line2, line3] = useAddress(innsendingsytelse);
 
@@ -76,7 +76,9 @@ const InternalEttersendelsePage = ({ innsendingsytelse, authenticated, useErrors
       <FormTitleContainer tittel={title} undertittel={undertittel} />
       <ContentContainer>
         <GuidePanel>
-          {guide_text}
+          <BodyLong spacing>{guide_text}</BodyLong>
+          <BodyLong spacing>{authenticated ? employer_info_logged_in : employer_info_logged_out}</BodyLong>
+          <BodyShort>{send_by_post}</BodyShort>
           <address>
             {line1}
             <br />

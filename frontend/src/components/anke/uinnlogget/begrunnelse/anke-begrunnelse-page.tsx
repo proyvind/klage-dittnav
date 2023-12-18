@@ -80,7 +80,8 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
       title_fragment={title_fragment}
     >
       <GuidePanel>
-        <BodyLong>{ankeskjema_post.should_log_in_digital}</BodyLong>
+        <BodyLong spacing>{ankeskjema_post.should_log_in_digital}</BodyLong>
+        <BodyLong>{ankeskjema_post.employer_info}</BodyLong>
       </GuidePanel>
 
       <UserInfo klageOrAnke={anke} update={updateAnke} onError={setError} errors={errors} />

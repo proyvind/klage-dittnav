@@ -74,13 +74,13 @@ export const nb = {
   },
   ettersendelse: {
     title: 'Ettersende dokumentasjon på tidligere innsendt klage/anke',
-    guide_text: [
-      <BodyShort key="1" spacing>
-        For å kunne ettersende dokumentasjon må du først skrive ut en forside som NAV har laget for deg. Denne skal
-        ligge øverst. Følg oppskriften på forsiden.
-      </BodyShort>,
-      <BodyShort key="2">Send via post til:</BodyShort>,
-    ],
+    send_by_post: 'Send via post til:',
+    employer_info_logged_out:
+      'Hvis du er en arbeidsgiver må legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
+    employer_info_logged_in:
+      'Hvis du er en arbeidsgiver må du logge ut og legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
+    guide_text:
+      'For å kunne ettersende dokumentasjon må du først skrive ut en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
     enhet: {
       radio_title:
         'Har du mottatt et brev fra NAV Klageinstans eller et brev fra en annen enhet i NAV om at saken din er sendt til NAV Klageinstans?',
@@ -97,6 +97,8 @@ export const nb = {
     has_attachments_label: 'Jeg skal sende med vedlegg.',
     should_log_in_digital:
       'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
+    employer_info:
+      'Som arbeidsgiver må du sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
     innsending: {
       title: 'Hva gjør du nå?',
       steg: [
@@ -109,6 +111,8 @@ export const nb = {
     },
   },
   klageskjema: {
+    employer_info:
+      'Hvis du er en arbeidsgiver må du logge ut og sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
     common: {
       title_fragment: 'klage',
       page_title: 'Klage på vedtak',
@@ -230,6 +234,8 @@ export const nb = {
     has_attachments_label: 'Jeg skal sende med vedlegg.',
     should_log_in_digital:
       'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
+    employer_info:
+      'Som arbeidsgiver må du sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
     innsending: {
       title: 'Hva gjør du nå?',
       steg: [
@@ -242,6 +248,8 @@ export const nb = {
     },
   },
   ankeskjema: {
+    employer_info:
+      'Hvis du er en arbeidsgiver må du logge ut og sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
     common: {
       title_fragment: 'anke',
       page_title: 'Anke på vedtak',

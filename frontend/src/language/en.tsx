@@ -72,15 +72,13 @@ export const en: Language = {
   },
   ettersendelse: {
     title: 'Submit additional documentation to a complaint or appeal',
-    guide_text: [
-      <BodyShort key="1" spacing>
-        To submit additional documentation, first you have to print a cover page that NAV has generated for you. Put
-        this on top of the documentation. Follow the instructions on the cover page.
-      </BodyShort>,
-      <BodyShort key="2" spacing>
-        Send by post to:
-      </BodyShort>,
-    ],
+    send_by_post: 'Send by post to:',
+    employer_info_logged_in:
+      'As an employer, you must log out and enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the cover page, and sign as the employer.',
+    employer_info_logged_out:
+      'As an employer, you must enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the cover page, and sign as the employer.',
+    guide_text:
+      'To submit additional documentation, first you have to print a cover page that NAV has generated for you. Put this on top of the documentation. Follow the instructions on the cover page.',
     enhet: {
       radio_title:
         'Have you received a letter from NAV Klageinstans, or a letter from another unit within NAV that says that your case has been sent to NAV Klageinstans?',
@@ -97,6 +95,8 @@ export const en: Language = {
     has_attachments_label: 'I will include attachments.',
     should_log_in_digital:
       'If you log in, you will be able to send the complaint and attachments digitally. You can continue without logging in, but you will have to print your complaint, sign it, and send it by post.',
+    employer_info:
+      'As an employer, you must send the complaint by post. You enter the national identity number or D-number of the employee to whom the decision applies, print out the complaint, and sign as the employer.',
     innsending: {
       title: 'What do you do now?',
       steg: [
@@ -109,6 +109,8 @@ export const en: Language = {
     },
   },
   klageskjema: {
+    employer_info:
+      'As an employer, you must log out and send the complaint by post. You enter the national identity number or D-number of the employee to whom the decision applies, print out the complaint, and sign as the employer.',
     common: {
       title_fragment: 'complain',
       page_title: 'Complain against decision',
@@ -225,6 +227,8 @@ export const en: Language = {
     has_attachments_label: 'I will include attachments.',
     should_log_in_digital:
       'If you log in, you will be able to send the appeal and attachments digitally. You can continue without logging in, but you will have to print your appeal, sign it, and send it by post.',
+    employer_info:
+      'As an employer, you must send the appeal by post. You enter the national identity number or D-number of the employee to whom the decision applies, print out the appeal, and sign as the employer.',
     innsending: {
       title: 'What do you do now?',
       steg: [
@@ -237,6 +241,8 @@ export const en: Language = {
     },
   },
   ankeskjema: {
+    employer_info:
+      'As an employer, you must log out and send the appeal by post. You enter the national identity number or D-number of the employee to whom the decision applies, print out the appeal, and sign as the employer.',
     common: {
       title_fragment: 'complain',
       page_title: 'Complain against decision',
