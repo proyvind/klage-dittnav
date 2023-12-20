@@ -13,11 +13,6 @@ const MainContainer = styled.main`
   }
 `;
 
-export const InngangMainContainer = styled(MainContainer)`
-  padding-top: 64px;
-  background-color: #f1f1f1;
-`;
-
 export const FormMainContainer = styled(MainContainer)`
   padding-bottom: 128px;
   background-color: #fff;

@@ -6,8 +6,6 @@ import { useAnkeErrors } from '@app/hooks/use-errors';
 import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
 import { Clipboard } from '@app/icons/clipboard';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { Anke } from '@app/redux-api/case/anke/types';
 import { CaseStatus } from '@app/redux-api/case/types';
 import { API_PATH } from '@app/redux-api/common';
@@ -37,8 +35,6 @@ const DigitalAnkeoppsummeringPage = ({ anke }: Props) => {
   const [error, setError] = useState<string | null>(null);
 
   const { data: user, isLoading: userIsLoading } = useUser();
-
-  useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
   const { isValid } = useAnkeErrors(anke);
 

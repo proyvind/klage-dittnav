@@ -6,22 +6,17 @@ import { useAddress } from '@app/hooks/use-address';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { CenteredContainer } from '@app/styled-components/common';
 import { Optional } from '../../../optional/optional';
 import { PostFormContainer } from './post-form-container';
 
 interface Props {
-  pageIdentifier: PageIdentifier;
   skjema_post: Language['ankeskjema_post'] | Language['klageskjema_post'];
   innsendingsytelse: Innsendingsytelse;
   hasVedlegg: boolean;
 }
 
-export const RenderCaseinnsendingPage = ({ pageIdentifier, skjema_post, innsendingsytelse, hasVedlegg }: Props) => {
-  useLogPageView(pageIdentifier);
-
+export const RenderCaseinnsendingPage = ({ skjema_post, innsendingsytelse, hasVedlegg }: Props) => {
   const { page_title, title_fragment, steps, title, stepTexts, address, common } = useTexts({
     skjema_post,
     innsendingsytelse,

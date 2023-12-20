@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { API_BASE_QUERY, API_PATH } from '../../common';
 import { ServerSentEventManager, ServerSentEventType } from '../../server-sent-events';
 import { Attachment, Case, CaseStatus, DeleteAttachmentParams, FinalizedCase, UploadAttachmentParams } from '../types';
-import { Anke, AnkeUpdate, AvailableAnke, NewAnke, ResumeAnke } from './types';
+import { Anke, AnkeUpdate, NewAnke, ResumeAnke } from './types';
 
 type BaseUpdateResponse = Pick<Case, 'modifiedByUser'>;
 
@@ -10,19 +10,6 @@ export const ankeApi = createApi({
   reducerPath: 'ankeApi',
   baseQuery: API_BASE_QUERY,
   endpoints: (builder) => ({
-    getAnker: builder.query<Anke[], void>({
-      query: () => '/anker',
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-
-        for (const anke of data) {
-          dispatch(ankeApi.util.updateQueryData('getAnke', anke.id, () => anke));
-        }
-      },
-    }),
-    getAvailableAnker: builder.query<AvailableAnke[], void>({
-      query: () => `/anker/available`,
-    }),
     getAnke: builder.query<Anke, string>({
       query: (ankeId) => `/anker/${ankeId}`,
       onCacheEntryAdded: async (ankeId, { updateCachedData, cacheEntryRemoved, cacheDataLoaded, getCacheEntry }) => {
@@ -51,10 +38,6 @@ export const ankeApi = createApi({
           console.error(err);
         }
       },
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-        dispatch(ankeApi.util.updateQueryData('getAnker', undefined, (anker) => addAnke(anker, data)));
-      },
     }),
     resumeOrCreateAnke: builder.mutation<Anke, ResumeAnke>({
       query: (body) => ({
@@ -65,7 +48,6 @@ export const ankeApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
         dispatch(ankeApi.util.updateQueryData('getAnke', data.id, () => data));
-        dispatch(ankeApi.util.updateQueryData('getAnker', undefined, (anker) => addAnke(anker, data)));
       },
     }),
     createAnke: builder.mutation<Anke, NewAnke>({
@@ -77,7 +59,6 @@ export const ankeApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
         dispatch(ankeApi.util.updateQueryData('getAnke', data.id, () => data));
-        dispatch(ankeApi.util.updateQueryData('getAnker', undefined, (anker) => addAnke(anker, data)));
       },
     }),
     updateAnke: builder.mutation<BaseUpdateResponse, AnkeUpdate>({
@@ -90,23 +71,12 @@ export const ankeApi = createApi({
         const patchResult = dispatch(
           ankeApi.util.updateQueryData('getAnke', id, (draft) => ({ ...draft, [key]: value })),
         );
-        const ankerPatchResult = dispatch(
-          ankeApi.util.updateQueryData('getAnker', undefined, (anker) =>
-            anker.map((anke) => (anke.id === id ? { ...anke, [key]: value } : anke)),
-          ),
-        );
 
         try {
           const { data } = await queryFulfilled;
           dispatch(ankeApi.util.updateQueryData('getAnke', id, (draft) => ({ ...draft, ...data })));
-          dispatch(
-            ankeApi.util.updateQueryData('getAnker', undefined, (anker) =>
-              anker.map((anke) => (anke.id === id ? { ...anke, ...data } : anke)),
-            ),
-          );
         } catch {
           patchResult.undo();
-          ankerPatchResult.undo();
         }
       },
     }),
@@ -118,9 +88,6 @@ export const ankeApi = createApi({
       onQueryStarted: async (ankeId, { dispatch, queryFulfilled }) => {
         await queryFulfilled;
         dispatch(ankeApi.util.updateQueryData('getAnke', ankeId, () => undefined));
-        dispatch(
-          ankeApi.util.updateQueryData('getAnker', undefined, (anker) => anker.filter((anke) => anke.id !== ankeId)),
-        );
       },
     }),
     finalizeAnke: builder.mutation<FinalizedCase, string>({
@@ -136,23 +103,6 @@ export const ankeApi = createApi({
             ...data,
             status: CaseStatus.DONE,
           })),
-        );
-        dispatch(
-          ankeApi.util.updateQueryData('getAnker', undefined, (anker) => {
-            const updatedAnker = anker.map((anke) => {
-              if (anke.id === id) {
-                return {
-                  ...anke,
-                  ...data,
-                  status: CaseStatus.DONE,
-                };
-              }
-
-              return anke;
-            });
-
-            return updatedAnker;
-          }),
         );
       },
     }),
@@ -196,24 +146,13 @@ export const ankeApi = createApi({
   }),
 });
 
-// eslint-disable-next-line import/no-unused-modules
 export const {
   useCreateAnkeMutation,
   useDeleteAnkeMutation,
   useDeleteAttachmentMutation,
   useFinalizeAnkeMutation,
   useGetAnkeQuery,
-  useGetAvailableAnkerQuery,
-  useGetAnkerQuery,
   useResumeOrCreateAnkeMutation,
   useUpdateAnkeMutation,
   useUploadAttachmentMutation,
 } = ankeApi;
-
-const addAnke = (anker: Anke[], newAnke: Anke) => {
-  if (anker.some(({ id }) => id === newAnke.id)) {
-    return anker.map((klage) => (klage.id === newAnke.id ? newAnke : klage));
-  }
-
-  return [newAnke, ...anker];
-};

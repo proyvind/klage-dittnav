@@ -5,8 +5,6 @@ import { styled } from 'styled-components';
 import { useIsAuthenticated, useUser } from '@app/hooks/use-user';
 import { Clipboard } from '@app/icons/clipboard';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { Klage } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
 import { API_PATH } from '@app/redux-api/common';
@@ -37,8 +35,6 @@ const DigitalKlageoppsummeringPage = ({ klage }: Props) => {
   const [error, setError] = useState<string | null>(null);
 
   const { data: user, isLoading: userIsLoading } = useUser();
-
-  useLogPageView(PageIdentifier.KLAGESKJEMA_OPPSUMMERING);
 
   if (userIsLoading || typeof user === 'undefined') {
     return null;

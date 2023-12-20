@@ -1,4 +1,4 @@
-import { Download } from '@navikt/ds-icons';
+import { DownloadIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -89,7 +89,7 @@ export const DownloadButton = ({ caseData, type, validForm }: Props) => {
       variant="primary"
       onClick={submitKlage}
       loading={pdfLoading}
-      icon={<Download />}
+      icon={<DownloadIcon aria-hidden />}
       iconPosition="left"
     >
       {common.download}

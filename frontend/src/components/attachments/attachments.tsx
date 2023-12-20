@@ -1,4 +1,4 @@
-import { Close, Delete } from '@navikt/ds-icons';
+import { TrashIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { Alert, BodyLong, Button, ErrorSummary, Label, Loader } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import React, { useState } from 'react';
@@ -68,10 +68,10 @@ export const AttachmentsSection = ({
             </ExternalLink>
             <Button
               variant="danger"
-              size="small"
+              size="xsmall"
               title={`${common.delete} ${tittel}`}
               onClick={() => deleteAttachment(id)}
-              icon={<Delete />}
+              icon={<TrashIcon aria-hidden />}
             />
           </StyledListItem>
         ))}
@@ -132,7 +132,7 @@ const ShowErrors = ({ errors, clear, translations }: ShowErrorsProps) => {
   return (
     <div>
       <StyledClearButton variant="secondary" onClick={clearErrors}>
-        <Close /> {translations.begrunnelse.attachments.clear_errors}
+        <XMarkIcon aria-hidden /> {translations.begrunnelse.attachments.clear_errors}
       </StyledClearButton>
       <ErrorSummary>
         {errorMessages.map((error, i) => (

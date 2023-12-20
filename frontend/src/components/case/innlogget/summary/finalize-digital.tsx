@@ -1,4 +1,4 @@
-import { Login } from '@navikt/ds-icons';
+import { EnterIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -53,7 +53,7 @@ const FinalizeDigital = ({ setError, status, id, fritekst, finalizeMutation, tra
     };
 
     return (
-      <Button variant="primary" onClick={onClick} icon={<Login />} iconPosition="left">
+      <Button variant="primary" onClick={onClick} icon={<EnterIcon aria-hidden />} iconPosition="left">
         {common.log_in}
       </Button>
     );

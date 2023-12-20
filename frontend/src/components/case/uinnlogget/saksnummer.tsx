@@ -1,4 +1,4 @@
-import { Edit } from '@navikt/ds-icons';
+import { PencilIcon } from '@navikt/aksel-icons';
 import { BodyShort, Button, Label } from '@navikt/ds-react';
 import React from 'react';
 import { styled } from 'styled-components';
@@ -25,7 +25,7 @@ export const Saksnummer = ({ translations, internalSaksnummer, ...props }: Saksn
             title={translations.begrunnelse.saksnummer.change}
             onClick={onClick}
             size="small"
-            icon={<Edit aria-hidden />}
+            icon={<PencilIcon aria-hidden />}
             variant="tertiary"
           />
         </Row>

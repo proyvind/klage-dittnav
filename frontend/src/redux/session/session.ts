@@ -17,7 +17,6 @@ export const sessionSlice = createSlice({
   },
 });
 
-// eslint-disable-next-line import/no-unused-modules
 export const {
   setSessionAnke,
   loadSessionAnke,

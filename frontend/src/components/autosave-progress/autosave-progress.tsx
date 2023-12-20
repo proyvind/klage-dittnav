@@ -1,4 +1,4 @@
-import { ErrorColored, SuccessColored } from '@navikt/ds-icons';
+import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons';
 import { Popover } from '@navikt/ds-react';
 import React, { useRef, useState } from 'react';
 import { styled } from 'styled-components';
@@ -58,7 +58,7 @@ const getContent = (status: StatusProps, saving: string, saved: string, failed: 
   if (status.isSuccess) {
     return (
       <>
-        <SuccessColored />
+        <CheckmarkIcon aria-hidden />
         <>{saved}</>
       </>
     );
@@ -67,7 +67,7 @@ const getContent = (status: StatusProps, saving: string, saved: string, failed: 
   if (status.isError) {
     return (
       <>
-        <ErrorColored />
+        <XMarkOctagonIcon aria-hidden />
         {failed}
       </>
     );

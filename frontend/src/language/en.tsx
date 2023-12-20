@@ -1,75 +1,14 @@
 /* eslint-disable max-lines */
-import { BodyShort, Link } from '@navikt/ds-react';
 import { format } from 'date-fns';
 import React from 'react';
 import { PRETTY_FORMAT } from '@app/components/date-picker/constants';
 import { ExternalLink } from '@app/components/link/link';
 import { ErrorMessageKeys } from '@app/language/error-messages';
-import { Utfall } from '@app/redux-api/case/anke/types';
 import { Reason } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
 import { Language } from './nb';
 
 export const en: Language = {
-  inngang: {
-    title_postfix: 'complain or appeal',
-    guide_panel: {
-      general_info: [
-        <BodyShort key="1" spacing>
-          You have a right to complain if you have received a decision from NAV and disagree with the decision. Read
-          more about{' '}
-          <ExternalLink href="https://www.nav.no/en/home/rules-and-regulations/appeals" inline>
-            your right to complain
-          </ExternalLink>
-          .
-        </BodyShort>,
-      ].map((c, index) => <span key={index}>{c}</span>),
-      login_info: [
-        <BodyShort key="2" spacing>
-          To get the best possible user experience, we recommend that you <Link href="/oauth2/login">log in</Link>{' '}
-          before you proceed.{' '}
-          <ExternalLink href="https://www.norge.no/en/electronic-id" inline>
-            How to get an electronic ID.
-          </ExternalLink>
-        </BodyShort>,
-      ],
-    },
-    hovedkategorier: {
-      title: 'Complain or appeal against decision',
-      chooseInnsendingsytelse: 'Select topic',
-    },
-    kategorier: {
-      title: 'Which service or benefit is applicable?',
-    },
-    innsendingsvalg: {
-      title: 'What do you want?',
-      common: {
-        warning:
-          'Your complaint or appeal may be stored in the browser until the tab is closed, even if you are not logged in.',
-      },
-      klage: {
-        title: 'Complain on decision from NAV',
-        description: {
-          logged_in_digital: 'You can send your complaint and attachments digitally here.',
-          logged_out_digital:
-            'If you log in, you will be able to send the complaint and attachments digitally. You can continue without logging in, but you will have to print your complaint, sign it, and send it by post.',
-        },
-      },
-      anke: {
-        title: 'Appeal on decision from NAV Klageinstans',
-        description: {
-          logged_in_digital: 'You can send your appeal and attachments digitally here.',
-          logged_out_digital:
-            'If you log in, you will be able to send the appeal and attachments digitally. You can continue without logging in, but you will have to print your appeal, sign it, and send it by post.',
-        },
-      },
-      ettersendelse: {
-        title: 'Submit additional documentation to a complaint or appeal',
-        description:
-          'If you have complained or appealed against a decision, and you wish to submit additional documentation or send in new/changed information regarding your case, click here to get help with submitting it via post.',
-      },
-    },
-  },
   ettersendelse: {
     title: 'Submit additional documentation to a complaint or appeal',
     send_by_post: 'Send by post to:',
@@ -199,7 +138,13 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time.`,
+        description: [
+          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time `,
+          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
+            here
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
@@ -325,7 +270,13 @@ export const en: Language = {
       sent: 'Submitted',
       general_info: {
         title: 'The rest is now our responsibility',
-        description: `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can send them to us later by clicking on "Submit additional documentation to a previously submitted complaint or appeal" for the topic in question.`,
+        description: [
+          `You don't have to do anything else. We will contact you if we have any questions or if we need further information from you. If you have forgotten to include some attachments, you can forward documentation at any time `,
+          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
+            here
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
@@ -369,16 +320,6 @@ export const en: Language = {
   not_found_page: {
     title: 'Page not found',
     go_back: 'Go back to homepage',
-  },
-  utfall: {
-    [Utfall.TRUKKET]: 'Drawn',
-    [Utfall.RETUR]: 'Returned',
-    [Utfall.OPPHEVET]: 'Overturned',
-    [Utfall.MEDHOLD]: 'Reversed',
-    [Utfall.DELVIS_MEDHOLD]: 'Partially reversed',
-    [Utfall.OPPRETTHOLDT]: 'Upheld',
-    [Utfall.UGUNST]: 'Reversed',
-    [Utfall.AVVIST]: 'Rejected',
   },
   kvittering: {
     see_estimate: [
@@ -430,17 +371,5 @@ export const en: Language = {
     yes: 'Yes',
     no: 'No',
     expires_in: (exp: string) => `You will be logged out ${exp}. To continue, you just need to log in again.`,
-  },
-  personalised: {
-    draft_klager: {
-      title: 'Draft complaints',
-    },
-    draft_anker: {
-      title: 'Draft appeals',
-    },
-    available_anker: {
-      title: 'Declined complaints',
-      klage_date: 'Complaint decision date',
-    },
   },
 };

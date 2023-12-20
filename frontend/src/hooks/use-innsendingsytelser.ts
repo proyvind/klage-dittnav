@@ -14,16 +14,3 @@ export const useInnsendingsytelseName = (innsendingsytelse: Innsendingsytelse): 
 
   return [data[innsendingsytelse] ?? innsendingsytelse, false];
 };
-
-export const useInnsendingsytelserNames = (innsendingsytelser: Innsendingsytelse[]): [string[], boolean] => {
-  const lang = useLanguage();
-  const { data, isLoading } = useGetInnsendingsytelserQuery(lang);
-
-  if (isLoading || typeof data === 'undefined') {
-    return [[], true];
-  }
-
-  const titles = innsendingsytelser.map((innsendingsytelse) => data[innsendingsytelse] ?? innsendingsytelse);
-
-  return [titles, isLoading];
-};

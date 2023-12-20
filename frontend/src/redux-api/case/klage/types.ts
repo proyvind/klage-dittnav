@@ -1,5 +1,4 @@
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { StringValue } from '@app/kategorier/kategorier';
 import { Languages } from '@app/language/types';
 import { Case } from '../types';
 
@@ -20,6 +19,10 @@ export interface NewKlage
   readonly innsendingsytelse: Innsendingsytelse;
   readonly checkboxesSelected: Reason[];
 }
+
+type StringValue = {
+  [key in Languages]: string;
+};
 
 export interface Klage extends ResumeKlage, Case {
   readonly title: StringValue;

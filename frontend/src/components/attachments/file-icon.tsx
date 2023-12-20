@@ -1,4 +1,4 @@
-import { FileContent, Picture } from '@navikt/ds-icons';
+import { FileTextIcon, ImageIcon } from '@navikt/aksel-icons';
 import React from 'react';
 
 interface FileIconProps {
@@ -7,8 +7,8 @@ interface FileIconProps {
 
 export const FileIcon = ({ contentType }: FileIconProps) => {
   if (contentType.includes('image')) {
-    return <Picture aria-hidden />;
+    return <ImageIcon aria-hidden />;
   }
 
-  return <FileContent aria-hidden />;
+  return <FileTextIcon aria-hidden />;
 };

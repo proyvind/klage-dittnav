@@ -2,7 +2,6 @@ import React from 'react';
 import { useGoToBegrunnelseOnError, useSessionAnkeErrors } from '@app/hooks/use-errors';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
 import { RenderCaseinnsendingPage } from '../../../case/common/post/innsending-page';
 import { AnkeSessionLoader } from '../anke-session-loader';
 import { ISessionAnke } from '../types';
@@ -24,7 +23,6 @@ const SessionAnkeWrapper = ({ anke }: { anke: ISessionAnke }) => {
     <RenderCaseinnsendingPage
       innsendingsytelse={anke.innsendingsytelse}
       hasVedlegg={anke.hasVedlegg}
-      pageIdentifier={PageIdentifier.ANKESKJEMA_INNSENDING}
       skjema_post={ankeskjema_post}
     />
   );

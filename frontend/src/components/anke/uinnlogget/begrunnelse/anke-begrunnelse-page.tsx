@@ -7,10 +7,8 @@ import { useSessionAnkeUpdate } from '@app/hooks/use-session-anke-update';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { useAppDispatch } from '@app/redux/configure-store';
 import { deleteSessionAnke } from '@app/redux/session/session';
 import { CenteredContainer } from '@app/styled-components/common';
@@ -43,8 +41,6 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const language = useLanguage();
-
-  useLogPageView(PageIdentifier.ANKESKJEMA_BEGRUNNElSE);
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 

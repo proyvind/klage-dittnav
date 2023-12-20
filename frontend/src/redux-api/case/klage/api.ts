@@ -10,16 +10,6 @@ export const klageApi = createApi({
   reducerPath: 'klageApi',
   baseQuery: API_BASE_QUERY,
   endpoints: (builder) => ({
-    getKlager: builder.query<Klage[], void>({
-      query: () => '/klager',
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-
-        for (const klage of data) {
-          dispatch(klageApi.util.updateQueryData('getKlage', klage.id, () => klage));
-        }
-      },
-    }),
     getKlage: builder.query<Klage, string>({
       query: (klageId) => `/klager/${klageId}`,
       onCacheEntryAdded: async (klageId, { updateCachedData, cacheEntryRemoved, cacheDataLoaded, getCacheEntry }) => {
@@ -48,10 +38,6 @@ export const klageApi = createApi({
           console.error(err);
         }
       },
-      onQueryStarted: async (klageId, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
-      },
     }),
     resumeOrCreateKlage: builder.mutation<Klage, ResumeKlage>({
       query: (body) => ({
@@ -62,7 +48,6 @@ export const klageApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
         dispatch(klageApi.util.updateQueryData('getKlage', data.id, () => data));
-        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
     createKlage: builder.mutation<Klage, NewKlage>({
@@ -74,7 +59,6 @@ export const klageApi = createApi({
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
         dispatch(klageApi.util.updateQueryData('getKlage', data.id, () => data));
-        dispatch(klageApi.util.updateQueryData('getKlager', undefined, (klager) => addKlage(klager, data)));
       },
     }),
     updateKlage: builder.mutation<BaseUpdateResponse, KlageUpdate>({
@@ -87,23 +71,12 @@ export const klageApi = createApi({
         const patchResult = dispatch(
           klageApi.util.updateQueryData('getKlage', id, (draft) => ({ ...draft, [key]: value })),
         );
-        const klagerPatchResult = dispatch(
-          klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-            klager.map((klage) => (klage.id === id ? { ...klage, [key]: value } : klage)),
-          ),
-        );
 
         try {
           const { data } = await queryFulfilled;
           dispatch(klageApi.util.updateQueryData('getKlage', id, (draft) => ({ ...draft, ...data })));
-          dispatch(
-            klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-              klager.map((klage) => (klage.id === id ? { ...klage, ...data } : klage)),
-            ),
-          );
         } catch {
           patchResult.undo();
-          klagerPatchResult.undo();
         }
       },
     }),
@@ -115,11 +88,6 @@ export const klageApi = createApi({
       onQueryStarted: async (klageId, { dispatch, queryFulfilled }) => {
         await queryFulfilled;
         dispatch(klageApi.util.updateQueryData('getKlage', klageId, () => undefined));
-        dispatch(
-          klageApi.util.updateQueryData('getKlager', undefined, (klager) =>
-            klager.filter((klage) => klage.id !== klageId),
-          ),
-        );
       },
     }),
     finalizeKlage: builder.mutation<FinalizedCase, string>({
@@ -135,23 +103,6 @@ export const klageApi = createApi({
             ...data,
             status: CaseStatus.DONE,
           })),
-        );
-        dispatch(
-          klageApi.util.updateQueryData('getKlager', undefined, (klager) => {
-            const updatedKlager = klager.map((klage) => {
-              if (klage.id === id) {
-                return {
-                  ...klage,
-                  ...data,
-                  status: CaseStatus.DONE,
-                };
-              }
-
-              return klage;
-            });
-
-            return updatedKlager;
-          }),
         );
       },
     }),
@@ -204,14 +155,5 @@ export const {
   useResumeOrCreateKlageMutation,
   useUpdateKlageMutation,
   useUploadAttachmentMutation,
-  useGetKlagerQuery,
   useDeleteKlageMutation,
 } = klageApi;
-
-const addKlage = (klager: Klage[], newKlage: Klage) => {
-  if (klager.some(({ id }) => id === newKlage.id)) {
-    return klager.map((klage) => (klage.id === newKlage.id ? newKlage : klage));
-  }
-
-  return [newKlage, ...klager];
-};

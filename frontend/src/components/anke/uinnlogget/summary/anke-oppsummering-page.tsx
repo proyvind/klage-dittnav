@@ -6,8 +6,6 @@ import { useSessionAnkeErrors } from '@app/hooks/use-errors';
 import { Clipboard } from '@app/icons/clipboard';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { CenteredContainer } from '@app/styled-components/common';
 import { CenteredHeading } from '@app/styled-components/page-title';
 import { PostFormContainer } from '../../../case/common/post/post-form-container';
@@ -32,8 +30,6 @@ interface IProps {
 
 const PostAnkeoppsummeringPage = ({ anke }: IProps) => {
   const { common, ankeskjema } = useTranslation();
-
-  useLogPageView(PageIdentifier.ANKESKJEMA_OPPSUMMERING);
 
   const { isValid } = useSessionAnkeErrors(anke);
 

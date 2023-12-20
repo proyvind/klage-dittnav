@@ -2,8 +2,6 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { useGetAnkeQuery } from '@app/redux-api/case/anke/api';
 import { Anke } from '@app/redux-api/case/anke/types';
 import { CaseStatus } from '@app/redux-api/case/types';
@@ -22,8 +20,6 @@ interface Props {
 const RenderAnkekvitteringPage = ({ anke }: Props) => {
   const language = useLanguage();
   const { ankeskjema } = useTranslation();
-
-  useLogPageView(PageIdentifier.ANKESKJEMA_KVITTERING);
 
   if (anke.status !== CaseStatus.DONE) {
     return <Navigate to={`/${language}/anke/${anke.id}/oppsummering`} replace />;

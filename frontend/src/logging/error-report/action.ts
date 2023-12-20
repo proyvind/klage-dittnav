@@ -7,6 +7,7 @@ export enum AppEventEnum {
   DOWNLOAD_ATTACHMENT = 'Download attachment',
   FINALIZE = 'Click finalize button',
   INVALID = 'Invalid case data',
+  VALID = 'Valid case data',
   LOGIN = 'Login',
   SSE_CLOSE = 'SSE close',
   SSE_ERROR = 'SSE error',

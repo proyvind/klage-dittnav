@@ -1,4 +1,3 @@
-import { captureException } from '@sentry/react';
 import { useEffect, useState } from 'react';
 
 interface State<T> {
@@ -52,8 +51,6 @@ export class SimpleApiState<T> {
       } else {
         this.error = new Error('Unknown error');
       }
-
-      captureException(this.error);
     }
 
     this.isLoading = false;

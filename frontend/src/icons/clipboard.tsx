@@ -12,6 +12,7 @@ const ClipboardSvg = (props: Props) => (
     fill="none"
     viewBox="0 0 100 100"
     role="presentation"
+    aria-hidden
   >
     <path
       fill="#99C2E8"

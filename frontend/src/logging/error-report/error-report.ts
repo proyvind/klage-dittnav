@@ -64,12 +64,11 @@ class ErrorReport {
 
   public addAppEvent = (action: AppEventEnum) => this.addEvent({ type: 'app', action, ...getBaseEvent() });
 
-  public addErrorEvent = (error_message: string, error_stack?: string, component_stack?: string) =>
+  public addErrorEvent = (error_message: string, error_stack?: string) =>
     this.addEvent({
       type: 'error',
       error_message,
       error_stack,
-      component_stack,
       ...getBaseEvent(),
     });
 

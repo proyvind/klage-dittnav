@@ -1,4 +1,3 @@
-import { ErrorBoundary, withSentryReactRouterV6Routing } from '@sentry/react';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AnkebegrunnelsePage } from '@app/components/anke/innlogget/begrunnelse/anke-begrunnelse-page';
@@ -17,30 +16,25 @@ import { SessionKlagebegrunnelsePage } from '@app/components/klage/uinnlogget/be
 import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/innsending/klage-innsending-page';
 import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
 import { INNSENDINGSYTELSER, Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { INNGANG_KATEGORIER, TemaType } from '@app/kategorier/kategorier';
 import { LanguageComponent } from '@app/language/component';
 import { Languages } from '@app/language/types';
-import { TemaWithKategorier } from '@app/routes/inngang/tema-with-kategorier';
 import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
-import { Kategori } from './inngang/kategori';
+import { ErrorBoundary } from './error-boundary';
 import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
 import { QueryParamsHandler } from './query-params-handler';
 import { LoginIfUnauthorized, UpgradeSession } from './redirects';
-import { SentryFallback } from './sentry-fallback';
-
-const SentryRoutes = withSentryReactRouterV6Routing(Routes);
 
 export const Router = () => (
   <BrowserRouter>
     <NavigationLogger>
       <DekoratorSetRedirect>
         <LanguageComponent>
-          <ErrorBoundary fallback={SentryFallback}>
-            <SentryRoutes>
+          <ErrorBoundary>
+            <Routes>
               <Route path="/:lang" element={<UpgradeSession />}>
                 <Route index element={<LandingPage />} />
 
@@ -48,10 +42,6 @@ export const Router = () => (
                   <Route index element={<QueryParamsHandler type="klage" />} />
                   {getCaseRoutes({ component: CreateKlage })}
                 </Route>
-
-                {innsendingsRoutes}
-                {temaRoutes}
-                {ettersendelseRoutes}
 
                 <Route path="klage">
                   <Route path="ny">
@@ -92,54 +82,31 @@ export const Router = () => (
                     <Route path="innsending" element={<AnkeinnsendingPage />} />
                   </Route>
                 </Route>
+
+                <Route path="ettersendelse">
+                  {INNSENDINGSYTELSER.map((innsendingsytelse) => (
+                    <Route
+                      key={innsendingsytelse}
+                      path={innsendingsytelse}
+                      element={<EttersendelsePage innsendingsytelse={innsendingsytelse} />}
+                    />
+                  ))}
+                </Route>
               </Route>
+
               <Route
                 index
                 element={<Navigate to={`/${Languages.nb}${location.pathname}${location.search}${location.hash}`} />}
               />
+
               <Route path="*" element={<NotFoundPage />} />
-            </SentryRoutes>
+            </Routes>
           </ErrorBoundary>
         </LanguageComponent>
       </DekoratorSetRedirect>
     </NavigationLogger>
   </BrowserRouter>
 );
-
-const temaRoutes = INNGANG_KATEGORIER.map((tema) => {
-  if (tema.type === TemaType.TEMA) {
-    return <Route key={tema.path} path={tema.path} element={<TemaWithKategorier tema={tema} />} />;
-  }
-
-  if (tema.type === TemaType.INNSENDINGSYTELSE) {
-    return <Route key={tema.path} path={tema.path} element={<Kategori {...tema} />} />;
-  }
-
-  return null;
-});
-
-const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((tema) => {
-  if (tema.type === TemaType.TEMA) {
-    return tema.innsendingsytelser.map((innsendingsytelse) => {
-      const path = `${tema.path}/${innsendingsytelse.path}`;
-
-      return <Route key={path} path={path} element={<Kategori {...innsendingsytelse} tema={tema} />} />;
-    });
-  }
-
-  if (tema.type === TemaType.EXTERNAL) {
-    return null;
-  }
-
-  return <Route key={tema.path} path={tema.path} element={<Kategori {...tema} />} />;
-});
-
-const ettersendelseRoutes = INNSENDINGSYTELSER.flatMap((innsendingsytelse) => (
-  <Route
-    path={`ettersendelse/${innsendingsytelse}`}
-    element={<EttersendelsePage innsendingsytelse={innsendingsytelse} />}
-  />
-));
 
 interface YtelseComponentProps {
   innsendingsytelse: Innsendingsytelse;
@@ -153,32 +120,20 @@ interface Props {
 }
 
 const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props) =>
-  INNGANG_KATEGORIER.flatMap((tema) => {
-    if (tema.type === TemaType.TEMA) {
-      return tema.innsendingsytelser.map((kategori) => getCaseRoute(Component, kategori.innsendingsytelse, pathSuffix));
+  INNSENDINGSYTELSER.map((innsendingsytelse) => {
+    if (pathSuffix === null) {
+      return (
+        <Route
+          key={innsendingsytelse}
+          path={innsendingsytelse}
+          element={<Component innsendingsytelse={innsendingsytelse} />}
+        />
+      );
     }
 
-    if (tema.type === TemaType.EXTERNAL) {
-      return null;
-    }
-
-    return getCaseRoute(Component, tema.innsendingsytelse, pathSuffix);
-  });
-
-const getCaseRoute = (Component: YtelseComponent, innsendingsytelse: Innsendingsytelse, pathSuffix: string | null) => {
-  if (pathSuffix === null) {
     return (
-      <Route
-        key={innsendingsytelse}
-        path={innsendingsytelse}
-        element={<Component innsendingsytelse={innsendingsytelse} />}
-      />
+      <Route key={`${innsendingsytelse}/${pathSuffix}`} path={innsendingsytelse}>
+        <Route path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
+      </Route>
     );
-  }
-
-  return (
-    <Route key={innsendingsytelse} path={innsendingsytelse}>
-      <Route path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
-    </Route>
-  );
-};
+  });

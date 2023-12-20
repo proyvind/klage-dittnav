@@ -5,10 +5,8 @@ import { useAnkeErrors } from '@app/hooks/use-errors';
 import { useUser } from '@app/hooks/use-user';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import {
   useDeleteAnkeMutation,
   useDeleteAttachmentMutation,
@@ -41,9 +39,6 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   const navigate = useNavigate();
   const language = useLanguage();
   const { data: user } = useUser();
-
-  useLogPageView(PageIdentifier.ANKESKJEMA_BEGRUNNElSE);
-
   const { ankeskjema } = useTranslation();
 
   const [deleteAttachment] = useDeleteAttachmentMutation();

@@ -7,10 +7,8 @@ import { useSessionKlageUpdate } from '@app/hooks/use-session-klage-update';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { useAppDispatch } from '@app/redux/configure-store';
 import { deleteSessionKlage } from '@app/redux/session/session';
 import { CenteredContainer } from '@app/styled-components/common';
@@ -43,8 +41,6 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const language = useLanguage();
-
-  useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
 
   const { klageskjema, klageskjema_post } = useTranslation();
 

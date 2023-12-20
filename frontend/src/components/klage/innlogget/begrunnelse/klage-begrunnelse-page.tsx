@@ -5,10 +5,8 @@ import { useKlageErrors } from '@app/hooks/use-errors';
 import { useUser } from '@app/hooks/use-user';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import {
   useDeleteAttachmentMutation,
   useDeleteKlageMutation,
@@ -42,8 +40,6 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   const language = useLanguage();
   const { data: user } = useUser();
 
-  useLogPageView(PageIdentifier.KLAGESKJEMA_BEGRUNNElSE);
-
   const { klageskjema } = useTranslation();
 
   const [deleteAttachment] = useDeleteAttachmentMutation();
@@ -67,6 +63,8 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
       return;
     }
+
+    addAppEvent(AppEventEnum.VALID);
 
     navigate(NEXT_PAGE_URL);
   };

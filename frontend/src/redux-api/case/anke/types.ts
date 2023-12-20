@@ -1,5 +1,5 @@
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { Case, CaseStatus } from '../types';
+import { Case } from '../types';
 
 export interface ResumeAnke {
   readonly innsendingsytelse: Innsendingsytelse;
@@ -25,30 +25,3 @@ interface IAnkeUpdate<T extends keyof Updatable> {
 }
 
 export type AnkeUpdate = IAnkeUpdate<keyof Updatable>;
-
-enum AnkemulighetStatus {
-  OPEN = 'OPEN',
-}
-
-type AvailableAnkeStatus = CaseStatus | AnkemulighetStatus;
-
-export enum Utfall {
-  TRUKKET = 'TRUKKET',
-  RETUR = 'RETUR',
-  OPPHEVET = 'OPPHEVET',
-  MEDHOLD = 'MEDHOLD',
-  DELVIS_MEDHOLD = 'DELVIS_MEDHOLD',
-  OPPRETTHOLDT = 'OPPRETTHOLDT',
-  UGUNST = 'UGUNST',
-  AVVIST = 'AVVIST',
-}
-
-export interface AvailableAnke {
-  readonly id: string;
-  readonly ankeStatus: AvailableAnkeStatus;
-  readonly innsendtDate: string;
-  readonly innsendingsytelse: Innsendingsytelse;
-
-  readonly utfall: Utfall;
-  readonly vedtakDate: string;
-}

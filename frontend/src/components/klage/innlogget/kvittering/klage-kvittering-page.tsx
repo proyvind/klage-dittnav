@@ -2,8 +2,6 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
-import { PageIdentifier } from '@app/logging/amplitude';
-import { useLogPageView } from '@app/logging/use-log-page-view';
 import { useGetKlageQuery } from '@app/redux-api/case/klage/api';
 import { Klage } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
@@ -22,8 +20,6 @@ interface Props {
 const RenderKlagekvitteringPage = ({ klage }: Props) => {
   const language = useLanguage();
   const { klageskjema } = useTranslation();
-
-  useLogPageView(PageIdentifier.KLAGESKJEMA_KVITTERING);
 
   if (klage.status !== CaseStatus.DONE) {
     return <Navigate to={`/${language}/klage/${klage.id}/oppsummering`} replace />;

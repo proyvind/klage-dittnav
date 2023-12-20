@@ -1,79 +1,17 @@
 /* eslint-disable max-lines */
-import { BodyShort, Link } from '@navikt/ds-react';
 import { format } from 'date-fns';
 import React from 'react';
 import { PRETTY_FORMAT } from '@app/components/date-picker/constants';
 import { ExternalLink } from '@app/components/link/link';
 import { ErrorMessageKeys } from '@app/language/error-messages';
-import { Utfall } from '@app/redux-api/case/anke/types';
 import { Reason } from '@app/redux-api/case/klage/types';
 import { CaseStatus } from '@app/redux-api/case/types';
 
 export type Language = typeof nb;
 
 export const nb = {
-  inngang: {
-    title_postfix: 'klage eller anke',
-    guide_panel: {
-      general_info: [
-        <BodyShort key="1" spacing>
-          Hvis du har fått et vedtak fra NAV og du er uenig i vedtaket, har du rett til å klage eller anke. Les mer om{' '}
-          <ExternalLink
-            href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-            inline
-          >
-            dine klagerettigheter
-          </ExternalLink>
-          .
-        </BodyShort>,
-      ].map((c, index) => <span key={index}>{c}</span>),
-      login_info: [
-        <BodyShort key="2" spacing>
-          For at du skal få best mulig brukeropplevelse, anbefaler vi deg å <Link href="/oauth2/login">logge inn</Link>{' '}
-          før du går videre.
-        </BodyShort>,
-        <ExternalLink key="external-id" href="https://www.norge.no/nb/digital-borger/elektronisk-id" inline>
-          Slik skaffer du deg elektronisk ID.
-        </ExternalLink>,
-      ],
-    },
-    hovedkategorier: {
-      title: 'Klage eller anke på vedtak',
-      chooseInnsendingsytelse: 'Hvilket tema gjelder saken?',
-    },
-    kategorier: {
-      title: 'Hvilken tjeneste eller ytelse gjelder saken?',
-    },
-    innsendingsvalg: {
-      title: 'Hva vil du?',
-      common: {
-        warning: 'Klagen eller anken din lagres i nettleseren inntil fanen lukkes, selv om du ikke er logget inn.',
-      },
-      klage: {
-        title: 'Klage på vedtak fra NAV',
-        description: {
-          logged_in_digital: 'Du kan sende inn klagen og vedlegg digitalt her.',
-          logged_out_digital:
-            'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
-        },
-      },
-      anke: {
-        title: 'Anke på vedtak fra NAV Klageinstans',
-        description: {
-          logged_in_digital: 'Du kan sende inn anken og vedlegg digitalt her.',
-          logged_out_digital:
-            'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
-        },
-      },
-      ettersendelse: {
-        title: 'Ettersendelse til klage eller anke',
-        description:
-          'Har du klaget eller anket på et vedtak og ønsker å ettersende dokumentasjon eller sende inn nye/endrede opplysninger i saken din, kan du trykke her for å få hjelp til å sende inn dette via post.',
-      },
-    },
-  },
   ettersendelse: {
-    title: 'Ettersende dokumentasjon på tidligere innsendt klage/anke',
+    title: 'Ettersend dokumentasjon',
     send_by_post: 'Send via post til:',
     employer_info_logged_out:
       'Hvis du er en arbeidsgiver må legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
@@ -201,8 +139,13 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description:
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersende dokumentasjon på tidligere innsendt klage/anke" på ytelsen det gjelder.',
+        description: [
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersend dokumentasjon" for det det gjelder ',
+          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
+            her
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler klagen din videre på våre ',
@@ -332,8 +275,13 @@ export const nb = {
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description:
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersende dokumentasjon på tidligere innsendt klage/anke" på ytelsen det gjelder.',
+        description: [
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersend dokumentasjon" for det det gjelder ',
+          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
+            her
+          </ExternalLink>,
+          '.',
+        ],
       },
       read_more: [
         'Du kan lese mer om hvordan vi behandler anken din videre på våre ',
@@ -379,17 +327,7 @@ export const nb = {
   },
   not_found_page: {
     title: 'Finner ikke siden',
-    go_back: 'Gå tilbake til startsiden',
-  },
-  utfall: {
-    [Utfall.TRUKKET]: 'Trukket',
-    [Utfall.RETUR]: 'Retur',
-    [Utfall.OPPHEVET]: 'Opphevet',
-    [Utfall.MEDHOLD]: 'Omgjort',
-    [Utfall.DELVIS_MEDHOLD]: 'Delvis omgjort',
-    [Utfall.OPPRETTHOLDT]: 'Stadfestet',
-    [Utfall.UGUNST]: 'Omgjort',
-    [Utfall.AVVIST]: 'Avvist',
+    go_back: 'Gå tilbake til nav.no/klage',
   },
   kvittering: {
     see_estimate: [
@@ -442,17 +380,5 @@ export const nb = {
     yes: 'Ja',
     no: 'Nei',
     expires_in: (exp: string) => `Du vil bli logget ut ${exp}. For å fortsette trenger du bare logge inn igjen.`,
-  },
-  personalised: {
-    draft_klager: {
-      title: 'Påbegynte klager',
-    },
-    draft_anker: {
-      title: 'Påbegynte anker',
-    },
-    available_anker: {
-      title: 'Avslåtte klager',
-      klage_date: 'Klagens vedtaksdato',
-    },
   },
 };

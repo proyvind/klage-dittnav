@@ -1,4 +1,4 @@
-import { Delete } from '@navikt/ds-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import { useTranslation } from '@app/language/use-translation';
@@ -17,7 +17,13 @@ export const DeleteCaseButton = ({ onDelete, isLoading, title }: Props) => {
 
   if (!showConfirm) {
     return (
-      <Button variant="danger" size="medium" onClick={() => setShowConfirm(true)} title={title} icon={<Delete />} />
+      <Button
+        variant="danger"
+        size="medium"
+        onClick={() => setShowConfirm(true)}
+        title={title}
+        icon={<TrashIcon aria-hidden />}
+      />
     );
   }
 
@@ -28,18 +34,18 @@ export const DeleteCaseButton = ({ onDelete, isLoading, title }: Props) => {
 
   return (
     <>
-      <Button variant="secondary" size="medium" onClick={() => setShowConfirm(false)}>
-        {common.cancel}
-      </Button>
       <Button
         variant="danger"
         size="medium"
         onClick={deleteCase}
         loading={isLoading}
         disabled={isLoading}
-        title={title}
-        icon={<Delete />}
+        title="Bekreft sletting"
+        icon={<TrashIcon aria-hidden />}
       />
+      <Button variant="secondary" size="medium" onClick={() => setShowConfirm(false)}>
+        {common.cancel}
+      </Button>
     </>
   );
 };

@@ -1,7 +1,6 @@
-import { Upload } from '@navikt/ds-icons';
+import { UploadIcon } from '@navikt/aksel-icons';
 import { Button } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { captureException } from '@sentry/react';
 import React, { useRef } from 'react';
 import { styled } from 'styled-components';
 import { isError } from '@app/functions/is-api-error';
@@ -58,7 +57,6 @@ export const UploadButton = ({
         await uploadAttachment({ caseId, file }).unwrap();
       } catch (err) {
         if (isError(err)) {
-          captureException(err);
           setError(err);
         }
 
@@ -77,8 +75,9 @@ export const UploadButton = ({
         onClick={handleAttachmentClick}
         loading={isLoading}
         id="upload-attachment"
+        icon={<UploadIcon aria-hidden />}
       >
-        <Upload /> {upload_button_text}
+        {upload_button_text}
       </StyledUploadButton>
       <StyledUploadInput
         id={inputId}

@@ -1,6 +1,5 @@
 import { skipToken } from '@reduxjs/toolkit/query';
 import React from 'react';
-import { useBreadcrumbs } from '@app/breadcrumbs/use-breadcrumbs';
 import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
 import { usePageInit } from '@app/hooks/use-page-init';
 import { useIsAuthenticated } from '@app/hooks/use-user';
@@ -35,7 +34,6 @@ export const PostFormContainer = ({
   const { data: isAuthenticated } = useIsAuthenticated(loginRequired ? undefined : skipToken);
 
   usePageInit(`${steps[activeStep - 1] ?? ''} \u2013 ${title_fragment}`);
-  useBreadcrumbs(null, null);
 
   const [label1, label2, label3] = steps;
 

@@ -33,5 +33,4 @@ export const userApi = createApi({
   }),
 });
 
-// eslint-disable-next-line import/no-unused-modules
-export const { useGetUserQuery, useIsAuthenticatedQuery, useLazyGetUserQuery } = userApi;
+export const { useGetUserQuery, useIsAuthenticatedQuery } = userApi;
