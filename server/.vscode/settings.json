@@ -10,7 +10,7 @@
     "editor.linkedEditing": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
+        "source.fixAll.eslint": "explicit"
     },
     "typescript.validate.enable": true,
     "typescript.tsdk": "node_modules/typescript/lib",
