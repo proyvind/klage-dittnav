@@ -390,6 +390,7 @@ export const en: Language = {
     ].map((c, index) => <span key={index}>{c}</span>),
   },
   error_messages: {
+    [ErrorMessageKeys.MAX_UPLOAD_SIZE]: 'The file size cannot be larger than 8 MB.',
     [ErrorMessageKeys.TOO_LARGE]: 'The file size cannot be larger than 8 MB.',
     [ErrorMessageKeys.TOTAL_TOO_LARGE]: 'Total file size cannot exceed 32 MB.',
     [ErrorMessageKeys.ENCRYPTED]: 'We suspect that your file is encrypted, therefore it cannot be included.',

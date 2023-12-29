@@ -1,4 +1,5 @@
 export enum ErrorMessageKeys {
+  MAX_UPLOAD_SIZE = 'Maximum upload size exceeded', // Spring Boot default error message.
   TOO_LARGE = 'TOO_LARGE',
   TOTAL_TOO_LARGE = 'TOTAL_TOO_LARGE',
   ENCRYPTED = 'ENCRYPTED',
