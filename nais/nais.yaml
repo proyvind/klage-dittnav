@@ -25,11 +25,6 @@ spec:
     enabled: true
   idporten:
     enabled: true
-    clientURI: {{ingress}}
-    postLogoutRedirectURIs:
-      - {{ingress}}
-    accessTokenLifetime: 3600
-    sessionLifetime: 7200
     sidecar:
       enabled: true
   prometheus:
