@@ -41,7 +41,3 @@ spec:
   envFrom:
     - secret: amplitude
     - secret: slack-url
-  liveness:
-    path: /isAlive
-  readiness:
-    path: /isReady
