@@ -257,6 +257,12 @@ export const INNGANG_KATEGORIER: ITema[] = [
         allowsAnke: true,
         path: 'tidligere-familiepleier',
       },
+      {
+        type: TemaType.INNSENDINGSYTELSE,
+        innsendingsytelse: Innsendingsytelse.OMSTILLINGSSTOENAD,
+        allowsAnke: true,
+        path: 'omstillingsstoenad',
+      },
     ],
   },
   {

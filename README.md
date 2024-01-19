@@ -110,6 +110,7 @@ https://klage.nav.no/en/anke/ny/DAGPENGER?saksnummer=12345
 | LONNSKOMPENSASJON | Lønnskompensasjon for permitterte | Salary compensation for persons who are laid-off |
 | MIDLERTIDIG_KOMPENSASJON | Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere | Temporary compensation for self-employed and freelancers |
 | NAV_LOVEN_14A | Vurdering av behov for bistand etter NAV-loven § 14 a | Assessment of need for assistance according to Section 14 a of the NAV Act |
+| OMSTILLINGSSTOENAD | Omstillingsstønad | Adjustment allowance (Omstillingsstønad) |
 | OPPFOSTRINGSBIDRAG | Oppfostringsbidrag | Upbringing support (Oppfostringsbidrag) |
 | OPPHOLD_ELLER_ARBEID_I_NORGE | Opphold eller arbeid i Norge | Residence or work in Norway |
 | OPPHOLD_ELLER_ARBEID_UTENFOR_NORGE | Opphold eller arbeid utenfor Norge | Residence or work outside Norway |
