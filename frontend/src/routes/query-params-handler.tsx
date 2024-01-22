@@ -26,5 +26,5 @@ export const QueryParamsHandler = ({ type }: Props) => {
   query.delete('tema');
   query.delete('tittel');
 
-  return <Navigate to={`/${language}/${type}/ny/${innsendingsytelse}?${query.toString()}`} replace />;
+  return <Navigate to={`/${language}/${type}/${innsendingsytelse}?${query.toString()}`} replace />;
 };

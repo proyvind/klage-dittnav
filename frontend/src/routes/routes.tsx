@@ -22,7 +22,6 @@ import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { ErrorBoundary } from './error-boundary';
-import { LandingPage } from './landing-page';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
 import { QueryParamsHandler } from './query-params-handler';
@@ -36,23 +35,27 @@ export const Router = () => (
           <ErrorBoundary>
             <Routes>
               <Route path="/:lang" element={<UpgradeSession />}>
-                <Route index element={<LandingPage />} />
+                <Route index element={<QueryParamsHandler type="klage" />} />
+                {getRoutes({ component: CreateKlage })}
 
                 <Route path="ny">
                   <Route index element={<QueryParamsHandler type="klage" />} />
-                  {getCaseRoutes({ component: CreateKlage })}
+                  {getRoutes({ component: CreateKlage })}
                 </Route>
 
                 <Route path="klage">
+                  <Route index element={<QueryParamsHandler type="klage" />} />
+                  {getRoutes({ component: CreateKlage })}
+
                   <Route path="ny">
                     <Route index element={<QueryParamsHandler type="klage" />} />
-                    {getCaseRoutes({ component: CreateKlage })}
+                    {getRoutes({ component: CreateKlage })}
                   </Route>
 
                   <Route path="uinnlogget">
-                    {getCaseRoutes({ component: SessionKlagebegrunnelsePage, pathSuffix: 'begrunnelse' })}
-                    {getCaseRoutes({ component: SessionKlageoppsummeringPage, pathSuffix: 'oppsummering' })}
-                    {getCaseRoutes({ component: SessionKlageinnsendingPage, pathSuffix: 'innsending' })}
+                    {getRoutes({ component: SessionKlagebegrunnelsePage, pathSuffix: 'begrunnelse' })}
+                    {getRoutes({ component: SessionKlageoppsummeringPage, pathSuffix: 'oppsummering' })}
+                    {getRoutes({ component: SessionKlageinnsendingPage, pathSuffix: 'innsending' })}
                   </Route>
 
                   <Route path=":klageId" element={<LoginIfUnauthorized />}>
@@ -64,15 +67,18 @@ export const Router = () => (
                 </Route>
 
                 <Route path="anke">
+                  <Route index element={<QueryParamsHandler type="anke" />} />
+                  {getRoutes({ component: CreateAnke })}
+
                   <Route path="ny">
                     <Route index element={<QueryParamsHandler type="anke" />} />
-                    {getCaseRoutes({ component: CreateAnke })}
+                    {getRoutes({ component: CreateAnke })}
                   </Route>
 
                   <Route path="uinnlogget">
-                    {getCaseRoutes({ component: SessionAnkebegrunnelsePage, pathSuffix: 'begrunnelse' })}
-                    {getCaseRoutes({ component: SessionAnkeoppsummeringPage, pathSuffix: 'oppsummering' })}
-                    {getCaseRoutes({ component: SessionAnkeinnsendingPage, pathSuffix: 'innsending' })}
+                    {getRoutes({ component: SessionAnkebegrunnelsePage, pathSuffix: 'begrunnelse' })}
+                    {getRoutes({ component: SessionAnkeoppsummeringPage, pathSuffix: 'oppsummering' })}
+                    {getRoutes({ component: SessionAnkeinnsendingPage, pathSuffix: 'innsending' })}
                   </Route>
 
                   <Route path=":ankeId" element={<LoginIfUnauthorized />}>
@@ -119,7 +125,7 @@ interface Props {
   pathSuffix?: string | null;
 }
 
-const getCaseRoutes = ({ component: Component, pathSuffix = null }: Props) =>
+const getRoutes = ({ component: Component, pathSuffix = null }: Props) =>
   INNSENDINGSYTELSER.map((innsendingsytelse) => {
     if (pathSuffix === null) {
       return (
