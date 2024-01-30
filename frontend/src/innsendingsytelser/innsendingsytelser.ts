@@ -112,7 +112,7 @@ export enum Innsendingsytelse {
   FEIL = 'FEIL',
 }
 
-const INNSENDINGSYTELSER = Object.values(Innsendingsytelse);
+export const INNSENDINGSYTELSER = Object.values(Innsendingsytelse);
 
 export const ensureStringIsInnsendingsytelse = (value: string | null = null): Innsendingsytelse | null => {
   if (value === null) {

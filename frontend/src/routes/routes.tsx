@@ -16,8 +16,8 @@ import { KlageoppsummeringPage } from '@app/components/klage/innlogget/summary/k
 import { SessionKlagebegrunnelsePage } from '@app/components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page';
 import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/innsending/klage-innsending-page';
 import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
-import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { IInnsendingsytelse, INNGANG_KATEGORIER, ITemaWithKategorier, TemaType } from '@app/kategorier/kategorier';
+import { INNSENDINGSYTELSER, Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
+import { INNGANG_KATEGORIER, TemaType } from '@app/kategorier/kategorier';
 import { LanguageComponent } from '@app/language/component';
 import { Languages } from '@app/language/types';
 import { TemaWithKategorier } from '@app/routes/inngang/tema-with-kategorier';
@@ -51,6 +51,7 @@ export const Router = () => (
 
                 {innsendingsRoutes}
                 {temaRoutes}
+                {ettersendelseRoutes}
 
                 <Route path="klage">
                   <Route path="ny">
@@ -117,32 +118,28 @@ const temaRoutes = INNGANG_KATEGORIER.map((tema) => {
   return null;
 });
 
-const getInnsendingRoute = (
-  kategoriPath: string,
-  kategori: IInnsendingsytelse,
-  inngangkategori?: ITemaWithKategorier,
-) => (
-  <React.Fragment key={kategoriPath}>
-    <Route path={kategoriPath} element={<Kategori {...kategori} tema={inngangkategori} />} />
-    <Route
-      path={`ettersendelse/${kategori.innsendingsytelse}`}
-      element={<EttersendelsePage innsendingsytelse={kategori.innsendingsytelse} />}
-    />
-  </React.Fragment>
-);
 const innsendingsRoutes = INNGANG_KATEGORIER.flatMap((tema) => {
   if (tema.type === TemaType.TEMA) {
-    return tema.innsendingsytelser.map((innsendingsytelse) =>
-      getInnsendingRoute(`${tema.path}/${innsendingsytelse.path}`, innsendingsytelse, tema),
-    );
+    return tema.innsendingsytelser.map((innsendingsytelse) => {
+      const path = `${tema.path}/${innsendingsytelse.path}`;
+
+      return <Route key={path} path={path} element={<Kategori {...innsendingsytelse} tema={tema} />} />;
+    });
   }
 
   if (tema.type === TemaType.EXTERNAL) {
     return null;
   }
 
-  return getInnsendingRoute(tema.path, tema);
+  return <Route key={tema.path} path={tema.path} element={<Kategori {...tema} />} />;
 });
+
+const ettersendelseRoutes = INNSENDINGSYTELSER.flatMap((innsendingsytelse) => (
+  <Route
+    path={`ettersendelse/${innsendingsytelse}`}
+    element={<EttersendelsePage innsendingsytelse={innsendingsytelse} />}
+  />
+));
 
 interface YtelseComponentProps {
   innsendingsytelse: Innsendingsytelse;
