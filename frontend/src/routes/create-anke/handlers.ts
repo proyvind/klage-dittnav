@@ -40,7 +40,7 @@ export const handleSessionAnke = ({
     addAppEvent(AppEventEnum.RESUME_SESSION_CASE);
   }
 
-  navigate(`/${language}/anke/uinnlogget/${key}/begrunnelse`, { replace: true });
+  navigate(`/${language}/anke/${key}/begrunnelse`, { replace: true });
 };
 
 interface IHandleCreate extends IHandler {

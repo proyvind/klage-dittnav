@@ -40,7 +40,7 @@ export const handleSessionKlage = ({
     addAppEvent(AppEventEnum.RESUME_SESSION_CASE);
   }
 
-  navigate(`/${language}/klage/uinnlogget/${key}/begrunnelse`, { replace: true });
+  navigate(`/${language}/klage/${key}/begrunnelse`, { replace: true });
 };
 
 interface IHandleCreate extends IHandler {

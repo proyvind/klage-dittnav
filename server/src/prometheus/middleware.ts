@@ -1,4 +1,5 @@
 import promBundle from 'express-prom-bundle';
+import { register } from 'prom-client';
 import { NAIS_NAMESPACE } from '@app/config/env';
 import { VERSION } from '@app/config/version';
 import { normalizePath } from './normalize-path';
@@ -16,7 +17,7 @@ export const metricsMiddleware = promBundle({
   excludeRoutes: ['/metrics', '/isAlive', '/isReady'],
   normalizePath: ({ originalUrl }) => normalizePath(originalUrl),
   customLabels: labels,
-  promClient: { collectDefaultMetrics: { labels } },
+  promRegistry: register,
   formatStatusCode: ({ statusCode }) => {
     if (statusCode >= 200 && statusCode < 400) {
       return '2xx (3xx)';

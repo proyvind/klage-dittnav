@@ -31,7 +31,7 @@ export const KlageSessionLoader = ({ Component, innsendingsytelse }: Props) => {
   }
 
   if (isAuthenticated === true) {
-    return <Navigate to={`/${language}/klage/ny/${innsendingsytelse}`} replace />;
+    return <Navigate to={`/${language}/klage/${innsendingsytelse}`} replace />;
   }
 
   return <Component klage={klage} />;

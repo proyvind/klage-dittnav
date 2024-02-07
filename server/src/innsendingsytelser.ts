@@ -1,4 +1,4 @@
-export enum Innsendingsytelse {
+enum Innsendingsytelse {
   AAP = 'AAP',
   AAR = 'AAR',
   AGR = 'AGR',
@@ -112,4 +112,12 @@ export enum Innsendingsytelse {
   FEIL = 'FEIL',
 }
 
-export const INNSENDINGSYTELSER = Object.values(Innsendingsytelse);
+const INNSENDINGSYTELSER = Object.values(Innsendingsytelse);
+
+export const isInnsendingsytelse = (value: string | null | undefined): value is Innsendingsytelse => {
+  if (value === null || value === undefined) {
+    return false;
+  }
+
+  return INNSENDINGSYTELSER.some((innsendingsytelse) => innsendingsytelse === value);
+};

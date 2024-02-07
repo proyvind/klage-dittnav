@@ -110,8 +110,8 @@ export const httpLoggingMiddleware: RequestHandler = (req, res, next) => {
 
   res.once('finish', () => {
     const { method, url } = req;
-    const referrer = req.get('referrer');
-    const userAgent = req.get('user-agent');
+    const referrer = req.header('referrer');
+    const userAgent = req.header('user-agent');
 
     if (url.endsWith('/isAlive') || url.endsWith('/isReady')) {
       return;

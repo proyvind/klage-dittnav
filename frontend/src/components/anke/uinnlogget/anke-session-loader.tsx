@@ -31,7 +31,7 @@ export const AnkeSessionLoader = ({ Component, innsendingsytelse }: Props) => {
   }
 
   if (isAuthenticated === true) {
-    return <Navigate to={`/${language}/anke/ny/${innsendingsytelse}`} replace />;
+    return <Navigate to={`/${language}/anke/${innsendingsytelse}`} replace />;
   }
 
   return <Component anke={anke} />;

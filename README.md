@@ -1,7 +1,7 @@
 Digital klage- og ankeinngang
 ================
 
-Digital innsending av klager og anker.
+Digital innsending av klager og anker. Samt ettersendelse.
 
 # Komme i gang
 
@@ -17,13 +17,15 @@ npm start
 
 ## Autentisering for lokal utvikling
 
-1. Gå til https://klage.intern.dev.nav.no.
-2. Logg inn via `TESTID` med fnr. `05906498040`.
+1. Gå til https://klage.intern.dev.nav.no/nb/klage/DAGPENGER.
+2. Logg inn normalt med en testbruker.
 3. Endre domene til `localhost` for følgende cookies: `innloggingsstatus-token` og `io.nais.wonderwall.session`.
+
+> Det finnes ingen landingsside for denne applikasjonen, man må selv navigere til en gyldig URL for et skjema.
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan også stilles som issues her på GitHub.
+Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub.
 
 ## For NAV-ansatte
 
@@ -33,16 +35,10 @@ Interne henvendelser kan sendes via Slack i kanalen [#team-digital-klage](https:
 Bruk og integrasjon
 ===================
 
-## Hvordan kommer bruker seg til en digital klage/anke?
+## Hvordan kommer bruker seg til skjema for klage, anke og ettersendelse?
 
-Det er to måter for en bruker å komme seg til en digital klage/anke på.
-Enten via denne løsningens egen inngang eller sendt direkte til skjemaet fra en annen tjeneste.
-
-### Denne løsningen sin egen inngang
-
-Brukere kan navigere seg frem til riktig ytelse via [klage.nav.no](https://klage.nav.no).
-Innlogging er ikke påkrevd, men oppfordret til.
-Bruker må være logget inn for å kunne sende inn digitalt. Uten å logge inn er kun post mulig.
+Bruker må bli sendt direkte til ett av skjemaene fra en annen tjeneste.
+Andre tjenester kan f.eks. lenke til skjema for klage med følgende URL `https://klage.nav.no/nb/klage/DAGPENGER?saksnummer=12345`.
 
 ### Direkte lenke
 
@@ -54,35 +50,26 @@ Brukere kan være logget inn i en tjeneste som har nødvendig informasjon for å
 
 For å lenke direkte til klageskjemaet må `innsendingsytelse` være satt i URL-en.
 
-#### Saksnummer
+### Saksnummer
 `saksnummer` er valgfritt og kan settes som et query parameter i URL-en.
 Saksnummeret settes i klagen/anken, men bruker kan **ikke** endre det.
 Dersom dette ikke er oppgitt som query parameter, får bruker mulighet til å fylle inn saksnummer selv.
 
-URLen må være på følgende format:
+### Eksempel på fullstendig URL til klageskjema:
 ```
-https://klage.nav.no/{språk}/{type}/ny/{innsendingsytelse}?saksnummer={saksnummer}
-```
-
-Eksempler på fullstendige URL-er til klageskjema på norsk og engelsk:
-
-```
-https://klage.nav.no/nb/klage/ny/DAGPENGER?saksnummer=12345
-```
-```
-https://klage.nav.no/en/klage/ny/DAGPENGER?saksnummer=12345
+https://klage.nav.no/nb/klage/DAGPENGER?saksnummer=12345
 ```
 
-Eksempler på fullstendige URL-er til ankeskjema på norsk og engelsk:
+## URL-format
+```
+https://klage.nav.no/{språk}/{type}/{innsendingsytelse}?saksnummer={saksnummer}
+```
+- `språk` = `nb | en`
+- `type` = `klage | anke | ettersendelse`
+- `innsendingsytelse` = Se liste over tilgjengelige ytelser under.
+- `saksnummer` = Relevant saksnummer.
 
-```
-https://klage.nav.no/nb/anke/ny/DAGPENGER?saksnummer=12345
-```
-```
-https://klage.nav.no/en/anke/ny/DAGPENGER?saksnummer=12345
-```
-
-## Tilgjengelige ytelser
+### Tilgjengelige ytelser
 | Key   | Norsk | Engelsk |
 |-------|-------|---------|
 | ALDERSPENSJON | Alderspensjon | Old-age pension |
@@ -127,7 +114,7 @@ https://klage.nav.no/en/anke/ny/DAGPENGER?saksnummer=12345
 
 ## Legge til ny ytelse
 
-Om ingen av ytelse som støttes passer deres behov er det mulig å opprette en PR i `klage-dittnav-api`-prosjektet eller kontakte teamet på Slack i kanalen `#team-digital-klage`.
+Om ingen av ytelse som støttes passer deres behov er det mulig å opprette en PR i [klage-dittnav-api](https://github.com/navikt/klage-dittnav-api)-prosjektet eller kontakte teamet på Slack i kanalen [#team-digital-klage](https://nav-it.slack.com/archives/C01L59AQVQA).
 
 > Merk at alle ytelser må legges inn på norsk og engelsk.
 

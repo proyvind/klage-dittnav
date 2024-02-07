@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AnkebegrunnelsePage } from '@app/components/anke/innlogget/begrunnelse/anke-begrunnelse-page';
 import { AnkeinnsendingPage } from '@app/components/anke/innlogget/innsending/anke-innsending-page';
 import { AnkekvitteringPage } from '@app/components/anke/innlogget/kvittering/anke-kvittering-page';
@@ -17,14 +17,12 @@ import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/inn
 import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
 import { INNSENDINGSYTELSER, Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { LanguageComponent } from '@app/language/component';
-import { Languages } from '@app/language/types';
 import { CreateAnke } from './create-anke/create-anke';
 import { CreateKlage } from './create-klage/create-klage';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { ErrorBoundary } from './error-boundary';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
-import { QueryParamsHandler } from './query-params-handler';
 import { LoginIfUnauthorized, UpgradeSession } from './redirects';
 
 export const Router = () => (
@@ -35,57 +33,33 @@ export const Router = () => (
           <ErrorBoundary>
             <Routes>
               <Route path="/:lang" element={<UpgradeSession />}>
-                <Route index element={<QueryParamsHandler type="klage" />} />
-                {getRoutes({ component: CreateKlage })}
-
-                <Route path="ny">
-                  <Route index element={<QueryParamsHandler type="klage" />} />
-                  {getRoutes({ component: CreateKlage })}
-                </Route>
-
                 <Route path="klage">
-                  <Route index element={<QueryParamsHandler type="klage" />} />
-                  {getRoutes({ component: CreateKlage })}
+                  {getRoutes(CreateKlage)}
 
-                  <Route path="ny">
-                    <Route index element={<QueryParamsHandler type="klage" />} />
-                    {getRoutes({ component: CreateKlage })}
-                  </Route>
-
-                  <Route path="uinnlogget">
-                    {getRoutes({ component: SessionKlagebegrunnelsePage, pathSuffix: 'begrunnelse' })}
-                    {getRoutes({ component: SessionKlageoppsummeringPage, pathSuffix: 'oppsummering' })}
-                    {getRoutes({ component: SessionKlageinnsendingPage, pathSuffix: 'innsending' })}
-                  </Route>
+                  {getRoutesWithSuffix(SessionKlagebegrunnelsePage, 'begrunnelse')}
+                  {getRoutesWithSuffix(SessionKlageoppsummeringPage, 'oppsummering')}
+                  {getRoutesWithSuffix(SessionKlageinnsendingPage, 'innsending')}
 
                   <Route path=":klageId" element={<LoginIfUnauthorized />}>
                     <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
                     <Route path="oppsummering" element={<KlageoppsummeringPage />} />
-                    <Route path="kvittering" element={<KlagekvitteringPage />} />
                     <Route path="innsending" element={<KlageinnsendingPage />} />
+                    <Route path="kvittering" element={<KlagekvitteringPage />} />
                   </Route>
                 </Route>
 
                 <Route path="anke">
-                  <Route index element={<QueryParamsHandler type="anke" />} />
-                  {getRoutes({ component: CreateAnke })}
+                  {getRoutes(CreateAnke)}
 
-                  <Route path="ny">
-                    <Route index element={<QueryParamsHandler type="anke" />} />
-                    {getRoutes({ component: CreateAnke })}
-                  </Route>
-
-                  <Route path="uinnlogget">
-                    {getRoutes({ component: SessionAnkebegrunnelsePage, pathSuffix: 'begrunnelse' })}
-                    {getRoutes({ component: SessionAnkeoppsummeringPage, pathSuffix: 'oppsummering' })}
-                    {getRoutes({ component: SessionAnkeinnsendingPage, pathSuffix: 'innsending' })}
-                  </Route>
+                  {getRoutesWithSuffix(SessionAnkebegrunnelsePage, 'begrunnelse')}
+                  {getRoutesWithSuffix(SessionAnkeoppsummeringPage, 'oppsummering')}
+                  {getRoutesWithSuffix(SessionAnkeinnsendingPage, 'innsending')}
 
                   <Route path=":ankeId" element={<LoginIfUnauthorized />}>
                     <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
                     <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
-                    <Route path="kvittering" element={<AnkekvitteringPage />} />
                     <Route path="innsending" element={<AnkeinnsendingPage />} />
+                    <Route path="kvittering" element={<AnkekvitteringPage />} />
                   </Route>
                 </Route>
 
@@ -99,11 +73,6 @@ export const Router = () => (
                   ))}
                 </Route>
               </Route>
-
-              <Route
-                index
-                element={<Navigate to={`/${Languages.nb}${location.pathname}${location.search}${location.hash}`} />}
-              />
 
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -120,26 +89,19 @@ interface YtelseComponentProps {
 
 type YtelseComponent = (props: YtelseComponentProps) => JSX.Element;
 
-interface Props {
-  component: YtelseComponent;
-  pathSuffix?: string | null;
-}
+const getRoutes = (Component: YtelseComponent) =>
+  INNSENDINGSYTELSER.map((innsendingsytelse) => (
+    <Route
+      index
+      key={innsendingsytelse}
+      path={innsendingsytelse}
+      element={<Component innsendingsytelse={innsendingsytelse} />}
+    />
+  ));
 
-const getRoutes = ({ component: Component, pathSuffix = null }: Props) =>
-  INNSENDINGSYTELSER.map((innsendingsytelse) => {
-    if (pathSuffix === null) {
-      return (
-        <Route
-          key={innsendingsytelse}
-          path={innsendingsytelse}
-          element={<Component innsendingsytelse={innsendingsytelse} />}
-        />
-      );
-    }
-
-    return (
-      <Route key={`${innsendingsytelse}/${pathSuffix}`} path={innsendingsytelse}>
-        <Route path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
-      </Route>
-    );
-  });
+const getRoutesWithSuffix = (Component: YtelseComponent, pathSuffix: string) =>
+  INNSENDINGSYTELSER.map((innsendingsytelse) => (
+    <Route key={`${innsendingsytelse}/${pathSuffix}`} path={innsendingsytelse}>
+      <Route index path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
+    </Route>
+  ));
