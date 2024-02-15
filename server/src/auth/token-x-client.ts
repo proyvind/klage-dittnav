@@ -20,7 +20,7 @@ const getJwk = () => {
   return jwk;
 };
 
-export const getTokenXClient = async () => {
+const getTokenXClient = async () => {
   try {
     const wellKnownUrl = requiredEnvUrl('TOKEN_X_WELL_KNOWN_URL');
     const clientId = requiredEnvString('TOKEN_X_CLIENT_ID');
@@ -35,3 +35,15 @@ export const getTokenXClient = async () => {
     throw error;
   }
 };
+
+export class TokenXClient {
+  private static instance: ReturnType<typeof getTokenXClient> | null = null;
+
+  static async getInstance() {
+    if (this.instance === null) {
+      this.instance = getTokenXClient();
+    }
+
+    return this.instance;
+  }
+}

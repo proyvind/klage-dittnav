@@ -37,7 +37,7 @@ export const AnkeLoader = ({ Component }: Props) => {
       return;
     }
 
-    if (typeof anke === 'undefined') {
+    if (anke === undefined) {
       const e = new Error('Anke not found.');
       addErrorEvent(e.message, e.stack);
       sendErrorReport();

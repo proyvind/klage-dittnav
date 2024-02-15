@@ -1,36 +1,19 @@
 import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { getOnBehalfOfAccessToken } from '@app/auth/on-behalf-of';
-import { getTokenXClient } from '@app/auth/token-x-client';
 import { OBO_CLIENT_IDS, PROXIED_CLIENT_IDS } from '@app/config/config';
+import { setOboToken } from '@app/functions/set-obo';
 import { getLogger } from '@app/logger';
 
 const log = getLogger('proxy');
 
 export const setupProxy = async () => {
-  const authClient = await getTokenXClient();
   const router = Router();
 
   OBO_CLIENT_IDS.forEach((appName) => {
     const route = `/api/${appName}`;
 
     router.use(route, async (req, res, next) => {
-      const tokenXtoken = req.header('Authorization');
-
-      if (typeof tokenXtoken === 'string') {
-        try {
-          const obo_access_token = await getOnBehalfOfAccessToken(authClient, tokenXtoken, appName);
-          req.headers['authorization'] = `Bearer ${obo_access_token}`;
-          req.headers['idporten-token'] = tokenXtoken;
-        } catch (error) {
-          log.warn({
-            msg: `Failed to prepare request with OBO token for route ${route}`,
-            error,
-            data: { appName },
-          });
-        }
-      }
-
+      await setOboToken(req, appName);
       next();
     });
   });

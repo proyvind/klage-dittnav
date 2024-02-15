@@ -1,15 +1,5 @@
-import { CookieOptions } from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 
-export interface Request {
-  readonly path: string;
-  readonly method: string;
-  readonly url: string;
-  readonly query: Record<string, string | string[]>;
-  readonly header: (name: string) => string | undefined;
-  sessionId?: string;
-}
+export type Request = Pick<ExpressRequest, 'path' | 'method' | 'url' | 'query' | 'headers' | 'header'>;
 
-export interface Response {
-  readonly redirect: (status: number, path: string) => void;
-  readonly cookie: (name: string, value: string, options: CookieOptions) => void;
-}
+export type Response = Pick<ExpressResponse, 'redirect' | 'cookie' | 'locals'>;

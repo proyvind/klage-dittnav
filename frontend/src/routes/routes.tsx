@@ -23,7 +23,7 @@ import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { ErrorBoundary } from './error-boundary';
 import { NavigationLogger } from './navigation-logger';
 import { NotFoundPage } from './not-found-page';
-import { LoginIfUnauthorized, UpgradeSession } from './redirects';
+import { UpgradeSession } from './redirects';
 
 export const Router = () => (
   <BrowserRouter>
@@ -40,7 +40,7 @@ export const Router = () => (
                   {getRoutesWithSuffix(SessionKlageoppsummeringPage, 'oppsummering')}
                   {getRoutesWithSuffix(SessionKlageinnsendingPage, 'innsending')}
 
-                  <Route path=":klageId" element={<LoginIfUnauthorized />}>
+                  <Route path=":klageId">
                     <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
                     <Route path="oppsummering" element={<KlageoppsummeringPage />} />
                     <Route path="innsending" element={<KlageinnsendingPage />} />
@@ -55,7 +55,7 @@ export const Router = () => (
                   {getRoutesWithSuffix(SessionAnkeoppsummeringPage, 'oppsummering')}
                   {getRoutesWithSuffix(SessionAnkeinnsendingPage, 'innsending')}
 
-                  <Route path=":ankeId" element={<LoginIfUnauthorized />}>
+                  <Route path=":ankeId">
                     <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
                     <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
                     <Route path="innsending" element={<AnkeinnsendingPage />} />

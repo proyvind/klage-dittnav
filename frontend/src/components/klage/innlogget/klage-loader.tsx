@@ -37,7 +37,7 @@ export const KlageLoader = ({ Component }: Props) => {
       return;
     }
 
-    if (typeof klage === 'undefined') {
+    if (klage === undefined) {
       const e = new Error('Klage not found.');
       addErrorEvent(e.message, e.stack);
       sendErrorReport();

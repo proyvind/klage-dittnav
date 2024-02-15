@@ -6,19 +6,22 @@ const NON_REDIRECT_URLS = [
   '/nb/klage/DAGPENGER/begrunnelse',
   '/nb/klage/DAGPENGER/oppsummering',
   '/nb/klage/DAGPENGER/innsending',
-  '/nb/klage/123/begrunnelse',
-  '/nb/klage/123/oppsummering',
-  '/nb/klage/123/innsending',
-  '/nb/klage/123/kvittering',
   '/nb/anke/DAGPENGER',
   '/nb/anke/DAGPENGER/begrunnelse',
   '/nb/anke/DAGPENGER/oppsummering',
   '/nb/anke/DAGPENGER/innsending',
+  '/nb/ettersendelse/DAGPENGER',
+];
+
+const LOGIN_REDIRECT_URLS = [
+  '/nb/klage/123/begrunnelse',
+  '/nb/klage/123/oppsummering',
+  '/nb/klage/123/innsending',
+  '/nb/klage/123/kvittering',
   '/nb/anke/123/begrunnelse',
   '/nb/anke/123/oppsummering',
   '/nb/anke/123/innsending',
   '/nb/anke/123/kvittering',
-  '/nb/ettersendelse/DAGPENGER',
 ];
 
 const INTERNAL_REDIRECT_URLS: [string, string][] = [
@@ -53,82 +56,87 @@ const EXTERNAL_REDIRECT_URLS = [
 ];
 
 describe('redirect', () => {
-  it('should not redirect other methods than GET', () => {
+  it('should not redirect other methods than GET', async () => {
     expect.assertions(3);
 
     const url = '/nb/klage/ny';
     const req: Request = createRequest(url, 'POST');
-    const res: Response = { redirect: jest.fn(), cookie: jest.fn() };
+    const res = createResponse();
     const next = jest.fn();
 
-    redirectMiddleware(req, res, next);
+    await redirectMiddleware(req, res, next);
 
     expect(res.redirect).not.toHaveBeenCalled();
     expect(res.cookie).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalledWith();
   });
 
-  it.each(NON_REDIRECT_URLS)('should not redirect %s', (url) => {
+  it.each(NON_REDIRECT_URLS)('should not redirect %s', async (url) => {
     expect.assertions(3);
-    noRedirect(url);
+
+    const req: Request = createRequest(url, 'GET');
+    const res = createResponse();
+    const next = jest.fn();
+
+    await redirectMiddleware(req, res, next);
+
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(res.cookie).toHaveBeenCalledWith('redirected_from', '', {
+      expires: new Date(0),
+      httpOnly: true,
+      maxAge: 0,
+      sameSite: 'strict',
+    });
+    expect(next).toHaveBeenCalledWith();
   });
 
-  it.each(INTERNAL_REDIRECT_URLS)('should redirect %s to %s', (from, to) => {
+  it.each(INTERNAL_REDIRECT_URLS)('should redirect %s to %s', async (from, to) => {
     expect.assertions(3);
-    internalRedirect(from, to);
+
+    const req: Request = createRequest(from, 'GET');
+    const res = createResponse();
+    const next = jest.fn();
+
+    await redirectMiddleware(req, res, next);
+
+    expect(res.redirect).toHaveBeenCalledWith(301, to);
+    expect(res.cookie).toHaveBeenCalledWith('redirected_from', from, { httpOnly: true, sameSite: 'strict' });
+    expect(next).not.toHaveBeenCalled();
   });
 
-  it.each(EXTERNAL_REDIRECT_URLS)('should redirect %s to external page', (url) => {
+  it.each(EXTERNAL_REDIRECT_URLS)('should redirect %s to external page', async (url) => {
     expect.assertions(3);
-    externalRedirect(url);
+
+    const req: Request = createRequest(url, 'GET');
+    const res = createResponse();
+    const next = jest.fn();
+
+    await redirectMiddleware(req, res, next);
+
+    expect(res.redirect).toHaveBeenCalledWith(301, 'https://www.ekstern.dev.nav.no/klage');
+    expect(res.cookie).toHaveBeenCalledWith('redirected_from', '', {
+      expires: new Date(0),
+      httpOnly: true,
+      maxAge: 0,
+      sameSite: 'strict',
+    });
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it.each(LOGIN_REDIRECT_URLS)('should redirect %s to login', async (url) => {
+    expect.assertions(3);
+
+    const req: Request = createRequest(url, 'GET');
+    const res = createResponse();
+    const next = jest.fn();
+
+    await redirectMiddleware(req, res, next);
+
+    expect(res.redirect).toHaveBeenCalledWith(302, `/oauth2/login?redirect=${encodeURIComponent(url)}`);
+    expect(res.cookie).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
   });
 });
-
-const internalRedirect = (from: string, to: string) => {
-  const req: Request = createRequest(from, 'GET');
-  const res: Response = { redirect: jest.fn(), cookie: jest.fn() };
-  const next = jest.fn();
-
-  redirectMiddleware(req, res, next);
-
-  expect(res.redirect).toHaveBeenCalledWith(301, to);
-  expect(res.cookie).toHaveBeenCalledWith('redirected_from', from, { httpOnly: true, sameSite: 'strict' });
-  expect(next).not.toHaveBeenCalledWith();
-};
-
-const externalRedirect = (from: string) => {
-  const req: Request = createRequest(from, 'GET');
-  const res: Response = { redirect: jest.fn(), cookie: jest.fn() };
-  const next = jest.fn();
-
-  redirectMiddleware(req, res, next);
-
-  expect(res.redirect).toHaveBeenCalledWith(301, 'https://www.ekstern.dev.nav.no/klage');
-  expect(res.cookie).toHaveBeenCalledWith('redirected_from', '', {
-    expires: new Date(0),
-    httpOnly: true,
-    maxAge: 0,
-    sameSite: 'strict',
-  });
-  expect(next).not.toHaveBeenCalled();
-};
-
-const noRedirect = (url: string) => {
-  const req: Request = createRequest(url, 'GET');
-  const res: Response = { redirect: jest.fn(), cookie: jest.fn() };
-  const next = jest.fn();
-
-  redirectMiddleware(req, res, next);
-
-  expect(res.redirect).not.toHaveBeenCalledWith();
-  expect(res.cookie).toHaveBeenCalledWith('redirected_from', '', {
-    expires: new Date(0),
-    httpOnly: true,
-    maxAge: 0,
-    sameSite: 'strict',
-  });
-  expect(next).toHaveBeenCalledWith();
-};
 
 const createRequest = (url: string, method: string): Request => {
   const [pathname, search] = url.split('?');
@@ -142,9 +150,16 @@ const createRequest = (url: string, method: string): Request => {
     path: pathname,
     method,
     query: search === undefined ? {} : parseQueryParams(search),
+    headers: {},
     header: () => undefined,
   };
 };
+
+const createResponse = (): Response => ({
+  redirect: jest.fn(),
+  cookie: jest.fn(),
+  locals: { sessionId: '' },
+});
 
 const parseQueryParams = (search: string): Record<string, string | string[]> => {
   const parts = search.split('&');

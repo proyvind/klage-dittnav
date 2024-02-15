@@ -1,5 +1,6 @@
 import { isInnsendingsytelse } from '@app/innsendingsytelser';
 import { isAnonymousStep, isLang, isLoggedInStep, isType } from '@app/middleware/redirect/guards';
+import { ensureAuthentication } from '@app/middleware/redirect/is-authenticated';
 import {
   noRedirect,
   redirectToExternalKlagePage,
@@ -7,7 +8,7 @@ import {
 } from '@app/middleware/redirect/redirect-functions';
 import { Request, Response } from '@app/types/http';
 
-export const redirectMiddleware = (req: Request, res: Response, next: () => void) => {
+export const redirectMiddleware = async (req: Request, res: Response, next: () => void) => {
   if (req.method !== 'GET') {
     return next();
   }
@@ -32,8 +33,14 @@ export const redirectMiddleware = (req: Request, res: Response, next: () => void
   const hasYtelse = isInnsendingsytelse(third);
   const hasStep = isLoggedInStep(fourth);
 
-  if (!hasYtelse && !hasStep) {
-    return redirectToInternalPage(req, res, `/${first}/${second}/${third}/begrunnelse`);
+  if (!hasYtelse) {
+    if (!hasStep) {
+      return redirectToInternalPage(req, res, `/${first}/${second}/${third}/begrunnelse`);
+    }
+
+    await ensureAuthentication(req, res, next);
+
+    return;
   }
 
   return noRedirect(req, res, next);

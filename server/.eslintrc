@@ -139,7 +139,8 @@
         ],
         "ignoreExports": [
           "./src/server.ts",
-          "./src/**/*.test.ts"
+          "./src/**/*.test.ts",
+          "./types/**/*.d.ts"
         ]
       }
     ],
