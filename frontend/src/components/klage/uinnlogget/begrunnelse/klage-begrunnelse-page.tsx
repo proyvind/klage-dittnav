@@ -2,10 +2,10 @@ import { BodyLong, Button, Checkbox, GuidePanel } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 import { useSessionKlageErrors } from '@app/hooks/use-errors';
 import { useSessionKlageUpdate } from '@app/hooks/use-session-klage-update';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
@@ -40,7 +40,6 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
   const updateKlage = useSessionKlageUpdate(klage.innsendingsytelse);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const language = useLanguage();
 
   const { klageskjema, klageskjema_post } = useTranslation();
 
@@ -61,7 +60,7 @@ const RenderKlagebegrunnelsePage = ({ klage }: Props) => {
 
   const deleteAndReturn = () => {
     dispatch(deleteSessionKlage(klage.innsendingsytelse));
-    navigate(`/${language}`, { replace: true });
+    redirectToNav();
   };
 
   const { steps, page_title, title_fragment } = klageskjema_post.common;

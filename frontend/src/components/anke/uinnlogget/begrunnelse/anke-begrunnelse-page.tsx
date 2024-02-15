@@ -2,10 +2,10 @@ import { BodyLong, Button, Checkbox, GuidePanel } from '@navikt/ds-react';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 import { useSessionAnkeErrors } from '@app/hooks/use-errors';
 import { useSessionAnkeUpdate } from '@app/hooks/use-session-anke-update';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
@@ -40,7 +40,6 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
   const updateAnke = useSessionAnkeUpdate(anke.innsendingsytelse);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const language = useLanguage();
 
   const { ankeskjema, ankeskjema_post } = useTranslation();
 
@@ -61,7 +60,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
 
   const deleteAndReturn = () => {
     dispatch(deleteSessionAnke(anke.innsendingsytelse));
-    navigate(`/${language}`, { replace: true });
+    redirectToNav();
   };
 
   const { steps, page_title, title_fragment } = ankeskjema_post.common;

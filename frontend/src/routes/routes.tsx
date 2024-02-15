@@ -71,7 +71,11 @@ export const Router = () => (
                       element={<EttersendelsePage innsendingsytelse={innsendingsytelse} />}
                     />
                   ))}
+
+                  <Route path="*" element={<NotFoundPage />} />
                 </Route>
+
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               <Route path="*" element={<NotFoundPage />} />

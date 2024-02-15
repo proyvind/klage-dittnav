@@ -2,6 +2,7 @@ import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 import { useTranslation } from '@app/language/use-translation';
 import { addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
 import { useGetAnkeQuery, useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
@@ -27,6 +28,8 @@ export const AnkeLoader = ({ Component }: Props) => {
       sendErrorReport();
       setError(anke_loader.format_error('INGEN', e));
 
+      redirectToNav();
+
       return;
     }
 
@@ -39,6 +42,8 @@ export const AnkeLoader = ({ Component }: Props) => {
       addErrorEvent(e.message, e.stack);
       sendErrorReport();
       setError(anke_loader.format_error(ankeId, e));
+
+      redirectToNav();
     }
   }, [ankeId, anke, anke_loader, updateAnke, isLoading]);
 

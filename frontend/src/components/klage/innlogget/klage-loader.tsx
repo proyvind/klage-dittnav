@@ -2,6 +2,7 @@ import { Alert } from '@navikt/ds-react';
 import { skipToken } from '@reduxjs/toolkit/query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 import { useTranslation } from '@app/language/use-translation';
 import { addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
 import { useGetKlageQuery, useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
@@ -27,6 +28,8 @@ export const KlageLoader = ({ Component }: Props) => {
       sendErrorReport();
       setError(klage_loader.format_error('INGEN', e));
 
+      redirectToNav();
+
       return;
     }
 
@@ -39,6 +42,8 @@ export const KlageLoader = ({ Component }: Props) => {
       addErrorEvent(e.message, e.stack);
       sendErrorReport();
       setError(klage_loader.format_error(klageId, e));
+
+      redirectToNav();
     }
   }, [klageId, klage, klage_loader, updateKlage, isLoading]);
 

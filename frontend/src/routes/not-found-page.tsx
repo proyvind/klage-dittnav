@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { ENVIRONMENT } from '@app/environment/environment';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 
 export const NotFoundPage = () => {
   useEffect(() => {
     console.warn('404 - Redirecting to www.nav.no/klage');
 
     if (!ENVIRONMENT.isLocal) {
-      location.replace(ENVIRONMENT.isProduction ? 'https://www.nav.no/klage' : 'https://www.ekstern.dev.nav.no/klage');
+      redirectToNav();
     }
   }, []);
 

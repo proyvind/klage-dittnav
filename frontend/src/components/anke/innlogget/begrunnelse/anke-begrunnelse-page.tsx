@@ -1,6 +1,7 @@
 import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { redirectToNav } from '@app/functions/redirect-to-nav';
 import { useAnkeErrors } from '@app/hooks/use-errors';
 import { useUser } from '@app/hooks/use-user';
 import { useLanguage } from '@app/language/use-language';
@@ -65,10 +66,7 @@ const RenderAnkebegrunnelsePage = ({ anke }: Props) => {
     navigate(NEXT_PAGE_URL);
   };
 
-  const deleteAndReturn = () =>
-    deleteAnke(anke.id)
-      .unwrap()
-      .then(() => navigate(`/${language}`, { replace: true }));
+  const deleteAndReturn = () => deleteAnke(anke.id).then(redirectToNav);
 
   const { steps, title_fragment, page_title } = ankeskjema.common;
 
