@@ -39,5 +39,7 @@ spec:
   ingresses:
     - {{ingress}}
   envFrom:
-    - secret: amplitude
     - secret: slack-url
+  observability:
+    tracing:
+      enabled: true
