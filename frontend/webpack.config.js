@@ -48,20 +48,22 @@ module.exports = (_env, { mode }) => ({
     port: 8080,
     historyApiFallback: true,
     compress: false,
-    proxy: {
-      '/api': {
+    proxy: [ 
+       {
+        context: ['/api'],
         target: 'https://klage.intern.dev.nav.no',
         secure: false,
         changeOrigin: true,
         withCredentials: true,
       },
-      '/person/innloggingsstatus/auth': {
+      {
+        context: ['/person/innloggingsstatus/auth'],
         target: 'https://innloggingsstatus.dev.nav.no',
         secure: false,
         changeOrigin: true,
         withCredentials: true,
       },
-    },
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({
