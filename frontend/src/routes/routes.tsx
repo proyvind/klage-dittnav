@@ -1,24 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AnkebegrunnelsePage } from '@app/components/anke/innlogget/begrunnelse/anke-begrunnelse-page';
-import { AnkeinnsendingPage } from '@app/components/anke/innlogget/innsending/anke-innsending-page';
-import { AnkekvitteringPage } from '@app/components/anke/innlogget/kvittering/anke-kvittering-page';
-import { AnkeoppsummeringPage } from '@app/components/anke/innlogget/summary/anke-oppsummering-page';
-import { SessionAnkebegrunnelsePage } from '@app/components/anke/uinnlogget/begrunnelse/anke-begrunnelse-page';
-import { SessionAnkeinnsendingPage } from '@app/components/anke/uinnlogget/innsending/anke-innsending-page';
-import { SessionAnkeoppsummeringPage } from '@app/components/anke/uinnlogget/summary/anke-oppsummering-page';
-import { EttersendelsePage } from '@app/components/ettersendelse/ettersendelse-page';
-import { KlagebegrunnelsePage } from '@app/components/klage/innlogget/begrunnelse/klage-begrunnelse-page';
-import { KlageinnsendingPage } from '@app/components/klage/innlogget/innsending/klage-innsending-page';
-import { KlagekvitteringPage } from '@app/components/klage/innlogget/kvittering/klage-kvittering-page';
-import { KlageoppsummeringPage } from '@app/components/klage/innlogget/summary/klage-oppsummering-page';
-import { SessionKlagebegrunnelsePage } from '@app/components/klage/uinnlogget/begrunnelse/klage-begrunnelse-page';
-import { SessionKlageinnsendingPage } from '@app/components/klage/uinnlogget/innsending/klage-innsending-page';
-import { SessionKlageoppsummeringPage } from '@app/components/klage/uinnlogget/summary/klage-oppsummering-page';
+import { CaseBegrunnelsePage } from '@app/components/case/innlogget/begrunnelse/begrunnelse-page';
+import { CaseInnsendingPage } from '@app/components/case/innlogget/innsending/innsending-page';
+import { CaseKvitteringPage } from '@app/components/case/innlogget/kvittering/kvittering-page';
+import { CaseOppsummeringPage } from '@app/components/case/innlogget/summary/oppsummering-page';
+import { SessionCasebegrunnelsePage } from '@app/components/case/uinnlogget/begrunnelse/begrunnelse-page';
+import { SessionCaseInnsendingPage } from '@app/components/case/uinnlogget/innsending/innsending-page';
+import { SessionCaseOppsummeringPage } from '@app/components/case/uinnlogget/summary/oppsummering-page';
 import { INNSENDINGSYTELSER, Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { LanguageComponent } from '@app/language/component';
-import { CreateAnke } from './create-anke/create-anke';
-import { CreateKlage } from './create-klage/create-klage';
+import { CaseType } from '@app/redux-api/case/types';
+import { CreateCase } from './create-case/create-case';
 import { DekoratorSetRedirect } from './dekorator-set-redirect';
 import { ErrorBoundary } from './error-boundary';
 import { NavigationLogger } from './navigation-logger';
@@ -33,44 +25,47 @@ export const Router = () => (
           <ErrorBoundary>
             <Routes>
               <Route path="/:lang" element={<UpgradeSession />}>
-                <Route path="klage">
-                  {getRoutes(CreateKlage)}
-
-                  {getRoutesWithSuffix(SessionKlagebegrunnelsePage, 'begrunnelse')}
-                  {getRoutesWithSuffix(SessionKlageoppsummeringPage, 'oppsummering')}
-                  {getRoutesWithSuffix(SessionKlageinnsendingPage, 'innsending')}
-
-                  <Route path=":klageId">
-                    <Route path="begrunnelse" element={<KlagebegrunnelsePage />} />
-                    <Route path="oppsummering" element={<KlageoppsummeringPage />} />
-                    <Route path="innsending" element={<KlageinnsendingPage />} />
-                    <Route path="kvittering" element={<KlagekvitteringPage />} />
+                <Route path="sak">
+                  <Route path=":id">
+                    <Route path="begrunnelse" element={<CaseBegrunnelsePage />} />
+                    <Route path="oppsummering" element={<CaseOppsummeringPage />} />
+                    <Route path="innsending" element={<CaseInnsendingPage />} />
+                    <Route path="kvittering" element={<CaseKvitteringPage />} />
                   </Route>
+                </Route>
+
+                <Route path="klage">
+                  {getRoutes(CreateCase, CaseType.KLAGE)}
+
+                  {getRoutesWithSuffix(SessionCasebegrunnelsePage, 'begrunnelse', CaseType.KLAGE)}
+                  {getRoutesWithSuffix(SessionCaseOppsummeringPage, 'oppsummering', CaseType.KLAGE)}
+                  {getRoutesWithSuffix(SessionCaseInnsendingPage, 'innsending', CaseType.KLAGE)}
                 </Route>
 
                 <Route path="anke">
-                  {getRoutes(CreateAnke)}
+                  {getRoutes(CreateCase, CaseType.ANKE)}
 
-                  {getRoutesWithSuffix(SessionAnkebegrunnelsePage, 'begrunnelse')}
-                  {getRoutesWithSuffix(SessionAnkeoppsummeringPage, 'oppsummering')}
-                  {getRoutesWithSuffix(SessionAnkeinnsendingPage, 'innsending')}
-
-                  <Route path=":ankeId">
-                    <Route path="begrunnelse" element={<AnkebegrunnelsePage />} />
-                    <Route path="oppsummering" element={<AnkeoppsummeringPage />} />
-                    <Route path="innsending" element={<AnkeinnsendingPage />} />
-                    <Route path="kvittering" element={<AnkekvitteringPage />} />
-                  </Route>
+                  {getRoutesWithSuffix(SessionCasebegrunnelsePage, 'begrunnelse', CaseType.ANKE)}
+                  {getRoutesWithSuffix(SessionCaseOppsummeringPage, 'oppsummering', CaseType.ANKE)}
+                  {getRoutesWithSuffix(SessionCaseInnsendingPage, 'innsending', CaseType.ANKE)}
                 </Route>
 
                 <Route path="ettersendelse">
-                  {INNSENDINGSYTELSER.map((innsendingsytelse) => (
-                    <Route
-                      key={innsendingsytelse}
-                      path={innsendingsytelse}
-                      element={<EttersendelsePage innsendingsytelse={innsendingsytelse} />}
-                    />
-                  ))}
+                  <Route path="klage">
+                    {getRoutes(CreateCase, CaseType.ETTERSENDELSE_KLAGE)}
+
+                    {getRoutesWithSuffix(SessionCasebegrunnelsePage, 'begrunnelse', CaseType.ETTERSENDELSE_KLAGE)}
+                    {getRoutesWithSuffix(SessionCaseOppsummeringPage, 'oppsummering', CaseType.ETTERSENDELSE_KLAGE)}
+                    {getRoutesWithSuffix(SessionCaseInnsendingPage, 'innsending', CaseType.ETTERSENDELSE_KLAGE)}
+                  </Route>
+
+                  <Route path="anke">
+                    {getRoutes(CreateCase, CaseType.ETTERSENDELSE_ANKE)}
+
+                    {getRoutesWithSuffix(SessionCasebegrunnelsePage, 'begrunnelse', CaseType.ETTERSENDELSE_ANKE)}
+                    {getRoutesWithSuffix(SessionCaseOppsummeringPage, 'oppsummering', CaseType.ETTERSENDELSE_ANKE)}
+                    {getRoutesWithSuffix(SessionCaseInnsendingPage, 'innsending', CaseType.ETTERSENDELSE_ANKE)}
+                  </Route>
 
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
@@ -89,23 +84,24 @@ export const Router = () => (
 
 interface YtelseComponentProps {
   innsendingsytelse: Innsendingsytelse;
+  type: CaseType;
 }
 
 type YtelseComponent = (props: YtelseComponentProps) => JSX.Element;
 
-const getRoutes = (Component: YtelseComponent) =>
+const getRoutes = (Component: YtelseComponent, type: CaseType) =>
   INNSENDINGSYTELSER.map((innsendingsytelse) => (
     <Route
       index
       key={innsendingsytelse}
       path={innsendingsytelse}
-      element={<Component innsendingsytelse={innsendingsytelse} />}
+      element={<Component innsendingsytelse={innsendingsytelse} type={type} />}
     />
   ));
 
-const getRoutesWithSuffix = (Component: YtelseComponent, pathSuffix: string) =>
+const getRoutesWithSuffix = (Component: YtelseComponent, pathSuffix: string, type: CaseType) =>
   INNSENDINGSYTELSER.map((innsendingsytelse) => (
     <Route key={`${innsendingsytelse}/${pathSuffix}`} path={innsendingsytelse}>
-      <Route index path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} />} />
+      <Route index path={pathSuffix} element={<Component innsendingsytelse={innsendingsytelse} type={type} />} />
     </Route>
   ));

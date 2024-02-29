@@ -2,25 +2,27 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
 import { keyframes, styled } from 'styled-components';
 import { Envelope } from '@app/icons/envelope';
-import { Language } from '@app/language/language';
-import { Optional } from '../../../optional/optional';
+import { useTranslation } from '@app/language/use-translation';
+import { CaseType } from '@app/redux-api/case/types';
 
 interface Props {
   informStillWorking: boolean;
-  translations: Language['klageskjema' | 'ankeskjema'];
+  type: CaseType;
 }
 
-export const KvitteringLoading = ({ translations, informStillWorking }: Props) => (
-  <>
-    <BouncingEnvelope />
-    <PageTitle size="medium" level="1" spacing>
-      {translations.kvittering.loading.title}
-    </PageTitle>
-    <Optional show={informStillWorking}>
-      <Description>{translations.kvittering.loading.still_working}</Description>
-    </Optional>
-  </>
-);
+export const KvitteringLoading = ({ informStillWorking, type }: Props) => {
+  const { skjema } = useTranslation();
+
+  return (
+    <>
+      <BouncingEnvelope />
+      <PageTitle size="medium" level="1" spacing>
+        {skjema.kvittering.loading.title[type]}
+      </PageTitle>
+      {informStillWorking ? <Description>{skjema.kvittering.loading.still_working}</Description> : null}
+    </>
+  );
+};
 
 const bounce = keyframes`
     0%,100% {

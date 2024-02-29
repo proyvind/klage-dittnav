@@ -1,65 +1,76 @@
 import { dnr, fnr } from '@navikt/fnrvalidator';
-import dayjs, { extend } from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { isBefore, isEqual } from 'date-fns';
+import { useMemo } from 'react';
 import { validNpid } from '@app/domain/npid/valid-npid';
 import { ENVIRONMENT } from '@app/environment/environment';
-import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
 
-extend(isSameOrBefore);
+type Validator<T> = (data: T) => string | undefined;
 
-export type Validator = (value: string | null) => string | undefined;
-export type ValidatorFactory = (errorMessages: Language['error_messages']) => Validator;
+export const useValidators = () => {
+  const { error_messages } = useTranslation();
 
-export const validateFnrDnr: ValidatorFactory =
-  ({ skjema }) =>
-  (val) =>
-    fnr(val ?? '').status === 'valid' ||
-    dnr(val ?? '').status === 'valid' ||
-    validNpid(val ?? '', ENVIRONMENT.isProduction)
-      ? undefined
-      : skjema.fnr_dnr_or_npid;
+  return useMemo(() => {
+    const validateFnrDnr: Validator<string> = (val) => {
+      if (val.length === 0) {
+        return error_messages.skjema.fnr_dnr_or_npid;
+      }
 
-export const validateFornavn: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    stringNotEmpty(value) ? undefined : skjema.fornavn;
+      return fnr(val).status === 'valid' || dnr(val).status === 'valid' || validNpid(val, ENVIRONMENT.isProduction)
+        ? undefined
+        : error_messages.skjema.fnr_dnr_or_npid;
+    };
 
-export const validateEtternavn: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    stringNotEmpty(value) ? undefined : skjema.etternavn;
+    const validateFornavn: Validator<string | undefined> = (value) =>
+      stringIsEmpty(value) ? error_messages.skjema.fornavn : undefined;
 
-export const validateVedtakDate: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    value === null || value.length === 0 || validateDate(value) ? undefined : skjema.vedtak_date;
+    const validateEtternavn: Validator<string | undefined> = (value) =>
+      stringIsEmpty(value) ? error_messages.skjema.etternavn : undefined;
 
-export const validateRequiredVedtakDate: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    value !== null && value.length !== 0 && validateDate(value) ? undefined : skjema.vedtak_date_required;
+    const validateVedtakDate: Validator<Date | null> = (value) =>
+      value === null || validateDate(value) ? undefined : error_messages.skjema.vedtak_date;
 
-export const validateKlageenhetAnke: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    value !== null && value.length !== 0 && value !== 'NONE' ? undefined : skjema.enhet;
+    const validateVedtakDateRequired: Validator<Date | null> = (value) =>
+      value !== null && validateDate(value) ? undefined : error_messages.skjema.vedtak_date_required;
 
-export const validateKlageenhetEttersendelse: ValidatorFactory =
-  ({ skjema }) =>
-  (value) =>
-    value !== null && (value.length === 0 || value === 'NONE') ? skjema.enhet : undefined;
+    const validateCaseIsAtKa: Validator<boolean | null> = (value) =>
+      value === null ? error_messages.skjema.case_is_at_ka : undefined;
 
-export const validateFritekst: ValidatorFactory =
-  ({ skjema }) =>
-  (fritekst) =>
-    stringNotEmpty(fritekst) ? undefined : skjema.begrunnelse;
+    const validateEnhet: Validator<string | null> = (value) =>
+      value !== null && value.length !== 0 ? undefined : error_messages.skjema.enhet;
 
-const stringNotEmpty = (value: string | null): boolean => value !== null && value.length !== 0;
+    const validateVedleggOrFritekst: Validator<{ hasVedlegg: boolean; fritekst: string; isLoggedIn: boolean }> = ({
+      hasVedlegg,
+      fritekst,
+      isLoggedIn,
+    }) => {
+      if (hasVedlegg || fritekst.length !== 0) {
+        return undefined;
+      }
 
-const validateDate = (value: string): boolean => {
-  const date = dayjs(value, 'YYYY-MM-DD', true);
+      if (isLoggedIn) {
+        return error_messages.skjema.vedleggEllerFritekstLoggedIn;
+      }
 
-  return date.isValid() && date.isSameOrBefore(MAX_DATE);
+      return error_messages.skjema.vedleggEllerFritekstLoggedOut;
+    };
+
+    return {
+      validateFnrDnr,
+      validateFornavn,
+      validateEtternavn,
+      validateVedtakDate,
+      validateVedtakDateRequired,
+      validateCaseIsAtKa,
+      validateEnhet,
+      validateVedleggOrFritekst,
+    };
+  }, [error_messages.skjema]);
 };
 
-const MAX_DATE = dayjs();
+const stringIsEmpty = (value: string | null | undefined): boolean =>
+  value === null || value === undefined || value.length === 0;
+
+const validateDate = (date: Date): boolean => isEqual(date, MAX_DATE) || isBefore(date, MAX_DATE);
+
+const MAX_DATE = new Date();

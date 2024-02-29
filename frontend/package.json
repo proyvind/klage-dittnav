@@ -56,7 +56,6 @@
     "@styled-icons/material": "10.47.0",
     "classnames": "2.5.1",
     "date-fns": "3.3.1",
-    "dayjs": "1.11.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "9.1.0",

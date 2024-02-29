@@ -72,7 +72,7 @@ export class SimpleApiState<T> {
   });
 
   public listen = (listener: Listener<T>): void => {
-    if (!this.prefetch && typeof this.data === 'undefined') {
+    if (!this.prefetch && this.data === undefined) {
       this.fetchData();
     }
 

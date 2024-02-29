@@ -5,4 +5,4 @@ const klageenheter = new SimpleApiState<IKodeverkSimpleValue[]>(
   `/api/klage-kodeverk-api/kodeverk/klageenheterforankeinnsending`,
 );
 
-export const useKlageenheterForAnke = () => useSimpleApiState(klageenheter);
+export const useKlageenheter = () => useSimpleApiState(klageenheter);

@@ -1,97 +1,103 @@
 import { CaseReducer, PayloadAction } from '@reduxjs/toolkit';
-import dayjs, { extend } from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { ISessionCase } from '@app/components/case/uinnlogget/types';
 import { addSessionEvent } from '@app/logging/error-report/error-report';
-import { SessionKey, State } from '../types';
-import { getSessionKlageKey } from './helpers';
-import { readSessionKlage, saveSessionKlage } from './storage';
-import { SessionKlagePayload, SessionKlageUpdate } from './types';
+import { State } from '@app/redux/session/type';
+import { createSessionCase, getSessionCaseKey } from './helpers';
+import { readSessionCase, removeSessionCase, saveSessionCase } from './storage';
+import { SessionCaseCreate, SessionCaseLoad, SessionCasePayload, SessionCaseRemove, SessionCaseUpdate } from './types';
 
-extend(utc);
+const setSessionCase: CaseReducer<State, PayloadAction<SessionCasePayload>> = (state, { payload }) => {
+  addSessionEvent('Set session case');
 
-const setSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
-  addSessionEvent('Set session klage');
+  const { type, innsendingsytelse, data } = payload;
 
-  const { key, klage } = payload;
+  saveSessionCase(innsendingsytelse, data);
 
-  const klageKey = getSessionKlageKey(key);
+  return setState(state, getSessionCaseKey(type, innsendingsytelse), data);
+};
 
-  if (klage === null) {
-    saveSessionKlage(key, null);
+const updateSessionCase: CaseReducer<State, PayloadAction<SessionCaseUpdate>> = (state, { payload }) => {
+  addSessionEvent('Update session case');
 
-    delete state.klager[klageKey];
+  const { type, innsendingsytelse, data } = payload;
 
+  const caseKey = getSessionCaseKey(type, innsendingsytelse);
+  const existing = getState(state, caseKey);
+
+  if (existing === undefined) {
+    throw new Error(`Case with ID ${caseKey} does not exist`);
+  }
+
+  const updated = updateSessionCaseData(existing, data);
+
+  const key = saveSessionCase(innsendingsytelse, updated);
+
+  return setState(state, key, updated);
+};
+
+const loadSessionCase: CaseReducer<State, PayloadAction<SessionCaseLoad>> = (state, { payload }) => {
+  addSessionEvent('Load session case');
+
+  const { innsendingsytelse, type } = payload;
+
+  const sessionKey = getSessionCaseKey(type, innsendingsytelse);
+  const savedCase = readSessionCase(sessionKey);
+
+  if (savedCase === undefined) {
     return state;
   }
 
-  saveSessionKlage(key, klage);
-
-  state.klager[klageKey] = klage;
-
-  return state;
-};
-
-const updateSessionKlage: CaseReducer<State, PayloadAction<SessionKlageUpdate>> = (state, { payload }) => {
-  addSessionEvent('Update session Klage');
-
-  const { key, update } = payload;
-
-  const klageKey = getSessionKlageKey(key);
-  const klage = state.klager[klageKey];
-
-  if (typeof klage === 'undefined' || klage === null) {
-    throw new Error('Klage does not exist');
-  }
-
-  if (key !== klage.innsendingsytelse) {
-    throw new Error('Innsendingsytelse must match');
-  }
-
-  const updated = { ...klage, ...update, modifiedByUser: dayjs().utc(true).toISOString() };
-
-  saveSessionKlage(key, updated);
-
-  state.klager[klageKey] = updated;
-
-  return state;
+  return setState(state, sessionKey, savedCase);
 };
 
 // Read from session storage if it exists, otherwise save to session storage.
-const loadSessionKlage: CaseReducer<State, PayloadAction<SessionKlagePayload>> = (state, { payload }) => {
-  addSessionEvent('Load session klage');
+const loadOrCreateSessionCase: CaseReducer<State, PayloadAction<SessionCaseCreate>> = (state, { payload }) => {
+  addSessionEvent('Load or create session case');
 
-  const { key, klage } = payload;
+  const { innsendingsytelse, data, type } = payload;
 
-  const sessionKey = getSessionKlageKey(key);
-  const savedKlage = readSessionKlage(sessionKey);
+  const sessionKey = getSessionCaseKey(type, innsendingsytelse);
+  const savedCase = readSessionCase(sessionKey);
 
-  if (typeof savedKlage === 'undefined') {
-    if (klage === null) {
-      delete state.klager[sessionKey];
+  if (savedCase === undefined) {
+    const newCase = createSessionCase(type, data.language, data.innsendingsytelse, data.internalSaksnummer);
 
-      return state;
-    }
+    const key = saveSessionCase(innsendingsytelse, newCase);
 
-    saveSessionKlage(key, klage);
-
-    state.klager[sessionKey] = klage;
-
-    return state;
+    return setState(state, key, newCase);
   }
 
-  state.klager[sessionKey] = savedKlage;
+  return setState(state, sessionKey, savedCase);
+};
+
+const setState = (state: State, key: string, data: ISessionCase) => {
+  state[key] = data;
 
   return state;
 };
 
-const deleteSessionKlage: CaseReducer<State, PayloadAction<SessionKey>> = (state, { payload }) => {
-  addSessionEvent('Delete session klage');
+const getState = (state: State, key: string) => state[key];
 
-  const key = saveSessionKlage(payload, null);
+const updateSessionCaseData = <T extends ISessionCase>(data: T, update: Partial<T>): ISessionCase => ({
+  ...data,
+  ...update,
+  modifiedByUser: new Date().toISOString(),
+});
 
-  delete state.klager[key];
+const deleteSessionCase: CaseReducer<State, PayloadAction<SessionCaseRemove>> = (state, { payload }) => {
+  addSessionEvent('Delete session case');
+
+  const key = removeSessionCase(getSessionCaseKey(payload.type, payload.innsendingsytelse));
+
+  delete state[key];
 
   return state;
 };
 
-export const klageReducers = { setSessionKlage, updateSessionKlage, loadSessionKlage, deleteSessionKlage };
+export const caseReducers = {
+  setSessionCase,
+  updateSessionCase,
+  loadSessionCase,
+  deleteSessionCase,
+  loadOrCreateSessionCase,
+};

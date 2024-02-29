@@ -13,7 +13,7 @@ export const userApi = createApi({
       providesTags: ['user'],
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        const tokenx = typeof data !== 'undefined';
+        const tokenx = data !== undefined;
         dispatch(userApi.util.updateQueryData('isAuthenticated', undefined, (draft) => ({ ...draft, tokenx })));
 
         setTokenExpires(data.tokenExpires);

@@ -6,19 +6,20 @@ import { useAddress } from '@app/hooks/use-address';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
+import { CaseType } from '@app/redux-api/case/types';
 import { CenteredContainer } from '@app/styled-components/common';
-import { Optional } from '../../../optional/optional';
 import { PostFormContainer } from './post-form-container';
 
 interface Props {
-  skjema_post: Language['ankeskjema_post'] | Language['klageskjema_post'];
+  type: CaseType;
   innsendingsytelse: Innsendingsytelse;
   hasVedlegg: boolean;
 }
 
-export const RenderCaseinnsendingPage = ({ skjema_post, innsendingsytelse, hasVedlegg }: Props) => {
-  const { page_title, title_fragment, steps, title, stepTexts, address, common } = useTexts({
-    skjema_post,
+export const RenderCaseinnsendingPage = ({ type, innsendingsytelse, hasVedlegg }: Props) => {
+  const { skjema } = useTranslation();
+  const { page_title, title_fragment, title, stepTexts, address, common } = useTexts({
+    type,
     innsendingsytelse,
   });
 
@@ -27,20 +28,18 @@ export const RenderCaseinnsendingPage = ({ skjema_post, innsendingsytelse, hasVe
       activeStep={3}
       isValid
       page_title={page_title}
-      steps={steps}
+      steps={skjema.steps[type]}
       innsendingsytelse={innsendingsytelse}
       title_fragment={title_fragment}
     >
-      <Heading level="1" size="xlarge">
+      <Heading level="1" size="medium">
         {title}
       </Heading>
       <GuidePanel>
         <InstructionList>
           <ListItem>{stepTexts[0]}</ListItem>
           <ListItem>{stepTexts[1]}</ListItem>
-          <Optional show={hasVedlegg}>
-            <ListItem>{stepTexts[2]}</ListItem>
-          </Optional>
+          {hasVedlegg ? <ListItem>{stepTexts[2]}</ListItem> : null}
           <ListItem>
             <span>
               {stepTexts[3]}
@@ -75,40 +74,40 @@ interface Texts {
 }
 
 interface UseTextsProps {
-  skjema_post: Props['skjema_post'];
   innsendingsytelse: Props['innsendingsytelse'];
+  type: CaseType;
 }
 
-const useTexts = ({ skjema_post, innsendingsytelse }: UseTextsProps): Texts => {
-  const { common } = useTranslation();
-  const { title, steg, steg_simple } = skjema_post.innsending;
-  const { steps, title_fragment, page_title } = skjema_post.common;
+const useTexts = ({ innsendingsytelse, type }: UseTextsProps): Texts => {
+  const { common, skjema, innsending } = useTranslation();
+  const { title, steg, steg_simple } = innsending;
+  const { title_fragment, page_title } = skjema.common;
   const address = useAddress(innsendingsytelse);
 
   return useMemo(() => {
     switch (innsendingsytelse) {
       case 'LONNSGARANTI':
         return {
-          stepTexts: steg_simple,
+          stepTexts: steg_simple[type],
           address,
           title,
-          page_title,
-          title_fragment,
+          page_title: page_title[type],
+          title_fragment: title_fragment[type],
           common,
-          steps,
+          steps: skjema.steps[type],
         };
       default:
         return {
-          stepTexts: steg,
+          stepTexts: steg[type],
           address,
           title,
-          page_title,
-          title_fragment,
+          page_title: page_title[type],
+          title_fragment: title_fragment[type],
           common,
-          steps,
+          steps: skjema.steps[type],
         };
     }
-  }, [address, common, innsendingsytelse, page_title, steg, steg_simple, steps, title, title_fragment]);
+  }, [address, common, innsendingsytelse, page_title, skjema.steps, steg, steg_simple, title, title_fragment, type]);
 };
 
 const InstructionList = styled.ol`

@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Language } from '@app/language/language';
-import { useGetAnkeQuery } from '@app/redux-api/case/anke/api';
-import { useGetKlageQuery } from '@app/redux-api/case/klage/api';
-import { Kvittering } from './kvittering';
+import { useGetCaseQuery } from '@app/redux-api/case/api';
+import { CaseStatus, CaseType } from '@app/redux-api/case/types';
+import { API_PATH } from '@app/redux-api/common';
+import { Journalpost, Kvittering } from './kvittering';
 import { KvitteringLoading } from './kvittering-loading';
 
 interface Props {
   caseId: string;
-  translations: Language['klageskjema' | 'ankeskjema'];
-  useGetCaseQuery: typeof useGetAnkeQuery | typeof useGetKlageQuery;
-  children: React.ReactElement;
+  type: CaseType;
 }
 
-export const KvitteringPageLoader = ({ caseId, translations, children, useGetCaseQuery }: Props) => {
+export const KvitteringPageLoader = ({ type, caseId }: Props) => {
   const [showStillWorking, setShowStillWorking] = useState<boolean>(false);
   const [showKvittering, setShowKvittering] = useState<boolean>(false);
 
   const { data } = useGetCaseQuery(caseId);
-
-  const isJournalfoert = typeof data?.journalpostId === 'string' && data.journalpostId.length !== 0;
 
   useEffect(() => {
     const stillWorkingTimer = setTimeout(() => setShowStillWorking(true), 8000);
@@ -30,13 +26,30 @@ export const KvitteringPageLoader = ({ caseId, translations, children, useGetCas
     };
   }, []);
 
-  if (isJournalfoert) {
-    return <Kvittering translations={translations}>{children}</Kvittering>;
+  if (data === undefined) {
+    return <KvitteringLoading informStillWorking={showStillWorking} type={type} />;
+  }
+
+  const isDone = data.status === CaseStatus.DONE;
+
+  if (isDone) {
+    return (
+      <Kvittering type={data.type} ytelse={data.innsendingsytelse}>
+        {data.journalpostId !== null ? (
+          <Journalpost
+            caseId={data.id}
+            finalizedDate={data.finalizedDate}
+            basePath={`${API_PATH}/klanker`}
+            type={data.type}
+          />
+        ) : null}
+      </Kvittering>
+    );
   }
 
   if (showKvittering) {
-    return <Kvittering translations={translations} />;
+    return <Kvittering type={type} ytelse={data.innsendingsytelse} />;
   }
 
-  return <KvitteringLoading informStillWorking={showStillWorking} translations={translations} />;
+  return <KvitteringLoading informStillWorking={showStillWorking} type={type} />;
 };

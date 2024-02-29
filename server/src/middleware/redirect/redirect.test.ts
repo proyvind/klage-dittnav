@@ -10,23 +10,22 @@ const NON_REDIRECT_URLS = [
   '/nb/anke/DAGPENGER/begrunnelse',
   '/nb/anke/DAGPENGER/oppsummering',
   '/nb/anke/DAGPENGER/innsending',
-  '/nb/ettersendelse/DAGPENGER',
 ];
 
 const LOGIN_REDIRECT_URLS = [
-  '/nb/klage/123/begrunnelse',
-  '/nb/klage/123/oppsummering',
-  '/nb/klage/123/innsending',
-  '/nb/klage/123/kvittering',
-  '/nb/anke/123/begrunnelse',
-  '/nb/anke/123/oppsummering',
-  '/nb/anke/123/innsending',
-  '/nb/anke/123/kvittering',
+  '/nb/sak/123/begrunnelse',
+  '/nb/sak/123/oppsummering',
+  '/nb/sak/123/innsending',
+  '/nb/sak/123/kvittering',
+  '/nb/sak/123/begrunnelse',
+  '/nb/sak/123/oppsummering',
+  '/nb/sak/123/innsending',
+  '/nb/sak/123/kvittering',
 ];
 
 const INTERNAL_REDIRECT_URLS: [string, string][] = [
-  ['/nb/klage/123', '/nb/klage/123/begrunnelse'],
-  ['/nb/anke/123', '/nb/anke/123/begrunnelse'],
+  ['/nb/sak/123', '/nb/sak/123/begrunnelse'],
+  ['/nb/sak/123', '/nb/sak/123/begrunnelse'],
   ['/nb/klage/uinnlogget/DAGPENGER', '/nb/klage/DAGPENGER'],
   ['/nb/klage/uinnlogget/DAGPENGER/begrunnelse', '/nb/klage/DAGPENGER/begrunnelse'],
   ['/nb/klage/ny/SYKEPENGER', '/nb/klage/SYKEPENGER'],
@@ -36,8 +35,9 @@ const INTERNAL_REDIRECT_URLS: [string, string][] = [
   ['/nb/anke/uinnlogget/DAGPENGER/begrunnelse', '/nb/anke/DAGPENGER/begrunnelse'],
   ['/nb/anke/ny/DAGPENGER', '/nb/anke/DAGPENGER'],
   ['/nb/anke/ny/DAGPENGER/begrunnelse', '/nb/anke/DAGPENGER/begrunnelse'],
-  ['/nb/ettersendelse/uinnlogget/DAGPENGER', '/nb/ettersendelse/DAGPENGER'],
-  ['/nb/ettersendelse/ny/DAGPENGER', '/nb/ettersendelse/DAGPENGER'],
+  ['/nb/ettersendelse/DAGPENGER', '/nb/ettersendelse/klage/DAGPENGER'],
+  ['/nb/ettersendelse/uinnlogget/DAGPENGER', '/nb/ettersendelse/klage/DAGPENGER'],
+  ['/nb/ettersendelse/ny/DAGPENGER', '/nb/ettersendelse/klage/DAGPENGER'],
   ['/nb/klage/ny/DAGPENGER?saksnummer=123', '/nb/klage/DAGPENGER?saksnummer=123'],
 ];
 

@@ -1,29 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ankeReducers } from './anke/reducers';
-import { klageReducers } from './klage/reducers';
-import { State } from './types';
+import { State } from '@app/redux/session/type';
+import { caseReducers } from './klage/reducers';
 
-const initialState: State = {
-  klager: {},
-  anker: {},
-};
+const initialState: State = {};
 
 export const sessionSlice = createSlice({
   name: 'session',
   initialState,
-  reducers: {
-    ...klageReducers,
-    ...ankeReducers,
-  },
+  reducers: caseReducers,
 });
 
-export const {
-  setSessionAnke,
-  loadSessionAnke,
-  updateSessionAnke,
-  deleteSessionAnke,
-  setSessionKlage,
-  loadSessionKlage,
-  updateSessionKlage,
-  deleteSessionKlage,
-} = sessionSlice.actions;
+export const { setSessionCase, deleteSessionCase, updateSessionCase, loadOrCreateSessionCase } = sessionSlice.actions;

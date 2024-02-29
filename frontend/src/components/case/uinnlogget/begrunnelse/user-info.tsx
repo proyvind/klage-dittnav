@@ -1,58 +1,47 @@
 import { TextField } from '@navikt/ds-react';
 import React from 'react';
 import { styled } from 'styled-components';
-import { ErrorState } from '@app/hooks/use-errors';
+import { ErrorState } from '@app/hooks/errors/types';
 import { useTranslation } from '@app/language/use-translation';
-import { ISessionAnke } from '../../../anke/uinnlogget/types';
 import { FnrDnrInput } from '../../../fnr-dnr-input/fnr-dnr-input';
-import { ISessionKlage } from '../../../klage/uinnlogget/types';
 import { FormFieldsIds } from '../../common/form-fields-ids';
-import { Validator, validateEtternavn, validateFornavn } from '../../common/validators';
+import { ISessionCase } from '../types';
+
+type Data = Pick<ISessionCase, 'foedselsnummer' | 'navn'>;
 
 interface Props {
-  klageOrAnke: ISessionKlage | ISessionAnke;
-  update: (update: Partial<ISessionKlage | ISessionAnke>) => void;
-  onError: (id: FormFieldsIds, error?: string) => void;
+  data: Data;
+  update: (update: Data) => void;
   errors: ErrorState;
 }
 
-export const UserInfo = ({ klageOrAnke, update, onError, errors }: Props) => {
-  const { common, error_messages } = useTranslation();
+export const UserInfo = ({ data, update, errors }: Props) => {
+  const { common } = useTranslation();
 
   const onChange = (foedselsnummer: string) => {
-    if (klageOrAnke.foedselsnummer !== foedselsnummer) {
-      update({ foedselsnummer });
+    if (data.foedselsnummer !== foedselsnummer) {
+      update({ foedselsnummer, navn: data.navn });
     }
   };
 
   return (
     <StyledUserInfo>
-      <FnrDnrInput
-        value={klageOrAnke.foedselsnummer}
-        onBlur={onChange}
-        onChange={onChange}
-        onError={onError}
-        error={errors[FormFieldsIds.FNR_DNR_NPID]}
-      />
+      <FnrDnrInput value={data.foedselsnummer} onChange={onChange} error={errors[FormFieldsIds.FNR_DNR_NPID]} />
 
       <TextInput
         id={FormFieldsIds.FORNAVN}
         label={common.fornavn}
-        value={klageOrAnke.navn.fornavn}
-        onChange={(fornavn) => update({ navn: { ...klageOrAnke.navn, fornavn } })}
-        onError={onError}
+        value={data.navn.fornavn}
+        onChange={(fornavn) => update({ foedselsnummer: data.foedselsnummer, navn: { ...data.navn, fornavn } })}
         error={errors[FormFieldsIds.FORNAVN]}
-        validator={validateFornavn(error_messages)}
       />
 
       <TextInput
         id={FormFieldsIds.ETTERNAVN}
         label={common.etternavn}
-        value={klageOrAnke.navn.etternavn}
-        onChange={(etternavn) => update({ navn: { ...klageOrAnke.navn, etternavn } })}
-        onError={onError}
+        value={data.navn.etternavn}
+        onChange={(etternavn) => update({ foedselsnummer: data.foedselsnummer, navn: { ...data.navn, etternavn } })}
         error={errors[FormFieldsIds.ETTERNAVN]}
-        validator={validateEtternavn(error_messages)}
       />
     </StyledUserInfo>
   );
@@ -69,19 +58,16 @@ interface TextInputProps {
   value?: string;
   label: string;
   onChange: (value: string) => void;
-  onError: (id: FormFieldsIds, error?: string) => void;
   error: string | undefined;
-  validator: Validator;
 }
 
-const TextInput = ({ id, label, value = '', onChange, onError, error, validator }: TextInputProps) => (
+const TextInput = ({ id, label, value = '', onChange, error }: TextInputProps) => (
   <TextField
     id={id}
     label={label}
     size="medium"
     value={value}
     onChange={({ target }) => onChange(target.value)}
-    onBlur={({ target }) => onError(id, validator(target.value))}
     minLength={1}
     error={error}
   />

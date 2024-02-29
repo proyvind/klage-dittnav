@@ -27,7 +27,7 @@ export const Errors = (props: Props) => {
 };
 
 const getErrorItem = (href: string, error?: string | null) => {
-  if (error === null || typeof error === 'undefined') {
+  if (error === null || error === undefined) {
     return null;
   }
 

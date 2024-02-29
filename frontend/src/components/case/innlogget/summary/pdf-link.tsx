@@ -4,27 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useUpdateAnkeMutation } from '@app/redux-api/case/anke/api';
-import { useUpdateKlageMutation } from '@app/redux-api/case/klage/api';
+import { useUpdateCaseMutation } from '@app/redux-api/case/api';
 import { CenteredContainer } from '@app/styled-components/common';
 
 interface Props extends CheckboxProps {
   hasUploadedVedlegg: boolean;
+  hasVedlegg: boolean;
   href: string;
   show: boolean;
   text: string;
-  type: 'klage' | 'anke';
 }
 
-export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...props }: Props) => {
+export const PdfLink = ({ text, show, hasUploadedVedlegg, href, id, hasVedlegg }: Props) => {
   const navigate = useNavigate();
   const { common } = useTranslation();
   const fixedCacheKey = `${id}-hasVedlegg`;
-  const [, { isLoading: klageIsLoading, isError: klageError }] = useUpdateKlageMutation({ fixedCacheKey });
-  const [, { isLoading: ankeIsLoading, isError: ankeError }] = useUpdateAnkeMutation({ fixedCacheKey });
-
-  const isLoading = klageIsLoading || ankeIsLoading;
-  const isError = klageError || ankeError;
+  const [, { isLoading, isError }] = useUpdateCaseMutation({ fixedCacheKey });
 
   if (!show) {
     return null;
@@ -45,13 +40,17 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
     );
   }
 
-  const CaseCheckbox = type === 'klage' ? KlageCheckbox : AnkeCheckbox;
-
   return (
     <CenteredContainer>
       <ReadMore size="small" header={text}>
-        <CheckboxGroup error={isError ? common.generic_error : undefined} legend={text} hideLegend size="small">
-          <CaseCheckbox {...props} id={id} />
+        <CheckboxGroup
+          error={isError ? common.generic_error : undefined}
+          legend={text}
+          hideLegend
+          size="small"
+          value={hasVedlegg ? ['hasVedlegg'] : []}
+        >
+          <KlageCheckbox id={id} />
         </CheckboxGroup>
         <Button
           as="a"
@@ -70,38 +69,33 @@ export const PdfLink = ({ text, show, hasUploadedVedlegg, href, type, id, ...pro
 };
 
 interface CheckboxProps {
-  hasVedlegg: boolean;
   id: string;
 }
 
-const KlageCheckbox = ({ id, hasVedlegg }: CheckboxProps) => {
-  const [updateKlage, { isError }] = useUpdateKlageMutation({ fixedCacheKey: `${id}-hasVedlegg` });
-  const { klageskjema_post } = useTranslation();
+const KlageCheckbox = ({ id }: CheckboxProps) => {
+  const [updateCase, { isError }] = useUpdateCaseMutation({ fixedCacheKey: `${id}-hasVedlegg` });
 
-  return (
-    <Checkbox
-      checked={hasVedlegg}
-      onChange={({ target }) => updateKlage({ id, key: 'hasVedlegg', value: target.checked })}
-      size="small"
-      error={isError}
-    >
-      {klageskjema_post.has_attachments_label}
-    </Checkbox>
-  );
+  return <CaseCheckbox id={id} isError={isError} onChange={(value) => updateCase({ id, key: 'hasVedlegg', value })} />;
 };
 
-const AnkeCheckbox = ({ id, hasVedlegg }: CheckboxProps) => {
-  const [updateAnke, { isError }] = useUpdateAnkeMutation({ fixedCacheKey: `${id}-hasVedlegg` });
-  const { ankeskjema_post } = useTranslation();
+interface CaseCheckboxProps {
+  onChange: (value: boolean) => void;
+  isError: boolean;
+  id: string;
+}
+
+const CaseCheckbox = ({ id, isError, onChange }: CaseCheckboxProps) => {
+  const { common } = useTranslation();
 
   return (
     <Checkbox
-      checked={hasVedlegg}
-      onChange={({ target }) => updateAnke({ id, key: 'hasVedlegg', value: target.checked })}
+      id={id}
+      value="hasVedlegg"
+      onChange={({ target }) => onChange(target.checked)}
       size="small"
       error={isError}
     >
-      {ankeskjema_post.has_attachments_label}
+      {common.has_attachments_label}
     </Checkbox>
   );
 };

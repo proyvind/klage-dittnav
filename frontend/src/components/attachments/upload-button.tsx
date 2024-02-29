@@ -4,34 +4,23 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import React, { useRef } from 'react';
 import { styled } from 'styled-components';
 import { isError } from '@app/functions/is-api-error';
-import { Language } from '@app/language/language';
+import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useUploadAttachmentMutation as useUploadAnkeAttachmentMutation } from '@app/redux-api/case/anke/api';
-import { useUploadAttachmentMutation as useUploadKlageAttachmentMutation } from '@app/redux-api/case/klage/api';
+import { useUploadAttachmentMutation } from '@app/redux-api/case/api';
 
 interface Props {
   caseId: string;
   inputId: string;
-  useUploadAttachment: typeof useUploadKlageAttachmentMutation | typeof useUploadAnkeAttachmentMutation;
   setLoading: (loading: boolean) => void;
   isLoading: boolean;
-  setError: (error: FetchBaseQueryError) => void;
-  translations: Language['klageskjema' | 'ankeskjema'];
+  addError: (error: FetchBaseQueryError) => void;
 }
 
-export const UploadButton = ({
-  inputId,
-  setLoading,
-  isLoading,
-  setError,
-  caseId,
-  translations,
-  useUploadAttachment,
-}: Props) => {
-  const { upload_button_text } = translations.begrunnelse.attachments;
+export const UploadButton = ({ inputId, setLoading, isLoading, addError, caseId }: Props) => {
+  const { skjema } = useTranslation();
   const fileInput = useRef<HTMLInputElement>(null);
-  const [uploadAttachment] = useUploadAttachment();
+  const [uploadAttachment] = useUploadAttachmentMutation();
 
   const handleAttachmentClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -57,7 +46,7 @@ export const UploadButton = ({
         await uploadAttachment({ caseId, file }).unwrap();
       } catch (err) {
         if (isError(err)) {
-          setError(err);
+          addError(err);
         }
 
         return null;
@@ -77,7 +66,7 @@ export const UploadButton = ({
         id="upload-attachment"
         icon={<UploadIcon aria-hidden />}
       >
-        {upload_button_text}
+        {skjema.begrunnelse.attachments.upload_button_text}
       </StyledUploadButton>
       <StyledUploadInput
         id={inputId}

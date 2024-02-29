@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from '@app/hooks/use-user';
-import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useFinalizeAnkeMutation } from '@app/redux-api/case/anke/api';
-import { useFinalizeKlageMutation } from '@app/redux-api/case/klage/api';
-import { CaseStatus } from '@app/redux-api/case/types';
+import { useFinalizeCaseMutation } from '@app/redux-api/case/api';
+import { Attachment, CaseStatus, CaseType } from '@app/redux-api/case/types';
 import { login } from '@app/user/login';
 
 interface Props {
@@ -18,33 +16,19 @@ interface Props {
   status: CaseStatus;
   id: string;
   fritekst: string;
+  type: CaseType;
+  vedlegg: Attachment[];
 }
 
-export const FinalizeDigitalKlage = (props: Props) => {
-  const { klageskjema } = useTranslation();
-  const finalizeMutation = useFinalizeKlageMutation();
-
-  return <FinalizeDigital {...props} translations={klageskjema} finalizeMutation={finalizeMutation} />;
-};
-
-export const FinalizeDigitalAnke = (props: Props) => {
-  const { ankeskjema } = useTranslation();
-  const finalizeMutation = useFinalizeAnkeMutation();
-
-  return <FinalizeDigital {...props} translations={ankeskjema} finalizeMutation={finalizeMutation} />;
-};
-
-interface FinalizeDigitalProps extends Props {
-  finalizeMutation: ReturnType<typeof useFinalizeKlageMutation | typeof useFinalizeAnkeMutation>;
-  translations: Language['klageskjema' | 'ankeskjema'];
-}
-
-const FinalizeDigital = ({ setError, status, id, fritekst, finalizeMutation, translations }: FinalizeDigitalProps) => {
+export const FinalizeDigitalCase = ({ setError, status, id, fritekst, type, vedlegg }: Props) => {
+  const [finalizeKlage] = useFinalizeCaseMutation();
   const navigate = useNavigate();
-  const { common } = useTranslation();
-  const [finalizeKlage] = finalizeMutation;
+  const { skjema, common } = useTranslation();
   const [loading, setIsLoading] = useState<boolean>(false);
   const { data: isAuthenticated } = useIsAuthenticated();
+
+  const errorTranslation = skjema.summary.submit_error;
+  const nextTranslation = skjema.summary.next;
 
   if (isAuthenticated === false) {
     const onClick = () => {
@@ -73,13 +57,13 @@ const FinalizeDigital = ({ setError, status, id, fritekst, finalizeMutation, tra
     setIsLoading(true);
 
     try {
-      await finalizeKlage(id).unwrap();
+      await finalizeKlage(id);
       navigate(NEXT_PAGE_URL);
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
       } else {
-        setError(translations.summary.submit_error);
+        setError(errorTranslation[type]);
       }
 
       setIsLoading(false);
@@ -92,10 +76,10 @@ const FinalizeDigital = ({ setError, status, id, fritekst, finalizeMutation, tra
       to={NEXT_PAGE_URL}
       variant="primary"
       onClick={submitForm}
-      disabled={loading || fritekst.length === 0}
+      disabled={loading || (fritekst.length === 0 && vedlegg.length === 0)}
       loading={loading}
     >
-      {translations.summary.next(status)}
+      {nextTranslation(status, type)}
     </Button>
   );
 };

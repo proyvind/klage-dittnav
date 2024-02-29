@@ -1,10 +1,4 @@
-export const isType = (type: string | undefined): type is 'klage' | 'anke' | 'ettersendelse' => {
-  if (type === undefined) {
-    return false;
-  }
-
-  return type === 'klage' || type === 'anke' || type === 'ettersendelse';
-};
+export const isSak = (sak: string | undefined): sak is 'sak' => sak === 'sak';
 
 export const isAnonymousStep = (step: string | undefined): step is 'begrunnelse' | 'oppsummering' | 'innsending' => {
   if (step === undefined) {

@@ -3,9 +3,7 @@ import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
 import { usePageInit } from '@app/hooks/use-page-init';
 import { useIsAuthenticated } from '@app/hooks/use-user';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
-import { Anke } from '@app/redux-api/case/anke/types';
-import { Klage } from '@app/redux-api/case/klage/types';
-import { CaseStatus } from '@app/redux-api/case/types';
+import { Anke, CaseStatus, EttersendelseAnke, EttersendelseKlage, Klage } from '@app/redux-api/case/types';
 import { FormTitleContainer } from '@app/routes/form-title-container';
 import { ContentContainer } from '@app/styled-components/content-container';
 import { FormMainContainer } from '@app/styled-components/main-container';
@@ -16,7 +14,7 @@ interface Props {
   activeStep: number;
   isValid: boolean;
   children: React.ReactNode;
-  klageOrAnke: Klage | Anke;
+  case: Klage | Anke | EttersendelseKlage | EttersendelseAnke;
   steps: string[];
   title_fragment: string;
   page_title: string;
@@ -26,7 +24,7 @@ export const DigitalFormContainer = ({
   innsendingsytelse,
   activeStep,
   isValid,
-  klageOrAnke,
+  case: sak,
   children,
   steps,
   title_fragment,
@@ -41,17 +39,17 @@ export const DigitalFormContainer = ({
 
   const stepperSteps: StepProps[] = [
     {
-      disabled: isAuthenticated === false || klageOrAnke.status === CaseStatus.DONE,
+      disabled: isAuthenticated === false || sak.status === CaseStatus.DONE,
       to: '../begrunnelse',
       label: label1,
     },
     {
-      disabled: isAuthenticated === false || (!isValid && klageOrAnke.status !== CaseStatus.DONE),
+      disabled: isAuthenticated === false || (!isValid && sak.status !== CaseStatus.DONE),
       to: '../oppsummering',
       label: label2,
     },
     {
-      disabled: isAuthenticated === false || klageOrAnke.status !== CaseStatus.DONE,
+      disabled: isAuthenticated === false || sak.status !== CaseStatus.DONE,
       to: '../kvittering',
       label: label3,
     },

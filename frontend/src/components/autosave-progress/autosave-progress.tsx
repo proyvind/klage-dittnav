@@ -1,18 +1,15 @@
 import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons';
 import { Popover } from '@navikt/ds-react';
+import { formatDate, formatISO, isToday } from 'date-fns';
 import React, { useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { Language } from '@app/language/language';
-import { Ellipsis } from '@app/styled-components/ellipsis';
+import { useTranslation } from '@app/language/use-translation';
 
-interface StatusProps {
+interface Props {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
-}
-
-interface Props extends StatusProps {
-  translations: Language['klageskjema' | 'ankeskjema'];
+  lastSaved: Date;
 }
 
 const AutosaveContainer = styled.div`
@@ -33,15 +30,16 @@ const AutosaveContent = styled.div`
   align-items: center;
 `;
 
-export const AutosaveProgressIndicator = ({ translations, ...props }: Props) => {
-  const { popover, saving, saved, failed } = translations.begrunnelse.autosave;
+export const AutosaveProgressIndicator = (props: Props) => {
+  const { skjema } = useTranslation();
+  const { popover, saved, failed } = skjema.begrunnelse.autosave;
   const anchor = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <AutosaveContainer>
       <AutosaveContent ref={anchor} onClick={() => setIsOpen(!isOpen)}>
-        {getContent(props, saving, saved, failed)}
+        {getContent(props, saved, failed)}
       </AutosaveContent>
       <Popover open={isOpen} anchorEl={anchor.current} onClose={() => setIsOpen(false)} placement="top-end">
         <Popover.Content>{popover}</Popover.Content>
@@ -50,20 +48,7 @@ export const AutosaveProgressIndicator = ({ translations, ...props }: Props) => 
   );
 };
 
-const getContent = (status: StatusProps, saving: string, saved: string, failed: string) => {
-  if (status.isLoading) {
-    return <Ellipsis>{saving}</Ellipsis>;
-  }
-
-  if (status.isSuccess) {
-    return (
-      <>
-        <CheckmarkIcon aria-hidden />
-        <>{saved}</>
-      </>
-    );
-  }
-
+const getContent = (status: Props, saved: string, failed: string) => {
   if (status.isError) {
     return (
       <>
@@ -73,5 +58,20 @@ const getContent = (status: StatusProps, saving: string, saved: string, failed: 
     );
   }
 
-  return null;
+  return (
+    <>
+      <CheckmarkIcon aria-hidden />
+      <span>
+        {saved} {getDate(status.lastSaved)}
+      </span>
+    </>
+  );
+};
+
+const getDate = (date: Date) => {
+  if (isToday(date)) {
+    return <time dateTime={formatISO(date)}>{formatDate(date, 'HH:mm:ss')}</time>;
+  }
+
+  return <time dateTime={formatISO(date)}>{formatDate(date, 'dd.MM.yyyy HH:mm:ss')}</time>;
 };

@@ -1,19 +1,19 @@
-import dayjs, { extend } from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { ISessionCase } from '@app/components/case/uinnlogget/types';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { Languages } from '@app/language/types';
-import { SessionKey } from '../types';
+import { CASE_TYPE_PATH_SEGMENTS, CaseType } from '@app/redux-api/case/types';
 
-extend(utc);
+export const getSessionCaseKey = (type: CaseType, ytelse: Innsendingsytelse): string =>
+  `${CASE_TYPE_PATH_SEGMENTS[type]}-${ytelse}`;
 
-export const getSessionKlageKey = (key: SessionKey): string => `klage-${key}`;
-
-export const createSessionKlage = (
+export const createSessionCase = (
+  type: CaseType,
   language: Languages,
   innsendingsytelse: Innsendingsytelse,
-  internalSaksnummer: string | null = null,
-): ISessionKlage => ({
+  internalSaksnummer: string | null,
+): ISessionCase => ({
+  id: crypto.randomUUID(),
+  type,
   innsendingsytelse,
   foedselsnummer: '',
   navn: {
@@ -27,5 +27,7 @@ export const createSessionKlage = (
   checkboxesSelected: [],
   language,
   hasVedlegg: false,
-  modifiedByUser: dayjs().utc(true).toISOString(),
+  modifiedByUser: new Date().toISOString(),
+  caseIsAtKA: null,
+  enhetsnummer: null,
 });

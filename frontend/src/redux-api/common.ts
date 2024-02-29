@@ -36,7 +36,7 @@ const staggeredBaseQuery = (baseUrl: string) => {
         sendErrorReport();
       }
 
-      if (typeof result.error === 'undefined') {
+      if (result.error === undefined) {
         return result;
       }
 

@@ -1,9 +1,8 @@
 import { DatePicker as DatePickerInternal } from '@navikt/ds-react';
 import { addYears, format, isAfter, isBefore, isValid, parse, subDays, subYears } from 'date-fns';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { isoDateToPretty } from '@app/domain/date/date';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from '@app/language/use-translation';
-import { FORMAT, PRETTY_FORMAT } from './constants';
+import { PRETTY_FORMAT } from './constants';
 
 interface Props {
   disabled?: boolean;
@@ -11,11 +10,12 @@ interface Props {
   fromDate?: Date;
   id: string;
   label: React.ReactNode;
-  onChange: (date: string | null) => void;
+  onChange: (date: Date | null) => void;
   toDate?: Date;
-  value: string | null;
+  value: Date | null;
   size: 'small' | 'medium';
   centuryThreshold?: number;
+  onBlur?: () => void;
 }
 
 export const DatePicker = ({
@@ -29,17 +29,18 @@ export const DatePicker = ({
   value,
   size,
   centuryThreshold = 50,
+  onBlur,
 }: Props) => {
   const [inputError, setInputError] = useState<string>();
-  const [input, setInput] = useState<string>(value === null ? '' : isoDateToPretty(value) ?? '');
+  const [input, setInput] = useState<string>(value === null ? '' : format(value, PRETTY_FORMAT));
   const { error_messages } = useTranslation();
 
   useEffect(() => {
-    setInput(value === null ? '' : isoDateToPretty(value) ?? '');
+    setInput(value === null ? '' : format(value, PRETTY_FORMAT));
     setInputError(undefined);
   }, [value]);
 
-  const selected = useMemo(() => (value === null ? undefined : parse(value, FORMAT, new Date())), [value]);
+  const selected = value ?? undefined;
 
   const onDateChange = (date?: Date) => {
     setInputError(undefined);
@@ -47,7 +48,7 @@ export const DatePicker = ({
     if (date === undefined) {
       onChange(null);
     } else {
-      onChange(format(date, FORMAT));
+      onChange(date);
     }
   };
 
@@ -72,12 +73,12 @@ export const DatePicker = ({
       }
 
       setInputError(undefined);
-      onChange(format(date, FORMAT));
+      onChange(date);
     },
     [error_messages.date, fromDate, onChange, toDate],
   );
 
-  const onInputChange = useCallback(() => {
+  const onInputBlur = useCallback(() => {
     if (input === '') {
       setInputError(undefined);
       onChange(null);
@@ -179,7 +180,10 @@ export const DatePicker = ({
         disabled={disabled}
         value={input}
         onChange={({ target }) => setInput(target.value)}
-        onBlur={onInputChange}
+        onBlur={() => {
+          onInputBlur();
+          onBlur?.();
+        }}
         size={size}
       />
     </DatePickerInternal>

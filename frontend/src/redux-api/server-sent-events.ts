@@ -52,7 +52,7 @@ export class ServerSentEventManager {
   }
 
   private removeAllEventListeners() {
-    if (typeof this.events !== 'undefined') {
+    if (this.events !== undefined) {
       this.listeners.forEach(([event, listener]) => this.events.removeEventListener(event, listener));
     }
   }

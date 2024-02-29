@@ -4,28 +4,30 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { ISODate, isoDateToPretty } from '@app/domain/date/date';
 import { Envelope } from '@app/icons/envelope';
-import { Language } from '@app/language/language';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
+import { CaseType } from '@app/redux-api/case/types';
 import { CenteredContainer } from '@app/styled-components/common';
 import { CenteredHeading } from '@app/styled-components/page-title';
 import { ExternalLink } from '../../../link/link';
 
 interface Props {
-  translations: Language['klageskjema' | 'ankeskjema'];
   children?: React.ReactNode;
+  type: CaseType;
+  ytelse: Innsendingsytelse;
 }
 
-export const Kvittering = ({ translations, children }: Props) => {
-  const { kvittering } = useTranslation();
+export const Kvittering = ({ children, type, ytelse }: Props) => {
+  const { skjema } = useTranslation();
 
   return (
     <>
       <div>
         <Icon />
         <CenteredHeading level="2" size="medium">
-          {translations.kvittering.title}
+          {skjema.kvittering.title[type]}
         </CenteredHeading>
       </div>
 
@@ -33,17 +35,17 @@ export const Kvittering = ({ translations, children }: Props) => {
 
       <Alert variant="success">
         <Heading spacing size="small" level="3">
-          {translations.kvittering.general_info.title}
+          {skjema.kvittering.general_info.title}
         </Heading>
-        <BodyShort>{translations.kvittering.general_info.description}</BodyShort>
+        <BodyShort>{skjema.kvittering.general_info.description(type, ytelse)}</BodyShort>
       </Alert>
 
       <BodyShort>
-        {translations.kvittering.read_more} {kvittering.see_estimate}
+        {skjema.kvittering.read_more} {skjema.kvittering.see_estimate}
       </BodyShort>
       <CenteredContainer>
-        <ExternalLink href={translations.kvittering.dine_saker.url} openInSameWindow>
-          {translations.kvittering.dine_saker.title}
+        <ExternalLink href={skjema.kvittering.dine_saker.url} openInSameWindow>
+          {skjema.kvittering.dine_saker.title}
         </ExternalLink>
       </CenteredContainer>
     </>
@@ -53,23 +55,27 @@ export const Kvittering = ({ translations, children }: Props) => {
 interface JournalpostProps {
   caseId: string;
   finalizedDate: ISODate | null;
-  translations: Language['klageskjema' | 'ankeskjema'];
   basePath: string;
+  type: CaseType;
 }
 
-export const Journalpost = ({ caseId, finalizedDate, translations, basePath }: JournalpostProps) => (
-  <>
-    <BodyShort>
-      <ExternalLink href={`${basePath}/${caseId}/pdf`} onClick={() => addAppEvent(AppEventEnum.DOWNLOAD)}>
-        <DownloadIcon aria-hidden />
-        <span>{translations.kvittering.download}</span>
-      </ExternalLink>
-    </BodyShort>
-    <BodyShort>
-      {translations.kvittering.sent}: {isoDateToPretty(finalizedDate)}
-    </BodyShort>
-  </>
-);
+export const Journalpost = ({ caseId, finalizedDate, basePath, type }: JournalpostProps) => {
+  const { skjema } = useTranslation();
+
+  return (
+    <>
+      <BodyShort>
+        <ExternalLink href={`${basePath}/${caseId}/pdf`} onClick={() => addAppEvent(AppEventEnum.DOWNLOAD)}>
+          <DownloadIcon aria-hidden />
+          <span>{skjema.kvittering.download[type]}</span>
+        </ExternalLink>
+      </BodyShort>
+      <BodyShort>
+        {skjema.kvittering.sent}: {isoDateToPretty(finalizedDate)}
+      </BodyShort>
+    </>
+  );
+};
 
 const Icon = styled(Envelope)`
   display: block;

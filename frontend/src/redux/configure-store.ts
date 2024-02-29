@@ -1,7 +1,6 @@
 import { Middleware, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { ankeApi } from '@app/redux-api/case/anke/api';
-import { klageApi } from '@app/redux-api/case/klage/api';
+import { caseApi } from '@app/redux-api/case/api';
 import { innsendingsytelserApi } from '@app/redux-api/innsendingsytelser';
 import { userApi } from '@app/redux-api/user/api';
 import { RootState, rootReducer } from './root';
@@ -53,13 +52,7 @@ export const reduxStore = configureStore({
           'meta.arg.originalArgs.file',
         ],
       },
-    }).concat([
-      innsendingsytelserApi.middleware,
-      userApi.middleware,
-      klageApi.middleware,
-      ankeApi.middleware,
-      rtkQueryErrorLogger,
-    ]),
+    }).concat([innsendingsytelserApi.middleware, userApi.middleware, caseApi.middleware, rtkQueryErrorLogger]),
 });
 
 export type AppDispatch = typeof reduxStore.dispatch;

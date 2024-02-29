@@ -8,7 +8,7 @@ export const useInnsendingsytelseName = (innsendingsytelse: Innsendingsytelse): 
   const { common } = useTranslation();
   const { data, isLoading } = useGetInnsendingsytelserQuery(lang);
 
-  if (isLoading || typeof data === 'undefined') {
+  if (isLoading || data === undefined) {
     return [common.loading, true];
   }
 

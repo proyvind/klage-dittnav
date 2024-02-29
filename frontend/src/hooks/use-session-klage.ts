@@ -1,39 +1,41 @@
 import { useEffect, useMemo } from 'react';
-import { ISessionKlage } from '@app/components/klage/uinnlogget/types';
+import { ISessionCase } from '@app/components/case/uinnlogget/types';
 import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { useLanguage } from '@app/language/use-language';
 import { useAppDispatch, useAppSelector } from '@app/redux/configure-store';
-import { createSessionKlage, getSessionKlageKey } from '@app/redux/session/klage/helpers';
-import { loadSessionKlage } from '@app/redux/session/session';
+import { getSessionCaseKey } from '@app/redux/session/klage/helpers';
+import { loadOrCreateSessionCase } from '@app/redux/session/session';
+import { CaseType } from '@app/redux-api/case/types';
 
-export const useSessionKlage = (
+export const useSessionCase = (
+  type: CaseType,
   innsendingsytelse: Innsendingsytelse,
   internalSaksnummer: string | null,
-): [ISessionKlage, false] | [undefined, true] => {
+): [ISessionCase, false] | [undefined, true] => {
   const dispatch = useAppDispatch();
-  const sessionKlageMap = useAppSelector((state) => state.session.klager);
+  const sessionCaseMap = useAppSelector((state) => state.session);
   const language = useLanguage();
 
-  const klage = useMemo(() => {
-    const klageKey = getSessionKlageKey(innsendingsytelse);
-
-    return sessionKlageMap[klageKey];
-  }, [innsendingsytelse, sessionKlageMap]);
+  const data = useMemo(
+    () => sessionCaseMap[getSessionCaseKey(type, innsendingsytelse)],
+    [innsendingsytelse, sessionCaseMap, type],
+  );
 
   useEffect(() => {
-    if (klage === undefined) {
+    if (data === undefined) {
       dispatch(
-        loadSessionKlage({
-          key: innsendingsytelse,
-          klage: createSessionKlage(language, innsendingsytelse, internalSaksnummer),
+        loadOrCreateSessionCase({
+          type,
+          innsendingsytelse,
+          data: { language, innsendingsytelse, internalSaksnummer },
         }),
       );
     }
-  }, [dispatch, innsendingsytelse, internalSaksnummer, klage, language]);
+  }, [dispatch, innsendingsytelse, internalSaksnummer, data, language, type]);
 
-  if (klage === undefined) {
+  if (data === undefined) {
     return [undefined, true];
   }
 
-  return [klage, false];
+  return [data, false];
 };

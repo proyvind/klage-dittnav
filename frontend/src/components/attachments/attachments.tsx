@@ -1,19 +1,16 @@
 import { TrashIcon, XMarkIcon } from '@navikt/aksel-icons';
-import { Alert, BodyLong, Button, ErrorSummary, Label, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, ErrorMessage, ErrorSummary, Label } from '@navikt/ds-react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { displayBytes } from '@app/functions/display';
 import { isApiError, isError } from '@app/functions/is-api-error';
 import { isErrorMessageKey } from '@app/language/error-messages';
-import { Language } from '@app/language/language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addAppEvent } from '@app/logging/error-report/error-report';
-import { useUploadAttachmentMutation as useUploadAnkeAttachmentMutation } from '@app/redux-api/case/anke/api';
-import { useUploadAttachmentMutation as useUploadKlageAttachmentMutation } from '@app/redux-api/case/klage/api';
-import { Attachment, DeleteAttachmentParams } from '@app/redux-api/case/types';
-import { CenteredContainer } from '@app/styled-components/common';
+import { DeleteAttachmentParams } from '@app/redux-api/case/params';
+import { Attachment } from '@app/redux-api/case/types';
 import { ExternalLink } from '../link/link';
 import { FileIcon } from './file-icon';
 import { UploadButton } from './upload-button';
@@ -21,23 +18,15 @@ import { UploadButton } from './upload-button';
 interface Props {
   attachments: Attachment[];
   onDelete: (attachment: DeleteAttachmentParams) => void;
-  useUploadAttachment: typeof useUploadKlageAttachmentMutation | typeof useUploadAnkeAttachmentMutation;
   basePath: string;
   caseId: string;
-  translations: Language['klageskjema' | 'ankeskjema'];
+  error: string | undefined;
 }
 
 const FILE_INPUT_ID = 'file-upload-input';
 
-export const AttachmentsSection = ({
-  useUploadAttachment,
-  attachments,
-  onDelete,
-  basePath,
-  caseId,
-  translations,
-}: Props) => {
-  const { common } = useTranslation();
+export const AttachmentsSection = ({ attachments, onDelete, basePath, caseId, error }: Props) => {
+  const { skjema, common } = useTranslation();
   const [attachmentsLoading, setAttachmentsLoading] = useState<boolean>(false);
   const [attachmentErrors, setAttachmentErrors] = useState<FetchBaseQueryError[]>([]);
 
@@ -50,9 +39,10 @@ export const AttachmentsSection = ({
     <>
       <div>
         <Label htmlFor={FILE_INPUT_ID} as="label">
-          {translations.begrunnelse.attachments.title} ({attachments.length})
+          {skjema.begrunnelse.attachments.title} ({attachments.length})
+          {error === undefined ? null : <ErrorMessage>{error}</ErrorMessage>}
         </Label>
-        <BodyLong>{translations.begrunnelse.attachments.description}</BodyLong>
+        <BodyLong>{skjema.begrunnelse.attachments.description}</BodyLong>
       </div>
       <StyledList>
         {attachments.map(({ id, tittel, sizeInBytes, contentType }) => (
@@ -77,48 +67,32 @@ export const AttachmentsSection = ({
         ))}
       </StyledList>
 
-      {showAttachmentLoader(attachmentsLoading)}
-
       <Alert variant="info" inline>
-        <BodyLong>{translations.begrunnelse.attachments.supported_types}</BodyLong>
-        <BodyLong>{translations.begrunnelse.attachments.size_limit}</BodyLong>
+        <BodyLong>{skjema.begrunnelse.attachments.supported_types}</BodyLong>
+        <BodyLong>{skjema.begrunnelse.attachments.size_limit}</BodyLong>
       </Alert>
 
-      <ShowErrors errors={attachmentErrors} clear={() => setAttachmentErrors([])} translations={translations} />
+      <ShowErrors errors={attachmentErrors} clear={() => setAttachmentErrors([])} />
 
       <UploadButton
         inputId={FILE_INPUT_ID}
         setLoading={setAttachmentsLoading}
         caseId={caseId}
-        setError={(error) => setAttachmentErrors((e) => [...e, error])}
-        translations={translations}
+        addError={(err) => setAttachmentErrors((e) => [...e, err])}
         isLoading={attachmentsLoading}
-        useUploadAttachment={useUploadAttachment}
       />
     </>
-  );
-};
-
-const showAttachmentLoader = (loading: boolean) => {
-  if (!loading) {
-    return null;
-  }
-
-  return (
-    <CenteredContainer>
-      <Loader type="3xlarge" />
-    </CenteredContainer>
   );
 };
 
 interface ShowErrorsProps {
   errors: FetchBaseQueryError[];
   clear: () => void;
-  translations: Language['klageskjema' | 'ankeskjema'];
 }
 
-const ShowErrors = ({ errors, clear, translations }: ShowErrorsProps) => {
+const ShowErrors = ({ errors, clear }: ShowErrorsProps) => {
   const errorMessages = useErrorMessages(errors);
+  const { skjema } = useTranslation();
 
   if (errors.length === 0) {
     return null;
@@ -131,8 +105,8 @@ const ShowErrors = ({ errors, clear, translations }: ShowErrorsProps) => {
 
   return (
     <div>
-      <StyledClearButton variant="secondary" onClick={clearErrors}>
-        <XMarkIcon aria-hidden /> {translations.begrunnelse.attachments.clear_errors}
+      <StyledClearButton size="small" variant="secondary" onClick={clearErrors} icon={<XMarkIcon aria-hidden />}>
+        {skjema.begrunnelse.attachments.clear_errors}
       </StyledClearButton>
       <ErrorSummary>
         {errorMessages.map((error, i) => (

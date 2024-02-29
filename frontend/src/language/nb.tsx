@@ -1,90 +1,52 @@
 /* eslint-disable max-lines */
+import { Link } from '@navikt/ds-react';
 import { format } from 'date-fns';
 import React from 'react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { PRETTY_FORMAT } from '@app/components/date-picker/constants';
 import { ExternalLink } from '@app/components/link/link';
+import { Innsendingsytelse } from '@app/innsendingsytelser/innsendingsytelser';
 import { ErrorMessageKeys } from '@app/language/error-messages';
-import { Reason } from '@app/redux-api/case/klage/types';
-import { CaseStatus } from '@app/redux-api/case/types';
+import { CaseStatus, CaseType, Reason, getEttersendelsePath } from '@app/redux-api/case/types';
 
-export type Language = typeof nb;
+export type Translations = typeof nb;
 
 export const nb = {
-  ettersendelse: {
-    title: 'Ettersend dokumentasjon',
-    send_by_post: 'Send via post til:',
-    employer_info_logged_out:
-      'Hvis du er en arbeidsgiver må legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
-    employer_info_logged_in:
-      'Hvis du er en arbeidsgiver må du logge ut og legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
-    guide_text:
-      'For å kunne ettersende dokumentasjon må du først skrive ut en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
-    enhet: {
-      radio_title:
-        'Har du mottatt et brev fra NAV Klageinstans eller et brev fra en annen enhet i NAV om at saken din er sendt til NAV Klageinstans?',
-      select_title: 'Hvilken enhet mottok du brevet fra?',
-      none: 'Velg enhet',
+  skjema: {
+    steps: {
+      [CaseType.KLAGE]: ['Begrunnelse', 'Oppsummering', 'Innsending'],
+      [CaseType.ANKE]: ['Begrunnelse', 'Oppsummering', 'Innsending'],
+      [CaseType.ETTERSENDELSE_KLAGE]: ['Ettersendelse', 'Oppsummering', 'Innsending'],
+      [CaseType.ETTERSENDELSE_ANKE]: ['Ettersendelse', 'Oppsummering', 'Innsending'],
     },
-  },
-  klageskjema_post: {
+    employer_info: {
+      [CaseType.KLAGE]:
+        'Hvis du er en arbeidsgiver må du logge ut og sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
+      [CaseType.ANKE]:
+        'Hvis du er en arbeidsgiver må du logge ut og sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
+      [CaseType.ETTERSENDELSE_KLAGE]:
+        'Hvis du er en arbeidsgiver må du logge ut og legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
+      [CaseType.ETTERSENDELSE_ANKE]:
+        'Hvis du er en arbeidsgiver må du logge ut og legge inn fødselsnummeret eller D-nummeret til den arbeidstakeren som ettersendelsen gjelder for, skrive ut forsiden og signere som arbeidsgiver.',
+    },
     common: {
-      title_fragment: 'klage',
-      steps: ['Begrunnelse', 'Oppsummering', 'Innsending'],
-      page_title: 'Klage på vedtak',
-    },
-    has_attachments_label: 'Jeg skal sende med vedlegg.',
-    should_log_in_digital:
-      'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den via post.',
-    employer_info:
-      'Som arbeidsgiver må du sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
-    innsending: {
-      title: 'Hva gjør du nå?',
-      steg: [
-        'Skriv ut klagen. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
-        'Signer forsiden og siste side i klagen.',
-        'Legg ved vedleggene.',
-        'Send via post til ',
-      ],
-      steg_simple: ['Skriv ut klagen.', 'Signer klagen.', 'Legg ved vedleggene.', 'Send via post til '],
-    },
-  },
-  klageskjema: {
-    employer_info:
-      'Hvis du er en arbeidsgiver må du logge ut og sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
-    common: {
-      title_fragment: 'klage',
-      page_title: 'Klage på vedtak',
-      steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
+      title_fragment: {
+        [CaseType.KLAGE]: 'klage',
+        [CaseType.ANKE]: 'anke',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'ettersendelse for klage',
+        [CaseType.ETTERSENDELSE_ANKE]: 'ettersendelse for anke',
+      },
+      page_title: {
+        [CaseType.KLAGE]: 'Klage på vedtak',
+        [CaseType.ANKE]: 'Anke på vedtak',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'Ettersend dokumentasjon til klage',
+        [CaseType.ETTERSENDELSE_ANKE]: 'Ettersend dokumentasjon til anke',
+      },
     },
     begrunnelse: {
-      reasons: {
-        title: 'Hva gjelder klagen? (valgfri)',
-        not_specified: 'Ikke spesifisert.',
-        texts: {
-          [Reason.AVSLAG_PAA_SOKNAD]: 'Jeg har fått avslag på søknaden min',
-          [Reason.FOR_LITE_UTBETALT]: 'Jeg har fått for lite utbetalt',
-          [Reason.UENIG_I_NOE_ANNET]: 'Jeg er uenig i noe annet i vedtaket mitt',
-          [Reason.UENIG_I_VEDTAK_OM_TILBAKEBETALING]: 'Jeg er uenig i vedtaket om tilbakebetaling',
-        },
-      },
-      vedtak_date: {
-        title: 'Vedtaksdato (valgfri)',
-      },
-      saksnummer: {
-        title: 'Saksnummer (valgfri)',
-        internalTitle: 'Saksnummer',
-        change: 'Endre',
-      },
-      begrunnelse_text: {
-        title: 'Hvorfor er du uenig?',
-        placeholder: 'Skriv inn din begrunnelse her.',
-        description:
-          'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.',
-      },
       autosave: {
         popover: 'Vi lagrer endringene dine automatisk.',
-        saving: 'Lagrer',
-        saved: 'Lagret',
+        saved: 'Sist lagret',
         failed: 'Klarte ikke lagre',
       },
       attachments: {
@@ -104,12 +66,82 @@ export const nb = {
         size_limit:
           'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.',
       },
+      saksnummer: {
+        title: 'Saksnummer (valgfri)',
+        internalTitle: 'Saksnummer',
+        change: 'Endre',
+      },
+      reasons: {
+        title: {
+          [CaseType.KLAGE]: 'Hva gjelder klagen? (valgfri)',
+        },
+        texts: {
+          [Reason.AVSLAG_PAA_SOKNAD]: 'Jeg har fått avslag på søknaden min',
+          [Reason.FOR_LITE_UTBETALT]: 'Jeg har fått for lite utbetalt',
+          [Reason.UENIG_I_NOE_ANNET]: 'Jeg er uenig i noe annet i vedtaket mitt',
+          [Reason.UENIG_I_VEDTAK_OM_TILBAKEBETALING]: 'Jeg er uenig i vedtaket om tilbakebetaling',
+        },
+      },
+      vedtak_date: {
+        title: {
+          [CaseType.KLAGE]: 'Vedtaksdato (valgfri)',
+          [CaseType.ANKE]: 'Dato for klagevedtaket fra NAV Klageinstans',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Vedtaksdato (valgfri)',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Dato for klagevedtaket fra NAV Klageinstans',
+        },
+      },
+      klageenhet: {
+        radio_title:
+          'Har du mottatt et brev fra NAV Klageinstans eller en annen enhet i NAV om at saken din er sendt til NAV Klageinstans?',
+        none: 'Ingen enhet valgt',
+        title_required: 'Hvilken enhet mottok du brevet fra?',
+        title_optional: 'Hvilken enhet i NAV Klageinstans er klagen hos?',
+        title: {
+          [CaseType.KLAGE]: undefined,
+          [CaseType.ANKE]: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Hvilken enhet i NAV Klageinstans er klagen hos?',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
+        },
+        not_received: 'Ikke mottatt brev',
+      },
+      begrunnelse_text: {
+        title: {
+          [CaseType.KLAGE]: 'Hvorfor er du uenig?',
+          [CaseType.ANKE]: 'Hvorfor er du uenig i klagevedtaket?',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Har du noe å legge til? (valgfri)',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Har du noe å legge til? (valgfri)',
+        },
+        description: {
+          [CaseType.KLAGE]:
+            'Forklar med dine egne ord hva som gjør at du er uenig og hva du ønsker endret. Legg ved dokumenter som kan vise NAV hvorfor du er uenig.',
+          [CaseType.ANKE]:
+            'Forklar med dine egne ord hva som gjør at du er uenig i klagevedtaket og hva du ønsker endret. Legg ved eventuelle dokumenter du ønsker skal følge saken din til Trygderetten.',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Hvis du har noe du ønsker å legge til, kan du skrive det inn her.',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Hvis du har noe du ønsker å legge til, kan du skrive det inn her.',
+        },
+        placeholder: {
+          [CaseType.KLAGE]: 'Forklar her',
+          [CaseType.ANKE]: 'Forklar her',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Skriv her',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Skriv her',
+        },
+      },
       next_button: 'Gå videre',
-      delete_title: 'Slett klagen og returner til hovedsiden',
+      delete_title: {
+        [CaseType.KLAGE]: 'Slett klagen og returner til hovedsiden',
+        [CaseType.ANKE]: 'Slett anken og returner til hovedsiden',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'Slett ettersendelsen og returner til hovedsiden',
+        [CaseType.ETTERSENDELSE_ANKE]: 'Slett ettersendelsen og returner til hovedsiden',
+      },
     },
     summary: {
       title: 'Se over før du sender inn',
-      submit_error: 'Klarte ikke sende inn klagen. Ukjent feil.',
+      submit_error: {
+        [CaseType.KLAGE]: 'Klarte ikke å sende inn klagen. Ukjent feil.',
+        [CaseType.ANKE]: 'Klarte ikke å sende inn anken. Ukjent feil.',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'Klarte ikke å sende inn ettersendelsen. Ukjent feil.',
+        [CaseType.ETTERSENDELSE_ANKE]: 'Klarte ikke å sende inn ettersendelsen. Ukjent feil.',
+      },
       sections: {
         person: {
           title: <>Person&shy;opplysninger</>,
@@ -117,38 +149,73 @@ export const nb = {
         },
         case: {
           title: 'Opplysninger fra saken',
-          vedtak: 'Vedtaksdato',
-          no_date: 'Ingen dato satt',
+          vedtak: {
+            [CaseType.KLAGE]: 'Vedtaksdato',
+            [CaseType.ANKE]: 'Dato for klagevedtaket fra NAV Klageinstans',
+            [CaseType.ETTERSENDELSE_KLAGE]: 'Vedtaksdato',
+            [CaseType.ETTERSENDELSE_ANKE]: 'Dato for klagevedtaket fra NAV Klageinstans',
+          },
           saksnummer: 'Saksnummer',
-          not_specified: 'Ikke angitt',
           from_system: 'Hentet fra internt system',
+          klageenhet: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
         },
         begrunnelse: {
-          title: 'Begrunnelse i klagen din',
-          what: 'Hva gjelder klagen?',
-          why: 'Hvorfor er du uenig?',
+          title: {
+            [CaseType.KLAGE]: 'Begrunnelse i klagen din',
+            [CaseType.ANKE]: 'Begrunnelse i anken din',
+            [CaseType.ETTERSENDELSE_KLAGE]: 'Ettersendelsen din',
+            [CaseType.ETTERSENDELSE_ANKE]: 'Ettersendelsen din',
+          },
+          what: {
+            [CaseType.KLAGE]: 'Hva gjelder klagen?',
+            [CaseType.ANKE]: 'Hva gjelder anken?',
+            [CaseType.ETTERSENDELSE_KLAGE]: 'Hva gjelder ettersendelsen?',
+            [CaseType.ETTERSENDELSE_ANKE]: 'Hva gjelder ettersendelsen?',
+          },
+          why: {
+            [CaseType.KLAGE]: 'Hvorfor er du uenig?',
+            [CaseType.ANKE]: 'Hvorfor er du uenig i klagevedtaket?',
+            [CaseType.ETTERSENDELSE_KLAGE]: 'Har du noe å legge til?',
+            [CaseType.ETTERSENDELSE_ANKE]: 'Har du noe å legge til?',
+          },
           documents: 'Vedlagte dokumenter',
         },
       },
-      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt klage'),
-      post_link: 'Last ned hvis du heller ønsker å sende via post',
+      next: (status: CaseStatus, type: CaseType): string =>
+        status === CaseStatus.DRAFT ? 'Send inn' : `Se innsendt ${CASE_TYPE_NAMES_LOWER_CASE_NB[type]}`,
+      post_link: 'Last ned hvis du heller ønsker å sende i posten',
+      documents: 'Vedlagte dokumenter',
     },
     kvittering: {
-      title: 'Kvittering for innsendt klage',
-      download: 'Se og last ned klagen din',
+      title: {
+        [CaseType.KLAGE]: 'Kvittering for innsendt klage',
+        [CaseType.ANKE]: 'Kvittering for innsendt anke',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'Kvittering for ettersendelse til klage',
+        [CaseType.ETTERSENDELSE_ANKE]: 'Kvittering for ettersendelse til anke',
+      },
+      download: {
+        [CaseType.KLAGE]: 'Se og last ned klagen din',
+        [CaseType.ANKE]: 'Se og last ned anken din',
+        [CaseType.ETTERSENDELSE_KLAGE]: 'Se og last ned den ettersendte dokumentasjonen din',
+        [CaseType.ETTERSENDELSE_ANKE]: 'Se og last ned den ettersendte dokumentasjonen din',
+      },
       sent: 'Sendt inn',
       general_info: {
         title: 'Nå er resten vårt ansvar',
-        description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersend dokumentasjon" for det det gjelder ',
-          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
-            her
+        description: (type: CaseType, ytelse: Innsendingsytelse) => [
+          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om du har glemt å sende inn noe dokumentasjon til saken din, kan du fortsatt ',
+          <Link key="internal" to={`/nb/${getEttersendelsePath(type)}/${ytelse}`} as={ReactRouterLink}>
+            ettersende dokumentasjon
+          </Link>,
+          '. Kommer du på noe du har glemt på et senere tidspunkt, kan du gå via ',
+          <ExternalLink key="external" href="https://www.nav.no/klage" inline openInSameWindow>
+            nav.no/klage
           </ExternalLink>,
-          '.',
+          ' ved å trykke på "Ettersend dokumentasjon" for det saken gjelder.',
         ],
       },
       read_more: [
-        'Du kan lese mer om hvordan vi behandler klagen din videre på våre ',
+        `Du kan lese mer om hvordan vi behandler saken din videre på våre `,
         <ExternalLink
           key="tema"
           href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
@@ -158,185 +225,105 @@ export const nb = {
         </ExternalLink>,
         '.',
       ].map((c, index) => <span key={index}>{c}</span>),
-      dine_saker: {
-        title: 'Se dine saker på Ditt NAV',
-        url: 'https://person.nav.no/mine-saker/',
-      },
       loading: {
-        title: 'Sender inn klage...',
-        still_working: 'Jobber fortsatt...',
-      },
-    },
-  },
-  ankeskjema_post: {
-    common: {
-      title_fragment: 'Anke',
-      steps: ['Begrunnelse', 'Oppsummering', 'Innsending'],
-      page_title: 'Anke på vedtak',
-    },
-    has_attachments_label: 'Jeg skal sende med vedlegg.',
-    should_log_in_digital:
-      'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den via post.',
-    employer_info:
-      'Som arbeidsgiver må du sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
-    innsending: {
-      title: 'Hva gjør du nå?',
-      steg: [
-        'Skriv ut anken. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
-        'Signer anken.',
-        'Legg ved vedleggene.',
-        'Send via post til ',
-      ],
-      steg_simple: ['Skriv ut anken.', 'Signer anken.', 'Legg ved vedleggene.', 'Send via post til '],
-    },
-  },
-  ankeskjema: {
-    employer_info:
-      'Hvis du er en arbeidsgiver må du logge ut og sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
-    common: {
-      title_fragment: 'anke',
-      page_title: 'Anke på vedtak',
-      steps: ['Begrunnelse', 'Oppsummering', 'Kvittering'],
-    },
-    begrunnelse: {
-      vedtak_date: {
-        title: 'Dato for klagevedtaket fra NAV Klageinstans',
-      },
-      saksnummer: {
-        title: 'Saksnummer (valgfri)',
-        internalTitle: 'Saksnummer',
-        change: 'Endre',
-      },
-      klageenhet: {
-        title: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
-        not_specified: 'Ingen enhet valgt',
-      },
-      begrunnelse_text: {
-        title: 'Hvorfor er du uenig i klagevedtaket?',
-        placeholder: 'Skriv inn din begrunnelse her.',
-        description:
-          'Forklar med dine egne ord hva som gjør at du er uenig i klagevedtaket og hva du ønsker endret. Legg ved eventuelle dokumenter du ønsker skal følge saken din til Trygderetten',
-      },
-      autosave: {
-        popover: 'Vi lagrer endringene dine automatisk.',
-        saving: 'Lagrer',
-        saved: 'Lagret',
-        failed: 'Klarte ikke lagre',
-      },
-      attachments: {
-        title: 'Vedlegg',
-        upload_button_text: 'Last opp nytt vedlegg',
-        description: 'Har du informasjon du ønsker å legge ved, laster du det opp her.',
-        supported_types: [
-          'Filtyper som støttes: ',
-          <b key="png">PNG</b>,
-          ', ',
-          <b key="jpeg">JPEG</b>,
-          ' og ',
-          <b key="pdf">PDF</b>,
-          '.',
-        ].map((c, index) => <span key={index}>{c}</span>),
-        size_limit:
-          'Filstørrelsen kan ikke være større enn 8 MB, og total størrelse av alle vedlegg kan ikke være større enn 32 MB.',
-        clear_errors: 'Fjern feilmeldinger',
-      },
-      next_button: 'Gå videre',
-      delete_title: 'Slett anken og returner til hovedsiden',
-    },
-    summary: {
-      title: 'Se over før du sender inn',
-      submit_error: 'Klarte ikke sende inn anken. Ukjent feil.',
-      sections: {
-        person: {
-          title: <>Person&shy;opplysninger</>,
-          info_from: 'Hentet fra Folkeregisteret og Kontakt- og reserverasjonsregisteret.',
+        title: {
+          [CaseType.KLAGE]: 'Sender inn klagen ...',
+          [CaseType.ANKE]: 'Sender inn anken ...',
+          [CaseType.ETTERSENDELSE_KLAGE]: 'Sender inn dokumentasjon ...',
+          [CaseType.ETTERSENDELSE_ANKE]: 'Sender inn dokumentasjon ...',
         },
-        case: {
-          title: 'Opplysninger fra saken',
-          vedtak: 'Dato for klagevedtaket fra NAV Klageinstans',
-          no_date: 'Ingen dato satt',
-          saksnummer: 'Saksnummer',
-          klageenhet: 'Enhet oppgitt i klagevedtaket under informasjon om retten til å anke',
-          not_specified: 'Ikke angitt',
-          from_system: 'Hentet fra internt system',
-        },
-        begrunnelse: {
-          title: 'Begrunnelse i anken din',
-          why: 'Beskrivelse i din anke',
-          documents: 'Vedlagte dokumenter',
-        },
+        still_working: 'Jobber fortsatt ...',
       },
-      next: (status: CaseStatus): string => (status === CaseStatus.DRAFT ? 'Send inn' : 'Se innsendt anke'),
-      post_link: 'Last ned hvis du heller ønsker å sende via post',
-    },
-    kvittering: {
-      title: 'Kvittering for innsendt anke',
-      download: 'Se og last ned anken din',
-      sent: 'Sendt inn',
-      general_info: {
-        title: 'Nå er resten vårt ansvar',
-        description: [
-          'Du trenger ikke gjøre noe mer. Vi tar kontakt med deg hvis det er noe vi lurer på eller hvis vi trenger flere opplysninger fra deg. Om det viser seg at du har glemt å sende inn noe dokumentasjon til saken din, så kan dette ettersendes ved å trykke på "Ettersend dokumentasjon" for det det gjelder ',
-          <ExternalLink key="klage" href="https://www.nav.no/klage" inline openInSameWindow>
-            her
-          </ExternalLink>,
-          '.',
-        ],
-      },
-      read_more: [
-        'Du kan lese mer om hvordan vi behandler anken din videre på våre ',
-        <ExternalLink
-          key="tema"
-          href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-          inline
-        >
-          tema-sider om klage og anke
+      see_estimate: [
+        'Du kan se ',
+        <ExternalLink key="saksbehandlingstid" href="https://www.nav.no/saksbehandlingstider" inline>
+          forventet saksbehandlingstid for klage og anke
         </ExternalLink>,
-        '.',
-      ],
+        ' i egen oversikt.',
+      ].map((c, index) => <span key={index}>{c}</span>),
       dine_saker: {
-        title: 'Se dine saker på Ditt NAV',
+        title: 'Se dine saker på Min side',
         url: 'https://person.nav.no/mine-saker/',
-      },
-      loading: {
-        title: 'Sender inn anke...',
-        still_working: 'Jobber fortsatt...',
       },
     },
   },
-  klage_create: {
-    create_error: 'Klarte ikke opprette klage',
+  innsending: {
+    title: 'Hva gjør du nå?',
+    steg: {
+      [CaseType.KLAGE]: [
+        'Skriv ut klagen. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer forsiden og siste side i klagen.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+      [CaseType.ANKE]: [
+        'Skriv ut anken. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer forsiden og siste side i anken.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+      [CaseType.ETTERSENDELSE_KLAGE]: [
+        'Skriv ut dokumentasjonen. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer forsiden og siste side i dokumentasjonen.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+      [CaseType.ETTERSENDELSE_ANKE]: [
+        'Skriv ut dokumentasjonen. Ved utskrift kommer en forside som NAV har laget for deg. Denne skal ligge øverst. Følg oppskriften på forsiden.',
+        'Signer forsiden og siste side i dokumentasjonen.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+    },
+    steg_simple: {
+      [CaseType.KLAGE]: ['Skriv ut klagen.', 'Signer klagen.', 'Legg ved vedleggene.', 'Send i posten til '],
+      [CaseType.ANKE]: ['Skriv ut anken.', 'Signer anken.', 'Legg ved vedleggene.', 'Send i posten til '],
+      [CaseType.ETTERSENDELSE_KLAGE]: [
+        'Skriv ut dokumentasjonen.',
+        'Signer dokumentasjonen.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+      [CaseType.ETTERSENDELSE_ANKE]: [
+        'Skriv ut dokumentasjonen.',
+        'Signer dokumentasjonen.',
+        'Legg ved vedleggene.',
+        'Send i posten til ',
+      ],
+    },
   },
-  anke_create: {
-    create_error: 'Klarte ikke opprette anke',
+  post: {
+    should_log_in_digital: {
+      [CaseType.KLAGE]:
+        'Hvis du logger deg inn kan du sende inn klagen og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut klagen, signere den og sende den i posten.',
+      [CaseType.ANKE]:
+        'Hvis du logger deg inn kan du sende inn anken og vedlegg digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut anken, signere den og sende den i posten.',
+      [CaseType.ETTERSENDELSE_KLAGE]:
+        'Hvis du logger deg inn kan du ettersende dokumentasjon digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut dokumentasjonen, signere den og sende den i posten.',
+      [CaseType.ETTERSENDELSE_ANKE]:
+        'Hvis du logger deg inn kan du ettersende dokumentasjon digitalt her. Du kan fortsette uten å logge deg inn, men husk at du da må skrive ut dokumentasjonen, signere den og sende den i posten.',
+    },
+    employer_info: {
+      [CaseType.KLAGE]:
+        'Som arbeidsgiver må du sende klagen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut klagen og signerer som arbeidsgiver.',
+      [CaseType.ANKE]:
+        'Som arbeidsgiver må du sende anken i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut anken og signerer som arbeidsgiver.',
+      [CaseType.ETTERSENDELSE_KLAGE]:
+        'Som arbeidsgiver må du sende dokumentasjonen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut dokumentasjonen og signerer som arbeidsgiver.',
+      [CaseType.ETTERSENDELSE_ANKE]:
+        'Som arbeidsgiver må du sende dokumentasjonen i posten. Du legger inn fødselsnummeret eller D-nummeret til den arbeidstakeren som vedtaket gjelder for, skriver ut dokumentasjonen og signerer som arbeidsgiver.',
+    },
   },
   user_loader: {
-    loading_user: 'Laster bruker...',
+    loading_user: 'Laster...',
   },
-  klage_loader: {
-    loading_klage: 'Laster klage...',
-    format_error: (klageId: string, error: Error) => `Klarte ikke hente klage med ID "${klageId}". ${error.message}`,
-  },
-  anke_loader: {
-    loading_anke: 'Laster anke...',
-    format_error: (ankeInternalSaksnummer: string, error: Error) =>
-      `Klarte ikke hente anke med ID "${ankeInternalSaksnummer}". ${error.message}`,
-  },
-  landing_page: {
-    checking_user: 'Sjekker bruker...',
+  case_loader: {
+    loading: 'Laster...',
+    format_error: (id: string, error: Error) => `Klarte ikke hente sak med ID "${id}". ${error.message}`,
   },
   not_found_page: {
     title: 'Finner ikke siden',
     go_back: 'Gå tilbake til nav.no/klage',
-  },
-  kvittering: {
-    see_estimate: [
-      'Du kan se ',
-      <ExternalLink key="saksbehandlingstid" href="https://www.nav.no/saksbehandlingstider" inline>
-        forventet saksbehandlingstid for klage og anke
-      </ExternalLink>,
-      ' i egen oversikt.',
-    ].map((c, index) => <span key={index}>{c}</span>),
   },
   error_messages: {
     [ErrorMessageKeys.MAX_UPLOAD_SIZE]: 'Filstørrelsen kan ikke være større enn 8 MB.',
@@ -352,19 +339,30 @@ export const nb = {
       fnr_dnr_or_npid: 'Du må fylle inn et gyldig fødselsnummer, D-nummer eller NPID.',
       vedtak_date:
         'Du må enten la feltet stå tomt, eller fylle inn en dato som er en gyldig dato, og som ikke er i fremtiden.',
-      vedtak_date_required: 'Du må fylle inn en dato som er en gyldig dato og som ikke er i fremtiden.',
+      vedtak_date_required: 'Du må fylle inn en gyldig dato som ikke er i fremtiden.',
       fornavn: 'Du må fylle inn fornavn og mellomnavn.',
       etternavn: 'Du må fylle inn etternavn.',
       begrunnelse: 'Du må skrive en begrunnelse før du går videre.',
+      case_is_at_ka: 'Du må velge om du har mottatt brev.',
       enhet: 'Du må velge en enhet.',
+      vedleggEllerFritekstLoggedIn: 'Du må laste opp minst ett vedlegg eller skrive en begrunnelse før du går videre.',
+      vedleggEllerFritekstLoggedOut:
+        'Du må enten velge at du skal sende med vedlegg eller skrive en begrunnelse før du går videre.',
     },
     date: {
       invalid_format: 'Du må velge en gyldig dato.',
       invalid_range: (from: Date, to: Date) =>
         `Du må velge en dato som er mellom ${format(from, PRETTY_FORMAT)} og ${format(to, PRETTY_FORMAT)}`,
     },
+    create_error: {
+      [CaseType.KLAGE]: 'Klarte ikke å opprette klage',
+      [CaseType.ANKE]: 'Klarte ikke å opprette anke',
+      [CaseType.ETTERSENDELSE_KLAGE]: 'Klarte ikke å opprette ettersendelse',
+      [CaseType.ETTERSENDELSE_ANKE]: 'Klarte ikke å opprette ettersendelse',
+    },
   },
   common: {
+    next_button: 'Gå videre',
     loading: 'Laster...',
     logged_out: 'Du har blitt logget ut. For å fortsette trenger du bare å logge inn igjen.',
     log_in: 'Logg inn',
@@ -380,5 +378,14 @@ export const nb = {
     yes: 'Ja',
     no: 'Nei',
     expires_in: (exp: string) => `Du vil bli logget ut ${exp}. For å fortsette trenger du bare logge inn igjen.`,
+    has_attachments_label: 'Jeg skal sende med vedlegg.',
+    not_specified: 'Ikke angitt',
   },
+};
+
+const CASE_TYPE_NAMES_LOWER_CASE_NB = {
+  [CaseType.KLAGE]: 'klage',
+  [CaseType.ANKE]: 'anke',
+  [CaseType.ETTERSENDELSE_KLAGE]: 'ettersendelse for klage',
+  [CaseType.ETTERSENDELSE_ANKE]: 'ettersendelse for anke',
 };
