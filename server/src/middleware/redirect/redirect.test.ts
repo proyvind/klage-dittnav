@@ -10,6 +10,14 @@ const NON_REDIRECT_URLS = [
   '/nb/anke/DAGPENGER/begrunnelse',
   '/nb/anke/DAGPENGER/oppsummering',
   '/nb/anke/DAGPENGER/innsending',
+  '/nb/ettersendelse/klage/DAGPENGER',
+  '/nb/ettersendelse/klage/DAGPENGER/begrunnelse',
+  '/nb/ettersendelse/klage/DAGPENGER/oppsummering',
+  '/nb/ettersendelse/klage/DAGPENGER/innsending',
+  '/nb/ettersendelse/anke/DAGPENGER',
+  '/nb/ettersendelse/anke/DAGPENGER/begrunnelse',
+  '/nb/ettersendelse/anke/DAGPENGER/oppsummering',
+  '/nb/ettersendelse/anke/DAGPENGER/innsending',
 ];
 
 const LOGIN_REDIRECT_URLS = [
