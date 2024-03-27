@@ -177,7 +177,7 @@ const RenderCasebegrunnelsePage = ({ data }: Props) => {
       <AttachmentsSection
         attachments={data.vedlegg}
         caseId={data.id}
-        basePath={`${API_PATH}/klager`}
+        basePath={`${API_PATH}/klanker`}
         onDelete={deleteAttachment}
         error={errors[FormFieldsIds.VEDLEGG]}
       />

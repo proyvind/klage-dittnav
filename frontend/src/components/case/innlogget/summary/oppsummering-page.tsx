@@ -102,7 +102,7 @@ const DigitalCaseOppsummeringPage = ({ data }: Props) => {
           id={data.id}
           status={data.status}
           attachments={data.vedlegg}
-          basePath={`${API_PATH}/klager`}
+          basePath={`${API_PATH}/klanker`}
         />
       </StyledPanel>
 
