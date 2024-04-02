@@ -1,3 +1,5 @@
+import http from 'http';
+import { Socket } from 'net';
 import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { OBO_CLIENT_IDS, PROXIED_CLIENT_IDS } from '@app/config/config';
@@ -24,39 +26,44 @@ export const setupProxy = async () => {
       pathRewrite: {
         [`^/api/${appName}`]: '',
       },
-      onError: (error, req, res) => {
-        if (res.headersSent) {
+      on: {
+        error: (error, req, res) => {
+          if (!isServerResponse(res)) {
+            log.error({
+              msg: 'Response is not a ServerResponse.',
+              error,
+              data: { appName, url: req.url, method: req.method },
+            });
+
+            return;
+          }
+
+          if (res.headersSent) {
+            log.error({
+              msg: 'Headers already sent.',
+              error,
+              data: {
+                appName,
+                statusCode: res.statusCode,
+                url: req.url,
+                method: req.method,
+              },
+            });
+
+            return;
+          }
+
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          const body = JSON.stringify({ error: `Failed to connect to API. Reason: ${error.message}` });
+          res.end(body);
           log.error({
-            msg: 'Headers already sent.',
+            msg: 'Failed to connect to API.',
             error,
-            data: {
-              appName,
-              statusCode: res.statusCode,
-              url: req.originalUrl,
-              method: req.method,
-            },
+            data: { appName, url: req.url, method: req.method },
           });
-
-          return;
-        }
-
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        const body = JSON.stringify({ error: `Failed to connect to API. Reason: ${error.message}` });
-        res.end(body);
-        log.error({
-          msg: 'Failed to connect to API.',
-          error,
-          data: { appName, url: req.originalUrl, method: req.method },
-        });
+        },
       },
-      logLevel: 'warn',
-      logProvider: () => ({
-        log: (msg: string) => log.info({ msg, data: { appName } }),
-        info: (msg: string) => log.info({ msg, data: { appName } }),
-        debug: (msg: string) => log.debug({ msg, data: { appName } }),
-        warn: (msg: string) => log.warn({ msg, data: { appName } }),
-        error: (msg: string) => log.error({ msg, data: { appName } }),
-      }),
+      logger: log,
       changeOrigin: true,
     });
 
@@ -65,3 +72,13 @@ export const setupProxy = async () => {
 
   return router;
 };
+
+const isServerResponse = (
+  res: http.ServerResponse<http.IncomingMessage> | Socket,
+): res is http.ServerResponse<http.IncomingMessage> =>
+  'headersSent' in res &&
+  typeof res.headersSent === 'boolean' &&
+  'writeHead' in res &&
+  typeof res.writeHead === 'function' &&
+  'end' in res &&
+  typeof res.end === 'function';
