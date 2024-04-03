@@ -18,10 +18,10 @@ export const isLoggedInStep = (
   return isAnonymousStep(step) || step === 'kvittering';
 };
 
-export const isLang = (lang: string | undefined): lang is 'nb' | 'en' => {
+export const isLang = (lang: string | undefined): lang is 'nb' | 'nn' | 'en' => {
   if (lang === undefined) {
     return false;
   }
 
-  return lang === 'nb' || lang === 'en';
+  return lang === 'nb' || lang === 'nn' || lang === 'en';
 };
