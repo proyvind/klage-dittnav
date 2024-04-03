@@ -216,11 +216,7 @@ export const nb = {
       },
       read_more: [
         `Du kan lese mer om hvordan vi behandler saken din videre på våre `,
-        <ExternalLink
-          key="tema"
-          href="https://www.nav.no/no/nav-og-samfunn/kontakt-nav/klage-ris-og-ros/klagerettigheter"
-          inline
-        >
+        <ExternalLink key="tema" href="https://www.nav.no/klagerettigheter" inline>
           temasider om klage og anke
         </ExternalLink>,
         '.',
@@ -243,7 +239,7 @@ export const nb = {
       ].map((c, index) => <span key={index}>{c}</span>),
       dine_saker: {
         title: 'Se dine saker på Min side',
-        url: 'https://person.nav.no/mine-saker/',
+        url: 'https://www.nav.no/dokumentarkiv/',
       },
     },
   },

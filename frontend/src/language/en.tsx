@@ -214,7 +214,7 @@ export const en: Translations = {
       },
       read_more: [
         'You can read more about the further processing of your complaint on our ',
-        <ExternalLink key="topic" href="https://www.nav.no/en/home/rules-and-regulations/appeals" inline>
+        <ExternalLink key="topic" href="https://www.nav.no/klagerettigheter/en" inline>
           topic pages about complaints and appeals
         </ExternalLink>,
         '.',
@@ -237,7 +237,7 @@ export const en: Translations = {
       ].map((c, index) => <span key={index}>{c}</span>),
       dine_saker: {
         title: 'See your cases on Min side',
-        url: 'https://person.nav.no/mine-saker/',
+        url: 'https://www.nav.no/dokumentarkiv/en',
       },
     },
   },
