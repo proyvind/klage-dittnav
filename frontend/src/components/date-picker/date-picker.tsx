@@ -1,6 +1,7 @@
 import { DatePicker as DatePickerInternal } from '@navikt/ds-react';
 import { addYears, format, isAfter, isBefore, isValid, parse, subDays, subYears } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { PRETTY_FORMAT } from './constants';
 
@@ -34,6 +35,7 @@ export const DatePicker = ({
   const [inputError, setInputError] = useState<string>();
   const [input, setInput] = useState<string>(value === null ? '' : format(value, PRETTY_FORMAT));
   const { error_messages } = useTranslation();
+  const language = useLanguage();
 
   useEffect(() => {
     setInput(value === null ? '' : format(value, PRETTY_FORMAT));
@@ -168,7 +170,7 @@ export const DatePicker = ({
       defaultSelected={selected}
       selected={selected}
       onSelect={onDateChange}
-      locale="nb"
+      locale={language}
       dropdownCaption
       month={month}
       onMonthChange={setMonth}
