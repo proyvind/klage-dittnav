@@ -39,7 +39,7 @@ export const handleSessionCase = ({
       setSessionCase({
         type,
         innsendingsytelse: ytelse,
-        data: createSessionCase(type, language, ytelse, internalSaksnummer),
+        data: createSessionCase(type, ytelse, internalSaksnummer),
       }),
     );
   } else if (internalSaksnummer !== null && internalSaksnummer !== sessionCase.internalSaksnummer) {

@@ -27,7 +27,7 @@ export const useSessionCase = (
         loadOrCreateSessionCase({
           type,
           innsendingsytelse,
-          data: { language, innsendingsytelse, internalSaksnummer },
+          data: { innsendingsytelse, internalSaksnummer },
         }),
       );
     }

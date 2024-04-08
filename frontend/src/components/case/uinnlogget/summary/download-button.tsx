@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { ISessionCase } from '@app/components/case/uinnlogget/types';
 import { useInnsendingsytelseName } from '@app/hooks/use-innsendingsytelser';
+import { useLanguage } from '@app/language/use-language';
 import { useTranslation } from '@app/language/use-translation';
 import { AppEventEnum } from '@app/logging/error-report/action';
 import { addApiEvent, addAppEvent, addErrorEvent, sendErrorReport } from '@app/logging/error-report/error-report';
@@ -22,6 +23,7 @@ export const DownloadButton = ({ caseData, validForm }: Props) => {
   const [pdfLoading, setpdfLoading] = useState(false);
   const [title] = useInnsendingsytelseName(caseData.innsendingsytelse);
   const navigate = useNavigate();
+  const language = useLanguage();
 
   const submitKlage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -43,7 +45,7 @@ export const DownloadButton = ({ caseData, validForm }: Props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...caseData }),
+        body: JSON.stringify({ ...caseData, language }),
       });
 
       if (res.ok) {

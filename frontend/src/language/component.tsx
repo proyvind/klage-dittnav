@@ -1,7 +1,7 @@
 import { onLanguageSelect, setAvailableLanguages, setParams } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LANGUAGE_KEYS } from '@app/language/language';
+import { LANGUAGES } from '@app/language/language';
 import { currentPath } from '@app/routes/current-path';
 
 interface Props {
@@ -22,7 +22,7 @@ export const LanguageComponent = (props: Props) => {
     });
 
     const path = currentPath(location);
-    const currentLanguage = LANGUAGE_KEYS.find((l) => path.startsWith(`/${l}`));
+    const currentLanguage = LANGUAGES.find((l) => path.startsWith(`/${l}`));
     let languageIndependentPath = path;
 
     if (typeof currentLanguage === 'string') {
@@ -31,7 +31,7 @@ export const LanguageComponent = (props: Props) => {
     }
 
     setAvailableLanguages(
-      LANGUAGE_KEYS.map((l) => ({
+      LANGUAGES.map((l) => ({
         locale: l,
         url: `/${l}${languageIndependentPath}`,
         handleInApp: true,

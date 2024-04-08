@@ -5,7 +5,6 @@ export type CreateCaseParams = Pick<
   BaseCase,
   | 'innsendingsytelse'
   | 'userSaksnummer'
-  | 'language'
   | 'vedtakDate'
   | 'internalSaksnummer'
   | 'fritekst'
