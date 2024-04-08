@@ -24,9 +24,9 @@ export const en: Translations = {
       [CaseType.ANKE]:
         'As an employer, you must log out and send the appeal by post. You enter the national identity number or D-number of the employee to whom the decision applies, print out the appeal, and sign as the employer.',
       [CaseType.ETTERSENDELSE_KLAGE]:
-        'As an employer, you must log out and enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the cover page, and sign as the employer.',
+        'As an employer, you must log out and enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the front page, and sign as the employer.',
       [CaseType.ETTERSENDELSE_ANKE]:
-        'As an employer, you must log out and enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the cover page, and sign as the employer.',
+        'As an employer, you must log out and enter the national identity number or D-number of the employee to whom the additional documentation applies, print out the front page, and sign as the employer.',
     },
     common: {
       title_fragment: {
@@ -245,26 +245,26 @@ export const en: Translations = {
     title: 'What do you do now?',
     steg: {
       [CaseType.KLAGE]: [
-        'Print the complaint. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
-        'Sign the cover page and the last page of the complaint.',
+        'Print the complaint. The print includes a pre-made front page. This should be placed on top. Follow the instructions on the front page.',
+        'Sign the front page and the last page of the complaint.',
         'Add the attachments.',
         'Send by post to ',
       ],
       [CaseType.ANKE]: [
-        'Print the appeal. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
+        'Print the appeal. The print includes a pre-made front page. This should be placed on top. Follow the instructions on the front page.',
         'Sign the appeal.',
         'Add the attachments.',
         'Send by post to ',
       ],
       [CaseType.ETTERSENDELSE_KLAGE]: [
-        'Print the documentation. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
-        'Sign the cover page and the last page of the documentation.',
+        'Print the documentation. The print includes a pre-made front page. This should be placed on top. Follow the instructions on the front page.',
+        'Sign the front page and the last page of the documentation.',
         'Add the attachments.',
         'Send by post to ',
       ],
       [CaseType.ETTERSENDELSE_ANKE]: [
-        'Print the documentation. The print includes a pre-made cover page. This should be placed on top. Follow the instructions on the cover page.',
-        'Sign the cover page and the last page of the documentation.',
+        'Print the documentation. The print includes a pre-made front page. This should be placed on top. Follow the instructions on the front page.',
+        'Sign the front page and the last page of the documentation.',
         'Add the attachments.',
         'Send by post to ',
       ],
