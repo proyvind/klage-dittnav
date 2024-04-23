@@ -68,7 +68,7 @@ export const handleCreateCase = ({
   navigate,
 }: IHandleCreate) => {
   addAppEvent(AppEventEnum.CREATE_CASE_FROM_SESSION_STORAGE);
-  createCase(getCreatePayload(sessionCase, internalSaksnummer))
+  createCase(getCreatePayload(sessionCase, language, internalSaksnummer))
     .unwrap()
     .then(({ id }) => {
       dispatch(deleteSessionCase({ type: sessionCase.type, innsendingsytelse }));
@@ -98,9 +98,11 @@ export const handleResumeOrCreateCase = ({
 
 const getCreatePayload = (
   { type, ...data }: ISessionCase,
+  language: Languages,
   internalSaksnummer: string | null = null,
-): CreateCaseParams => ({
-  type,
-  ...data,
-  internalSaksnummer,
-});
+): CreateCaseParams => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id, navn, modifiedByUser, ...rest } = data;
+
+  return { type, ...rest, internalSaksnummer, language };
+};

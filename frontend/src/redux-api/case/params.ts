@@ -13,6 +13,7 @@ export type CreateCaseParams = Pick<
   | 'caseIsAtKA'
   | 'enhetsnummer'
   | 'checkboxesSelected'
+  | 'language'
 >;
 
 interface CaseUpdate<T extends keyof CaseUpdatable> {
